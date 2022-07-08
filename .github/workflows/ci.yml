@@ -22,10 +22,13 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DRUN_TESTS=ON ..
+          cmake ..
           make
       - name: tests
         run: |
+          mkdir build
+          cd build
+          cmake -DRUN_TESTS=ON ..
           make test
           gcovr -r .
   build-ubuntu-qt6:
