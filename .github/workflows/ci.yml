@@ -26,21 +26,3 @@ jobs:
           make
           make test
           gcovr -r .
-  build-ubuntu-qt6:
-    runs-on: ubuntu-latest
-    steps:
-      - name: initialize
-        uses: actions/checkout@v2
-      - name: dependencies
-        run: |
-          sudo apt --fix-missing update
-          sudo apt-get update -y && sudo apt-get upgrade -fy
-          sudo apt install -f -y extra-cmake-modules qt6-base-dev libqt6test6 qt6-tools-dev qt6-tools-dev-tools gcovr libgtest-dev
-      - name: build and test
-        run: |
-          mkdir build
-          cd build
-          cmake -DRUN_TESTS=ON ..
-          make
-          make test
-          gcovr -r .
