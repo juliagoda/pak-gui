@@ -4,7 +4,7 @@ pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.
 
 ![Browse](https://github.com/juliagoda/pak-gui/blob/main/pak-gui.png)
 
-[![pak-gui](https://github.com/juliagoda/pak-gui/actions/workflows/c-cpp.yml/badge.svg?branch=main)](https://github.com/juliagoda/pak-gui/actions/workflows/c-cpp.yml)
+[![pak-gui](https://github.com/juliagoda/pak-gui/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/juliagoda/pak-gui/actions/workflows/ci.yml)
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/juliagoda/pak-gui)
 
 
