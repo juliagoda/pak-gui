@@ -22,7 +22,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DTUN_TESTS=ON ..
+          cmake -DRUN_TESTS=ON ..
           make
       - name: tests
         run: |
@@ -42,7 +42,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DTUN_TESTS=ON ..
+          cmake -DRUN_TESTS=ON ..
           make
       - name: tests
         run: |
