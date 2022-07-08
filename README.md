@@ -14,6 +14,7 @@ pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.
 
 ### Dependencies - Qt5
 
+- cmake
 - qt5-base
 - gcovr (optional for tests)
 - gtest (optional for tests)
@@ -21,6 +22,7 @@ pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.
 
 ### Dependencies - Qt6
 
+- cmake
 - qt6-base
 - gcovr (optional for tests)
 - gtest (optional for tests)
