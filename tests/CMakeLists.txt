@@ -8,11 +8,8 @@ set(CMAKE_AUTOMOC ON)
 # to always look for includes there:
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    find_package(Qt6Test REQUIRED)
-else()
-    find_package(Qt5Test REQUIRED)
-endif()
+find_package(Qt5Test REQUIRED)
+
 
 find_package(GTest REQUIRED)
 
@@ -22,10 +19,6 @@ set(PAK_TESTS_SOURCES tests.cpp)
 
 add_executable(pak-tests ${PAK_TESTS_SOURCES})
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    target_link_libraries( pak-tests  GTest::gtest GTest::gtest_main Qt6::Test )
-else()
-    target_link_libraries( pak-tests  GTest::gtest GTest::gtest_main Qt5::Test )
-endif()
+target_link_libraries( pak-tests  GTest::gtest GTest::gtest_main Qt5::Test )
 
 ADD_TEST( NAME pak-tests  COMMAND pak-tests  )
