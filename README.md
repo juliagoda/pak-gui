@@ -2,22 +2,11 @@
 
 pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.com/nycko123/pak) enhanced with GUI.
 
-![Browse]()
+![Browse](https://github.com/juliagoda/pak-gui/blob/main/pak-gui.png)
 
-[![pak-gui](https://github.com/juliagoda/XboxBurner/actions/workflows/c-cpp.yml/badge.svg?branch=main)](https://github.com/juliagoda/XboxBurner/actions/workflows/c-cpp.yml)
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/juliagoda/XboxBurner)
+[![pak-gui](https://github.com/juliagoda/pak-gui/actions/workflows/c-cpp.yml/badge.svg?branch=main)](https://github.com/juliagoda/pak-gui/actions/workflows/c-cpp.yml)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/juliagoda/pak-gui)
 
-The original old source of the original author ([dynup](https://sourceforge.net/u/dynup/profile/)) is [here](https://sourceforge.net/projects/xboxburner/)
-
-<br/>
-
-## Requirements
-
-- Burns XBox and XBox360 game images
-- Infos for burner and media
-- Maximum media compatibility with DVD-ROM
-- Progress bar for burning and buffers
-- Log for info and error analysis
 
 <br/>
 
@@ -36,9 +25,22 @@ The original old source of the original author ([dynup](https://sourceforge.net/
 - gcovr (optional for tests)
 - gtest (optional for tests)
 
+<br/>
 
 ### Installation
 
 ```
+mkdir build
+cd build
+cmake ..
+make
+```
 
+### Running tests
+
+```
+cmake -DRUN_TESTS=ON ..
+make
+make test
+gcovr -r .
 ```
