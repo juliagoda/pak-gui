@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Pacman wrapper with Gui
+GenericName=Pacman wrapper with Gui
+Keywords=pacman;pak;wrapper;
+Exec=pak-gui
+Comment=pacman wrapper, AUR and POLAUR helper with Gui
+Icon=pak-gui
+Terminal=false
+StartupNotify=false
+Categories=Qt;System;
+X-AppStream-Ignore=true
