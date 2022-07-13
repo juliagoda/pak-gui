@@ -11,3 +11,4 @@ Terminal=false
 StartupNotify=false
 Categories=Qt;System;
 X-AppStream-Ignore=true
+X-DocPath=pak-gui/index.html
