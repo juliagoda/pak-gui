@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(QT_MIN_VERSION "5.15.0")
-set(KF_MIN_VERSION "5.68.0)
+set(KF_MIN_VERSION "5.68.0")
 
 find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
@@ -38,7 +38,7 @@ find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
 
 install(PROGRAMS org.example.pak-gui.desktop  DESTINATION ${KDE_INSTALL_APPDIR})
 
-include_directories(${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/ui)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_subdirectory(doc)
 add_subdirectory(src)
