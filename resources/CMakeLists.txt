@@ -9,3 +9,5 @@ set(pak-gui_ICONS
 )
 
 ecm_install_icons(ICONS ${pak-gui_ICONS} DESTINATION ${KDE_INSTALL_ICONDIR} THEME hicolor)
+
+add_subdirectory(translations)

@@ -29,14 +29,14 @@ int main(int argc, char **argv)
 
     KAboutData aboutData( QStringLiteral("pak-gui"),
                           i18n("pak-gui"),
-                          QStringLiteral("%{VERSION}"),
-                          i18n("A Simple Application written with KDE Frameworks"),
+                          QStringLiteral("1.0"),
+                          i18n("Pacman wrapper, AUR and POLAUR helper with Gui"),
                           KAboutLicense::GPL,
-                          i18n("Copyright %{CURRENT_YEAR}, %{AUTHOR} <%{EMAIL}>"));
+                          i18n("Copyright 2022, Jagoda \"juliagoda\" Górska"));
 
-    aboutData.addAuthor(i18n("%{AUTHOR}"),i18n("Author"), QStringLiteral("%{EMAIL}"));
-    aboutData.setOrganizationDomain("example.org");
-    aboutData.setDesktopFileName(QStringLiteral("org.example.pak-gui"));
+    aboutData.addAuthor(i18n("Jagoda \"juliagoda\" Górska"),i18n("Author"), QStringLiteral("juliagoda.pl@protonmail.com"));
+    aboutData.setOrganizationDomain("CachyOS.github.com");
+    aboutData.setDesktopFileName(QStringLiteral("com.github.CachyOS.pak-gui"));
 
     KAboutData::setApplicationData(aboutData);
     application.setWindowIcon(QIcon::fromTheme(QStringLiteral("pak-gui")));
