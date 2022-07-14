@@ -9,7 +9,7 @@
 
 #include "pakGuiSettings.h"
 
-#include <KLazyLocalizedString>
+#include <KLocalizedString>
 
 
 MainWindowView::MainWindowView(QWidget *parent)
