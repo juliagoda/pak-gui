@@ -12,7 +12,7 @@
 // KF headers
 #include <KActionCollection>
 #include <KConfigDialog>
-#include <KLazyLocalizedString>
+#include <KLocalizedString>
 
 
 MainWindow::MainWindow()
