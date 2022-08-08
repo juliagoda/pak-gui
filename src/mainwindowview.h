@@ -9,6 +9,8 @@
 
 #include "ui_mainwindowview.h"
 
+#include <QStringList>
+
 /**
  * This class serves as the main window for kde-example.  It handles the
  * menus, toolbars and status bars.
@@ -20,11 +22,12 @@
 class MainWindowView : public QWidget
 {
     Q_OBJECT
+
 public:
     /**
      * Default Constructor
      */
-    explicit MainWindowView(QWidget *parent);
+    explicit MainWindowView(QWidget* parent);
 
     /**
      * Default Destructor
@@ -36,6 +39,9 @@ public Q_SLOTS:
     void handleSettingsChanged();
 
 private:
+    const QStringList retrievePackagesStringList(QString pacman_argument);
+    void fillInstalledPackagesColumn(QStringList pacman_packages);
+
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here
     Ui::MainWindowView m_ui;

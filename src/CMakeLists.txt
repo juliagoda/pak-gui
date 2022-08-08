@@ -5,7 +5,10 @@ add_executable(pak-gui ${RESOURCES})
 target_sources(pak-gui PRIVATE
     main.cpp
     mainwindow.cpp
-    mainwindowview.cpp)
+    mainwindowview.cpp
+    packagescolumn.cpp
+    package.cpp
+    defs.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
