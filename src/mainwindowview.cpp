@@ -35,7 +35,7 @@ const QStringList MainWindowView::retrievePackagesStringList(QString pacman_argu
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pacman " + pacman_argument);
     pacman_qi->waitForFinished();
     QString output(pacman_qi->readAllStandardOutput());
-    return output.split(QRegularExpression("^\"\""));
+    return output.split(QRegularExpression("^\"\"")); // rozdzielać co 21 linijkę
 }
 
 
