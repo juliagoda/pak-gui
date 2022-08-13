@@ -7,8 +7,10 @@ target_sources(pak-gui PRIVATE
     mainwindow.cpp
     mainwindowview.cpp
     packagescolumn.cpp
-    package.cpp
-    defs.h)
+    packagefromdescription.cpp
+    packagefromlist.cpp
+    defs.h
+    package.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
@@ -27,5 +29,5 @@ ki18n_wrap_ui(pak-gui
     settings.ui)
 
 install(FILES org.cachyos.pak-gui.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
-install(FILES pakgui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/pak-gui)
+install(FILES pak-gui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/pak-gui)
 install(TARGETS pak-gui ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

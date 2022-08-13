@@ -40,7 +40,9 @@ public Q_SLOTS:
 
 private:
     const QStringList retrievePackagesStringList(QString pacman_argument);
-    void fillInstalledPackagesColumn(QStringList pacman_packages);
+    const QStringList retrievePackagesToUpdateStringList();
+    void fillInstalledPackagesColumn(QListWidget* packages_column, QStringList pacman_packages);
+    void fillUpdatedPackagesColumn(QStringList pacman_packages);
 
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here

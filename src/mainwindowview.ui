@@ -38,8 +38,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>278</width>
-          <height>626</height>
+          <width>280</width>
+          <height>628</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -74,7 +74,6 @@
             <widget class="QLabel" name="installed_packages_label">
              <property name="font">
               <font>
-               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -124,8 +123,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>278</width>
-          <height>626</height>
+          <width>280</width>
+          <height>628</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -160,7 +159,6 @@
             <widget class="QLabel" name="packages_to_update_label">
              <property name="font">
               <font>
-               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -207,8 +205,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>278</width>
-          <height>626</height>
+          <width>280</width>
+          <height>628</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -243,7 +241,6 @@
             <widget class="QLabel" name="accessible_packages">
              <property name="font">
               <font>
-               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>

@@ -16,5 +16,9 @@
     <Action name="switch_action"/>
     <Separator/>
     <Action name="options_configure"/>
+    <Separator/>
+    <Action name="update"/>
+    <Separator/>
+    <Action name="refresh"/>
 </ToolBar>
 </gui>

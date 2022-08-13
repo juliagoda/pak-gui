@@ -52,6 +52,8 @@ private:
     // you can rename it in designer and then change it here
     Ui::Settings m_settings;
     QAction *m_switchAction;
+    QAction *m_updateAction;
+    QAction *m_refreshAction;
     MainWindowView *mainWindowView;
 };
 
