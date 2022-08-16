@@ -9,7 +9,12 @@
 
 #include "ui_mainwindowview.h"
 
+#include "availablepackagescolumn.h"
+#include "installedpackagescolumn.h"
+#include "updatedpackagescolumn.h"
+
 #include <QStringList>
+#include <QSharedPointer>
 
 /**
  * This class serves as the main window for kde-example.  It handles the
@@ -40,10 +45,14 @@ public Q_SLOTS:
 
 private:
     void fillColumns();
+    void connectSignals();
 
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here
     Ui::MainWindowView m_ui;
+    QPointer<AvailablePackagesColumn> available_packages_column;
+    QPointer<InstalledPackagesColumn> installed_packages_column;
+    QPointer<UpdatedPackagesColumn> updated_packages_column;
 };
 
 #endif // MAINWINDOWVIEW_H

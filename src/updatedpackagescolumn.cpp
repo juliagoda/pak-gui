@@ -5,8 +5,11 @@
 #include "checkpackage.h"
 #include "checkcommandparser.h"
 
-UpdatedPackagesColumn::UpdatedPackagesColumn() :
-    pak_packages{getPackagesList()}
+UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget) :
+    PackagesColumn(),
+    pak_packages{getPackagesList()},
+    checked_packages{0},
+    list_widget{new_list_widget}
 {
 
 }
@@ -19,7 +22,7 @@ QStringList UpdatedPackagesColumn::getPackagesList()
 }
 
 
-void UpdatedPackagesColumn::fill(QListWidget* list_widget)
+void UpdatedPackagesColumn::fill()
 {
     QStringList::iterator it = pak_packages.begin();
     int i = 0;
@@ -30,4 +33,14 @@ void UpdatedPackagesColumn::fill(QListWidget* list_widget)
         list_widget->insertItem(i, package_item);
         i++;
     }
+}
+
+void UpdatedPackagesColumn::updateCheckedPackagesCounter(QListWidgetItem* package_item)
+{
+    if (package_item->checkState() == Qt::Checked)
+        checked_packages++;
+    else
+        checked_packages--;
+
+    emit checkedPackagesCounterChanged(checked_packages > 0);
 }

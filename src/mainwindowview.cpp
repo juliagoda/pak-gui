@@ -8,21 +8,23 @@
 #include "mainwindowview.h"
 
 #include "pakGuiSettings.h"
-#include "availablepackagescolumn.h"
-#include "installedpackagescolumn.h"
-#include "updatedpackagescolumn.h"
 
 #include <KLocalizedString>
 #include <QProcess>
 #include <QPointer>
 #include <QScopedPointer>
+#include <QObject>
 
 
 MainWindowView::MainWindowView(QWidget *parent)
     : QWidget(parent)
 {
     m_ui.setupUi(this);
+    available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list));
+    installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list));
+    updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list));
     fillColumns();
+    connectSignals();
 }
 
 
@@ -34,14 +36,22 @@ MainWindowView::~MainWindowView()
 
 void MainWindowView::fillColumns()
 {
-   QScopedPointer<AvailablePackagesColumn> available_packages_column(new AvailablePackagesColumn);
-   available_packages_column.data()->fill(m_ui.available_packages_list);
+   available_packages_column.data()->fill();
+   installed_packages_column.data()->fill();
+   updated_packages_column.data()->fill();
+}
 
-   QScopedPointer<InstalledPackagesColumn> installed_packages_column(new InstalledPackagesColumn);
-   installed_packages_column.data()->fill(m_ui.installed_packages_list);
 
-   QScopedPointer<UpdatedPackagesColumn> updated_packages_column(new UpdatedPackagesColumn);
-   updated_packages_column.data()->fill(m_ui.packages_to_update_list);
+void MainWindowView::connectSignals()
+{
+   QObject::connect(m_ui.available_packages_list, &QListWidget::itemChanged, available_packages_column.data(), &AvailablePackagesColumn::updateCheckedPackagesCounter);
+   QObject::connect(available_packages_column.data(), &AvailablePackagesColumn::checkedPackagesCounterChanged, [this](bool has_checked_buttons) { m_ui.install_packages_button->setEnabled(has_checked_buttons); });
+
+   QObject::connect(m_ui.installed_packages_list, &QListWidget::itemChanged, installed_packages_column.data(), &InstalledPackagesColumn::updateCheckedPackagesCounter);
+   QObject::connect(installed_packages_column.data(), &InstalledPackagesColumn::checkedPackagesCounterChanged, [this](bool has_checked_buttons) { m_ui.uninstall_packages_button->setEnabled(has_checked_buttons); });
+
+   QObject::connect(m_ui.packages_to_update_list, &QListWidget::itemChanged, updated_packages_column.data(), &UpdatedPackagesColumn::updateCheckedPackagesCounter);
+   QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, [this](bool has_checked_buttons) { m_ui.update_packages_button->setEnabled(has_checked_buttons); });
 }
 
 

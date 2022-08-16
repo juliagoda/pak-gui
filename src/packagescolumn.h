@@ -1,15 +1,20 @@
 #pragma once
 
+#include "qobjectdefs.h"
 #include <QListWidget>
 #include <QStringList>
 
-class PackagesColumn
+class PackagesColumn : public QObject
 {
+    Q_OBJECT
+
 public:
-    virtual ~PackagesColumn() = default;
-    virtual void fill(QListWidget* list_widget) =  0;
+    PackagesColumn() :
+        QObject()
+    {};
+    virtual void fill() {};
 
 protected:
-    virtual QStringList getPackagesList() = 0;
+    virtual QStringList getPackagesList() { return QStringList(); };
 };
 

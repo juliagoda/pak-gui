@@ -3,17 +3,30 @@
 #include "packagescolumn.h"
 
 #include <QStringList>
+#include <QPointer>
+#include <QListWidget>
+
 
 class AvailablePackagesColumn : public PackagesColumn
 {
+    Q_OBJECT
+
 public:
-    AvailablePackagesColumn();
-    void fill(QListWidget* list_widget) override;
+    AvailablePackagesColumn(QListWidget* new_list_widget);
+    void fill() override;
+
+public Q_SLOTS:
+    void updateCheckedPackagesCounter(QListWidgetItem* package_item);
+
+signals:
+    void checkedPackagesCounterChanged(bool has_checked_buttons);
 
 protected:
     QStringList getPackagesList() override;
 
 private:
     QStringList pak_packages;
+    int checked_packages;
+    QListWidget* list_widget;
 };
 
