@@ -8,8 +8,9 @@
 #include "mainwindowview.h"
 
 #include "pakGuiSettings.h"
-#include "packagefromdescription.h"
-#include "packagefromlist.h"
+#include "availablepackagescolumn.h"
+#include "installedpackagescolumn.h"
+#include "updatedpackagescolumn.h"
 
 #include <KLocalizedString>
 #include <QProcess>
@@ -21,9 +22,7 @@ MainWindowView::MainWindowView(QWidget *parent)
     : QWidget(parent)
 {
     m_ui.setupUi(this);
-    fillInstalledPackagesColumn(m_ui.installed_packages_list, retrievePackagesStringList("-Qi"));
-    fillInstalledPackagesColumn(m_ui.available_packages_list, retrievePackagesStringList("-Si"));
-    fillUpdatedPackagesColumn(retrievePackagesToUpdateStringList());
+    fillColumns();
 }
 
 
@@ -33,69 +32,16 @@ MainWindowView::~MainWindowView()
 }
 
 
-const QStringList MainWindowView::retrievePackagesStringList(QString pacman_argument)
+void MainWindowView::fillColumns()
 {
-    QScopedPointer<QProcess> pacman_qi(new QProcess);
-    pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak " + pacman_argument);
-    pacman_qi->waitForFinished();
-    QString output(pacman_qi->readAllStandardOutput());
-    return output.split(QRegularExpression("Validated By[^\n]*\n\n"));
-}
+   QScopedPointer<AvailablePackagesColumn> available_packages_column(new AvailablePackagesColumn);
+   available_packages_column.data()->fill(m_ui.available_packages_list);
 
+   QScopedPointer<InstalledPackagesColumn> installed_packages_column(new InstalledPackagesColumn);
+   installed_packages_column.data()->fill(m_ui.installed_packages_list);
 
-const QStringList MainWindowView::retrievePackagesToUpdateStringList()
-{
-    QScopedPointer<QProcess> pacman_qi(new QProcess);
-    pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -C");
-    pacman_qi->waitForFinished();
-    QString output(pacman_qi->readAllStandardOutput());
-
-    QStringList system_packages = QStringList();
-    QStringList output_list = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
-    QStringListIterator it(output_list);
-
-    while (it.hasNext())
-    {
-        QString line = it.next();
-        if (line.contains("=>"))
-        {
-           system_packages.append(line.simplified());
-        }
-    }
-
-    return system_packages;
-}
-
-
-void MainWindowView::fillInstalledPackagesColumn(QListWidget* packages_column, QStringList pacman_packages)
-{
-    QStringList::iterator it = pacman_packages.begin();
-    int i = 0;
-
-    for(;it != pacman_packages.end(); it++)
-    {
-        QPointer<PackageFromDescription> package(new PackageFromDescription(*it));
-        QListWidgetItem* package_item = new QListWidgetItem;
-        package_item->setText(package->getName() + "-" + package->getVersion());
-        packages_column->insertItem(i, package_item);
-        i++;
-    }
-}
-
-
-void MainWindowView::fillUpdatedPackagesColumn(QStringList pacman_packages)
-{
-    QStringList::iterator it = pacman_packages.begin();
-    int i = 0;
-
-    for(;it != pacman_packages.end(); it++)
-    {
-        QPointer<PackageFromList> package(new PackageFromList(*it));
-        QListWidgetItem* package_item = new QListWidgetItem;
-        package_item->setText(package->getName() + "-" + package->getVersion());
-        m_ui.packages_to_update_list->insertItem(i, package_item);
-        i++;
-    }
+   QScopedPointer<UpdatedPackagesColumn> updated_packages_column(new UpdatedPackagesColumn);
+   updated_packages_column.data()->fill(m_ui.packages_to_update_list);
 }
 
 

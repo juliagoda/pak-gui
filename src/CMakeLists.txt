@@ -6,11 +6,19 @@ target_sources(pak-gui PRIVATE
     main.cpp
     mainwindow.cpp
     mainwindowview.cpp
-    packagescolumn.cpp
-    packagefromdescription.cpp
-    packagefromlist.cpp
+    availablepackagescolumn.cpp
+    updatedpackagescolumn.cpp
+    installedpackagescolumn.cpp
+    packagescolumn.h
+    qipackage.cpp
+    sipackage.cpp
+    checkpackage.cpp
     defs.h
-    package.h)
+    package.h
+    commandparser.h
+    sicommandparser.cpp
+    qicommandparser.cpp
+    checkcommandparser.cpp)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 

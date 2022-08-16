@@ -1,15 +1,16 @@
 #pragma once
 
 #include "qobjectdefs.h"
-#include <QObject>
+
+#include <QListWidgetItem>
 #include <QString>
 
-class Package : public QObject
-{
-    Q_OBJECT
 
+class Package : public QListWidgetItem
+{
 public:
     Package(QString& package_content) :
+        QListWidgetItem(),
         name(),
         version(),
         description(),
@@ -19,9 +20,9 @@ public:
     }
 
     virtual const QString& getName() { return name; };
-    virtual const QString& getVersion() { return version; };
-    virtual const QString& getDescription() { return description; };
-    virtual const QString& getDependencies() { return dependencies; };
+    virtual const QString& getVersion() const { return version; };
+    virtual const QString& getDescription() const { return description; };
+    virtual const QString& getDependencies() const { return dependencies; };
 
 protected:
     virtual void updateData(QString& packageContent) { Q_UNUSED(packageContent) };

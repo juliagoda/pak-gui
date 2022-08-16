@@ -1,18 +1,21 @@
-#include "packagefromlist.h"
+#include "checkpackage.h"
 
 #include <QTextStream>
 #include <QRegularExpression>
 #include <QDebug>
 
 
-PackageFromList::PackageFromList(QString& package_content) :
+CheckPackage::CheckPackage(QString& package_content) :
     Package(package_content)
 {
     updateData(package_content);
+    setText(getName() + "-" + getVersion());
+    setFlags(flags() | Qt::ItemIsUserCheckable);
+    setCheckState(Qt::Unchecked);
 }
 
 
-void PackageFromList::updateData(QString& packageContent)
+void CheckPackage::updateData(QString& packageContent)
 {
     if (packageContent.isEmpty())
         return;

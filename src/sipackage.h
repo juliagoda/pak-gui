@@ -5,12 +5,11 @@
 #include <QObject>
 #include <QString>
 
-class PackageFromDescription : public Package
+class SiPackage : public Package
 {
 public:
-    PackageFromDescription(QString& package_content);
+    SiPackage(QString& package_content);
 
 private:
     virtual void updateData(QString &packageContent) override;
 };
-

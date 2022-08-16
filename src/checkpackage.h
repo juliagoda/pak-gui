@@ -2,10 +2,10 @@
 
 #include "package.h"
 
-class PackageFromList : public Package
+class CheckPackage : public Package
 {
 public:
-    PackageFromList(QString& package_content);
+    CheckPackage(QString& package_content);
 
 private:
     virtual void updateData(QString &packageContent) override;
