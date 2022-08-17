@@ -3,8 +3,10 @@
 #include <QObject>
 #include <QListWidgetItem>
 #include <QPointer>
+#include <QMessageBox>
 
 #include "packagescolumn.h"
+#include "qnamespace.h"
 #include "sipackage.h"
 #include "sicommandparser.h"
 
@@ -18,11 +20,28 @@ AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget) :
 
 }
 
+
 QStringList AvailablePackagesColumn::getPackagesList()
 {
     QScopedPointer<SiCommandParser> command_parser(new SiCommandParser);
     return command_parser.data()->retrievePackages();
 }
+
+
+QStringList AvailablePackagesColumn::collectCheckedPackages()
+{
+    QStringList checked_packages = QStringList();
+    for(int i = 0; i < list_widget->count(); ++i)
+    {
+        SiPackage* item = dynamic_cast<SiPackage*>(list_widget->item(i));
+
+        if (item->checkState() == Qt::Checked)
+            checked_packages.append(item->getName());
+    }
+
+    return checked_packages;
+}
+
 
 void AvailablePackagesColumn::fill()
 {
@@ -36,6 +55,24 @@ void AvailablePackagesColumn::fill()
         i++;
     }
 }
+
+void AvailablePackagesColumn::update(int exit_code, QProcess::ExitStatus exit_status)
+{
+    if (exit_status == QProcess::ExitStatus::CrashExit)
+    {
+        QMessageBox::warning(new QWidget, tr("Installation"),
+                             tr("Packages couln't be installed\n"
+                                "Do you want to see logs?"),
+                             QMessageBox::Yes | QMessageBox::Cancel);
+        return;
+    }
+
+    list_widget->clear();
+    pak_packages = getPackagesList();
+    fill();
+    list_widget->update();
+}
+
 
 void AvailablePackagesColumn::updateCheckedPackagesCounter(QListWidgetItem* package_item)
 {

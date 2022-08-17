@@ -18,7 +18,8 @@ target_sources(pak-gui PRIVATE
     commandparser.h
     sicommandparser.cpp
     qicommandparser.cpp
-    checkcommandparser.cpp)
+    checkcommandparser.cpp
+    packagesmanager.cpp)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 

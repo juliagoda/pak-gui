@@ -1,6 +1,7 @@
 #include "updatedpackagescolumn.h"
 
 #include <QPointer>
+#include <QMessageBox>
 
 #include "checkpackage.h"
 #include "checkcommandparser.h"
@@ -22,6 +23,21 @@ QStringList UpdatedPackagesColumn::getPackagesList()
 }
 
 
+QStringList UpdatedPackagesColumn::collectCheckedPackages()
+{
+    QStringList checked_packages = QStringList();
+    for(int i = 0; i < list_widget->count(); ++i)
+    {
+        CheckPackage* item = dynamic_cast<CheckPackage*>(list_widget->item(i));
+
+        if (item->checkState() == Qt::Checked)
+            checked_packages.append(item->getName());
+    }
+
+    return checked_packages;
+}
+
+
 void UpdatedPackagesColumn::fill()
 {
     QStringList::iterator it = pak_packages.begin();
@@ -34,6 +50,25 @@ void UpdatedPackagesColumn::fill()
         i++;
     }
 }
+
+
+void UpdatedPackagesColumn::update(int exit_code, QProcess::ExitStatus exit_status)
+{
+    if (exit_status == QProcess::ExitStatus::CrashExit)
+    {
+        QMessageBox::warning(new QWidget, tr("Update"),
+                             tr("Packages couln't be updated\n"
+                                "Do you want to see logs?"),
+                             QMessageBox::Yes | QMessageBox::Cancel);
+        return;
+    }
+
+    list_widget->clear();
+    pak_packages = getPackagesList();
+    fill();
+    list_widget->update();
+}
+
 
 void UpdatedPackagesColumn::updateCheckedPackagesCounter(QListWidgetItem* package_item)
 {

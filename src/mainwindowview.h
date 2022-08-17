@@ -12,6 +12,7 @@
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
 #include "updatedpackagescolumn.h"
+#include "packagesmanager.h"
 
 #include <QStringList>
 #include <QSharedPointer>
@@ -53,6 +54,7 @@ private:
     QPointer<AvailablePackagesColumn> available_packages_column;
     QPointer<InstalledPackagesColumn> installed_packages_column;
     QPointer<UpdatedPackagesColumn> updated_packages_column;
+    QSharedPointer<PackagesManager> packages_manager;
 };
 
 #endif // MAINWINDOWVIEW_H

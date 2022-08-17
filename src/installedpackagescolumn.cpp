@@ -2,9 +2,11 @@
 
 #include <QListWidgetItem>
 #include <QPointer>
+#include <QMessageBox>
 
 #include "qipackage.h"
 #include "qicommandparser.h"
+#include "qmessagebox.h"
 
 
 InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget) :
@@ -22,6 +24,22 @@ QStringList InstalledPackagesColumn::getPackagesList()
     return command_parser.data()->retrievePackages();
 }
 
+
+QStringList InstalledPackagesColumn::collectCheckedPackages()
+{
+    QStringList checked_packages = QStringList();
+    for(int i = 0; i < list_widget->count(); ++i)
+    {
+        QiPackage* item = dynamic_cast<QiPackage*>(list_widget->item(i));
+
+        if (item->checkState() == Qt::Checked)
+            checked_packages.append(item->getName());
+    }
+
+    return checked_packages;
+}
+
+
 void InstalledPackagesColumn::fill()
 {
     QStringList::iterator it = pak_packages.begin();
@@ -34,6 +52,25 @@ void InstalledPackagesColumn::fill()
         i++;
     }
 }
+
+
+void InstalledPackagesColumn::update(int exit_code, QProcess::ExitStatus exit_status)
+{
+    if (exit_status == QProcess::ExitStatus::CrashExit)
+    {
+        QMessageBox::warning(new QWidget, tr("Uninstallation"),
+                             tr("Packages couln't be removed\n"
+                                "Do you want to see logs?"),
+                             QMessageBox::Yes | QMessageBox::Cancel);
+        return;
+    }
+
+   list_widget->clear();
+   pak_packages = getPackagesList();
+   fill();
+   list_widget->update();
+}
+
 
 void InstalledPackagesColumn::updateCheckedPackagesCounter(QListWidgetItem* package_item)
 {
