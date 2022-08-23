@@ -15,8 +15,9 @@ InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget) :
     checked_packages{0},
     list_widget{new_list_widget}
 {
-
+   fill();
 }
+
 
 QStringList InstalledPackagesColumn::getPackagesList()
 {
@@ -51,6 +52,8 @@ void InstalledPackagesColumn::fill()
         list_widget->insertItem(i, package_item);
         i++;
     }
+
+    list_widget->update();
 }
 
 

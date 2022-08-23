@@ -7,9 +7,12 @@
 // application headers
 #include "mainwindowview.h"
 
+#include "availablepackagescolumn.h"
+#include "installedpackagescolumn.h"
 #include "packagesmanager.h"
 #include "pakGuiSettings.h"
 #include "qpushbutton.h"
+#include "updatedpackagescolumn.h"
 
 #include <KLocalizedString>
 #include <QProcess>
@@ -20,47 +23,58 @@
 
 MainWindowView::MainWindowView(QWidget *parent)
     : QWidget(parent),
-      packages_manager(QSharedPointer<PackagesManager>(new PackagesManager))
+      packages_manager(QSharedPointer<PackagesManager>(new PackagesManager)),
+      available_packages_thread(new QThread(this)),
+      installed_packages_thread(new QThread(this)),
+      updated_packages_thread(new QThread(this))
 {
     m_ui.setupUi(this);
-    available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list));
-    installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list));
-    updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list));
-    fillColumns();
-    connectSignals();
+    QObject::connect(available_packages_thread, &QThread::started, [=]() { available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list)); connectSignalsForAvailablePackages(); });
+    QObject::connect(installed_packages_thread, &QThread::started, [=]() { installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list)); connectSignalsForInstalledPackages(); });
+    QObject::connect(updated_packages_thread, &QThread::started, [=]() { updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list)); connectSignalsForUpdatedPackages(); });
+    available_packages_thread->start();
+    installed_packages_thread->start();
+    updated_packages_thread->start();
 }
 
 
 MainWindowView::~MainWindowView()
 {
+   if (available_packages_thread->isRunning())
+       available_packages_thread->exit();
 
+   if (installed_packages_thread->isRunning())
+       installed_packages_thread->exit();
+
+   if (updated_packages_thread->isRunning())
+       updated_packages_thread->exit();
 }
 
 
-void MainWindowView::fillColumns()
+void MainWindowView::connectSignalsForAvailablePackages()
 {
-   available_packages_column.data()->fill();
-   installed_packages_column.data()->fill();
-   updated_packages_column.data()->fill();
+    QObject::connect(m_ui.available_packages_list, &QListWidget::itemChanged, available_packages_column.data(), &AvailablePackagesColumn::updateCheckedPackagesCounter);
+    QObject::connect(available_packages_column.data(), &AvailablePackagesColumn::checkedPackagesCounterChanged, [this](bool has_checked_buttons) { m_ui.install_packages_button->setEnabled(has_checked_buttons); });
+    QObject::connect(m_ui.install_packages_button, &QPushButton::clicked, [this]() { packages_manager.data()->install(available_packages_column.data()->collectCheckedPackages()); });
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedInstall, available_packages_column.data(), &AvailablePackagesColumn::update);
 }
 
 
-void MainWindowView::connectSignals()
+void MainWindowView::connectSignalsForInstalledPackages()
 {
-   QObject::connect(m_ui.available_packages_list, &QListWidget::itemChanged, available_packages_column.data(), &AvailablePackagesColumn::updateCheckedPackagesCounter);
-   QObject::connect(available_packages_column.data(), &AvailablePackagesColumn::checkedPackagesCounterChanged, [this](bool has_checked_buttons) { m_ui.install_packages_button->setEnabled(has_checked_buttons); });
-   QObject::connect(m_ui.install_packages_button, &QPushButton::clicked, [this]() { packages_manager.data()->install(available_packages_column.data()->collectCheckedPackages()); });
-   QObject::connect(packages_manager.data(), &PackagesManager::finishedInstall, available_packages_column.data(), &AvailablePackagesColumn::update);
+    QObject::connect(m_ui.installed_packages_list, &QListWidget::itemChanged, installed_packages_column.data(), &InstalledPackagesColumn::updateCheckedPackagesCounter);
+    QObject::connect(installed_packages_column.data(), &InstalledPackagesColumn::checkedPackagesCounterChanged, [this](bool has_checked_buttons) { m_ui.uninstall_packages_button->setEnabled(has_checked_buttons); });
+    QObject::connect(m_ui.uninstall_packages_button, &QPushButton::clicked, [this]() { packages_manager.data()->uninstall(installed_packages_column.data()->collectCheckedPackages()); });
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedUninstall, installed_packages_column.data(), &InstalledPackagesColumn::update);
+}
 
-   QObject::connect(m_ui.installed_packages_list, &QListWidget::itemChanged, installed_packages_column.data(), &InstalledPackagesColumn::updateCheckedPackagesCounter);
-   QObject::connect(installed_packages_column.data(), &InstalledPackagesColumn::checkedPackagesCounterChanged, [this](bool has_checked_buttons) { m_ui.uninstall_packages_button->setEnabled(has_checked_buttons); });
-   QObject::connect(m_ui.uninstall_packages_button, &QPushButton::clicked, [this]() { packages_manager.data()->uninstall(installed_packages_column.data()->collectCheckedPackages()); });
-   QObject::connect(packages_manager.data(), &PackagesManager::finishedUninstall, installed_packages_column.data(), &InstalledPackagesColumn::update);
 
-   QObject::connect(m_ui.packages_to_update_list, &QListWidget::itemChanged, updated_packages_column.data(), &UpdatedPackagesColumn::updateCheckedPackagesCounter);
-   QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, [this](bool has_checked_buttons) { m_ui.update_packages_button->setEnabled(has_checked_buttons); });
-   QObject::connect(m_ui.update_packages_button, &QPushButton::clicked, [this]() { packages_manager.data()->update(updated_packages_column.data()->collectCheckedPackages()); });
-   QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdate, updated_packages_column.data(), &UpdatedPackagesColumn::update);
+void MainWindowView::connectSignalsForUpdatedPackages()
+{
+    QObject::connect(m_ui.packages_to_update_list, &QListWidget::itemChanged, updated_packages_column.data(), &UpdatedPackagesColumn::updateCheckedPackagesCounter);
+    QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, [this](bool has_checked_buttons) { m_ui.update_packages_button->setEnabled(has_checked_buttons); });
+    QObject::connect(m_ui.update_packages_button, &QPushButton::clicked, [this]() { packages_manager.data()->update(updated_packages_column.data()->collectCheckedPackages()); });
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdate, updated_packages_column.data(), &UpdatedPackagesColumn::update);
 }
 
 

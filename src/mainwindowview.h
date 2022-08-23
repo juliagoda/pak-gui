@@ -16,6 +16,7 @@
 
 #include <QStringList>
 #include <QSharedPointer>
+#include <QThread>
 
 /**
  * This class serves as the main window for kde-example.  It handles the
@@ -45,8 +46,10 @@ public Q_SLOTS:
     void handleSettingsChanged();
 
 private:
-    void fillColumns();
     void connectSignals();
+    void connectSignalsForAvailablePackages();
+    void connectSignalsForInstalledPackages();
+    void connectSignalsForUpdatedPackages();
 
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here
@@ -54,6 +57,9 @@ private:
     QPointer<AvailablePackagesColumn> available_packages_column;
     QPointer<InstalledPackagesColumn> installed_packages_column;
     QPointer<UpdatedPackagesColumn> updated_packages_column;
+    QThread* available_packages_thread;
+    QThread* installed_packages_thread;
+    QThread* updated_packages_thread;
     QSharedPointer<PackagesManager> packages_manager;
 };
 

@@ -11,9 +11,10 @@ class UpdatedPackagesColumn : public PackagesColumn
 
 public:
     UpdatedPackagesColumn(QListWidget* new_list_widget);
-    void fill() override;
+
     void update(int exit_code, QProcess::ExitStatus exit_status) override;
     QStringList collectCheckedPackages() override;
+    void fill() override;
 
 public Q_SLOTS:
     void updateCheckedPackagesCounter(QListWidgetItem* package_item);

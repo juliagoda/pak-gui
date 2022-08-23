@@ -14,9 +14,10 @@ public:
     PackagesColumn() :
         QObject()
     {};
-    virtual void fill() {};
+
     virtual void update(int exit_code, QProcess::ExitStatus exit_status) {};
     virtual QStringList collectCheckedPackages() { return QStringList(); };
+    virtual void fill() {};
 
 protected:
     virtual QStringList getPackagesList() { return QStringList(); };
