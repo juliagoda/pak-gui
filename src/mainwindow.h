@@ -51,10 +51,19 @@ private:
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here
     Ui::Settings m_settings;
-    QAction *m_switchAction;
-    QAction *m_updateAction;
-    QAction *m_refreshAction;
-    MainWindowView *mainWindowView;
+    QAction* m_switchAction;
+    QAction* m_updateAction;
+    QAction* m_refreshAction;
+    QAction* m_searchAction;
+    QAction* m_downloadAction;
+    QAction* m_printStatisticsAction;
+    QAction* m_printNewsAction;
+    QAction* m_printVCSPackagesAction;
+    QAction* m_updateAllAction;
+    QAction* m_updateMirrorsAction;
+    QAction* m_cleanAction;
+    QAction* m_undoAction;
+    MainWindowView* mainWindowView;
 };
 
 #endif // MAINWINDOW_H
