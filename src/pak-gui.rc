@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gui name="pak-gui"
-     version="2"
+     version="1"
      xmlns="http://www.kde.org/standards/kxmlgui/1.0"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0
                          http://www.kde.org/standards/kxmlgui/1.0/kxmlgui.xsd">
 <MenuBar>
-    <Menu>
-      <text>Actions</text>
-      <Action name="update_all_packages" />
-      <Action name="update_mirrors" />
-      <Action name="clean" />
-      <Action name="undo" />
-    </Menu >
-    <Menu>
-      <text>Print</text>
-      <Action name="statistics" />
-      <Action name="POLAUR_News" />
-      <Action name="installed_vcs_packages" />
-    </Menu >
+    <Menu name="Actions">
+      <text>A&amp;ctions</text>
+      <Action name="update_all_packages"/>
+      <Action name="update_mirrors"/>
+      <Action name="clean"/>
+      <Action name="undo"/>
+    </Menu>
+    <Menu name="Print">
+      <text>P&amp;rint</text>
+      <Action name="statistics"/>
+      <Action name="POLAUR_News"/>
+      <Action name="installed_vcs_packages"/>
+    </Menu>
 </MenuBar>
 
 <ToolBar name="mainToolBar" noMerge="1">

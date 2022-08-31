@@ -24,20 +24,16 @@ MainWindow::MainWindow()
     //actionCollection()->setDefaultShortcut(updateAction, Qt::CTRL + Qt::Key_U);
 
     KActionCollection* actionCollection = this->actionCollection();
-    m_switchAction = actionCollection->addAction(QStringLiteral("switch_action"));
-    m_switchAction->setText(i18nc("@action", "Switch Colors"));
-    m_switchAction->setIcon(QIcon::fromTheme(QStringLiteral("fill-color")));
-    connect(m_switchAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
 
     m_updateAction = actionCollection->addAction(QStringLiteral("update"));
     m_updateAction->setText(i18nc("@action", "Update"));
     m_updateAction->setIcon(QIcon::fromTheme(QStringLiteral("update")));
-    //connect(m_switchAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
+    //connect(m_updateAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
 
     m_refreshAction = actionCollection->addAction(QStringLiteral("refresh"));
     m_refreshAction->setText(i18nc("@action", "Refresh"));
     m_refreshAction->setIcon(QIcon::fromTheme(QStringLiteral("refresh")));
-    //connect(m_switchAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
+    //connect(m_refreshAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
 
     // action - AUR part:  list of flags used to manage AUR packages
     m_searchAction = actionCollection->addAction(QStringLiteral("search"));
@@ -94,6 +90,7 @@ MainWindow::MainWindow()
     KStandardAction::preferences(this, SLOT(settingsConfigure()), actionCollection);
 
     setupGUI(Default, "pak-gui.rc");
+    setXMLFile("pak-gui.rc");
 }
 
 MainWindow::~MainWindow()

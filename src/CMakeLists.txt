@@ -31,6 +31,7 @@ target_link_libraries(pak-gui
     KF5::DBusAddons
     KF5::Crash
     Qt5::Widgets
+    Qt5::Concurrent
 )
 
 ki18n_wrap_ui(pak-gui

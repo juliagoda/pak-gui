@@ -6,6 +6,7 @@
 #include <QMessageBox>
 
 #include "packagescolumn.h"
+#include "qlistwidget.h"
 #include "qnamespace.h"
 #include "sipackage.h"
 #include "sicommandparser.h"
@@ -50,8 +51,7 @@ void AvailablePackagesColumn::fill()
 
     for(;it != pak_packages.end(); it++)
     {
-        SiPackage* package_item = new SiPackage(*it);
-        list_widget->insertItem(i, package_item);
+        list_widget->insertItem(i, new SiPackage(*it));
         i++;
     }
 

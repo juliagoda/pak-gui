@@ -12,6 +12,7 @@
 #include "packagesmanager.h"
 #include "pakGuiSettings.h"
 #include "qpushbutton.h"
+#include "qtconcurrentrun.h"
 #include "updatedpackagescolumn.h"
 
 #include <KLocalizedString>
@@ -19,19 +20,26 @@
 #include <QPointer>
 #include <QScopedPointer>
 #include <QObject>
+#include <QtConcurrent>
 
 
 MainWindowView::MainWindowView(QWidget *parent)
     : QWidget(parent),
       packages_manager(QSharedPointer<PackagesManager>(new PackagesManager)),
-      available_packages_thread(new QThread(this)),
-      installed_packages_thread(new QThread(this)),
-      updated_packages_thread(new QThread(this))
+      available_packages_thread(new QThread),
+      installed_packages_thread(new QThread),
+      updated_packages_thread(new QThread)
 {
     m_ui.setupUi(this);
     QObject::connect(available_packages_thread, &QThread::started, [=]() { available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list)); connectSignalsForAvailablePackages(); });
     QObject::connect(installed_packages_thread, &QThread::started, [=]() { installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list)); connectSignalsForInstalledPackages(); });
     QObject::connect(updated_packages_thread, &QThread::started, [=]() { updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list)); connectSignalsForUpdatedPackages(); });
+    QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
+    QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread, &QThread::deleteLater);
+    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
+    m_ui.available_packages_list->moveToThread(available_packages_thread);
+    m_ui.installed_packages_list->moveToThread(installed_packages_thread);
+    m_ui.packages_to_update_list->moveToThread(updated_packages_thread);
     available_packages_thread->start();
     installed_packages_thread->start();
     updated_packages_thread->start();
@@ -40,14 +48,7 @@ MainWindowView::MainWindowView(QWidget *parent)
 
 MainWindowView::~MainWindowView()
 {
-   if (available_packages_thread->isRunning())
-       available_packages_thread->exit();
 
-   if (installed_packages_thread->isRunning())
-       installed_packages_thread->exit();
-
-   if (updated_packages_thread->isRunning())
-       updated_packages_thread->exit();
 }
 
 

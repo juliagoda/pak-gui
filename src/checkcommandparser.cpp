@@ -12,7 +12,7 @@ CheckCommandParser::CheckCommandParser()
 
 QStringList CheckCommandParser::retrievePackages()
 {
-   /* QScopedPointer<QProcess> pacman_qi(new QProcess);
+    QScopedPointer<QProcess> pacman_qi(new QProcess);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -C");
     pacman_qi->waitForFinished();
     QString output(pacman_qi->readAllStandardOutput());
@@ -30,7 +30,5 @@ QStringList CheckCommandParser::retrievePackages()
         }
     }
 
-    return system_packages;*/
-
-    return QStringList();
+    return system_packages;
 }

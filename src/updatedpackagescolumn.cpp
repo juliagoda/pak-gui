@@ -45,8 +45,7 @@ void UpdatedPackagesColumn::fill()
 
     for(;it != pak_packages.end(); it++)
     {
-        CheckPackage* package_item = new CheckPackage(*it);
-        list_widget->insertItem(i, package_item);
+        list_widget->insertItem(i, new CheckPackage(*it));
         i++;
     }
 
