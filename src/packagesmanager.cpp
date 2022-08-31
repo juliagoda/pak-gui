@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QSharedPointer>
 
+
 PackagesManager::PackagesManager()
 {
 

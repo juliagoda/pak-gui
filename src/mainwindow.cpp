@@ -93,14 +93,17 @@ MainWindow::MainWindow()
     setXMLFile("pak-gui.rc");
 }
 
+
 MainWindow::~MainWindow()
 {
 }
+
 
 void MainWindow::fileNew()
 {
     (new MainWindow)->show();
 }
+
 
 void MainWindow::settingsConfigure()
 {

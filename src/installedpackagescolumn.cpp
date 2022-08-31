@@ -9,11 +9,12 @@
 #include "qmessagebox.h"
 
 
-InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget) :
+InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget, QTextBrowser* new_packages_installation_textarea) :
     PackagesColumn(),
-    pak_packages{getPackagesList()},
     checked_packages{0},
-    list_widget{new_list_widget}
+    list_widget{new_list_widget},
+    packages_installation_textarea{new_packages_installation_textarea},
+    pak_packages{getPackagesList()}
 {
    fill();
 }
@@ -21,7 +22,7 @@ InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget) :
 
 QStringList InstalledPackagesColumn::getPackagesList()
 {
-    QScopedPointer<QiCommandParser> command_parser(new QiCommandParser);
+    QScopedPointer<QiCommandParser> command_parser(new QiCommandParser(packages_installation_textarea));
     return command_parser.data()->retrievePackages();
 }
 
@@ -52,6 +53,17 @@ void InstalledPackagesColumn::fill()
         list_widget->insertItem(i, package_item);
         i++;
     }
+
+    list_widget->update();
+}
+
+
+void InstalledPackagesColumn::sort(bool is_sorted)
+{
+    if (is_sorted)
+        list_widget->sortItems(Qt::DescendingOrder);
+    else
+        list_widget->sortItems(Qt::AscendingOrder);
 
     list_widget->update();
 }

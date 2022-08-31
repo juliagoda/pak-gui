@@ -6,11 +6,13 @@
 #include "checkpackage.h"
 #include "checkcommandparser.h"
 
-UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget) :
+
+UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QTextBrowser* new_packages_update_textarea) :
     PackagesColumn(),
-    pak_packages{getPackagesList()},
     checked_packages{0},
-    list_widget{new_list_widget}
+    list_widget{new_list_widget},
+    packages_update_textarea{new_packages_update_textarea},
+    pak_packages{getPackagesList()}
 {
    fill();
 }
@@ -18,7 +20,7 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget) :
 
 QStringList UpdatedPackagesColumn::getPackagesList()
 {
-    QScopedPointer<CheckCommandParser> command_parser(new CheckCommandParser);
+    QScopedPointer<CheckCommandParser> command_parser(new CheckCommandParser(packages_update_textarea));
     return command_parser.data()->retrievePackages();
 }
 
@@ -48,6 +50,17 @@ void UpdatedPackagesColumn::fill()
         list_widget->insertItem(i, new CheckPackage(*it));
         i++;
     }
+
+    list_widget->update();
+}
+
+
+void UpdatedPackagesColumn::sort(bool is_sorted)
+{
+    if (is_sorted)
+        list_widget->sortItems(Qt::DescendingOrder);
+    else
+        list_widget->sortItems(Qt::AscendingOrder);
 
     list_widget->update();
 }

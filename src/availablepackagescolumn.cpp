@@ -12,11 +12,12 @@
 #include "sicommandparser.h"
 
 
-AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget) :
+AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget, QTextBrowser* new_packages_installation_textarea) :
     PackagesColumn(),
-    pak_packages{getPackagesList()},
     checked_packages{0},
-    list_widget{new_list_widget}
+    list_widget{new_list_widget},
+    packages_installation_textarea{new_packages_installation_textarea},
+    pak_packages{getPackagesList()}
 {
    fill();
 }
@@ -24,7 +25,7 @@ AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget) :
 
 QStringList AvailablePackagesColumn::getPackagesList()
 {
-    QScopedPointer<SiCommandParser> command_parser(new SiCommandParser);
+    QScopedPointer<SiCommandParser> command_parser(new SiCommandParser(packages_installation_textarea));
     return command_parser.data()->retrievePackages();
 }
 
@@ -54,6 +55,17 @@ void AvailablePackagesColumn::fill()
         list_widget->insertItem(i, new SiPackage(*it));
         i++;
     }
+
+    list_widget->update();
+}
+
+
+void AvailablePackagesColumn::sort(bool is_sorted)
+{
+    if (is_sorted)
+        list_widget->sortItems(Qt::DescendingOrder);
+    else
+        list_widget->sortItems(Qt::AscendingOrder);
 
     list_widget->update();
 }

@@ -110,6 +110,28 @@
           <widget class="QListWidget" name="installed_packages_list"/>
          </item>
          <item>
+          <widget class="QScrollArea" name="installed_preview_area">
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents_4">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>260</width>
+              <height>242</height>
+             </rect>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QTextBrowser" name="packages_installation_textarea"/>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+         <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <property name="leftMargin">
             <number>5</number>
@@ -178,7 +200,7 @@
            <item>
             <widget class="QCheckBox" name="console_view_uninstall">
              <property name="enabled">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
              <property name="text">
               <string>Preview</string>
@@ -280,6 +302,28 @@
           <widget class="QListWidget" name="packages_to_update_list"/>
          </item>
          <item>
+          <widget class="QScrollArea" name="updated_preview_area">
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents_5">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>260</width>
+              <height>242</height>
+             </rect>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QTextBrowser" name="packages_update_textarea"/>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+         <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <property name="leftMargin">
             <number>5</number>
@@ -348,7 +392,7 @@
            <item>
             <widget class="QCheckBox" name="console_view_update">
              <property name="enabled">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
              <property name="text">
               <string>Preview</string>
@@ -450,6 +494,28 @@
           <widget class="QListWidget" name="available_packages_list"/>
          </item>
          <item>
+          <widget class="QScrollArea" name="available_preview_area">
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents_6">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>260</width>
+              <height>242</height>
+             </rect>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QTextBrowser" name="packages_available_textarea"/>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+         <item>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <property name="leftMargin">
             <number>5</number>
@@ -518,7 +584,7 @@
            <item>
             <widget class="QCheckBox" name="console_view_install">
              <property name="enabled">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
              <property name="text">
               <string>Preview</string>
