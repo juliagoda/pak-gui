@@ -5,8 +5,7 @@
 #include <QRegularExpression>
 
 
-QiCommandParser::QiCommandParser(QTextBrowser* new_packages_uninstallation_textarea) :
-    packages_uninstallation_textarea{new_packages_uninstallation_textarea}
+QiCommandParser::QiCommandParser()
 {
 
 }

@@ -5,6 +5,7 @@
 #include <QPointer>
 #include <QMessageBox>
 
+#include "mainwindowview.h"
 #include "packagescolumn.h"
 #include "qlistwidget.h"
 #include "qnamespace.h"
@@ -12,12 +13,10 @@
 #include "sicommandparser.h"
 
 
-AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget, QTextBrowser* new_packages_installation_textarea) :
+AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget) :
     PackagesColumn(),
     checked_packages{0},
-    list_widget{new_list_widget},
-    packages_installation_textarea{new_packages_installation_textarea},
-    pak_packages{getPackagesList()}
+    list_widget{new_list_widget}
 {
    fill();
 }
@@ -25,7 +24,7 @@ AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget, Q
 
 QStringList AvailablePackagesColumn::getPackagesList()
 {
-    QScopedPointer<SiCommandParser> command_parser(new SiCommandParser(packages_installation_textarea));
+    QScopedPointer<SiCommandParser> command_parser(new SiCommandParser);
     return command_parser.data()->retrievePackages();
 }
 
@@ -47,6 +46,7 @@ QStringList AvailablePackagesColumn::collectCheckedPackages()
 
 void AvailablePackagesColumn::fill()
 {
+    QStringList pak_packages = getPackagesList();
     QStringList::iterator it = pak_packages.begin();
     int i = 0;
 
@@ -83,7 +83,6 @@ void AvailablePackagesColumn::update(int exit_code, QProcess::ExitStatus exit_st
     }
 
     list_widget->clear();
-    pak_packages = getPackagesList();
     fill();
     list_widget->update();
 }

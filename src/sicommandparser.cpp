@@ -5,8 +5,7 @@
 #include <QRegularExpression>
 
 
-SiCommandParser::SiCommandParser(QTextBrowser* new_packages_installation_textarea) :
-    packages_installation_textarea{new_packages_installation_textarea}
+SiCommandParser::SiCommandParser()
 {
 
 }
@@ -14,10 +13,9 @@ SiCommandParser::SiCommandParser(QTextBrowser* new_packages_installation_textare
 
 QStringList SiCommandParser::retrievePackages()
 {
-    QScopedPointer<QProcess> pacman_qi(new QProcess);
-    QObject::connect(pacman_qi.data(), &QProcess::readyReadStandardOutput, [=]() { packages_installation_textarea->setText("example"); });
-    pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -Si");
-    pacman_qi->waitForFinished();
-    QString output(pacman_qi->readAllStandardOutput());
+    QScopedPointer<QProcess> pacman_si(new QProcess);
+    pacman_si.data()->start("/bin/bash", QStringList() << "-c" << "pak -Si");
+    pacman_si->waitForFinished();
+    QString output(pacman_si->readAllStandardOutput());
     return output.split(QRegularExpression("Validated By[^\n]*\n\n"));
 }

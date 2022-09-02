@@ -1,8 +1,6 @@
 #include "checkpackage.h"
 
-#include <QTextStream>
 #include <QRegularExpression>
-#include <QDebug>
 
 
 CheckPackage::CheckPackage(QString& package_content) :

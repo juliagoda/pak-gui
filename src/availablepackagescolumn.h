@@ -5,7 +5,6 @@
 #include <QStringList>
 #include <QPointer>
 #include <QListWidget>
-#include <QTextBrowser>
 
 
 class AvailablePackagesColumn : public PackagesColumn
@@ -13,7 +12,7 @@ class AvailablePackagesColumn : public PackagesColumn
     Q_OBJECT
 
 public:
-    AvailablePackagesColumn(QListWidget* new_list_widget, QTextBrowser* new_packages_installation_textarea);
+    AvailablePackagesColumn(QListWidget* new_list_widget);
     void update(int exit_code, QProcess::ExitStatus exit_status) override;
     QStringList collectCheckedPackages() override;
     void fill() override;
@@ -31,7 +30,5 @@ protected:
 private:
     int checked_packages;
     QListWidget* list_widget;
-    QTextBrowser* packages_installation_textarea;
-    QStringList pak_packages;
 };
 

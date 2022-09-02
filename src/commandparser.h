@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QStringList>
+#include <QObject>
+
 
 class CommandParser
 {

@@ -7,12 +7,10 @@
 #include "checkcommandparser.h"
 
 
-UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QTextBrowser* new_packages_update_textarea) :
+UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget) :
     PackagesColumn(),
     checked_packages{0},
-    list_widget{new_list_widget},
-    packages_update_textarea{new_packages_update_textarea},
-    pak_packages{getPackagesList()}
+    list_widget{new_list_widget}
 {
    fill();
 }
@@ -20,7 +18,7 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QText
 
 QStringList UpdatedPackagesColumn::getPackagesList()
 {
-    QScopedPointer<CheckCommandParser> command_parser(new CheckCommandParser(packages_update_textarea));
+    QScopedPointer<CheckCommandParser> command_parser(new CheckCommandParser);
     return command_parser.data()->retrievePackages();
 }
 
@@ -42,6 +40,7 @@ QStringList UpdatedPackagesColumn::collectCheckedPackages()
 
 void UpdatedPackagesColumn::fill()
 {
+    QStringList pak_packages = getPackagesList();
     QStringList::iterator it = pak_packages.begin();
     int i = 0;
 
@@ -78,7 +77,6 @@ void UpdatedPackagesColumn::update(int exit_code, QProcess::ExitStatus exit_stat
     }
 
     list_widget->clear();
-    pak_packages = getPackagesList();
     fill();
     list_widget->update();
 }

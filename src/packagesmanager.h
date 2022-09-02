@@ -18,5 +18,8 @@ signals:
     void finishedUpdate(int exit_code, QProcess::ExitStatus exit_status);
     void finishedInstall(int exit_code, QProcess::ExitStatus exit_status);
     void finishedUninstall(int exit_code, QProcess::ExitStatus exit_status);
+    void generatedInstallCommandOutput(const QString& line);
+    void generatedUninstallCommandOutput(const QString& line);
+    void generatedUpdateCommandOutput(const QString& line);
 };
 

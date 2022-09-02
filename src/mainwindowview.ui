@@ -125,7 +125,7 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
-              <widget class="QTextBrowser" name="packages_installation_textarea"/>
+              <widget class="QTextBrowser" name="packages_uninstallation_textarea"/>
              </item>
             </layout>
            </widget>
@@ -509,7 +509,7 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
              <item>
-              <widget class="QTextBrowser" name="packages_available_textarea"/>
+              <widget class="QTextBrowser" name="packages_installation_textarea"/>
              </item>
             </layout>
            </widget>

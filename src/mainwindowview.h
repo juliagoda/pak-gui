@@ -61,6 +61,8 @@ private:
     QThread* installed_packages_thread;
     QThread* updated_packages_thread;
     QSharedPointer<PackagesManager> packages_manager;
+
+
 };
 
 #endif // MAINWINDOWVIEW_H

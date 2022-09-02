@@ -5,8 +5,7 @@
 #include <QRegularExpression>
 
 
-CheckCommandParser::CheckCommandParser(QTextBrowser* new_packages_update_textarea) :
-    packages_update_textarea{new_packages_update_textarea}
+CheckCommandParser::CheckCommandParser()
 {
 
 }

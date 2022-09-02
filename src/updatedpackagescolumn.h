@@ -3,7 +3,6 @@
 #include "packagescolumn.h"
 
 #include <QStringList>
-#include <QTextBrowser>
 
 
 class UpdatedPackagesColumn : public PackagesColumn
@@ -11,7 +10,7 @@ class UpdatedPackagesColumn : public PackagesColumn
     Q_OBJECT
 
 public:
-    UpdatedPackagesColumn(QListWidget* new_list_widget, QTextBrowser* new_packages_update_textarea);
+    UpdatedPackagesColumn(QListWidget* new_list_widget);
 
     void update(int exit_code, QProcess::ExitStatus exit_status) override;
     QStringList collectCheckedPackages() override;
@@ -30,7 +29,5 @@ protected:
 private:
     int checked_packages;
     QListWidget* list_widget;
-    QTextBrowser* packages_update_textarea;
-    QStringList pak_packages;
 };
 
