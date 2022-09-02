@@ -13,10 +13,12 @@
 #include "installedpackagescolumn.h"
 #include "updatedpackagescolumn.h"
 #include "packagesmanager.h"
+#include "progressview.h"
 
 #include <QStringList>
 #include <QSharedPointer>
 #include <QThread>
+#include <QMap>
 
 /**
  * This class serves as the main window for kde-example.  It handles the
@@ -44,12 +46,17 @@ public:
 public Q_SLOTS:
     void switchColors();
     void handleSettingsChanged();
+    void cleanPackages();
+    void generatePreview(PackagesManager::Task task);
+
+signals:
+    void operationsAmountIncreased();
 
 private:
     void connectSignals();
     void connectSignalsForAvailablePackages();
     void connectSignalsForInstalledPackages();
-    void connectSignalsForUpdatedPackages();
+    void connectSignalsForUpdatedPackages();    
 
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here
@@ -61,8 +68,8 @@ private:
     QThread* installed_packages_thread;
     QThread* updated_packages_thread;
     QSharedPointer<PackagesManager> packages_manager;
-
-
+    QMap<PackagesManager::Task, QWidget*> generated_previews_map;
+    QSharedPointer<ProgressView> progress_view;
 };
 
 #endif // MAINWINDOWVIEW_H

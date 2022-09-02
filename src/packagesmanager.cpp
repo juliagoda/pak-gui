@@ -13,6 +13,13 @@ PackagesManager::PackagesManager()
 
 void PackagesManager::update(QStringList checked_packages)
 {
+    int answer = QMessageBox::information(new QWidget, tr("Update"),
+                                          tr("Are you sure you want to update packages?"),
+                                          QMessageBox::Yes | QMessageBox::No);
+
+    if (static_cast<QMessageBox::StandardButton>(answer) == QMessageBox::No)
+        return;
+
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
     pak_s.data()->start("/usr/bin/kdesu", QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -S --noconfirm " + checked_packages.join(" ") + "\"");
     QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [=]() {
@@ -31,6 +38,13 @@ void PackagesManager::update(QStringList checked_packages)
 
 void PackagesManager::install(QStringList checked_packages)
 {
+    int answer = QMessageBox::information(new QWidget, tr("Installation"),
+                                          tr("Are you sure you want to install packages?"),
+                                          QMessageBox::Yes | QMessageBox::No);
+
+    if (static_cast<QMessageBox::StandardButton>(answer) == QMessageBox::No)
+        return;
+
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
     pak_s.data()->start("/usr/bin/kdesu", QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -S --noconfirm " + checked_packages.join(" ") + "\"");
     QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [=]() {
@@ -50,6 +64,13 @@ void PackagesManager::install(QStringList checked_packages)
 
 void PackagesManager::uninstall(QStringList checked_packages)
 {
+    int answer = QMessageBox::information(new QWidget, tr("Uninstallation"),
+                                          tr("Are you sure you want to uninstall packages?"),
+                                          QMessageBox::Yes | QMessageBox::No);
+
+    if (static_cast<QMessageBox::StandardButton>(answer) == QMessageBox::No)
+        return;
+
     QSharedPointer<QProcess> pak_r(QSharedPointer<QProcess>(new QProcess));
     pak_r.data()->start("/usr/bin/kdesu", QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -R --noconfirm " + checked_packages.join(" ") + "\"");
     QObject::connect(pak_r.data(), &QProcess::readyReadStandardOutput, [=]() {
@@ -64,4 +85,32 @@ void PackagesManager::uninstall(QStringList checked_packages)
     QObject::connect(pak_r.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
         [=](int exit_code, QProcess::ExitStatus exit_status){
         emit finishedUninstall(exit_code, exit_status); });
+}
+
+
+void PackagesManager::clean()
+{
+    int answer = QMessageBox::information(new QWidget, tr("Clean"),
+                                          tr("Are you sure you want to clean after packages installations"),
+                                          QMessageBox::Yes | QMessageBox::No);
+
+    if (static_cast<QMessageBox::StandardButton>(answer) == QMessageBox::No)
+        return;
+
+    emit acceptedTask(Task::Clean);
+
+    QSharedPointer<QProcess> pak_clean(QSharedPointer<QProcess>(new QProcess));
+    pak_clean->start("/bin/bash", QStringList() << "-c" << "pak -Sc");
+    QObject::connect(pak_clean.data(), &QProcess::readyReadStandardOutput, [=]() {
+        while (pak_clean.data()->canReadLine())
+        {
+            QString line = pak_clean.data()->readLine();
+            emit generatedCleanCommandOutput(line); // remember to give output to dynamically generated textbrowser in tab
+        }});
+
+    QObject::connect(pak_clean.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
+        [=](QProcess::ProcessError process_error){ QMessageBox::warning(new QWidget, tr("Clean"), tr("Packages couln't be cleaned: %1").arg(pak_clean.data()->error()), QMessageBox::Ok); });
+    QObject::connect(pak_clean.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+        [=](int exit_code, QProcess::ExitStatus exit_status){
+        emit finishedClean(exit_code, exit_status); });
 }

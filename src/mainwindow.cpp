@@ -60,7 +60,7 @@ MainWindow::MainWindow()
     m_cleanAction = actionCollection->addAction(QStringLiteral("clean"));
     m_cleanAction->setText(i18nc("@action", "Clean"));
     m_cleanAction->setIcon(QIcon::fromTheme(QStringLiteral("clean")));
-    //connect(m_cleanAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
+    connect(m_cleanAction, &QAction::triggered, mainWindowView, &MainWindowView::cleanPackages);
 
     m_undoAction = actionCollection->addAction(QStringLiteral("undo"));
     m_undoAction->setText(i18nc("@action", "Undo"));
