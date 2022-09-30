@@ -30,7 +30,7 @@ MainWindowView::MainWindowView(QWidget *parent)
       available_packages_thread(new QThread),
       installed_packages_thread(new QThread),
       updated_packages_thread(new QThread),
-      generated_previews_map(QMap<PackagesManager::Task, QWidget*>()),
+      generated_previews_map(QMap<PackagesManager::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView))
 {
     m_ui.setupUi(this);
@@ -41,7 +41,7 @@ MainWindowView::MainWindowView(QWidget *parent)
     m_ui.progress_view_checkbox->hide();
 
     // remember to add connect for situation when checkbox should be hidden again
-    QObject::connect(this, &MainWindowView::operationsAmountIncreased, m_ui.progress_view_checkbox, &MainWindowView::show);
+    QObject::connect(this, &MainWindowView::operationsAmountIncreased, m_ui.progress_view_checkbox, &QCheckBox::show);
     QObject::connect(m_ui.progress_view_checkbox, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) progress_view.data()->show(); else progress_view.data()->hide(); });
     QObject::connect(m_ui.console_view_install, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.available_preview_area->show(); else m_ui.available_preview_area->hide(); });
     QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
@@ -65,7 +65,7 @@ MainWindowView::MainWindowView(QWidget *parent)
     QObject::connect(packages_manager.data(), &PackagesManager::generatedUpdateCommandOutput, this, [this](const QString& line) {
         m_ui.packages_update_textarea->append(line); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::generatedCleanCommandOutput, this, [this](const QString& line) {
-        m_ui.packages_update_textarea->append(line); }, Qt::AutoConnection);
+        generated_previews_map.value(PackagesManager::Task::Clean)->findChild<QTextBrowser*>("text_browser_tab_clean")->append(line); }, Qt::AutoConnection);
 
     QObject::connect(packages_manager.data(), &PackagesManager::acceptedTask, this, &MainWindowView::generatePreview);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedInstall, available_packages_column.data(), &AvailablePackagesColumn::update, Qt::AutoConnection);
@@ -141,7 +141,7 @@ void MainWindowView::generatePreview(PackagesManager::Task task)
    scroll_area_widget_contents->setGeometry(QRect(0, 0, 358, 200));
    QVBoxLayout* vertical_layout2 = new QVBoxLayout(scroll_area_widget_contents);
    QTextBrowser* text_browser_tab = new QTextBrowser(scroll_area_widget_contents);
-   text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString()));
+   text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()));
 
    vertical_layout2->addWidget(text_browser_tab);
    scroll_area->setWidget(scroll_area_widget_contents);

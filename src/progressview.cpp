@@ -3,6 +3,8 @@
 #include <QDebug>
 
 
+
+
 ProgressView::ProgressView(QDialog* parent)
     : QDialog(parent)
 {

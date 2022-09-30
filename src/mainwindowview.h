@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
 
-#ifndef MAINWINDOWVIEW_H
-#define MAINWINDOWVIEW_H
+#pragma once
 
 #include "ui_mainwindowview.h"
 
@@ -17,6 +16,7 @@
 
 #include <QStringList>
 #include <QSharedPointer>
+#include <QPointer>
 #include <QThread>
 #include <QMap>
 
@@ -68,8 +68,6 @@ private:
     QThread* installed_packages_thread;
     QThread* updated_packages_thread;
     QSharedPointer<PackagesManager> packages_manager;
-    QMap<PackagesManager::Task, QWidget*> generated_previews_map;
+    QMap<PackagesManager::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
 };
-
-#endif // MAINWINDOWVIEW_H

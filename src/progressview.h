@@ -4,7 +4,6 @@
 
 #include <QWidget>
 
-
 class ProgressView : public QDialog
 {
     Q_OBJECT
