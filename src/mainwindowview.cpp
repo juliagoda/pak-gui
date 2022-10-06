@@ -66,12 +66,24 @@ MainWindowView::MainWindowView(QWidget *parent)
         m_ui.packages_update_textarea->append(line); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::generatedCleanCommandOutput, this, [this](const QString& line) {
         generated_previews_map.value(PackagesManager::Task::Clean)->findChild<QTextBrowser*>("text_browser_tab_clean")->append(line); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::generatedMirrorsUpdateCommandOutput, this, [this](const QString& line) {
+        generated_previews_map.value(PackagesManager::Task::MirrorsUpdate)->findChild<QTextBrowser*>("text_browser_tab_mirrorsupdate")->append(line); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::generatedUpdateAllCommandOutput, this, [this](const QString& line) {
+        generated_previews_map.value(PackagesManager::Task::UpdateAll)->findChild<QTextBrowser*>("text_browser_tab_updateall")->append(line); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::generatedPrintVCSPackagesCommandOutput, this, [this](const QString& line) {
+        generated_previews_map.value(PackagesManager::Task::PrintVCSPackages)->findChild<QTextBrowser*>("text_browser_tab_printvcspackages")->append(line); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::generatedInstalledPackagesUpdateCommandOutput, this, [this](const QString& line) {
+        generated_previews_map.value(PackagesManager::Task::UpdateInstalledPackages)->findChild<QTextBrowser*>("text_browser_tab_updateinstalledpackages")->append(line); }, Qt::AutoConnection);
 
     QObject::connect(packages_manager.data(), &PackagesManager::acceptedTask, this, &MainWindowView::generatePreview);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedInstall, available_packages_column.data(), &AvailablePackagesColumn::update, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedUninstall, installed_packages_column.data(), &InstalledPackagesColumn::update, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdate, updated_packages_column.data(), &UpdatedPackagesColumn::update, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedClean, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::Clean)); generated_previews_map.remove(PackagesManager::Task::Clean); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedMirrorsUpdate, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::MirrorsUpdate)); generated_previews_map.remove(PackagesManager::Task::MirrorsUpdate); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdateAll, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::UpdateAll)); generated_previews_map.remove(PackagesManager::Task::UpdateAll); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedVCSPackagesPrint, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::PrintVCSPackages)); generated_previews_map.remove(PackagesManager::Task::PrintVCSPackages); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedInstalledPackagesUpdate, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::UpdateInstalledPackages)); generated_previews_map.remove(PackagesManager::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
 }
 
 
@@ -179,5 +191,25 @@ void MainWindowView::handleSettingsChanged()
 void MainWindowView::cleanPackages()
 {
    packages_manager.data()->clean();
+}
+
+void MainWindowView::updateMirrors()
+{
+   packages_manager.data()->updateMirrors();
+}
+
+void MainWindowView::updateAll()
+{
+   packages_manager.data()->updateAll();
+}
+
+void MainWindowView::printInstalledVCSPackages()
+{
+   packages_manager.data()->printInstalledVCSPackages();
+}
+
+void MainWindowView::updateInstalledPackages()
+{
+   packages_manager.data()->updateInstalledPackages();
 }
 

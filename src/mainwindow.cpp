@@ -28,7 +28,7 @@ MainWindow::MainWindow()
     m_updateAction = actionCollection->addAction(QStringLiteral("update"));
     m_updateAction->setText(i18nc("@action", "Update"));
     m_updateAction->setIcon(QIcon::fromTheme(QStringLiteral("update")));
-    //connect(m_updateAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
+    connect(m_updateAction, &QAction::triggered, mainWindowView, &MainWindowView::updateInstalledPackages);
 
     m_refreshAction = actionCollection->addAction(QStringLiteral("refresh"));
     m_refreshAction->setText(i18nc("@action", "Refresh"));
@@ -50,12 +50,12 @@ MainWindow::MainWindow()
     m_updateAllAction = actionCollection->addAction(QStringLiteral("update_all_packages"));
     m_updateAllAction->setText(i18nc("@action", "Update all"));
     m_updateAllAction->setIcon(QIcon::fromTheme(QStringLiteral("update_all_packages")));
-    //connect(m_updateAllAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
+    connect(m_updateAllAction, &QAction::triggered, mainWindowView, &MainWindowView::updateAll);
 
     m_updateMirrorsAction = actionCollection->addAction(QStringLiteral("update_mirrors"));
     m_updateMirrorsAction->setText(i18nc("@action", "Update mirrors"));
     m_updateMirrorsAction->setIcon(QIcon::fromTheme(QStringLiteral("update_mirrors")));
-    //connect(m_updateMirrorsAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
+    connect(m_updateMirrorsAction, &QAction::triggered, mainWindowView, &MainWindowView::updateMirrors);
 
     m_cleanAction = actionCollection->addAction(QStringLiteral("clean"));
     m_cleanAction->setText(i18nc("@action", "Clean"));
@@ -83,7 +83,7 @@ MainWindow::MainWindow()
     m_printVCSPackagesAction = actionCollection->addAction(QStringLiteral("installed_vcs_packages"));
     m_printVCSPackagesAction->setText(i18nc("@action", "Installed vcs packages"));
     m_printVCSPackagesAction->setIcon(QIcon::fromTheme(QStringLiteral("installed_vcs_packages")));
-    //connect(m_printVCSPackagesAction, &QAction::triggered, mainWindowView, &MainWindowView::showNewsWindow);
+    connect(m_printVCSPackagesAction, &QAction::triggered, mainWindowView, &MainWindowView::printInstalledVCSPackages);
 
     KStandardAction::openNew(this, SLOT(fileNew()), actionCollection);
     KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection);

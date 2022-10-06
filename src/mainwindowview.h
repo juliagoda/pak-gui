@@ -47,6 +47,10 @@ public Q_SLOTS:
     void switchColors();
     void handleSettingsChanged();
     void cleanPackages();
+    void updateMirrors();
+    void updateAll();
+    void printInstalledVCSPackages();
+    void updateInstalledPackages();
     void generatePreview(PackagesManager::Task task);
 
 signals:
