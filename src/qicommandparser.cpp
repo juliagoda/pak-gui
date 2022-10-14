@@ -11,7 +11,7 @@ QiCommandParser::QiCommandParser()
 }
 
 
-QStringList QiCommandParser::retrievePackages()
+QStringList QiCommandParser::retrieveInfo()
 {
     QScopedPointer<QProcess> pacman_qi(new QProcess);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -Qi");

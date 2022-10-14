@@ -2,11 +2,10 @@
 
 #include "commandparser.h"
 
-
-class CheckCommandParser : public CommandParser
+class DownloadCommandParser : public CommandParser
 {
 public:
-    CheckCommandParser();
+    DownloadCommandParser();
     QStringList retrieveInfo() override;
 };
 

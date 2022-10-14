@@ -8,6 +8,6 @@ class CommandParser
 {
 public:
     virtual ~CommandParser() = default;
-    virtual QStringList retrievePackages() = 0;
+    virtual QStringList retrieveInfo() = 0;
 };
 

@@ -11,7 +11,7 @@ SiCommandParser::SiCommandParser()
 }
 
 
-QStringList SiCommandParser::retrievePackages()
+QStringList SiCommandParser::retrieveInfo()
 {
     QScopedPointer<QProcess> pacman_si(new QProcess);
     pacman_si.data()->start("/bin/bash", QStringList() << "-c" << "pak -Si");

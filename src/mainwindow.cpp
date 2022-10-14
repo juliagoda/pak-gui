@@ -14,7 +14,7 @@
 #include <KConfigDialog>
 #include <KLocalizedString>
 
-
+// within statusbar (or other place) add diodes (green for available packages places - (AUR for example after package detection), red otherwise)
 MainWindow::MainWindow()
     : KXmlGuiWindow()
 {

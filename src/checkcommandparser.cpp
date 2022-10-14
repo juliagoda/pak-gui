@@ -11,7 +11,7 @@ CheckCommandParser::CheckCommandParser()
 }
 
 
-QStringList CheckCommandParser::retrievePackages()
+QStringList CheckCommandParser::retrieveInfo()
 {
     QScopedPointer<QProcess> pacman_qi(new QProcess);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -C");

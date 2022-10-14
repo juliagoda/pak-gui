@@ -7,6 +7,6 @@ class QiCommandParser : public CommandParser
 {
 public:
     QiCommandParser();
-    QStringList retrievePackages() override;
+    QStringList retrieveInfo() override;
 };
 

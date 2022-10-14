@@ -20,7 +20,13 @@ target_sources(pak-gui PRIVATE
     qicommandparser.cpp
     checkcommandparser.cpp
     packagesmanager.cpp
-    progressview.cpp)
+    progressview.cpp
+    statisticscommandparser.cpp
+    statisticscommandparser.h
+    searchallcommandparser.cpp
+    searchallcommandparser.h
+    downloadcommandparser.cpp
+    downloadcommandparser.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 

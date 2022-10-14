@@ -22,7 +22,7 @@ InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget) :
 QStringList InstalledPackagesColumn::getPackagesList()
 {
     QScopedPointer<QiCommandParser> command_parser(new QiCommandParser);
-    return command_parser.data()->retrievePackages();
+    return command_parser.data()->retrieveInfo();
 }
 
 

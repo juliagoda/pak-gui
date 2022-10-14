@@ -19,7 +19,7 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget) :
 QStringList UpdatedPackagesColumn::getPackagesList()
 {
     QScopedPointer<CheckCommandParser> command_parser(new CheckCommandParser);
-    return command_parser.data()->retrievePackages();
+    return command_parser.data()->retrieveInfo();
 }
 
 

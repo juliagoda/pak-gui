@@ -25,7 +25,7 @@ AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget) :
 QStringList AvailablePackagesColumn::getPackagesList()
 {
     QScopedPointer<SiCommandParser> command_parser(new SiCommandParser);
-    return command_parser.data()->retrievePackages();
+    return command_parser.data()->retrieveInfo();
 }
 
 
