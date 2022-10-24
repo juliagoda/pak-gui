@@ -71,13 +71,7 @@ MainWindow::MainWindow()
     m_printStatisticsAction = actionCollection->addAction(QStringLiteral("statistics"));
     m_printStatisticsAction->setText(i18nc("@action", "Statistics"));
     m_printStatisticsAction->setIcon(QIcon::fromTheme(QStringLiteral("statistics")));
-    //connect(m_printStatisticsAction, &QAction::triggered, mainWindowView, &MainWindowView::showStatisticsWindow);
-
-    // action - news part:
-    m_printNewsAction = actionCollection->addAction(QStringLiteral("POLAUR_News"));
-    m_printNewsAction->setText(i18nc("@action", "POLAUR News"));
-    m_printNewsAction->setIcon(QIcon::fromTheme(QStringLiteral("POLAUR_News")));
-    //connect(m_printNewsAction, &QAction::triggered, mainWindowView, &MainWindowView::showNewsWindow);
+    connect(m_printStatisticsAction, &QAction::triggered, mainWindowView, &MainWindowView::showStatisticsWindow);
 
     // action - vcs part:
     m_printVCSPackagesAction = actionCollection->addAction(QStringLiteral("installed_vcs_packages"));

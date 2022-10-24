@@ -26,7 +26,7 @@ include(ECMQtDeclareLoggingCategory)
 include(FeatureSummary)
 
 option(RUN_TESTS "Allow tests for classes" OFF)
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets Charts)
 
 if(RUN_TESTS)
     message("Tests enabled")

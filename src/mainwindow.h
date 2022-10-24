@@ -56,7 +56,6 @@ private:
     QAction* m_searchAction;
     QAction* m_downloadAction;
     QAction* m_printStatisticsAction;
-    QAction* m_printNewsAction;
     QAction* m_printVCSPackagesAction;
     QAction* m_updateAllAction;
     QAction* m_updateMirrorsAction;

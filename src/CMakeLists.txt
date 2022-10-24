@@ -26,7 +26,9 @@ target_sources(pak-gui PRIVATE
     searchallcommandparser.cpp
     searchallcommandparser.h
     downloadcommandparser.cpp
-    downloadcommandparser.h)
+    downloadcommandparser.h
+    statistics.cpp
+    statistics.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
@@ -38,6 +40,7 @@ target_link_libraries(pak-gui
     KF5::DBusAddons
     KF5::Crash
     Qt5::Widgets
+    Qt5::Charts
 )
 
 ki18n_wrap_ui(pak-gui

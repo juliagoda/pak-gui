@@ -14,6 +14,8 @@
 #include "qcheckbox.h"
 #include "qnamespace.h"
 #include "qpushbutton.h"
+#include "statistics.h"
+#include "statisticscommandparser.h"
 #include "updatedpackagescolumn.h"
 
 #include <KLocalizedString>
@@ -22,6 +24,10 @@
 #include <QScopedPointer>
 #include <QObject>
 #include <QVariant>
+#include <KMainWindow>
+#include <QChartView>
+#include <QPieSeries>
+
 
 
 MainWindowView::MainWindowView(QWidget *parent)
@@ -162,6 +168,17 @@ void MainWindowView::generatePreview(PackagesManager::Task task)
    progress_view.data()->addProgressView(operation_preview);
 
    emit operationsAmountIncreased();
+}
+
+void MainWindowView::showStatisticsWindow()
+{
+    QScopedPointer<StatisticsCommandParser> command_parser(new StatisticsCommandParser);
+    auto list_result = command_parser.data()->retrieveInfo();
+    auto map_result = command_parser.data()->convertToMap(list_result);
+
+    QPointer<Statistics> statistics = new Statistics(map_result, this);
+    statistics->resize(800, 500);
+    statistics->show();
 }
 
 

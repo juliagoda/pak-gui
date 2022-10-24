@@ -18,6 +18,7 @@
 #include <QCommandLineParser>
 #include <QIcon>
 #include <QLoggingCategory>
+#include <QTextCodec>
 
 
 int main(int argc, char **argv)
@@ -48,6 +49,8 @@ int main(int argc, char **argv)
     aboutData.processCommandLine(&parser);
 
     KDBusService appDBusService(KDBusService::Multiple | KDBusService::NoExitOnFailure);
+
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
     MainWindow *window = new MainWindow;
     window->show();

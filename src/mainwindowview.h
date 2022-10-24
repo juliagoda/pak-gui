@@ -52,6 +52,7 @@ public Q_SLOTS:
     void printInstalledVCSPackages();
     void updateInstalledPackages();
     void generatePreview(PackagesManager::Task task);
+    void showStatisticsWindow();
 
 signals:
     void operationsAmountIncreased();
