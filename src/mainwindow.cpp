@@ -33,7 +33,7 @@ MainWindow::MainWindow()
     m_refreshAction = actionCollection->addAction(QStringLiteral("refresh"));
     m_refreshAction->setText(i18nc("@action", "Refresh"));
     m_refreshAction->setIcon(QIcon::fromTheme(QStringLiteral("refresh")));
-    //connect(m_refreshAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
+    connect(m_refreshAction, &QAction::triggered, mainWindowView, &MainWindowView::refresh);
 
     // action - AUR part:  list of flags used to manage AUR packages
     m_searchAction = actionCollection->addAction(QStringLiteral("search"));

@@ -44,6 +44,7 @@ public:
     ~MainWindowView() override;
 
 public Q_SLOTS:
+    void refresh();
     void switchColors();
     void handleSettingsChanged();
     void cleanPackages();

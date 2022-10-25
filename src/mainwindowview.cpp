@@ -56,9 +56,9 @@ MainWindowView::MainWindowView(QWidget *parent)
     QObject::connect(available_packages_thread, &QThread::started, [=]() {  available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list)); connectSignalsForAvailablePackages(); });
     QObject::connect(installed_packages_thread, &QThread::started, [=]() { installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list)); connectSignalsForInstalledPackages(); });
     QObject::connect(updated_packages_thread, &QThread::started, [=]() { updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list)); connectSignalsForUpdatedPackages(); });
-    QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
-    QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread, &QThread::deleteLater);
-    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
+   // QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
+   // QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread, &QThread::deleteLater);
+   // QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
 
     available_packages_thread->start();
     installed_packages_thread->start();
@@ -82,9 +82,9 @@ MainWindowView::MainWindowView(QWidget *parent)
         generated_previews_map.value(PackagesManager::Task::UpdateInstalledPackages)->findChild<QTextBrowser*>("text_browser_tab_updateinstalledpackages")->append(line); }, Qt::AutoConnection);
 
     QObject::connect(packages_manager.data(), &PackagesManager::acceptedTask, this, &MainWindowView::generatePreview);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedInstall, available_packages_column.data(), &AvailablePackagesColumn::update, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedUninstall, installed_packages_column.data(), &InstalledPackagesColumn::update, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdate, updated_packages_column.data(), &UpdatedPackagesColumn::update, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedInstall, available_packages_column.data(), [=](int exit_code, QProcess::ExitStatus exit_status) { available_packages_column.data()->update(exit_code, exit_status, tr("Installation"), tr("installed")); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedUninstall, installed_packages_column.data(), [=](int exit_code, QProcess::ExitStatus exit_status) { installed_packages_column.data()->update(exit_code, exit_status, tr("Uninstallation"), tr("removed")); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdate, updated_packages_column.data(), [=](int exit_code, QProcess::ExitStatus exit_status) { updated_packages_column.data()->update(exit_code, exit_status, tr("Update"), tr("updated")); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedClean, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::Clean)); generated_previews_map.remove(PackagesManager::Task::Clean); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedMirrorsUpdate, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::MirrorsUpdate)); generated_previews_map.remove(PackagesManager::Task::MirrorsUpdate); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdateAll, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::UpdateAll)); generated_previews_map.remove(PackagesManager::Task::UpdateAll); }, Qt::AutoConnection);
@@ -204,6 +204,16 @@ void MainWindowView::handleSettingsChanged()
     //  m_ui.templateLabel->setText(i18n("This project is %1 days old", pakGuiSettings::ageInDays()));
 }
 
+void MainWindowView::refresh()
+{
+    available_packages_column.data()->clear();
+    installed_packages_column.data()->clear();
+    available_packages_column.data()->clear();
+
+    available_packages_thread->start();
+    installed_packages_thread->start();
+    updated_packages_thread->start();
+}
 
 void MainWindowView::cleanPackages()
 {
