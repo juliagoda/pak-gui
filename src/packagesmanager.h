@@ -1,5 +1,7 @@
 #pragma once
 
+#include "process.h"
+
 #include <QObject>
 #include <QStringList>
 #include <QProcess>
@@ -9,16 +11,6 @@ class PackagesManager : public QObject
     Q_OBJECT
 
 public:
-    enum class Task
-    {
-        Clean,
-        MirrorsUpdate,
-        UpdateAll,
-        PrintVCSPackages,
-        UpdateInstalledPackages
-    };
-    Q_ENUM(Task)
-
     PackagesManager();
     void update(QStringList checked_packages);
     void install(QStringList checked_packages);
@@ -46,6 +38,6 @@ signals:
     void generatedUpdateAllCommandOutput(const QString& line);
     void generatedPrintVCSPackagesCommandOutput(const QString& line);
     void generatedInstalledPackagesUpdateCommandOutput(const QString& line);
-    void acceptedTask(PackagesManager::Task);
+    void acceptedTask(Process::Task);
 };
 

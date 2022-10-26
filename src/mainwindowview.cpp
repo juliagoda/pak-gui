@@ -36,7 +36,7 @@ MainWindowView::MainWindowView(QWidget *parent)
       available_packages_thread(new QThread),
       installed_packages_thread(new QThread),
       updated_packages_thread(new QThread),
-      generated_previews_map(QMap<PackagesManager::Task, QPointer<QWidget>>()),
+      generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView))
 {
     m_ui.setupUi(this);
@@ -71,25 +71,25 @@ MainWindowView::MainWindowView(QWidget *parent)
     QObject::connect(packages_manager.data(), &PackagesManager::generatedUpdateCommandOutput, this, [this](const QString& line) {
         m_ui.packages_update_textarea->append(line); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::generatedCleanCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(PackagesManager::Task::Clean)->findChild<QTextBrowser*>("text_browser_tab_clean")->append(line); }, Qt::AutoConnection);
+        generated_previews_map.value(Process::Task::Clean)->findChild<QTextBrowser*>("text_browser_tab_clean")->append(line); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::generatedMirrorsUpdateCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(PackagesManager::Task::MirrorsUpdate)->findChild<QTextBrowser*>("text_browser_tab_mirrorsupdate")->append(line); }, Qt::AutoConnection);
+        generated_previews_map.value(Process::Task::MirrorsUpdate)->findChild<QTextBrowser*>("text_browser_tab_mirrorsupdate")->append(line); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::generatedUpdateAllCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(PackagesManager::Task::UpdateAll)->findChild<QTextBrowser*>("text_browser_tab_updateall")->append(line); }, Qt::AutoConnection);
+        generated_previews_map.value(Process::Task::UpdateAll)->findChild<QTextBrowser*>("text_browser_tab_updateall")->append(line); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::generatedPrintVCSPackagesCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(PackagesManager::Task::PrintVCSPackages)->findChild<QTextBrowser*>("text_browser_tab_printvcspackages")->append(line); }, Qt::AutoConnection);
+        generated_previews_map.value(Process::Task::PrintVCSPackages)->findChild<QTextBrowser*>("text_browser_tab_printvcspackages")->append(line); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::generatedInstalledPackagesUpdateCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(PackagesManager::Task::UpdateInstalledPackages)->findChild<QTextBrowser*>("text_browser_tab_updateinstalledpackages")->append(line); }, Qt::AutoConnection);
+        generated_previews_map.value(Process::Task::UpdateInstalledPackages)->findChild<QTextBrowser*>("text_browser_tab_updateinstalledpackages")->append(line); }, Qt::AutoConnection);
 
     QObject::connect(packages_manager.data(), &PackagesManager::acceptedTask, this, &MainWindowView::generatePreview);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedInstall, available_packages_column.data(), [=](int exit_code, QProcess::ExitStatus exit_status) { available_packages_column.data()->update(exit_code, exit_status, tr("Installation"), tr("installed")); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedUninstall, installed_packages_column.data(), [=](int exit_code, QProcess::ExitStatus exit_status) { installed_packages_column.data()->update(exit_code, exit_status, tr("Uninstallation"), tr("removed")); }, Qt::AutoConnection);
     QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdate, updated_packages_column.data(), [=](int exit_code, QProcess::ExitStatus exit_status) { updated_packages_column.data()->update(exit_code, exit_status, tr("Update"), tr("updated")); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedClean, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::Clean)); generated_previews_map.remove(PackagesManager::Task::Clean); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedMirrorsUpdate, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::MirrorsUpdate)); generated_previews_map.remove(PackagesManager::Task::MirrorsUpdate); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdateAll, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::UpdateAll)); generated_previews_map.remove(PackagesManager::Task::UpdateAll); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedVCSPackagesPrint, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::PrintVCSPackages)); generated_previews_map.remove(PackagesManager::Task::PrintVCSPackages); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedInstalledPackagesUpdate, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(PackagesManager::Task::UpdateInstalledPackages)); generated_previews_map.remove(PackagesManager::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedClean, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::Clean)); generated_previews_map.remove(Process::Task::Clean); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedMirrorsUpdate, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::MirrorsUpdate)); generated_previews_map.remove(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdateAll, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::UpdateAll)); generated_previews_map.remove(Process::Task::UpdateAll); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedVCSPackagesPrint, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::PrintVCSPackages)); generated_previews_map.remove(Process::Task::PrintVCSPackages); }, Qt::AutoConnection);
+    QObject::connect(packages_manager.data(), &PackagesManager::finishedInstalledPackagesUpdate, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::UpdateInstalledPackages)); generated_previews_map.remove(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
 }
 
 
@@ -148,7 +148,7 @@ void MainWindowView::connectSignalsForUpdatedPackages()
 }
 
 
-void MainWindowView::generatePreview(PackagesManager::Task task)
+void MainWindowView::generatePreview(Process::Task task)
 {
    QWidget* operation_preview = new QWidget;
    operation_preview->setObjectName(QVariant::fromValue(task).toString());

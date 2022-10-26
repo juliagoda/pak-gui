@@ -13,6 +13,7 @@
 #include "updatedpackagescolumn.h"
 #include "packagesmanager.h"
 #include "progressview.h"
+#include "process.h"
 
 #include <QStringList>
 #include <QSharedPointer>
@@ -52,7 +53,7 @@ public Q_SLOTS:
     void updateAll();
     void printInstalledVCSPackages();
     void updateInstalledPackages();
-    void generatePreview(PackagesManager::Task task);
+    void generatePreview(Process::Task task);
     void showStatisticsWindow();
 
 signals:
@@ -74,6 +75,6 @@ private:
     QThread* installed_packages_thread;
     QThread* updated_packages_thread;
     QSharedPointer<PackagesManager> packages_manager;
-    QMap<PackagesManager::Task, QPointer<QWidget>> generated_previews_map;
+    QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
 };

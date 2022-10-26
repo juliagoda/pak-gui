@@ -28,7 +28,9 @@ target_sources(pak-gui PRIVATE
     downloadcommandparser.cpp
     downloadcommandparser.h
     statistics.cpp
-    statistics.h)
+    statistics.h
+    process.cpp
+    process.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
