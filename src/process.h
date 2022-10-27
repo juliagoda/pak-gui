@@ -24,15 +24,19 @@ public:
     };
     Q_ENUM(Task)
 
-    Process(Task new_task, QStringList new_checked_packages = QStringList());
-    void run();
+    Process();
+    void run(Task new_task,
+             QStringList new_checked_packages = QStringList());
 
 signals:
-    void finished(int exit_code, QProcess::ExitStatus exit_status);
-    void generatedOutput(const QString& line);
+    void finished(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
+    void generatedOutput(Process::Task task, const QString& line);
+    void acceptedTask(Process::Task);
 
 private:
-    Task task;
+    void updateMap(QStringList& checked_packages);
+    void prepareMapForNextTask();
+
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;
 };

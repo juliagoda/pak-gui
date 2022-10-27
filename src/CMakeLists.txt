@@ -19,7 +19,6 @@ target_sources(pak-gui PRIVATE
     sicommandparser.cpp
     qicommandparser.cpp
     checkcommandparser.cpp
-    packagesmanager.cpp
     progressview.cpp
     statisticscommandparser.cpp
     statisticscommandparser.h

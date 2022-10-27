@@ -9,14 +9,15 @@
 
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
-#include "packagesmanager.h"
+#include "updatedpackagescolumn.h"
 #include "pakGuiSettings.h"
 #include "qcheckbox.h"
 #include "qnamespace.h"
 #include "qpushbutton.h"
+#include "qscopedpointer.h"
 #include "statistics.h"
 #include "statisticscommandparser.h"
-#include "updatedpackagescolumn.h"
+#include "process.h"
 
 #include <KLocalizedString>
 #include <QProcess>
@@ -30,9 +31,9 @@
 
 
 
-MainWindowView::MainWindowView(QWidget *parent)
+MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *parent)
     : QWidget(parent),
-      packages_manager(QSharedPointer<PackagesManager>(new PackagesManager)),
+      process(new_process),
       available_packages_thread(new QThread),
       installed_packages_thread(new QThread),
       updated_packages_thread(new QThread),
@@ -45,6 +46,9 @@ MainWindowView::MainWindowView(QWidget *parent)
     m_ui.updated_preview_area->hide();
     m_ui.available_preview_area->hide();
     m_ui.progress_view_checkbox->hide();
+    generated_previews_map.insert(Process::Task::Install, m_ui.packages_installation_textarea);
+    generated_previews_map.insert(Process::Task::Uninstall, m_ui.packages_uninstallation_textarea);
+    generated_previews_map.insert(Process::Task::Update, m_ui.packages_update_textarea);
 
     // remember to add connect for situation when checkbox should be hidden again
     QObject::connect(this, &MainWindowView::operationsAmountIncreased, m_ui.progress_view_checkbox, &QCheckBox::show);
@@ -64,32 +68,10 @@ MainWindowView::MainWindowView(QWidget *parent)
     installed_packages_thread->start();
     updated_packages_thread->start();
 
-    QObject::connect(packages_manager.data(), &PackagesManager::generatedInstallCommandOutput, this, [this](const QString& line) {
-        m_ui.packages_installation_textarea->append(line); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::generatedUninstallCommandOutput, this, [this](const QString& line) {
-        m_ui.packages_uninstallation_textarea->append(line); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::generatedUpdateCommandOutput, this, [this](const QString& line) {
-        m_ui.packages_update_textarea->append(line); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::generatedCleanCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(Process::Task::Clean)->findChild<QTextBrowser*>("text_browser_tab_clean")->append(line); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::generatedMirrorsUpdateCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(Process::Task::MirrorsUpdate)->findChild<QTextBrowser*>("text_browser_tab_mirrorsupdate")->append(line); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::generatedUpdateAllCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(Process::Task::UpdateAll)->findChild<QTextBrowser*>("text_browser_tab_updateall")->append(line); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::generatedPrintVCSPackagesCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(Process::Task::PrintVCSPackages)->findChild<QTextBrowser*>("text_browser_tab_printvcspackages")->append(line); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::generatedInstalledPackagesUpdateCommandOutput, this, [this](const QString& line) {
-        generated_previews_map.value(Process::Task::UpdateInstalledPackages)->findChild<QTextBrowser*>("text_browser_tab_updateinstalledpackages")->append(line); }, Qt::AutoConnection);
-
-    QObject::connect(packages_manager.data(), &PackagesManager::acceptedTask, this, &MainWindowView::generatePreview);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedInstall, available_packages_column.data(), [=](int exit_code, QProcess::ExitStatus exit_status) { available_packages_column.data()->update(exit_code, exit_status, tr("Installation"), tr("installed")); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedUninstall, installed_packages_column.data(), [=](int exit_code, QProcess::ExitStatus exit_status) { installed_packages_column.data()->update(exit_code, exit_status, tr("Uninstallation"), tr("removed")); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdate, updated_packages_column.data(), [=](int exit_code, QProcess::ExitStatus exit_status) { updated_packages_column.data()->update(exit_code, exit_status, tr("Update"), tr("updated")); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedClean, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::Clean)); generated_previews_map.remove(Process::Task::Clean); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedMirrorsUpdate, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::MirrorsUpdate)); generated_previews_map.remove(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedUpdateAll, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::UpdateAll)); generated_previews_map.remove(Process::Task::UpdateAll); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedVCSPackagesPrint, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::PrintVCSPackages)); generated_previews_map.remove(Process::Task::PrintVCSPackages); }, Qt::AutoConnection);
-    QObject::connect(packages_manager.data(), &PackagesManager::finishedInstalledPackagesUpdate, this, [=](){ progress_view.data()->removeProgressView(generated_previews_map.value(Process::Task::UpdateInstalledPackages)); generated_previews_map.remove(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
+    QObject::connect(process.data(), &Process::generatedOutput, this, [this](Process::Task task, const QString& line) {
+        generated_previews_map.value(task)->findChild<QTextBrowser*>(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()))->append(line); }, Qt::AutoConnection);
+    QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
+    QObject::connect(process.data(), &Process::finished, available_packages_column.data(), [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
 }
 
 
@@ -120,7 +102,7 @@ void MainWindowView::connectSignalsForAvailablePackages()
     QObject::connect(m_ui.sort_available_packages, &QCheckBox::toggled, available_packages_column.data(), &AvailablePackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(m_ui.available_packages_list, &QListWidget::itemChanged, available_packages_column.data(), &AvailablePackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
     QObject::connect(available_packages_column.data(), &AvailablePackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.install_packages_button->setEnabled(has_checked_buttons); });
-    QObject::connect(m_ui.install_packages_button, &QPushButton::clicked, this, [this]() { m_ui.packages_installation_textarea->clear(); packages_manager.data()->install(available_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
+    QObject::connect(m_ui.install_packages_button, &QPushButton::clicked, this, [this]() { m_ui.packages_installation_textarea->clear(); process->run(Process::Task::Install, available_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
 }
 
 
@@ -132,7 +114,7 @@ void MainWindowView::connectSignalsForInstalledPackages()
     QObject::connect(m_ui.sort_installed_packages, &QCheckBox::toggled, installed_packages_column.data(), &InstalledPackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(m_ui.installed_packages_list, &QListWidget::itemChanged, installed_packages_column.data(), &InstalledPackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
     QObject::connect(installed_packages_column.data(), &InstalledPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.uninstall_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
-    QObject::connect(m_ui.uninstall_packages_button, &QPushButton::clicked, this, [this]() { m_ui.packages_uninstallation_textarea->clear(); packages_manager.data()->uninstall(installed_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
+    QObject::connect(m_ui.uninstall_packages_button, &QPushButton::clicked, this, [this]() { m_ui.packages_uninstallation_textarea->clear(); process->run(Process::Task::Uninstall, installed_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
 }
 
 
@@ -144,7 +126,7 @@ void MainWindowView::connectSignalsForUpdatedPackages()
     QObject::connect(m_ui.sort_packages_to_update, &QCheckBox::toggled, updated_packages_column.data(), &UpdatedPackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(m_ui.packages_to_update_list, &QListWidget::itemChanged, updated_packages_column.data(), &UpdatedPackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
     QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.update_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
-    QObject::connect(m_ui.update_packages_button, &QPushButton::clicked, this, [this]() { m_ui.packages_update_textarea->clear(); packages_manager.data()->update(updated_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
+    QObject::connect(m_ui.update_packages_button, &QPushButton::clicked, this, [this]() { m_ui.packages_update_textarea->clear(); process->run(Process::Task::Update, updated_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
 }
 
 
@@ -181,6 +163,29 @@ void MainWindowView::showStatisticsWindow()
     statistics->show();
 }
 
+void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status)
+{
+    switch(task)
+    {
+      case Process::Task::Install:
+         available_packages_column.data()->update(exit_code, exit_status, tr("Installation"), tr("installed"));
+      break;
+
+      case Process::Task::Update:
+        updated_packages_column.data()->update(exit_code, exit_status, tr("Update"), tr("updated"));
+      break;
+
+      case Process::Task::Uninstall:
+        installed_packages_column.data()->update(exit_code, exit_status, tr("Uninstallation"), tr("removed"));
+      break;
+
+      default:
+        progress_view.data()->removeProgressView(generated_previews_map.value(task));
+        generated_previews_map.remove(task);
+      break;
+    }
+}
+
 
 void MainWindowView::switchColors()
 {
@@ -213,30 +218,5 @@ void MainWindowView::refresh()
     available_packages_thread->start();
     installed_packages_thread->start();
     updated_packages_thread->start();
-}
-
-void MainWindowView::cleanPackages()
-{
-   packages_manager.data()->clean();
-}
-
-void MainWindowView::updateMirrors()
-{
-   packages_manager.data()->updateMirrors();
-}
-
-void MainWindowView::updateAll()
-{
-   packages_manager.data()->updateAll();
-}
-
-void MainWindowView::printInstalledVCSPackages()
-{
-   packages_manager.data()->printInstalledVCSPackages();
-}
-
-void MainWindowView::updateInstalledPackages()
-{
-   packages_manager.data()->updateInstalledPackages();
 }
 

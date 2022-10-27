@@ -11,7 +11,6 @@
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
 #include "updatedpackagescolumn.h"
-#include "packagesmanager.h"
 #include "progressview.h"
 #include "process.h"
 
@@ -37,7 +36,7 @@ public:
     /**
      * Default Constructor
      */
-    explicit MainWindowView(QWidget* parent);
+    explicit MainWindowView(QSharedPointer<Process> new_process, QWidget* parent);
 
     /**
      * Default Destructor
@@ -48,13 +47,9 @@ public Q_SLOTS:
     void refresh();
     void switchColors();
     void handleSettingsChanged();
-    void cleanPackages();
-    void updateMirrors();
-    void updateAll();
-    void printInstalledVCSPackages();
-    void updateInstalledPackages();
     void generatePreview(Process::Task task);
     void showStatisticsWindow();
+    void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
 
 signals:
     void operationsAmountIncreased();
@@ -68,13 +63,13 @@ private:
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here
     Ui::MainWindowView m_ui;
+    QSharedPointer<Process> process;
     QPointer<AvailablePackagesColumn> available_packages_column;
     QPointer<InstalledPackagesColumn> installed_packages_column;
     QPointer<UpdatedPackagesColumn> updated_packages_column;
     QThread* available_packages_thread;
     QThread* installed_packages_thread;
     QThread* updated_packages_thread;
-    QSharedPointer<PackagesManager> packages_manager;
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
 };

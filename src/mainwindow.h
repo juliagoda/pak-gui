@@ -8,8 +8,10 @@
 #define MAINWINDOW_H
 
 #include <KXmlGuiWindow>
+#include <QSharedPointer>
 
 #include "ui_settings.h"
+#include "process.h"
 #include "pakGuiSettings.h"
 
 class MainWindowView;
@@ -62,6 +64,7 @@ private:
     QAction* m_cleanAction;
     QAction* m_undoAction;
     MainWindowView* mainWindowView;
+    QSharedPointer<Process> process;
 };
 
 #endif // MAINWINDOW_H

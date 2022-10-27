@@ -16,9 +16,10 @@
 
 // within statusbar (or other place) add diodes (green for available packages places - (AUR for example after package detection), red otherwise)
 MainWindow::MainWindow()
-    : KXmlGuiWindow()
+    : KXmlGuiWindow(),
+      process(QSharedPointer<Process>(new Process))
 {
-    mainWindowView = new MainWindowView(this);
+    mainWindowView = new MainWindowView(process, this);
     setCentralWidget(mainWindowView);
 
     //actionCollection()->setDefaultShortcut(updateAction, Qt::CTRL + Qt::Key_U);
@@ -28,7 +29,7 @@ MainWindow::MainWindow()
     m_updateAction = actionCollection->addAction(QStringLiteral("update"));
     m_updateAction->setText(i18nc("@action", "Update"));
     m_updateAction->setIcon(QIcon::fromTheme(QStringLiteral("update")));
-    connect(m_updateAction, &QAction::triggered, mainWindowView, &MainWindowView::updateInstalledPackages);
+    connect(m_updateAction, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
 
     m_refreshAction = actionCollection->addAction(QStringLiteral("refresh"));
     m_refreshAction->setText(i18nc("@action", "Refresh"));
@@ -50,17 +51,17 @@ MainWindow::MainWindow()
     m_updateAllAction = actionCollection->addAction(QStringLiteral("update_all_packages"));
     m_updateAllAction->setText(i18nc("@action", "Update all"));
     m_updateAllAction->setIcon(QIcon::fromTheme(QStringLiteral("update_all_packages")));
-    connect(m_updateAllAction, &QAction::triggered, mainWindowView, &MainWindowView::updateAll);
+    connect(m_updateAllAction, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
 
     m_updateMirrorsAction = actionCollection->addAction(QStringLiteral("update_mirrors"));
     m_updateMirrorsAction->setText(i18nc("@action", "Update mirrors"));
     m_updateMirrorsAction->setIcon(QIcon::fromTheme(QStringLiteral("update_mirrors")));
-    connect(m_updateMirrorsAction, &QAction::triggered, mainWindowView, &MainWindowView::updateMirrors);
+    connect(m_updateMirrorsAction, &QAction::triggered, this, [this]() { process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
 
     m_cleanAction = actionCollection->addAction(QStringLiteral("clean"));
     m_cleanAction->setText(i18nc("@action", "Clean"));
     m_cleanAction->setIcon(QIcon::fromTheme(QStringLiteral("clean")));
-    connect(m_cleanAction, &QAction::triggered, mainWindowView, &MainWindowView::cleanPackages);
+    connect(m_cleanAction, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
 
     m_undoAction = actionCollection->addAction(QStringLiteral("undo"));
     m_undoAction->setText(i18nc("@action", "Undo"));
@@ -77,7 +78,7 @@ MainWindow::MainWindow()
     m_printVCSPackagesAction = actionCollection->addAction(QStringLiteral("installed_vcs_packages"));
     m_printVCSPackagesAction->setText(i18nc("@action", "Installed vcs packages"));
     m_printVCSPackagesAction->setIcon(QIcon::fromTheme(QStringLiteral("installed_vcs_packages")));
-    connect(m_printVCSPackagesAction, &QAction::triggered, mainWindowView, &MainWindowView::printInstalledVCSPackages);
+    connect(m_printVCSPackagesAction, &QAction::triggered, this, [this]() { process->run(Process::Task::PrintVCSPackages); }, Qt::AutoConnection);
 
     KStandardAction::openNew(this, SLOT(fileNew()), actionCollection);
     KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection);
