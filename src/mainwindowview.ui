@@ -187,7 +187,7 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
                <item>
-                <widget class="QTextBrowser" name="packages_uninstallation_textarea"/>
+                <widget class="QTextBrowser" name="text_browser_tab_uninstall"/>
                </item>
               </layout>
              </widget>
@@ -379,7 +379,7 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
                <item>
-                <widget class="QTextBrowser" name="packages_update_textarea"/>
+                <widget class="QTextBrowser" name="text_browser_tab_update"/>
                </item>
               </layout>
              </widget>
@@ -571,7 +571,7 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
                <item>
-                <widget class="QTextBrowser" name="packages_installation_textarea"/>
+                <widget class="QTextBrowser" name="text_browser_tab_install"/>
                </item>
               </layout>
              </widget>

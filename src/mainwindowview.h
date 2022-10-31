@@ -7,6 +7,7 @@
 #pragma once
 
 #include "ui_mainwindowview.h"
+#include "ui_packageinput.h"
 
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
@@ -49,6 +50,7 @@ public Q_SLOTS:
     void handleSettingsChanged();
     void generatePreview(Process::Task task);
     void showStatisticsWindow();
+    void downloadPackage();
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
 
 signals:

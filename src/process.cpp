@@ -38,7 +38,7 @@ void Process::run(Task new_task,
 
     updateMap(new_checked_packages);
 
-    emit acceptedTask(new_task);
+    emitSideTask(new_task);
 
     bool containsPacman = commands_map.value(new_task).join(" ").contains("pacman");
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
@@ -70,4 +70,14 @@ void Process::prepareMapForNextTask()
     commands_map.remove(Task::Update);
     commands_map.remove(Task::Uninstall);
     commands_map.remove(Task::Install);
+}
+
+void Process::emitSideTask(Task task)
+{
+    if (task != Task::Install &&
+        task != Task::Uninstall &&
+        task != Task::Update)
+    {
+        emit acceptedTask(task);
+    }
 }

@@ -29,7 +29,11 @@ target_sources(pak-gui PRIVATE
     statistics.cpp
     statistics.h
     process.cpp
-    process.h)
+    process.h
+    packageinputwindow.cpp
+    packageinputwindow.h
+    packagedownloader.cpp
+    packagedownloader.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
@@ -47,7 +51,8 @@ target_link_libraries(pak-gui
 ki18n_wrap_ui(pak-gui
     mainwindowview.ui
     settings.ui
-    progressview.ui)
+    progressview.ui
+    packageinput.ui)
 
 install(FILES org.cachyos.pak-gui.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
 install(FILES pak-gui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/pak-gui)

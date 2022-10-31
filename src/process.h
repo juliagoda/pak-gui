@@ -36,6 +36,7 @@ signals:
 private:
     void updateMap(QStringList& checked_packages);
     void prepareMapForNextTask();
+    void emitSideTask(Process::Task task);
 
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;

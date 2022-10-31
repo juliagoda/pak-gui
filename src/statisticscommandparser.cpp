@@ -14,6 +14,7 @@ QStringList StatisticsCommandParser::retrieveInfo()
 {
     QScopedPointer<QProcess> pacman_qi(new QProcess);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -L");
+    pacman_qi->waitForStarted();
     pacman_qi->waitForFinished();
     QString output = QString::fromUtf8(pacman_qi->readAll());
     QStringList output_list = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);

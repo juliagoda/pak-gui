@@ -46,7 +46,7 @@ MainWindow::MainWindow()
     m_downloadAction = actionCollection->addAction(QStringLiteral("download"));
     m_downloadAction->setText(i18nc("@action", "Download"));
     m_downloadAction->setIcon(QIcon::fromTheme(QStringLiteral("download")));
-    //connect(m_downloadAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
+    connect(m_downloadAction, &QAction::triggered, mainWindowView, &MainWindowView::downloadPackage);
 
     m_updateAllAction = actionCollection->addAction(QStringLiteral("update_all_packages"));
     m_updateAllAction->setText(i18nc("@action", "Update all"));

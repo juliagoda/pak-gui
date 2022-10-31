@@ -15,6 +15,7 @@ QStringList CheckCommandParser::retrieveInfo()
 {
     QScopedPointer<QProcess> pacman_qi(new QProcess);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -C");
+    pacman_qi->waitForStarted();
     pacman_qi->waitForFinished();
     QString output(pacman_qi->readAllStandardOutput());
 
