@@ -33,7 +33,9 @@ target_sources(pak-gui PRIVATE
     packageinputwindow.cpp
     packageinputwindow.h
     packagedownloader.cpp
-    packagedownloader.h)
+    packagedownloader.h
+    choicewindow.cpp
+    choicewindow.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
@@ -52,7 +54,8 @@ ki18n_wrap_ui(pak-gui
     mainwindowview.ui
     settings.ui
     progressview.ui
-    packageinput.ui)
+    packageinput.ui
+    choicewindow.ui)
 
 install(FILES org.cachyos.pak-gui.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
 install(FILES pak-gui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/pak-gui)

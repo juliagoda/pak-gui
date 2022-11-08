@@ -21,12 +21,6 @@ PackageInputWindow::PackageInputWindow(QWidget* parent)
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit packageNameInserted(m_ui.package_lineedit->text()); }, Qt::AutoConnection);
 }
 
-
-PackageInputWindow::~PackageInputWindow()
-{
-
-}
-
 void PackageInputWindow::toggleOkButton(const QString& new_package_name)
 {
    m_ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(new_package_name.isEmpty());

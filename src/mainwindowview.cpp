@@ -167,7 +167,14 @@ void MainWindowView::showStatisticsWindow()
 
 void MainWindowView::downloadPackage()
 {
-   // TODO
+   QSharedPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString()), &QObject::deleteLater);
+   QSharedPointer<DownloaderWindow> automatic_installation(new AutomaticInstallation(download_command_parser), &QObject::deleteLater);
+   QSharedPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser), &QObject::deleteLater);
+   QSharedPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser), &QObject::deleteLater);
+   QSharedPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser), &QObject::deleteLater);
+
+   automatic_installation->setNext(package_input)->setNext(paths_choice_input)->setNext(repos_choice_input);
+   automatic_installation->handle(QStringList());
 }
 
 void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status)
