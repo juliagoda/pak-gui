@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>icons/app/24-apps-pak-gui.png</file>
         <file>icons/app/32-apps-pak-gui.png</file>
+        <file>waiting.gif</file>
     </qresource>
 </RCC>

@@ -20,7 +20,7 @@
 #include <QLoggingCategory>
 #include <QTextCodec>
 #include <QLoggingCategory>
-
+#include <QResource>
 
 int main(int argc, char **argv)
 {
