@@ -19,6 +19,7 @@
 #include <QIcon>
 #include <QLoggingCategory>
 #include <QTextCodec>
+#include <QLoggingCategory>
 
 
 int main(int argc, char **argv)
@@ -51,6 +52,7 @@ int main(int argc, char **argv)
     KDBusService appDBusService(KDBusService::Multiple | KDBusService::NoExitOnFailure);
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
     MainWindow *window = new MainWindow;
     window->show();

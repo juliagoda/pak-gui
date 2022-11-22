@@ -35,7 +35,9 @@ target_sources(pak-gui PRIVATE
     packagedownloader.cpp
     packagedownloader.h
     choicewindow.cpp
-    choicewindow.h)
+    choicewindow.h
+    outputfilter.cpp
+    outputfilter.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
@@ -48,6 +50,7 @@ target_link_libraries(pak-gui
     KF5::Crash
     Qt5::Widgets
     Qt5::Charts
+    Qt5::Concurrent
 )
 
 ki18n_wrap_ui(pak-gui

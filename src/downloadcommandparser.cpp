@@ -1,18 +1,45 @@
 #include "downloadcommandparser.h"
+#include "outputfilter.h"
+#include "qnamespace.h"
+#include "qscopedpointer.h"
+#include "qtimer.h"
 
 #include <QProcess>
 #include <QString>
 #include <QRegularExpression>
 #include <QMessageBox>
-#include <QDebug>
+#include <QtDebug>
+#include <QtConcurrent/QtConcurrent>
 
 DownloadCommandParser::DownloadCommandParser(const QString& new_package_name) :
     pak_download(new QProcess),
     package_name(new_package_name),
-    command(QString("pak -G"))
+    command(QString("pak -G")),
+    result_output()
 {
+    // TODO - "tput: No value for $TERM and no -T specified"  -
+    // https://stackoverflow.com/questions/29979966/tput-no-value-for-term-and-no-t-specified-error-logged-by-cron-process
+    pak_download->setProcessChannelMode(QProcess::MergedChannels);
+     QObject::connect(pak_download.get(), &QProcess::errorOccurred, [=]() { qDebug() << "Error in Process: " << pak_download->errorString();});
+     QObject::connect(pak_download.get(), &QProcess::readyReadStandardOutput, [=]() mutable {
+       while (pak_download.data()->canReadLine())
+       {
+           QString line = pak_download.data()->readLine();
+           result_output += line;
 
+           if (result_output.contains("Current directory:"))
+           {
+               emit continuePathsRetrieve(result_output);
+               result_output.clear();
+           }
+
+           if (result_output.contains(QRegExp("\\s+\\d+\\.\\s+")))
+           {
+               emit continueReposRetrieve(result_output);
+           }
+       }});
 }
+
 
 void DownloadCommandParser::updatePackageName(const QString& new_package_name)
 {
@@ -24,33 +51,26 @@ void DownloadCommandParser::updateParameter(const QString& new_command)
    command = new_command;
 }
 
-QStringList DownloadCommandParser::getPaths()
+void DownloadCommandParser::start()
 {
     if (!validate())
-    {
         qWarning() << "retrieving paths from download command parser is not possible";
-        return QStringList();
-    }
 
     pak_download->start("/bin/bash", QStringList() << "-c" << command << package_name);
     pak_download->waitForStarted();
-    pak_download->waitForReadyRead();
-    QString output(pak_download->readAll());
-    pak_download->closeReadChannel(QProcess::StandardOutput);
-    return output.split(QRegularExpression("(([0-9]+\\s.*\\/)|(\\s?[0-9]+\\.\\s[\\w-]+)){1}"));
+    pak_download->waitForReadyRead(1000);
 }
 
 void DownloadCommandParser::inputAnswer(const QString& new_answer)
 {
-    if (pak_download->state() != QProcess::Running)
+    if (pak_download->state() != QProcess::Running && !pak_download->isWritable())
     {
         qWarning() << "Download command parser process is not running. Answer input is not possible";
         return;
     }
 
-    pak_download->write(QString(new_answer + "\n").toStdString().c_str());
-    pak_download->waitForBytesWritten();
-    pak_download->closeWriteChannel();
+    pak_download->write(new_answer.toLocal8Bit());
+    pak_download->waitForReadyRead();
 }
 
 bool DownloadCommandParser::validate()
@@ -75,14 +95,5 @@ bool DownloadCommandParser::validate()
 
 QStringList DownloadCommandParser::retrieveInfo()
 {
-    if (pak_download->state() != QProcess::Running)
-    {
-        qWarning() << "Download command parser process is not running. Retrieving repos list is not possible";
-        return QStringList();
-    }
 
-    pak_download->waitForReadyRead();
-    QString output(pak_download->readAllStandardOutput());
-    pak_download->closeReadChannel(QProcess::StandardOutput);
-    return output.split(QRegularExpression("(([0-9]+\\s.*\\/)|(\\s?[0-9]+\\.\\s[\\w-]+)){1}"));
 }

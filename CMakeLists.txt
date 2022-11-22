@@ -41,6 +41,8 @@ find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
     I18n
     XmlGui)
 
+find_package(Qt5 REQUIRED COMPONENTS Concurrent)
+
 install(PROGRAMS org.cachyos.pak-gui.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 include_directories(${CMAKE_SOURCE_DIR}/src)

@@ -23,6 +23,6 @@ PackageInputWindow::PackageInputWindow(QWidget* parent)
 
 void PackageInputWindow::toggleOkButton(const QString& new_package_name)
 {
-   m_ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(new_package_name.isEmpty());
+     m_ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!new_package_name.isEmpty());
 }
 

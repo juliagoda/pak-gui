@@ -13,13 +13,13 @@ class ChoiceWindow : public QDialog
 
 public:
     ChoiceWindow(const QString& new_title,
-                 const QStringList& new_options,
                  QDialog* new_parent = nullptr);
 
     ~ChoiceWindow() = default;
 
-private Q_SLOTS:
+public Q_SLOTS:
     void toggleOkButton(int new_index);
+    void fillComboBox(QString& output);
 
 signals:
     bool choiceDefined(int new_index);
@@ -29,6 +29,5 @@ private:
 
     Ui::ChoiceWindow m_ui;
     QString title;
-    QStringList options;
 };
 

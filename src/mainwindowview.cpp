@@ -62,9 +62,9 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
     QObject::connect(available_packages_thread, &QThread::started, [=]() {  available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list)); connectSignalsForAvailablePackages(); });
     QObject::connect(installed_packages_thread, &QThread::started, [=]() { installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list)); connectSignalsForInstalledPackages(); });
     QObject::connect(updated_packages_thread, &QThread::started, [=]() { updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list)); connectSignalsForUpdatedPackages(); });
-   // QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
-   // QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread, &QThread::deleteLater);
-   // QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
+    QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
+    QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread, &QThread::deleteLater);
+    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
 
     available_packages_thread->start();
     installed_packages_thread->start();
@@ -167,11 +167,11 @@ void MainWindowView::showStatisticsWindow()
 
 void MainWindowView::downloadPackage()
 {
-   QSharedPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString()), &QObject::deleteLater);
-   QSharedPointer<DownloaderWindow> automatic_installation(new AutomaticInstallation(download_command_parser), &QObject::deleteLater);
-   QSharedPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser), &QObject::deleteLater);
-   QSharedPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser), &QObject::deleteLater);
-   QSharedPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser), &QObject::deleteLater);
+   QPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString()));
+   QPointer<DownloaderWindow> automatic_installation(new AutomaticInstallation(download_command_parser));
+   QPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser));
+   QPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser));
+   QPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser));
 
    automatic_installation->setNext(package_input)->setNext(paths_choice_input)->setNext(repos_choice_input);
    automatic_installation->handle(QStringList());
