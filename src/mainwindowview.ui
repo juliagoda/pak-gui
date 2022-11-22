@@ -100,8 +100,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>274</width>
-            <height>571</height>
+            <width>260</width>
+            <height>581</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -169,6 +169,32 @@
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
+             <item>
+              <widget class="QCheckBox" name="sort_installed_packages">
+               <property name="text">
+                <string>Reverse sorting</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="search_installed_packages_lineedit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
             <widget class="QListWidget" name="installed_packages_list"/>
            </item>
            <item>
@@ -181,8 +207,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>254</width>
-                <height>213</height>
+                <width>240</width>
+                <height>210</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -270,12 +296,12 @@
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="sort_installed_packages">
+              <widget class="QCheckBox" name="search_installed_packages_checkbox">
                <property name="enabled">
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string>Sort alphabetically</string>
+                <string>Search</string>
                </property>
               </widget>
              </item>
@@ -361,6 +387,35 @@
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
+             <item>
+              <widget class="QCheckBox" name="sort_packages_to_update">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>Reverse sorting</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="search_packages_to_update_lineedit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
             <widget class="QListWidget" name="packages_to_update_list"/>
            </item>
            <item>
@@ -374,7 +429,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>254</width>
-                <height>213</height>
+                <height>205</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -462,12 +517,12 @@
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="sort_packages_to_update">
+              <widget class="QCheckBox" name="search_packages_to_update_checkbox">
                <property name="enabled">
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string>Sort alphabetically</string>
+                <string>Search</string>
                </property>
               </widget>
              </item>
@@ -553,6 +608,35 @@
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_11">
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
+             <item>
+              <widget class="QCheckBox" name="sort_available_packages">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>Reverse sorting</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="search_available_packages_lineedit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
             <widget class="QListWidget" name="available_packages_list"/>
            </item>
            <item>
@@ -566,7 +650,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>254</width>
-                <height>213</height>
+                <height>205</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -654,12 +738,12 @@
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="sort_available_packages">
+              <widget class="QCheckBox" name="search_available_packages_checkbox">
                <property name="enabled">
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string>Sort alphabetically</string>
+                <string>Search</string>
                </property>
               </widget>
              </item>
@@ -676,5 +760,102 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>search_installed_packages_checkbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sort_installed_packages</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>171</x>
+     <y>603</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>65</x>
+     <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>search_installed_packages_checkbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>search_installed_packages_lineedit</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>211</x>
+     <y>604</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>210</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>search_packages_to_update_checkbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sort_packages_to_update</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>476</x>
+     <y>598</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>341</x>
+     <y>108</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>search_packages_to_update_checkbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>search_packages_to_update_lineedit</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>491</x>
+     <y>593</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>464</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>search_available_packages_checkbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sort_available_packages</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>751</x>
+     <y>595</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>642</x>
+     <y>111</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>search_available_packages_checkbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>search_available_packages_lineedit</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>778</x>
+     <y>589</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>768</x>
+     <y>118</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

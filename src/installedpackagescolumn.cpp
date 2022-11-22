@@ -4,14 +4,12 @@
 #include <QPointer>
 #include <QMessageBox>
 
-#include "mainwindowview.h"
 #include "qipackage.h"
 #include "qicommandparser.h"
-#include "qmessagebox.h"
 
 
-InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget) :
-    PackagesColumn(new_list_widget)
+InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
+    PackagesColumn(new_list_widget, new_search_lineedit)
 {
    fill();
 }
@@ -41,6 +39,7 @@ QStringList InstalledPackagesColumn::collectCheckedPackages()
 
 void InstalledPackagesColumn::fill()
 {
+    packages_sorter->resetOriginalList();
     QStringList pak_packages = getPackagesList();
     QStringList::iterator it = pak_packages.begin();
     int i = 0;
@@ -49,6 +48,7 @@ void InstalledPackagesColumn::fill()
     {
         QiPackage* package_item = new QiPackage(*it);
         list_widget->insertItem(i, package_item);
+        packages_sorter->updateOriginalList(i, new QiPackage(*it));
         i++;
     }
 

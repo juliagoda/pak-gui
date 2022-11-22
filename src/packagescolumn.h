@@ -1,6 +1,8 @@
 #pragma once
 
+#include "qlineedit.h"
 #include "qobjectdefs.h"
+#include "sorter.h"
 
 #include <QListWidget>
 #include <QProcess>
@@ -12,11 +14,18 @@ class PackagesColumn : public QObject
     Q_OBJECT
 
 public:
-    PackagesColumn(QListWidget* new_list_widget) :
+    PackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
         QObject(),
         checked_packages(0),
-        list_widget(new_list_widget)
-    {};
+        list_widget(new_list_widget),
+        search_lineedit(new_search_lineedit),
+        packages_sorter(new Sorter(list_widget), &QObject::deleteLater)
+    {
+        QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
+                         &Sorter::sortByText);
+        QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
+                         &Sorter::sortByText);
+    };
 
     virtual QStringList collectCheckedPackages() { return QStringList(); };
     virtual void fill() {};
@@ -47,11 +56,8 @@ public Q_SLOTS:
 
     virtual void sort(bool is_sorted)
     {
-        if (is_sorted)
-            list_widget->sortItems(Qt::DescendingOrder);
-        else
-            list_widget->sortItems(Qt::AscendingOrder);
-
+        Q_UNUSED(is_sorted)
+        packages_sorter->reverseSort();
         list_widget->update();
     }
 
@@ -73,5 +79,7 @@ protected:
 
     int checked_packages;
     QListWidget* list_widget;
+    QLineEdit* search_lineedit;
+    QSharedPointer<Sorter> packages_sorter;
 };
 

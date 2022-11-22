@@ -1,8 +1,6 @@
 #include "downloadcommandparser.h"
-#include "outputfilter.h"
 #include "qnamespace.h"
 #include "qscopedpointer.h"
-#include "qtimer.h"
 
 #include <QProcess>
 #include <QString>
@@ -46,10 +44,12 @@ void DownloadCommandParser::updatePackageName(const QString& new_package_name)
    package_name = new_package_name;
 }
 
+
 void DownloadCommandParser::updateParameter(const QString& new_command)
 {
    command = new_command;
 }
+
 
 void DownloadCommandParser::start()
 {
@@ -60,6 +60,7 @@ void DownloadCommandParser::start()
     pak_download->waitForStarted();
     pak_download->waitForReadyRead(1000);
 }
+
 
 void DownloadCommandParser::inputAnswer(const QString& new_answer)
 {
@@ -72,6 +73,7 @@ void DownloadCommandParser::inputAnswer(const QString& new_answer)
     pak_download->write(new_answer.toLocal8Bit());
     pak_download->waitForReadyRead();
 }
+
 
 bool DownloadCommandParser::validate()
 {
@@ -93,7 +95,8 @@ bool DownloadCommandParser::validate()
     return true;
 }
 
+
 QStringList DownloadCommandParser::retrieveInfo()
 {
-
+   return QStringList();
 }

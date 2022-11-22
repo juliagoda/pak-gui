@@ -5,7 +5,6 @@
 #include <QPointer>
 #include <QMessageBox>
 
-#include "mainwindowview.h"
 #include "packagescolumn.h"
 #include "qlistwidget.h"
 #include "qnamespace.h"
@@ -13,8 +12,8 @@
 #include "sicommandparser.h"
 
 
-AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget) :
-    PackagesColumn(new_list_widget)
+AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
+    PackagesColumn(new_list_widget, new_search_lineedit)
 {
    fill();
 }
@@ -44,6 +43,7 @@ QStringList AvailablePackagesColumn::collectCheckedPackages()
 
 void AvailablePackagesColumn::fill()
 {
+    packages_sorter->resetOriginalList();
     QStringList pak_packages = getPackagesList();
     QStringList::iterator it = pak_packages.begin();
     int i = 0;
@@ -51,6 +51,7 @@ void AvailablePackagesColumn::fill()
     for(;it != pak_packages.end(); it++)
     {
         list_widget->insertItem(i, new SiPackage(*it));
+        packages_sorter->updateOriginalList(i, new SiPackage(*it));
         i++;
     }
 

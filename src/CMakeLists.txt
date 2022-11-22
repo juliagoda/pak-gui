@@ -37,7 +37,9 @@ target_sources(pak-gui PRIVATE
     choicewindow.cpp
     choicewindow.h
     outputfilter.cpp
-    outputfilter.h)
+    outputfilter.h
+    sorter.cpp
+    sorter.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 

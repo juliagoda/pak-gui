@@ -43,10 +43,7 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
 {
     m_ui.setupUi(this);
 
-    m_ui.installed_preview_area->hide();
-    m_ui.updated_preview_area->hide();
-    m_ui.available_preview_area->hide();
-    m_ui.progress_view_checkbox->hide();
+    hideWidgets();
 
     generated_previews_map.insert(Process::Task::Install, m_ui.installed_preview_area);
     generated_previews_map.insert(Process::Task::Uninstall, m_ui.updated_preview_area);
@@ -59,9 +56,9 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
     QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
     QObject::connect(m_ui.console_view_update, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.updated_preview_area->show(); else m_ui.updated_preview_area->hide(); });
 
-    QObject::connect(available_packages_thread, &QThread::started, [=]() {  available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list)); connectSignalsForAvailablePackages(); });
-    QObject::connect(installed_packages_thread, &QThread::started, [=]() { installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list)); connectSignalsForInstalledPackages(); });
-    QObject::connect(updated_packages_thread, &QThread::started, [=]() { updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list)); connectSignalsForUpdatedPackages(); });
+    QObject::connect(available_packages_thread, &QThread::started, [=]() {  available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit)); connectSignalsForAvailablePackages(); });
+    QObject::connect(installed_packages_thread, &QThread::started, [=]() { installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit)); connectSignalsForInstalledPackages(); });
+    QObject::connect(updated_packages_thread, &QThread::started, [=]() { updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit)); connectSignalsForUpdatedPackages(); });
     QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
     QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread, &QThread::deleteLater);
     QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
@@ -96,10 +93,25 @@ MainWindowView::~MainWindowView()
 }
 
 
+void MainWindowView::hideWidgets()
+{
+    m_ui.installed_preview_area->hide();
+    m_ui.updated_preview_area->hide();
+    m_ui.available_preview_area->hide();
+    m_ui.progress_view_checkbox->hide();
+    m_ui.sort_available_packages->hide();
+    m_ui.sort_installed_packages->hide();
+    m_ui.sort_packages_to_update->hide();
+    m_ui.search_installed_packages_lineedit->hide();
+    m_ui.search_packages_to_update_lineedit->hide();
+    m_ui.search_available_packages_lineedit->hide();
+}
+
+
 void MainWindowView::connectSignalsForAvailablePackages()
 {
     if (m_ui.available_packages_list->count() > 0)
-        m_ui.sort_available_packages->setEnabled(true);
+        m_ui.search_available_packages_checkbox->setEnabled(true);
 
     QObject::connect(m_ui.sort_available_packages, &QCheckBox::toggled, available_packages_column.data(), &AvailablePackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(m_ui.available_packages_list, &QListWidget::itemChanged, available_packages_column.data(), &AvailablePackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
@@ -111,7 +123,7 @@ void MainWindowView::connectSignalsForAvailablePackages()
 void MainWindowView::connectSignalsForInstalledPackages()
 {
     if (m_ui.installed_packages_list->count() > 0)
-        m_ui.sort_installed_packages->setEnabled(true);
+        m_ui.search_installed_packages_checkbox->setEnabled(true);
 
     QObject::connect(m_ui.sort_installed_packages, &QCheckBox::toggled, installed_packages_column.data(), &InstalledPackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(m_ui.installed_packages_list, &QListWidget::itemChanged, installed_packages_column.data(), &InstalledPackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
@@ -123,7 +135,7 @@ void MainWindowView::connectSignalsForInstalledPackages()
 void MainWindowView::connectSignalsForUpdatedPackages()
 {
     if (m_ui.packages_to_update_list->count() > 0)
-        m_ui.sort_packages_to_update->setEnabled(true);
+        m_ui.search_packages_to_update_checkbox->setEnabled(true);
 
     QObject::connect(m_ui.sort_packages_to_update, &QCheckBox::toggled, updated_packages_column.data(), &UpdatedPackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(m_ui.packages_to_update_list, &QListWidget::itemChanged, updated_packages_column.data(), &UpdatedPackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
@@ -174,7 +186,7 @@ void MainWindowView::downloadPackage()
    QPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser));
 
    automatic_installation->setNext(package_input)->setNext(paths_choice_input)->setNext(repos_choice_input);
-   automatic_installation->handle(QStringList());
+   automatic_installation->handle();
 }
 
 void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status)
