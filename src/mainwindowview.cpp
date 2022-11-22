@@ -41,6 +41,8 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
 {
     m_ui.setupUi(this);
 
+    emit initStarted();
+
     generated_previews_map.insert(Process::Task::Install, m_ui.installed_preview_area);
     generated_previews_map.insert(Process::Task::Uninstall, m_ui.updated_preview_area);
     generated_previews_map.insert(Process::Task::Update, m_ui.available_preview_area);
@@ -136,6 +138,8 @@ void MainWindowView::connectSignalsForAvailablePackages()
     QObject::connect(m_ui.available_packages_list, &QListWidget::itemChanged, available_packages_column.data(), &AvailablePackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
     QObject::connect(available_packages_column.data(), &AvailablePackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.install_packages_button->setEnabled(has_checked_buttons); });
     QObject::connect(m_ui.install_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_install->clear(); process->run(Process::Task::Install, available_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
+
+    checkSpinningVisibility();
 }
 
 
@@ -152,6 +156,8 @@ void MainWindowView::connectSignalsForInstalledPackages()
     QObject::connect(m_ui.installed_packages_list, &QListWidget::itemChanged, installed_packages_column.data(), &InstalledPackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
     QObject::connect(installed_packages_column.data(), &InstalledPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.uninstall_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
     QObject::connect(m_ui.uninstall_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_uninstall->clear(); process->run(Process::Task::Uninstall, installed_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
+
+    checkSpinningVisibility();
 }
 
 
@@ -174,6 +180,19 @@ void MainWindowView::connectSignalsForUpdatedPackages()
     QObject::connect(m_ui.packages_to_update_list, &QListWidget::itemChanged, updated_packages_column.data(), &UpdatedPackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
     QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.update_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
     QObject::connect(m_ui.update_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_update->clear(); process->run(Process::Task::Update, updated_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
+
+    checkSpinningVisibility();
+}
+
+
+void MainWindowView::checkSpinningVisibility()
+{
+    if (m_ui.update_spinning_widget->isHidden() &&
+        m_ui.remove_spinning_widget->isHidden() &&
+        m_ui.installation_spinning_widget->isHidden())
+    {
+        emit initEnded();
+    }
 }
 
 
@@ -270,6 +289,8 @@ void MainWindowView::handleSettingsChanged()
 
 void MainWindowView::refresh()
 {
+    emit initStarted();
+
     available_packages_column.data()->clear();
     installed_packages_column.data()->clear();
     available_packages_column.data()->clear();

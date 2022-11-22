@@ -27,15 +27,10 @@ class MainWindowView;
 class MainWindow : public KXmlGuiWindow
 {
     Q_OBJECT
-public:
-    /**
-     * Default Constructor
-     */
-    MainWindow();
 
-    /**
-     * Default Destructor
-     */
+public:
+
+    MainWindow();
     ~MainWindow() override;
 
 private Q_SLOTS:
@@ -48,10 +43,10 @@ private Q_SLOTS:
      * Open the settings dialog
      */
     void settingsConfigure();
+    void enableActions();
+    void disableActions();
 
 private:
-    // this is the name of the root widget inside our Ui file
-    // you can rename it in designer and then change it here
     Ui::Settings m_settings;
     QAction* m_updateAction;
     QAction* m_refreshAction;

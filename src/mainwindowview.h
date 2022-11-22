@@ -55,6 +55,8 @@ public Q_SLOTS:
 
 signals:
     void operationsAmountIncreased();
+    void initStarted();
+    void initEnded();
 
 private:
     void connectSignals();
@@ -63,6 +65,7 @@ private:
     void connectSignalsForUpdatedPackages();
     void hideWidgets();
     void init();
+    void checkSpinningVisibility();
 
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here

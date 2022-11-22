@@ -21,7 +21,6 @@ MainWindow::MainWindow()
 {
     mainWindowView = new MainWindowView(process, this);
     setCentralWidget(mainWindowView);
-
     //actionCollection()->setDefaultShortcut(updateAction, Qt::CTRL + Qt::Key_U);
 
     KActionCollection* actionCollection = this->actionCollection();
@@ -35,6 +34,8 @@ MainWindow::MainWindow()
     m_refreshAction->setText(i18nc("@action", "Refresh"));
     m_refreshAction->setIcon(QIcon::fromTheme(QStringLiteral("refresh")));
     connect(m_refreshAction, &QAction::triggered, mainWindowView, &MainWindowView::refresh);
+    connect(mainWindowView, &MainWindowView::initStarted, this, &MainWindow::disableActions);
+    connect(mainWindowView, &MainWindowView::initEnded, this, &MainWindow::enableActions);
 
     // action - AUR part:  list of flags used to manage AUR packages
     m_searchAction = actionCollection->addAction(QStringLiteral("search"));
@@ -80,6 +81,8 @@ MainWindow::MainWindow()
     m_printVCSPackagesAction->setIcon(QIcon::fromTheme(QStringLiteral("installed_vcs_packages")));
     connect(m_printVCSPackagesAction, &QAction::triggered, this, [this]() { process->run(Process::Task::PrintVCSPackages); }, Qt::AutoConnection);
 
+    disableActions();
+
     KStandardAction::openNew(this, SLOT(fileNew()), actionCollection);
     KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection);
     KStandardAction::preferences(this, SLOT(settingsConfigure()), actionCollection);
@@ -89,8 +92,33 @@ MainWindow::MainWindow()
 }
 
 
-MainWindow::~MainWindow()
+void MainWindow::disableActions()
 {
+    m_updateAction->setDisabled(true);
+    m_refreshAction->setDisabled(true);
+    m_searchAction->setDisabled(true);
+    m_downloadAction->setDisabled(true);
+    m_updateAllAction->setDisabled(true);
+    m_updateMirrorsAction->setDisabled(true);
+    m_cleanAction->setDisabled(true);
+    m_undoAction->setDisabled(true);
+    m_printStatisticsAction->setDisabled(true);
+    m_printVCSPackagesAction->setDisabled(true);
+}
+
+
+void MainWindow::enableActions()
+{
+    m_updateAction->setDisabled(false);
+    m_refreshAction->setDisabled(false);
+    m_searchAction->setDisabled(false);
+    m_downloadAction->setDisabled(false);
+    m_updateAllAction->setDisabled(false);
+    m_updateMirrorsAction->setDisabled(false);
+    m_cleanAction->setDisabled(false);
+    m_undoAction->setDisabled(false);
+    m_printStatisticsAction->setDisabled(false);
+    m_printVCSPackagesAction->setDisabled(false);
 }
 
 
