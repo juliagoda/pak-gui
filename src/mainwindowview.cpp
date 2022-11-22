@@ -35,27 +35,45 @@
 MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *parent)
     : QWidget(parent),
       process(new_process),
-      available_packages_thread(new QThread),
-      installed_packages_thread(new QThread),
-      updated_packages_thread(new QThread),
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView))
 {
     m_ui.setupUi(this);
 
-    hideWidgets();
-
     generated_previews_map.insert(Process::Task::Install, m_ui.installed_preview_area);
     generated_previews_map.insert(Process::Task::Uninstall, m_ui.updated_preview_area);
     generated_previews_map.insert(Process::Task::Update, m_ui.available_preview_area);
 
-    // remember to add connect for situation when checkbox should be hidden again
     QObject::connect(this, &MainWindowView::operationsAmountIncreased, m_ui.progress_view_checkbox, &QCheckBox::show);
     QObject::connect(m_ui.progress_view_checkbox, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) progress_view.data()->show(); else progress_view.data()->hide(); });
     QObject::connect(m_ui.console_view_install, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.available_preview_area->show(); else m_ui.available_preview_area->hide(); });
     QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
     QObject::connect(m_ui.console_view_update, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.updated_preview_area->show(); else m_ui.updated_preview_area->hide(); });
 
+    QObject::connect(process.data(), &Process::generatedOutput, this, [this](Process::Task task, const QString& line) {
+        generated_previews_map.value(task)->findChild<QTextBrowser*>(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()))->append(line); }, Qt::AutoConnection);
+    QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
+    QObject::connect(process.data(), &Process::finished, available_packages_column.data(), [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
+
+    init();
+}
+
+
+MainWindowView::~MainWindowView()
+{
+
+}
+
+
+void MainWindowView::init()
+{
+    QThread* available_packages_thread(new QThread);
+    QThread* installed_packages_thread(new QThread);
+    QThread* updated_packages_thread(new QThread);
+
+    hideWidgets();
+
+    // remember to add connect for situation when checkbox should be hidden again
     QObject::connect(available_packages_thread, &QThread::started, [=]() {  available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit)); connectSignalsForAvailablePackages(); });
     QObject::connect(installed_packages_thread, &QThread::started, [=]() { installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit)); connectSignalsForInstalledPackages(); });
     QObject::connect(updated_packages_thread, &QThread::started, [=]() { updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit)); connectSignalsForUpdatedPackages(); });
@@ -66,30 +84,6 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
     available_packages_thread->start();
     installed_packages_thread->start();
     updated_packages_thread->start();
-
-    QObject::connect(process.data(), &Process::generatedOutput, this, [this](Process::Task task, const QString& line) {
-        generated_previews_map.value(task)->findChild<QTextBrowser*>(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()))->append(line); }, Qt::AutoConnection);
-    QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
-    QObject::connect(process.data(), &Process::finished, available_packages_column.data(), [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
-}
-
-
-MainWindowView::~MainWindowView()
-{
-    if (available_packages_thread->isRunning()) {
-        available_packages_thread->quit();
-        available_packages_thread->wait();
-    }
-
-    if (installed_packages_thread->isRunning()) {
-        installed_packages_thread->quit();
-        installed_packages_thread->wait();
-    }
-
-    if (updated_packages_thread->isRunning()) {
-        updated_packages_thread->quit();
-        updated_packages_thread->wait();
-    }
 }
 
 
@@ -241,8 +235,6 @@ void MainWindowView::refresh()
     installed_packages_column.data()->clear();
     available_packages_column.data()->clear();
 
-    available_packages_thread->start();
-    installed_packages_thread->start();
-    updated_packages_thread->start();
+    init();
 }
 

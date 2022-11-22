@@ -62,6 +62,7 @@ private:
     void connectSignalsForInstalledPackages();
     void connectSignalsForUpdatedPackages();
     void hideWidgets();
+    void init();
 
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here
@@ -70,9 +71,6 @@ private:
     QPointer<AvailablePackagesColumn> available_packages_column;
     QPointer<InstalledPackagesColumn> installed_packages_column;
     QPointer<UpdatedPackagesColumn> updated_packages_column;
-    QThread* available_packages_thread;
-    QThread* installed_packages_thread;
-    QThread* updated_packages_thread;
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
 };
