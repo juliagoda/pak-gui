@@ -34,14 +34,7 @@ class MainWindowView : public QWidget
     Q_OBJECT
 
 public:
-    /**
-     * Default Constructor
-     */
     explicit MainWindowView(QSharedPointer<Process> new_process, QWidget* parent);
-
-    /**
-     * Default Destructor
-     */
     ~MainWindowView() override;
 
 public Q_SLOTS:
@@ -54,17 +47,20 @@ public Q_SLOTS:
     void showStatisticsWindow();
     void downloadPackage();
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
+    void connectSignalsForAvailablePackages();
+    void connectSignalsForInstalledPackages();
+    void connectSignalsForUpdatedPackages();
 
 signals:
     void operationsAmountIncreased();
     void initStarted();
     void initEnded();
+    void availablePackagesFillEnded();
+    void installedPackagesFillEnded();
+    void packagesToUpdateFillEnded();
 
 private:
     void connectSignals();
-    void connectSignalsForAvailablePackages();
-    void connectSignalsForInstalledPackages();
-    void connectSignalsForUpdatedPackages();
     void hideWidgets();
     void init();
     void checkSpinningVisibility();

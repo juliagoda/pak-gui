@@ -39,8 +39,12 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView)),
       spinning_animation(nullptr)
+
 {
     m_ui.setupUi(this);
+    available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit));
+    installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit));
+    updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit));
 
     emit initStarted();
 
@@ -94,15 +98,15 @@ void MainWindowView::init()
     hideWidgets();
 
     // remember to add connect for situation when checkbox should be hidden again
-    QObject::connect(available_packages_thread, &QThread::started, [=]() {  available_packages_column = QPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit)); connectSignalsForAvailablePackages(); });
-    QObject::connect(installed_packages_thread, &QThread::started, [=]() { installed_packages_column = QPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit)); connectSignalsForInstalledPackages(); });
-    QObject::connect(updated_packages_thread, &QThread::started, [=]() { updated_packages_column = QPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit)); connectSignalsForUpdatedPackages(); });
-    QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread,
-                     &QThread::deleteLater);
-    QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread,
-                     &QThread::deleteLater);
-    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread,
-                     &QThread::deleteLater);
+    QObject::connect(available_packages_thread, &QThread::started, [this]() {  available_packages_column->fill(); emit availablePackagesFillEnded(); });
+    QObject::connect(installed_packages_thread, &QThread::started, [this]() { installed_packages_column->fill(); emit installedPackagesFillEnded(); });
+    QObject::connect(updated_packages_thread, &QThread::started, [this]() { updated_packages_column->fill(); emit packagesToUpdateFillEnded(); });
+    QObject::connect(this, &MainWindowView::availablePackagesFillEnded, this, &MainWindowView::connectSignalsForAvailablePackages);
+    QObject::connect(this, &MainWindowView::installedPackagesFillEnded, this, &MainWindowView::connectSignalsForInstalledPackages);
+    QObject::connect(this, &MainWindowView::packagesToUpdateFillEnded, this, &MainWindowView::connectSignalsForUpdatedPackages);
+    QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
+    QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread,  &QThread::deleteLater);
+    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
 
     available_packages_thread->start();
     installed_packages_thread->start();
@@ -141,7 +145,6 @@ void MainWindowView::connectSignalsForAvailablePackages()
     QObject::connect(m_ui.available_packages_list, &QListWidget::itemChanged, available_packages_column.data(), &AvailablePackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
     QObject::connect(available_packages_column.data(), &AvailablePackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.install_packages_button->setEnabled(has_checked_buttons); });
     QObject::connect(m_ui.install_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_install->clear(); process->run(Process::Task::Install, available_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
-
     checkSpinningVisibility();
 }
 
@@ -159,7 +162,6 @@ void MainWindowView::connectSignalsForInstalledPackages()
     QObject::connect(m_ui.installed_packages_list, &QListWidget::itemChanged, installed_packages_column.data(), &InstalledPackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
     QObject::connect(installed_packages_column.data(), &InstalledPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.uninstall_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
     QObject::connect(m_ui.uninstall_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_uninstall->clear(); process->run(Process::Task::Uninstall, installed_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
-
     checkSpinningVisibility();
 }
 
@@ -183,7 +185,6 @@ void MainWindowView::connectSignalsForUpdatedPackages()
     QObject::connect(m_ui.packages_to_update_list, &QListWidget::itemChanged, updated_packages_column.data(), &UpdatedPackagesColumn::updateCheckedPackagesCounter, Qt::AutoConnection);
     QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.update_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
     QObject::connect(m_ui.update_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_update->clear(); process->run(Process::Task::Update, updated_packages_column.data()->collectCheckedPackages()); }, Qt::AutoConnection);
-
     checkSpinningVisibility();
 }
 
@@ -249,6 +250,7 @@ void MainWindowView::showStatisticsWindow()
     statistics->show();
 }
 
+
 void MainWindowView::downloadPackage()
 {
    QPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString()));
@@ -260,6 +262,7 @@ void MainWindowView::downloadPackage()
    automatic_installation->setNext(package_input)->setNext(paths_choice_input)->setNext(repos_choice_input);
    automatic_installation->handle();
 }
+
 
 void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status)
 {
@@ -306,6 +309,7 @@ void MainWindowView::handleSettingsChanged()
     // i18n : internationalization
     //  m_ui.templateLabel->setText(i18n("This project is %1 days old", pakGuiSettings::ageInDays()));
 }
+
 
 void MainWindowView::refresh()
 {

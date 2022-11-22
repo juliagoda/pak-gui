@@ -15,7 +15,7 @@
 AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
     PackagesColumn(new_list_widget, new_search_lineedit)
 {
-   fill();
+
 }
 
 
