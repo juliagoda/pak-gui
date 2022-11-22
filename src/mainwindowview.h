@@ -49,6 +49,8 @@ public Q_SLOTS:
     void switchColors();
     void handleSettingsChanged();
     void generatePreview(Process::Task task);
+    void showAnimation();
+    void stopAnimation();
     void showStatisticsWindow();
     void downloadPackage();
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
@@ -76,4 +78,5 @@ private:
     QPointer<UpdatedPackagesColumn> updated_packages_column;
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
+    QSharedPointer<QMovie> spinning_animation;
 };

@@ -3,5 +3,6 @@
         <file>icons/app/24-apps-pak-gui.png</file>
         <file>icons/app/32-apps-pak-gui.png</file>
         <file>waiting.gif</file>
+        <file>waiting-small.gif</file>
     </qresource>
 </RCC>

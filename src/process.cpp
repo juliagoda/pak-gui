@@ -1,6 +1,7 @@
 #include "process.h"
-#include "qmessagebox.h"
+#include "outputfilter.h"
 
+#include <QMessageBox>
 #include <QDir>
 #include <QSharedPointer>
 #include <QProcess>
@@ -19,7 +20,7 @@ Process::Process() :
     messages_map.insert(Task::Install, {tr("Installation"), tr("install packages?")});
     messages_map.insert(Task::Update, {tr("Update"), tr("update mirrors?")});
 
-    commands_map.insert(Task::Clean, QStringList() << "-c" << "pak -Sc");
+    commands_map.insert(Task::Clean, QStringList() << "-c" << "y | pak -Sc");
     commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << "pak -m");
     commands_map.insert(Task::UpdateAll, QStringList() << "-c" << "pak -Su");
     commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << "pak --vcs");
@@ -47,7 +48,7 @@ void Process::run(Task new_task,
         while (pak_s.data()->canReadLine())
         {
             QString line = pak_s.data()->readLine();
-            emit generatedOutput(new_task, line);
+            emit generatedOutput(new_task, OutputFilter::filteredOutput(line));
         }});
 
     QObject::connect(pak_s.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),

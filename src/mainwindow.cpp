@@ -91,6 +91,11 @@ MainWindow::MainWindow()
     setXMLFile("pak-gui.rc");
 }
 
+MainWindow::~MainWindow()
+{
+
+}
+
 
 void MainWindow::disableActions()
 {

@@ -37,7 +37,8 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
     : QWidget(parent),
       process(new_process),
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
-      progress_view(QSharedPointer<ProgressView>(new ProgressView))
+      progress_view(QSharedPointer<ProgressView>(new ProgressView)),
+      spinning_animation(nullptr)
 {
     m_ui.setupUi(this);
 
@@ -56,7 +57,9 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
     QObject::connect(process.data(), &Process::generatedOutput, this, [this](Process::Task task, const QString& line) {
         generated_previews_map.value(task)->findChild<QTextBrowser*>(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()))->append(line); }, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
+    QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::showAnimation);
     QObject::connect(process.data(), &Process::finished, available_packages_column.data(), [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
+    QObject::connect(process.data(), &Process::finished, this, &MainWindowView::stopAnimation);
 
     init();
 }
@@ -82,11 +85,11 @@ void MainWindowView::init()
     m_ui.installation_spinning_widget->show();
     m_ui.update_spinning_widget->show();
 
-    QMovie* movie = new QMovie(":/waiting.gif", QByteArray(), this);
-    m_ui.installation_spinning_label->setMovie(movie);
-    m_ui.remove_spinning_label->setMovie(movie);
-    m_ui.update_spinning_label->setMovie(movie);
-    movie->start();
+    spinning_animation.reset(new QMovie(":/waiting.gif"), &QObject::deleteLater);
+    m_ui.installation_spinning_label->setMovie(spinning_animation.get());
+    m_ui.remove_spinning_label->setMovie(spinning_animation.get());
+    m_ui.update_spinning_label->setMovie(spinning_animation.get());
+    spinning_animation->start();
 
     hideWidgets();
 
@@ -217,6 +220,23 @@ void MainWindowView::generatePreview(Process::Task task)
 
    emit operationsAmountIncreased();
 }
+
+
+void MainWindowView::showAnimation()
+{
+    spinning_animation.reset(new QMovie(":/waiting-small.gif"), &QObject::deleteLater);
+    m_ui.actions_spinning_animation_label->setMovie(spinning_animation.get());
+    m_ui.actions_spinning_animation_label->show();
+    spinning_animation->start();
+}
+
+
+void MainWindowView::stopAnimation()
+{
+    m_ui.actions_spinning_animation_label->hide();
+    spinning_animation->stop();
+}
+
 
 void MainWindowView::showStatisticsWindow()
 {

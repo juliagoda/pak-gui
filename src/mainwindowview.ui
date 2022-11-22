@@ -68,6 +68,16 @@
         </spacer>
        </item>
        <item>
+        <widget class="QLabel" name="actions_spinning_animation_label">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="progress_view_checkbox">
          <property name="text">
           <string>View progress</string>

@@ -4,9 +4,8 @@
 #include <QRegExp>
 #include <QtConcurrent/QtConcurrent>
 
-OutputFilter::OutputFilter() :
-    filtersList(initializeList())
-{}
+QList<QRegExp> OutputFilter::filtersList = initializeList();
+
 
 QString OutputFilter::filteredOutput(QString& text_output)
 {
@@ -35,6 +34,7 @@ QList<QRegExp> OutputFilter::initializeList()
     filters.append(QRegExp("\\[[0-9]{2}m"));
     filters.append(QRegExp("\\[0m"));
     filters.append(QRegExp("\\[1;[0-9]{2}m"));
+    filters.append(QRegExp(""));
 
     return filters;
 }
