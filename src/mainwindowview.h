@@ -69,9 +69,9 @@ private:
     // you can rename it in designer and then change it here
     Ui::MainWindowView m_ui;
     QSharedPointer<Process> process;
-    QPointer<AvailablePackagesColumn> available_packages_column;
-    QPointer<InstalledPackagesColumn> installed_packages_column;
-    QPointer<UpdatedPackagesColumn> updated_packages_column;
+    QSharedPointer<AvailablePackagesColumn> available_packages_column;
+    QSharedPointer<InstalledPackagesColumn> installed_packages_column;
+    QSharedPointer<UpdatedPackagesColumn> updated_packages_column;
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
     QSharedPointer<QMovie> spinning_animation;
