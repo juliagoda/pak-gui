@@ -33,12 +33,16 @@ int main(int argc, char **argv)
                           i18n("pak-gui"),
                           QStringLiteral("1.0"),
                           i18n("Pacman wrapper, AUR and POLAUR helper with Gui"),
-                          KAboutLicense::GPL,
-                          i18n("Copyright 2022, Jagoda \"juliagoda\" Górska"));
+                          KAboutLicense::GPL_V3,
+                          i18n("Copyright 2022, Jagoda \"juliagoda\" Górska"),
+                          QLatin1String(),
+                          QStringLiteral("https://github.com/juliagoda/pak-gui"),
+                          QStringLiteral("https://github.com/juliagoda/pak-gui/issues"));
 
     aboutData.addAuthor(i18n("Jagoda \"juliagoda\" Górska"),i18n("Author"), QStringLiteral("juliagoda.pl@protonmail.com"));
     aboutData.setOrganizationDomain("CachyOS.github.com");
     aboutData.setDesktopFileName(QStringLiteral("com.github.CachyOS.pak-gui"));
+    aboutData.addLicenseTextFile("LICENSE");
 
     KAboutData::setApplicationData(aboutData);
     application.setWindowIcon(QIcon::fromTheme(QStringLiteral("pak-gui")));

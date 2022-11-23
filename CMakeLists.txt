@@ -15,7 +15,7 @@ set(QT_MIN_VERSION "5.12.8")
 set(KF_MIN_VERSION "5.68.0")
 
 find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/packages")
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
@@ -26,7 +26,36 @@ include(ECMQtDeclareLoggingCategory)
 include(FeatureSummary)
 
 option(RUN_TESTS "Allow tests for classes" OFF)
+find_package(pak REQUIRED)
+find_package(pacman-contrib REQUIRED)
+find_package(kdesu REQUIRED)
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets Charts)
+
+find_package(Git)
+find_package(asp)
+find_package(auracle-git)
+find_package(namcap)
+find_package(reflector)
+find_package(subversion)
+find_package(fzf)
+find_package(downgrade)
+find_package(libnotify)
+
+if (ASP_FOUND)
+  add_definitions(-DASP_FOUND)
+endif()
+
+if (AURACLE_GIT_FOUND)
+    add_definitions(-DAURACLE_GIT_FOUND)
+endif()
+
+if (REFLECTOR_FOUND)
+    add_definitions(-DREFLECTOR_FOUND)
+endif()
+
+if (GIT_FOUND)
+    add_definitions(-DGIT_FOUND)
+endif()
 
 if(RUN_TESTS)
     message("Tests enabled")
