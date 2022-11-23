@@ -26,7 +26,7 @@ public:
 
     Process();
     void run(Task new_task,
-             QStringList& new_checked_packages = QStringList());
+             QStringList new_checked_packages = QStringList());
 
 signals:
     void finished(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);

@@ -29,7 +29,7 @@ Process::Process() :
 }
 
 void Process::run(Task new_task,
-                  QStringList& new_checked_packages)
+                  QStringList new_checked_packages)
 {
     int answer = QMessageBox::information(new QWidget, messages_map.value(new_task).first,
                                           questionForm(new_checked_packages, new_task),
