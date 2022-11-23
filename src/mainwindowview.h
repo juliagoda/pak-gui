@@ -20,6 +20,7 @@
 #include <QPointer>
 #include <QThread>
 #include <QMap>
+#include <QMovie>
 
 /**
  * This class serves as the main window for kde-example.  It handles the

@@ -9,19 +9,17 @@
 
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
-#include "qmovie.h"
 #include "updatedpackagescolumn.h"
 #include "pakGuiSettings.h"
-#include "qcheckbox.h"
-#include "qnamespace.h"
-#include "qpushbutton.h"
-#include "qscopedpointer.h"
 #include "statistics.h"
 #include "statisticscommandparser.h"
 #include "process.h"
 #include "packagedownloader.h"
 
 #include <KLocalizedString>
+#include <QCheckBox>
+#include <QScopedPointer>
+#include <QPushButton>
 #include <QProcess>
 #include <QPointer>
 #include <QScopedPointer>
@@ -30,7 +28,6 @@
 #include <KMainWindow>
 #include <QChartView>
 #include <QPieSeries>
-
 
 
 MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *parent)
@@ -97,7 +94,6 @@ void MainWindowView::init()
 
     hideWidgets();
 
-    // remember to add connect for situation when checkbox should be hidden again
     QObject::connect(available_packages_thread, &QThread::started, [this]() {  available_packages_column->fill(); emit availablePackagesFillEnded(); });
     QObject::connect(installed_packages_thread, &QThread::started, [this]() { installed_packages_column->fill(); emit installedPackagesFillEnded(); });
     QObject::connect(updated_packages_thread, &QThread::started, [this]() { updated_packages_column->fill(); emit packagesToUpdateFillEnded(); });

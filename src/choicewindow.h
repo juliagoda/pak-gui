@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QString>
 #include <QStringList>
+#include <QMovie>
 
 
 class ChoiceWindow : public QDialog
@@ -20,14 +21,18 @@ public:
 public Q_SLOTS:
     void toggleOkButton(int new_index);
     void fillComboBox(QString& output);
+    void stopAnimation();
 
 signals:
     bool choiceDefined(int new_index);
+    void filledOptionsBox();
 
 private:
+    void startAnimation();
     void init();
 
     Ui::ChoiceWindow m_ui;
     QString title;
+    QSharedPointer<QMovie> spinning_animation;
 };
 

@@ -23,6 +23,9 @@ Q_SIGNALS:
     void continuePathsRetrieve(QString& output);
     void continueReposRetrieve(QString& output);
 
+private Q_SLOTS:
+    void validateFinishedOutput(int exit_code);
+
 private:
     bool validate();
 
@@ -30,5 +33,6 @@ private:
     QString package_name;
     QString command;
     QString result_output;
+    QStringList error_lines;
 };
 

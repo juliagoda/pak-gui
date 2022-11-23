@@ -89,7 +89,7 @@ public:
     void handle() override
     {
         QPointer<PackageInputWindow> package_input_window = new PackageInputWindow();
-        connect(package_input_window.data(), &PackageInputWindow::packageNameInserted, [this](const QString& new_package_name)
+        connect(package_input_window.data(), &PackageInputWindow::packageNameInserted, [this, &package_input_window](const QString& new_package_name)
         {
             download_command_parser->updatePackageName(new_package_name);
             PackageDownloader::handle();
@@ -118,7 +118,7 @@ public:
         QPointer<ChoiceWindow> choice_window = new ChoiceWindow(tr("Choose path for package save"));
         connect(download_command_parser, &DownloadCommandParser::continuePathsRetrieve, choice_window, &ChoiceWindow::fillComboBox);
         download_command_parser->start();
-        connect(choice_window.data(), &ChoiceWindow::choiceDefined, [this](int new_index)
+        connect(choice_window.data(), &ChoiceWindow::choiceDefined, [this, &choice_window](int new_index)
         {
             download_command_parser->inputAnswer(QString::number(new_index));
             PackageDownloader::handle();
@@ -146,7 +146,7 @@ public:
     {
         QPointer<ChoiceWindow> choice_window = new ChoiceWindow(tr("Choose repo for package download"));
         connect(download_command_parser, &DownloadCommandParser::continueReposRetrieve, choice_window, &ChoiceWindow::fillComboBox);
-        connect(choice_window.data(), &ChoiceWindow::choiceDefined, [this](int new_index)
+        connect(choice_window.data(), &ChoiceWindow::choiceDefined, [this, &choice_window](int new_index)
         {
             download_command_parser->inputAnswer(QString::number(new_index));
         });
