@@ -29,19 +29,10 @@ class MainWindow : public KXmlGuiWindow
     Q_OBJECT
 
 public:
-
     MainWindow();
     ~MainWindow() override;
 
 private Q_SLOTS:
-    /**
-     * Create a new window
-     */
-    void fileNew();
-
-    /**
-     * Open the settings dialog
-     */
     void settingsConfigure();
     void enableActions();
     void disableActions();
@@ -50,7 +41,6 @@ private:
     Ui::Settings m_settings;
     QAction* m_updateAction;
     QAction* m_refreshAction;
-    QAction* m_searchAction;
     QAction* m_downloadAction;
     QAction* m_printStatisticsAction;
     QAction* m_printVCSPackagesAction;

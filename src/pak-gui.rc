@@ -8,30 +8,25 @@
 <MenuBar>
     <Menu name="Actions">
       <text>A&amp;ctions</text>
-      <Action name="update_all_packages"/>
-      <Action name="update_mirrors"/>
+      <Action name="updateAllPackages"/>
+      <Action name="updateMirrors"/>
+      <Action name="update"/>
       <Action name="clean"/>
-      <Action name="undo"/>
+      <Action name="refresh"/>
+      <Action name="download"/>
     </Menu>
     <Menu name="Print">
       <text>P&amp;rint</text>
       <Action name="statistics"/>
-      <Action name="POLAUR_News"/>
-      <Action name="installed_vcs_packages"/>
+      <Action name="installedVcsPackages"/>
     </Menu>
 </MenuBar>
 
 <ToolBar name="mainToolBar" noMerge="1">
     <text>Main Toolbar</text>
-    <Action name="switch_action"/>
-    <Separator/>
-    <Action name="options_configure"/>
-    <Separator/>
     <Action name="update"/>
     <Separator/>
     <Action name="refresh"/>
-    <Separator/>
-    <Action name="search"/>
     <Separator/>
     <Action name="download"/>
 </ToolBar>
