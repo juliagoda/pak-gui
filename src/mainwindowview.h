@@ -42,14 +42,17 @@ public Q_SLOTS:
     void switchColors();
     void handleSettingsChanged();
     void generatePreview(Process::Task task);
-    void showAnimation();
-    void stopAnimation();
     void showStatisticsWindow();
     void downloadPackage();
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
+
+private Q_SLOTS:
+    void showAnimation();
+    void stopAnimation();
     void connectSignalsForAvailablePackages();
     void connectSignalsForInstalledPackages();
     void connectSignalsForUpdatedPackages();
+    void generateOutput(Process::Task task, const QString& line);
 
 signals:
     void operationsAmountIncreased();

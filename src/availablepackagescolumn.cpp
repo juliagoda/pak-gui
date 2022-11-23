@@ -33,7 +33,7 @@ QStringList AvailablePackagesColumn::collectCheckedPackages()
     {
         SiPackage* item = dynamic_cast<SiPackage*>(list_widget->item(i));
 
-        if (item->checkState() == Qt::Checked)
+        if (item && item->checkState() == Qt::Checked)
             checked_packages.append(item->getName());
     }
 

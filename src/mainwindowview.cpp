@@ -53,13 +53,13 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
     generated_previews_map.insert(Process::Task::Update, m_ui.available_preview_area);
 
     QObject::connect(this, &MainWindowView::operationsAmountIncreased, m_ui.progress_view_checkbox, &QCheckBox::show);
+    QObject::connect(progress_view.data(), &QDialog::rejected, [this](){ m_ui.progress_view_checkbox->setChecked(false); });
     QObject::connect(m_ui.progress_view_checkbox, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) progress_view.data()->show(); else progress_view.data()->hide(); });
     QObject::connect(m_ui.console_view_install, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.available_preview_area->show(); else m_ui.available_preview_area->hide(); });
     QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
     QObject::connect(m_ui.console_view_update, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.updated_preview_area->show(); else m_ui.updated_preview_area->hide(); });
 
-    QObject::connect(process.data(), &Process::generatedOutput, this, [this](Process::Task task, const QString& line) {
-        generated_previews_map.value(task)->findChild<QTextBrowser*>(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()))->append(line); }, Qt::AutoConnection);
+    QObject::connect(process.data(), &Process::generatedOutput, this, &MainWindowView::generateOutput, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::showAnimation);
     QObject::connect(process.data(), &Process::finished, available_packages_column.data(), [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
@@ -211,6 +211,9 @@ void MainWindowView::generatePreview(Process::Task task)
    scroll_area_widget_contents->setGeometry(QRect(0, 0, 358, 200));
    QVBoxLayout* vertical_layout2 = new QVBoxLayout(scroll_area_widget_contents);
    QTextBrowser* text_browser_tab = new QTextBrowser(scroll_area_widget_contents);
+   text_browser_tab->setStyleSheet("color: white; background-color: black;"
+                                   "font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;"
+                                   "padding: 3px;");
    text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()));
 
    vertical_layout2->addWidget(text_browser_tab);
@@ -264,6 +267,29 @@ void MainWindowView::downloadPackage()
 }
 
 
+void MainWindowView::generateOutput(Process::Task task, const QString& line)
+{
+    switch(task)
+    {
+      case Process::Task::Install:
+        m_ui.text_browser_tab_install->append(line);
+      break;
+
+      case Process::Task::Update:
+        m_ui.text_browser_tab_update->append(line);
+      break;
+
+      case Process::Task::Uninstall:
+        m_ui.text_browser_tab_uninstall->append(line);
+      break;
+
+      default:
+        generated_previews_map.value(task)->findChild<QTextBrowser*>(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()))->append(line);
+      break;
+    }
+}
+
+
 void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status)
 {
     switch(task)
@@ -283,6 +309,12 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
       default:
         progress_view.data()->removeProgressView(generated_previews_map.value(task));
         generated_previews_map.remove(task);
+        if (progress_view.data()->tabsCount() == 0)
+        {
+            progress_view.data()->close();
+            m_ui.progress_view_checkbox->hide();
+            QMessageBox::information(this, i18n("All processes ended"), i18n("All processes have been completed."));
+        }
       break;
     }
 }

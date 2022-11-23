@@ -3,8 +3,6 @@
 #include <QDebug>
 
 
-
-
 ProgressView::ProgressView(QDialog* parent)
     : QDialog(parent)
 {
@@ -30,8 +28,10 @@ void ProgressView::removeProgressView(QWidget* progress_view)
     }
 
     m_ui.progress_view_tabwidget->removeTab(index);
-    qDeleteAll(progress_view->findChildren<QWidget*>(QString(), Qt::FindChildrenRecursively));
+}
 
-    if (progress_view != nullptr)
-        qWarning() << "progress view's instance titled \"" << progress_view->objectName() << "\" couldn't be deleted";
+
+int ProgressView::tabsCount()
+{
+    return m_ui.progress_view_tabwidget->count();
 }

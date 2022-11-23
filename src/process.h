@@ -26,7 +26,7 @@ public:
 
     Process();
     void run(Task new_task,
-             QStringList new_checked_packages = QStringList());
+             QStringList& new_checked_packages = QStringList());
 
 signals:
     void finished(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
@@ -37,6 +37,7 @@ private:
     void updateMap(QStringList& checked_packages);
     void prepareMapForNextTask();
     void emitSideTask(Process::Task task);
+    QString questionForm(QStringList& new_checked_packages, Task new_task);
 
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;

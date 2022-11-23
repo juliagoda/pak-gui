@@ -29,7 +29,7 @@ QStringList InstalledPackagesColumn::collectCheckedPackages()
     {
         QiPackage* item = dynamic_cast<QiPackage*>(list_widget->item(i));
 
-        if (item->checkState() == Qt::Checked)
+        if (item && item->checkState() == Qt::Checked)
             checked_packages.append(item->getName());
     }
 

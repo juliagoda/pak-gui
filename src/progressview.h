@@ -13,6 +13,7 @@ public:
 
     void addProgressView(QWidget* progress_view);
     void removeProgressView(QWidget* progress_view);
+    int tabsCount();
 
 private:
     Ui::ProgressView m_ui;

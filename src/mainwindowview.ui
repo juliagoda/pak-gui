@@ -293,7 +293,14 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
                <item>
-                <widget class="QTextBrowser" name="text_browser_tab_uninstall"/>
+                <widget class="QTextBrowser" name="text_browser_tab_uninstall">
+                 <property name="styleSheet">
+                  <string notr="true">color: white;
+background-color: black;
+font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
+padding: 3px;</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -584,7 +591,14 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
                <item>
-                <widget class="QTextBrowser" name="text_browser_tab_update"/>
+                <widget class="QTextBrowser" name="text_browser_tab_update">
+                 <property name="styleSheet">
+                  <string notr="true">color: white;
+background-color: black;
+font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
+padding: 3px;</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -875,7 +889,14 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
                <item>
-                <widget class="QTextBrowser" name="text_browser_tab_install"/>
+                <widget class="QTextBrowser" name="text_browser_tab_install">
+                 <property name="styleSheet">
+                  <string notr="true">color: white;
+background-color: black;
+font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
+padding: 3px;</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
