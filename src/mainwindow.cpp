@@ -7,9 +7,11 @@
 // application headers
 #include "mainwindow.h"
 
+#include "actionsaccesschecker.h"
 #include "mainwindowview.h"
 
 #include <QAction>
+#include <QStatusBar>
 
 // KF headers
 #include <KActionCollection>
@@ -17,12 +19,12 @@
 #include <KLocalizedString>
 #include <KStandardAction>
 
-// within statusbar (or other place) add diodes (green for available packages places - (AUR for example after package detection), red otherwise)
 MainWindow::MainWindow()
     : KXmlGuiWindow(),
-      process(QSharedPointer<Process>(new Process))
+      process(QSharedPointer<Process>(new Process)),
+      actions_access_checker(new ActionsAccessChecker)
 {
-    mainWindowView = new MainWindowView(process, this);
+    mainWindowView = new MainWindowView(process, actions_access_checker, this);
     setCentralWidget(mainWindowView);
 
     KActionCollection* actionCollection = this->actionCollection();

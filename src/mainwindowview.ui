@@ -110,8 +110,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>260</width>
-            <height>702</height>
+            <width>255</width>
+            <height>709</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -146,6 +146,7 @@
               <widget class="QLabel" name="installed_packages_label">
                <property name="font">
                 <font>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -287,8 +288,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>240</width>
-                <height>210</height>
+                <width>239</width>
+                <height>204</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -408,8 +409,8 @@ padding: 3px;</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>274</width>
-            <height>571</height>
+            <width>272</width>
+            <height>527</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -444,6 +445,7 @@ padding: 3px;</string>
               <widget class="QLabel" name="packages_to_update_label">
                <property name="font">
                 <font>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -585,8 +587,8 @@ padding: 3px;</string>
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>254</width>
-                <height>166</height>
+                <width>256</width>
+                <height>143</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -706,8 +708,8 @@ padding: 3px;</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>274</width>
-            <height>571</height>
+            <width>272</width>
+            <height>527</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -742,6 +744,7 @@ padding: 3px;</string>
               <widget class="QLabel" name="accessible_packages">
                <property name="font">
                 <font>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -883,8 +886,8 @@ padding: 3px;</string>
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>254</width>
-                <height>166</height>
+                <width>256</width>
+                <height>143</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -996,10 +999,86 @@ padding: 3px;</string>
        </item>
       </layout>
      </item>
+     <item>
+      <widget class="QWidget" name="leds_widget" native="true">
+       <layout class="QVBoxLayout" name="verticalLayout_9">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <property name="leftMargin">
+           <number>2</number>
+          </property>
+          <property name="topMargin">
+           <number>2</number>
+          </property>
+          <property name="rightMargin">
+           <number>2</number>
+          </property>
+          <property name="bottomMargin">
+           <number>2</number>
+          </property>
+          <item>
+           <widget class="KLed" name="repos_kled">
+            <property name="state">
+             <enum>KLed::On</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="repo_led_label">
+            <property name="text">
+             <string>Repositories</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="KLed" name="aur_kled"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="aur_led_label">
+            <property name="text">
+             <string>AUR</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="KLed" name="polaur_kled"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="polaur_led_label">
+            <property name="text">
+             <string>POLAUR</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_14">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KLed</class>
+   <extends>QWidget</extends>
+   <header>kled.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

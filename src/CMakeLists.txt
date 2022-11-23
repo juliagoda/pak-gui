@@ -39,7 +39,9 @@ target_sources(pak-gui PRIVATE
     outputfilter.cpp
     outputfilter.h
     sorter.cpp
-    sorter.h)
+    sorter.h
+    actionsaccesschecker.cpp
+    actionsaccesschecker.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
@@ -53,6 +55,7 @@ target_link_libraries(pak-gui
     Qt5::Widgets
     Qt5::Charts
     Qt5::Concurrent
+    Qt5::Network
 )
 
 ki18n_wrap_ui(pak-gui

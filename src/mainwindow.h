@@ -12,6 +12,7 @@
 
 #include "ui_settings.h"
 #include "process.h"
+#include "actionsaccesschecker.h"
 #include "pakGuiSettings.h"
 
 class MainWindowView;
@@ -50,6 +51,7 @@ private:
     QAction* m_undoAction;
     MainWindowView* mainWindowView;
     QSharedPointer<Process> process;
+    QSharedPointer<ActionsAccessChecker> actions_access_checker;
 };
 
 #endif // MAINWINDOW_H

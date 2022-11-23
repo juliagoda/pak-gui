@@ -17,6 +17,7 @@
 #include "packagedownloader.h"
 
 #include <KLocalizedString>
+#include <KLed>
 #include <QCheckBox>
 #include <QScopedPointer>
 #include <QPushButton>
@@ -30,9 +31,12 @@
 #include <QPieSeries>
 
 
-MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *parent)
+MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
+                               QSharedPointer<ActionsAccessChecker> new_actions_access_checker,
+                               QWidget *parent)
     : QWidget(parent),
       process(new_process),
+      actions_access_checker(new_actions_access_checker),
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView)),
       spinning_animation(nullptr)
@@ -49,6 +53,9 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
     generated_previews_map.insert(Process::Task::Uninstall, m_ui.updated_preview_area);
     generated_previews_map.insert(Process::Task::Update, m_ui.available_preview_area);
 
+    QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::internetAccessChanged, [this](bool is_online){ is_online ? m_ui.repos_kled->on() : m_ui.repos_kled->off();});
+    QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::auracleAccessChanged, [this](bool is_auracle_installed){ is_auracle_installed && actions_access_checker->isOnline() ? m_ui.aur_kled->on() : m_ui.aur_kled->off();});
+    QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::gitAccessChanged, [this](bool is_git_installed){ is_git_installed && actions_access_checker->isOnline() ? m_ui.polaur_kled->on() : m_ui.polaur_kled->off();});
     QObject::connect(this, &MainWindowView::operationsAmountIncreased, m_ui.progress_view_checkbox, &QCheckBox::show);
     QObject::connect(progress_view.data(), &QDialog::rejected, [this](){ m_ui.progress_view_checkbox->setChecked(false); });
     QObject::connect(m_ui.progress_view_checkbox, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) progress_view.data()->show(); else progress_view.data()->hide(); });
@@ -63,6 +70,7 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process, QWidget *par
     QObject::connect(process.data(), &Process::finished, this, &MainWindowView::stopAnimation);
 
     init();
+    actions_access_checker->update();
 }
 
 
@@ -341,6 +349,7 @@ void MainWindowView::handleSettingsChanged()
 
 void MainWindowView::refresh()
 {
+    actions_access_checker->update();
     emit initStarted();
 
     available_packages_column.data()->clear();

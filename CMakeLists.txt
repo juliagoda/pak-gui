@@ -70,7 +70,7 @@ find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
     I18n
     XmlGui)
 
-find_package(Qt5 REQUIRED COMPONENTS Concurrent)
+find_package(Qt5 REQUIRED COMPONENTS Concurrent Network)
 
 install(PROGRAMS org.cachyos.pak-gui.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 

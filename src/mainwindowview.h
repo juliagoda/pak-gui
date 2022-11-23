@@ -14,6 +14,7 @@
 #include "updatedpackagescolumn.h"
 #include "progressview.h"
 #include "process.h"
+#include "actionsaccesschecker.h"
 
 #include <QStringList>
 #include <QSharedPointer>
@@ -35,7 +36,9 @@ class MainWindowView : public QWidget
     Q_OBJECT
 
 public:
-    explicit MainWindowView(QSharedPointer<Process> new_process, QWidget* parent);
+    explicit MainWindowView(QSharedPointer<Process> new_process,
+                            QSharedPointer<ActionsAccessChecker> new_actions_access_checker,
+                            QWidget* parent);
     ~MainWindowView() override;
 
 public Q_SLOTS:
@@ -73,6 +76,7 @@ private:
     // you can rename it in designer and then change it here
     Ui::MainWindowView m_ui;
     QSharedPointer<Process> process;
+    QSharedPointer<ActionsAccessChecker> actions_access_checker;
     QSharedPointer<AvailablePackagesColumn> available_packages_column;
     QSharedPointer<InstalledPackagesColumn> installed_packages_column;
     QSharedPointer<UpdatedPackagesColumn> updated_packages_column;
