@@ -43,8 +43,6 @@ public:
 
 public Q_SLOTS:
     void refresh();
-    void switchColors();
-    void handleSettingsChanged();
     void generatePreview(Process::Task task);
     void showStatisticsWindow();
     void downloadPackage();
@@ -76,8 +74,6 @@ private:
     void init();
     void checkSpinningVisibility();
 
-    // this is the name of the root widget inside our Ui file
-    // you can rename it in designer and then change it here
     Ui::MainWindowView m_ui;
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;

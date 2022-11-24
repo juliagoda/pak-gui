@@ -43,7 +43,7 @@
               </widget>
              </item>
              <item>
-              <widget class="KColorButton" name="background_color_button"/>
+              <widget class="KColorButton" name="kcfg_background_preview_color"/>
              </item>
             </layout>
            </item>
@@ -59,7 +59,7 @@
             </widget>
            </item>
            <item>
-            <widget class="KColorButton" name="font_color_button"/>
+            <widget class="KColorButton" name="kcfg_preview_font_color"/>
            </item>
           </layout>
          </item>
@@ -73,7 +73,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QFontComboBox" name="font_family_combobox"/>
+            <widget class="QFontComboBox" name="kcfg_preview_font_family"/>
            </item>
           </layout>
          </item>
@@ -87,7 +87,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="font_size_spinbox"/>
+            <widget class="QSpinBox" name="kcfg_preview_font_size"/>
            </item>
           </layout>
          </item>

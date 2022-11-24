@@ -158,4 +158,5 @@ void MainWindow::enableActions()
 void MainWindow::settingsConfigure()
 {
     QPointer<Settings> settings_window = new Settings(this);
+    settings_window->show();
 }

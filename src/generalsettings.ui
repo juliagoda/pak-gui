@@ -43,7 +43,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="operations_history_store_days"/>
+              <widget class="QSpinBox" name="kcfg_history_store_time_in_days"/>
              </item>
              <item>
               <widget class="QLabel" name="label_2">
@@ -80,7 +80,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="operations_history_store_size"/>
+              <widget class="QSpinBox" name="kcfg_history_file_size_limit_in_Mb"/>
              </item>
              <item>
               <widget class="QLabel" name="label_4">
@@ -117,7 +117,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="operations_refresh_hours"/>
+              <widget class="QSpinBox" name="kcfg_refresh_interval_in_hours"/>
              </item>
              <item>
               <widget class="QLabel" name="label_6">
@@ -127,7 +127,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="operations_refresh_minutes"/>
+              <widget class="QSpinBox" name="kcfg_refresh_interval_in_minutes"/>
              </item>
              <item>
               <widget class="QLabel" name="label_7">
@@ -164,7 +164,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="internet_reconnection_minutes"/>
+              <widget class="QSpinBox" name="kcfg_internet_reconnection_time_in_minutes"/>
              </item>
              <item>
               <widget class="QLabel" name="label_9">
@@ -201,7 +201,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="new_packages_to_update_check_days"/>
+              <widget class="QSpinBox" name="kcfg_update_check_time_in_days"/>
              </item>
              <item>
               <widget class="QLabel" name="label_11">
@@ -211,7 +211,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="new_packages_to_update_check_hours"/>
+              <widget class="QSpinBox" name="kcfg_update_check_time_in_hours"/>
              </item>
              <item>
               <widget class="QLabel" name="label_12">
@@ -221,7 +221,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="new_packages_to_update_check_minutes"/>
+              <widget class="QSpinBox" name="kcfg_update_check_time_in_minutes"/>
              </item>
              <item>
               <widget class="QLabel" name="label_13">
@@ -246,14 +246,14 @@
             </layout>
            </item>
            <item>
-            <widget class="QCheckBox" name="overwrite_full_history_file_checkbox">
+            <widget class="QCheckBox" name="kcfg_overwrite_full_history_file">
              <property name="text">
               <string>Overwrite operations history file (when full size)</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="minimalize_to_tray_checkbox">
+            <widget class="QCheckBox" name="kcfg_always_minimalize_to_tray">
              <property name="text">
               <string>Always minimalize to tray</string>
              </property>

@@ -4,18 +4,96 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name="pak-gui.rc"/>
-  <group name="Preferences">
-    <entry name="colorBackground" type="Color">
-	    <label>color of the background</label>
+  <group name="General">
+    <entry name="history_store_time_in_days" type="Int">
+	    <label></label>
+	    <default>0</default>
+    </entry>
+    <entry name="history_file_size_limit_in_Mb" type="Int">
+	    <label></label>
+	    <default>5</default>
+    </entry>
+    <entry name="refresh_interval_in_hours" type="Int">
+	    <label></label>
+	    <default>1</default>
+    </entry>
+    <entry name="refresh_interval_in_minutes" type="Int">
+	    <label></label>
+	    <default>30</default>
+    </entry>
+    <entry name="internet_reconnection_time_in_minutes" type="Int">
+	    <label></label>
+	    <default>1</default>
+    </entry>
+    <entry name="update_check_time_in_days" type="Int">
+	    <label></label>
+	    <default>0</default>
+    </entry>
+    <entry name="update_check_time_in_hours" type="Int">
+	    <label></label>
+	    <default>6</default>
+    </entry>
+    <entry name="update_check_time_in_minutes" type="Int">
+	    <label></label>
+	    <default>0</default>
+    </entry>
+    <entry name="overwrite_full_history_file" type="Bool">
+	    <label></label>
+	    <default>false</default>
+    </entry>
+    <entry name="always_minimalize_to_tray" type="Bool">
+	    <label></label>
+	    <default>false</default>
+    </entry>
+  </group>
+  <group name="ConsolesPreview">
+    <entry name="background_preview_color" type="Color">
+	    <label></label>
 	    <default>black</default>
     </entry>
-    <entry name="colorForeground" type="Color">
-	    <label>color of the foreground</label>
-	    <default>yellow</default>
+    <entry name="preview_font_color" type="Color">
+	    <label></label>
+	    <default>white</default>
     </entry>
-    <entry name="ageInDays" type="Int">
-	    <label>age of the project</label>
-	    <default>2</default>
+    <entry name="preview_font_family" type="String">
+	    <label></label>
+	    <default>Lucida Console</default>
+    </entry>
+    <entry name="preview_font_size" type="Int">
+	    <label></label>
+	    <default>15</default>
+    </entry>
+  </group>
+  <group name="PackageInfo">
+    <entry name="packages_info_available" type="StringList">
+	    <label></label>
+	    <default>Architecture,URL,Licenses,Groups,Provides,Optional Deps,RequiredBy,Optional For,Conflicts With,Replaces,Installed Size,Packager,Build Date,Install Date,Install Reason,Install Script,Validated By</default>
+    </entry>
+    <entry name="packages_info_selected" type="StringList">
+	    <label></label>
+	    <default>Name,Value,Description,Depends On</default>
+    </entry>
+  </group>
+  <group name="Logs">
+    <entry name="save_logs_into_file" type="Bool">
+	    <label></label>
+	    <default>true</default>
+    </entry>
+    <entry name="logs_filename" type="String">
+	    <label></label>
+	    <default>logs.txt</default>
+    </entry>
+    <entry name="logs_filepath" type="String">
+	    <label></label>
+	    <default>~/.config/pak-gui</default>
+    </entry>
+    <entry name="show_debug" type="Bool">
+	    <label></label>
+	    <default>false</default>
+    </entry>
+    <entry name="hide_info_logs" type="Bool">
+        <label></label>
+	    <default>false</default>
     </entry>
   </group>
 </kcfg>

@@ -7,11 +7,6 @@ class ActionsAccessChecker : public QObject
 {
     Q_OBJECT
 public:
-    enum class State
-    {
-        Waiting = 0,
-        Running
-    };
     static ActionsAccessChecker* actionsAccessChecker();
     ~ActionsAccessChecker();
     ActionsAccessChecker(ActionsAccessChecker& instance) = delete;
