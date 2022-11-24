@@ -49,7 +49,7 @@ void Settings::init()
     addPage(previews_appearance_page, i18nc("@title:tab", "Previews appearance"), QStringLiteral(":/icons/general-settings.png"));
     addPage(packages_info_page, i18nc("@title:tab", "Packages informations"), QStringLiteral(":/icons/package-info-settings.png"));
     addPage(logs_page, i18nc("@title:tab", "Logs"), QStringLiteral(":/icons/logs-settings.png"));
-    //connect(dialog, &KConfigDialog::settingsChanged, mainWindowView, &MainWindowView::handleSettingsChanged);
+    //connect(this, &Settings::settingsChanged, //mainWindowView, &MainWindowView::handleSettingsChanged);
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
