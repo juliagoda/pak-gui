@@ -13,6 +13,7 @@ Settings::Settings(MainWindow* main_window) :
     init();
     connectSignals();
     loadPackagesInfoSettings();
+
     if (packagesInfoNotDefault())
         enableDefaultButton();
 }
@@ -20,11 +21,8 @@ Settings::Settings(MainWindow* main_window) :
 
 void Settings::updateWidgetsDefault()
 {
-    DefaultPackagesInfo packages_info;
     packages_info_settings.packages_info_selector->availableListWidget()->clear();
     packages_info_settings.packages_info_selector->selectedListWidget()->clear();
-    pakGuiSettings::setPackages_info_available(packages_info.packages_info_available);
-    pakGuiSettings::setPackages_info_selected(packages_info.packages_info_selected);
     packages_info_settings.packages_info_selector->availableListWidget()->addItems(pakGuiSettings::packages_info_available());
     packages_info_settings.packages_info_selector->selectedListWidget()->addItems(pakGuiSettings::packages_info_selected());
 }
@@ -111,18 +109,17 @@ void Settings::updateSelectedInfoList()
 
 bool Settings::packagesInfoNotDefault()
 {
-    DefaultPackagesInfo packages_info;
     auto all_selected_items = settings.value("packages_info_selected").value<QStringList>();
 
     if (all_selected_items.isEmpty())
         return false;
 
-    if (all_selected_items.count() != packages_info.packages_info_selected.count())
+    if (all_selected_items.count() != pakGuiSettings::packages_info_selected().count())
         return true;
 
     for(int i = 0; i < all_selected_items.count(); i++)
     {
-        if (all_selected_items.at(i) != packages_info.packages_info_selected.at(i))
+        if (all_selected_items.at(i) != pakGuiSettings::packages_info_selected().at(i))
             return true;
     }
 

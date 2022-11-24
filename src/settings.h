@@ -62,29 +62,3 @@ private:
     Ui::LogsSettings logs_settings;
     QSettings settings;
 };
-
-struct DefaultPackagesInfo
-{
-    QStringList packages_info_selected = QStringList() << QString("Name") <<
-                                                           QString("Version") <<
-                                                           QString("Description") <<
-                                                           QString("Depends On");
-    QStringList packages_info_available = QStringList() << QString("Architecture") <<
-                                                          QString("URL") <<
-                                                          QString("Licenses") <<
-                                                          QString("Groups") <<
-                                                          QString("Provides") <<
-                                                          QString("Optional Deps") <<
-                                                          QString("Required By") <<
-                                                          QString("Optional For") <<
-                                                          QString("Conflicts With") <<
-                                                          QString("Replaces") <<
-                                                          QString("Installed Size") <<
-                                                          QString("Packager") <<
-                                                          QString("Build Date") <<
-                                                          QString("Install Date") <<
-                                                          QString("Install Reason") <<
-                                                          QString("Install Script") <<
-                                                          QString("Validated By");
-
-};
