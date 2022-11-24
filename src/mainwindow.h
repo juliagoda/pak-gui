@@ -9,11 +9,11 @@
 
 #include <KXmlGuiWindow>
 #include <QSharedPointer>
+#include <QPointer>
 
-#include "ui_settings.h"
+#include "settings.h"
 #include "process.h"
 #include "actionsaccesschecker.h"
-#include "pakGuiSettings.h"
 
 class MainWindowView;
 
@@ -43,7 +43,6 @@ signals:
     void closeApp();
 
 private:
-    Ui::Settings m_settings;
     QAction* m_updateAction;
     QAction* m_refreshAction;
     QAction* m_downloadAction;
@@ -53,7 +52,7 @@ private:
     QAction* m_updateMirrorsAction;
     QAction* m_cleanAction;
     QAction* m_undoAction;
-    MainWindowView* mainWindowView;
+    QPointer<MainWindowView> main_window_view;
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
 };

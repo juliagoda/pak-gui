@@ -24,8 +24,8 @@ MainWindow::MainWindow()
       process(QSharedPointer<Process>(new Process)),
       actions_access_checker(ActionsAccessChecker::actionsAccessChecker())
 {
-    mainWindowView = new MainWindowView(process, actions_access_checker, this);
-    setCentralWidget(mainWindowView);
+    main_window_view = new MainWindowView(process, actions_access_checker, this);
+    setCentralWidget(main_window_view);
 
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::requiredPackagesNotFound, [this]() { emit closeApp(); });
 
@@ -43,17 +43,17 @@ MainWindow::MainWindow()
     m_refreshAction->setIcon(QIcon::fromTheme("refresh"));
     actionCollection->setDefaultShortcut(m_refreshAction, Qt::CTRL + Qt::Key_R);
     actionCollection->addAction("refresh", m_refreshAction);
-    connect(m_refreshAction, &QAction::triggered, mainWindowView, &MainWindowView::refresh);
-    connect(mainWindowView, &MainWindowView::initStarted, this, &MainWindow::disableActions);
-    connect(mainWindowView, &MainWindowView::initEnded, this, &MainWindow::enableActions);
-    connect(mainWindowView, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
+    connect(m_refreshAction, &QAction::triggered, main_window_view, &MainWindowView::refresh);
+    connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
+    connect(main_window_view, &MainWindowView::initEnded, this, &MainWindow::enableActions);
+    connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
 
     m_downloadAction = new QAction(this);
     m_downloadAction->setText(i18n("&Download"));
     m_downloadAction->setIcon(QIcon::fromTheme("download"));
     actionCollection->setDefaultShortcut(m_downloadAction, Qt::CTRL + Qt::Key_D);
     actionCollection->addAction("download", m_downloadAction);
-    connect(m_downloadAction, &QAction::triggered, mainWindowView, &MainWindowView::downloadPackage);
+    connect(m_downloadAction, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
 
     m_updateAllAction = new QAction(this);
     m_updateAllAction->setText(i18n("&Update all packages"));
@@ -87,7 +87,7 @@ MainWindow::MainWindow()
     m_printStatisticsAction->setIcon(QIcon::fromTheme("statistics"));
     actionCollection->setDefaultShortcut(m_printStatisticsAction, Qt::CTRL + Qt::Key_S);
     actionCollection->addAction("statistics", m_printStatisticsAction);
-    connect(m_printStatisticsAction, &QAction::triggered, mainWindowView, &MainWindowView::showStatisticsWindow);
+    connect(m_printStatisticsAction, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
 
     // action - vcs part:
     m_printVCSPackagesAction = new QAction(this);
@@ -157,20 +157,5 @@ void MainWindow::enableActions()
 
 void MainWindow::settingsConfigure()
 {
-    // The preference dialog is derived from prefs_base.ui
-    //
-    // compare the names of the widgets in the .ui file
-    // to the names of the variables in the .kcfg file
-    //avoid to have 2 dialogs shown
-    if (KConfigDialog::showDialog(QStringLiteral("settings"))) {
-        return;
-    }
-
-    KConfigDialog *dialog = new KConfigDialog(this, QStringLiteral("settings"), pakGuiSettings::self());
-    QWidget *generalSettingsPage = new QWidget;
-    m_settings.setupUi(generalSettingsPage);
-    dialog->addPage(generalSettingsPage, i18nc("@title:tab", "General"), QStringLiteral("package_setting"));
-    connect(dialog, &KConfigDialog::settingsChanged, mainWindowView, &MainWindowView::handleSettingsChanged);
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    dialog->show();
+    QPointer<Settings> settings_window = new Settings(this);
 }

@@ -7,8 +7,10 @@
 #include <QNetworkInterface>
 #include <QMessageBox>
 
+
 ActionsAccessChecker* ActionsAccessChecker::instance{nullptr};
 QMutex ActionsAccessChecker::mutex;
+
 
 ActionsAccessChecker::ActionsAccessChecker() :
     is_asp_installed(false),

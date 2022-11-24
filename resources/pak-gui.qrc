@@ -2,6 +2,9 @@
     <qresource prefix="/">
         <file>icons/app/24-apps-pak-gui.png</file>
         <file>icons/app/32-apps-pak-gui.png</file>
+        <file>icons/general-settings.png</file>
+        <file>icons/logs-settings.png</file>
+        <file>icons/package-info-settings.png</file>
         <file>waiting.gif</file>
         <file>waiting-small.gif</file>
     </qresource>

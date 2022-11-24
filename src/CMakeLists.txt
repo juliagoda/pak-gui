@@ -41,7 +41,9 @@ target_sources(pak-gui PRIVATE
     sorter.cpp
     sorter.h
     actionsaccesschecker.cpp
-    actionsaccesschecker.h)
+    actionsaccesschecker.h
+    settings.cpp
+    settings.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
@@ -60,10 +62,13 @@ target_link_libraries(pak-gui
 
 ki18n_wrap_ui(pak-gui
     mainwindowview.ui
-    settings.ui
+    generalsettings.ui
     progressview.ui
     packageinput.ui
-    choicewindow.ui)
+    choicewindow.ui
+    previewsappearancesettings.ui
+    packagesinfosettings.ui
+    logssettings.ui)
 
 install(FILES org.cachyos.pak-gui.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
 install(FILES pak-gui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/pak-gui)
