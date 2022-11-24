@@ -57,6 +57,7 @@ private Q_SLOTS:
     void connectSignalsForInstalledPackages();
     void connectSignalsForUpdatedPackages();
     void generateOutput(Process::Task task, const QString& line);
+    void toggleWidgetsAccess(bool is_online);
 
 signals:
     void operationsAmountIncreased();
@@ -65,11 +66,13 @@ signals:
     void availablePackagesFillEnded();
     void installedPackagesFillEnded();
     void packagesToUpdateFillEnded();
+    void hideOnlineActions();
 
 private:
     void setTimerOnActionsAccessChecker();
     void connectSignals();
     void hideWidgets();
+    void hideWidgetsExceptInstalled();
     void init();
     void checkSpinningVisibility();
 

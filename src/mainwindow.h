@@ -37,6 +37,7 @@ private Q_SLOTS:
     void settingsConfigure();
     void enableActions();
     void disableActions();
+    void disableOnlineActions();
 
 signals:
     void closeApp();

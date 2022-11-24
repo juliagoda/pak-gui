@@ -54,7 +54,7 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     generated_previews_map.insert(Process::Task::Uninstall, m_ui.updated_preview_area);
     generated_previews_map.insert(Process::Task::Update, m_ui.available_preview_area);
 
-    QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::internetAccessChanged, [this](bool is_online){ is_online ? m_ui.repos_kled->on() : m_ui.repos_kled->off();});
+    QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::internetAccessChanged, this, &MainWindowView::toggleWidgetsAccess);
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::auracleAccessChanged, [this](bool is_auracle_installed){ is_auracle_installed && actions_access_checker->isOnline() ? m_ui.aur_kled->on() : m_ui.aur_kled->off();});
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::gitAccessChanged, [this](bool is_git_installed){ is_git_installed && actions_access_checker->isOnline() ? m_ui.polaur_kled->on() : m_ui.polaur_kled->off();});
     QObject::connect(this, &MainWindowView::operationsAmountIncreased, m_ui.progress_view_checkbox, &QCheckBox::show);
@@ -70,6 +70,7 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     QObject::connect(process.data(), &Process::finished, available_packages_column.data(), [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::finished, this, &MainWindowView::stopAnimation);
 
+    hideWidgets();
     setTimerOnActionsAccessChecker();
     init();
 }
@@ -101,8 +102,6 @@ void MainWindowView::init()
     m_ui.update_spinning_label->setMovie(spinning_animation.get());
     spinning_animation->start();
 
-    hideWidgets();
-
     QObject::connect(available_packages_thread, &QThread::started, [this]() {  available_packages_column->fill(); emit availablePackagesFillEnded(); });
     QObject::connect(installed_packages_thread, &QThread::started, [this]() { installed_packages_column->fill(); emit installedPackagesFillEnded(); });
     QObject::connect(updated_packages_thread, &QThread::started, [this]() { updated_packages_column->fill(); emit packagesToUpdateFillEnded(); });
@@ -122,17 +121,23 @@ void MainWindowView::init()
 void MainWindowView::hideWidgets()
 {
     m_ui.installed_preview_area->hide();
+    m_ui.progress_view_checkbox->hide();
+    m_ui.sort_installed_packages->hide();
+    m_ui.search_installed_packages_lineedit->hide();
+    m_ui.installed_packages_list->hide();
+    hideWidgetsExceptInstalled();
+}
+
+
+void MainWindowView::hideWidgetsExceptInstalled()
+{
     m_ui.updated_preview_area->hide();
     m_ui.available_preview_area->hide();
-    m_ui.progress_view_checkbox->hide();
     m_ui.sort_available_packages->hide();
-    m_ui.sort_installed_packages->hide();
     m_ui.sort_packages_to_update->hide();
-    m_ui.search_installed_packages_lineedit->hide();
     m_ui.search_packages_to_update_lineedit->hide();
     m_ui.search_available_packages_lineedit->hide();
     m_ui.available_packages_list->hide();
-    m_ui.installed_packages_list->hide();
     m_ui.packages_to_update_list->hide();
 }
 
@@ -142,6 +147,35 @@ void MainWindowView::setTimerOnActionsAccessChecker()
     QPointer<QTimer> timer = new QTimer(this);
     connect(timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::run);
     timer->start(10000);
+}
+
+
+void MainWindowView::toggleWidgetsAccess(bool is_online)
+{
+    static bool is_connection_state_not_different = true;
+    if (is_connection_state_not_different == is_online)
+        return;
+
+    is_connection_state_not_different = is_online;
+
+    if (is_online)
+    {
+        m_ui.repos_kled->on();
+        m_ui.packages_to_update_label->setText(i18n("TO UPDATE"));
+        m_ui.accessible_packages->setText(i18n("AVAILABLE TO INSTALL"));
+        refresh();
+        return;
+    }
+
+    is_online ? m_ui.repos_kled->on() : m_ui.repos_kled->off();
+    m_ui.packages_to_update_label->setStyleSheet("color: black; font-size: 15px;");
+    m_ui.packages_to_update_label->setText(i18n("No internet connection"));
+    m_ui.accessible_packages->setStyleSheet("color: black; font-size: 15px;");
+    m_ui.accessible_packages->setText(i18n("No internet connection"));
+    m_ui.update_spinning_widget->hide();
+    m_ui.installation_spinning_widget->hide();
+    emit hideOnlineActions();
+    hideWidgetsExceptInstalled();
 }
 
 
@@ -187,7 +221,7 @@ void MainWindowView::connectSignalsForUpdatedPackages()
         m_ui.search_packages_to_update_checkbox->setEnabled(true);
     }
 
-    if (m_ui.packages_to_update_list->count() == 0)
+    if (m_ui.packages_to_update_list->count() == 0 && actions_access_checker->isOnline())
     {
         m_ui.packages_to_update_label->setStyleSheet("color: black; font-size: 15px;");
         m_ui.packages_to_update_label->setText(i18n("There aren't packages to update"));
@@ -206,7 +240,8 @@ void MainWindowView::checkSpinningVisibility()
 {
     if (m_ui.update_spinning_widget->isHidden() &&
         m_ui.remove_spinning_widget->isHidden() &&
-        m_ui.installation_spinning_widget->isHidden())
+        m_ui.installation_spinning_widget->isHidden() &&
+        actions_access_checker->isOnline())
     {
         emit initEnded();
     }
@@ -358,6 +393,7 @@ void MainWindowView::handleSettingsChanged()
 
 void MainWindowView::refresh()
 {
+    hideWidgets();
     emit initStarted();
 
     available_packages_column.data()->clear();

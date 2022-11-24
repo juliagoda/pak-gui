@@ -46,6 +46,7 @@ MainWindow::MainWindow()
     connect(m_refreshAction, &QAction::triggered, mainWindowView, &MainWindowView::refresh);
     connect(mainWindowView, &MainWindowView::initStarted, this, &MainWindow::disableActions);
     connect(mainWindowView, &MainWindowView::initEnded, this, &MainWindow::enableActions);
+    connect(mainWindowView, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
 
     m_downloadAction = new QAction(this);
     m_downloadAction->setText(i18n("&Download"));
@@ -122,6 +123,21 @@ void MainWindow::disableActions()
     m_undoAction->setDisabled(true);
     m_printStatisticsAction->setDisabled(true);
     m_printVCSPackagesAction->setDisabled(true);
+}
+
+
+void MainWindow::disableOnlineActions()
+{
+    m_updateAction->setDisabled(true);
+    m_downloadAction->setDisabled(true);
+    m_updateAllAction->setDisabled(true);
+    m_updateMirrorsAction->setDisabled(true);
+    m_undoAction->setDisabled(true);
+    m_refreshAction->setDisabled(false);
+    m_cleanAction->setDisabled(false);
+    m_undoAction->setDisabled(false);
+    m_printStatisticsAction->setDisabled(false);
+    m_printVCSPackagesAction->setDisabled(false);
 }
 
 
