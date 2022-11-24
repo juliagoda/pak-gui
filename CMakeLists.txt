@@ -41,22 +41,6 @@ find_package(fzf)
 find_package(downgrade)
 find_package(libnotify)
 
-if (ASP_FOUND)
-  add_definitions(-DASP_FOUND)
-endif()
-
-if (AURACLE_GIT_FOUND)
-    add_definitions(-DAURACLE_GIT_FOUND)
-endif()
-
-if (REFLECTOR_FOUND)
-    add_definitions(-DREFLECTOR_FOUND)
-endif()
-
-if (GIT_FOUND)
-    add_definitions(-DGIT_FOUND)
-endif()
-
 if(RUN_TESTS)
     message("Tests enabled")
 endif(RUN_TESTS)

@@ -38,6 +38,9 @@ private Q_SLOTS:
     void enableActions();
     void disableActions();
 
+signals:
+    void closeApp();
+
 private:
     Ui::Settings m_settings;
     QAction* m_updateAction;

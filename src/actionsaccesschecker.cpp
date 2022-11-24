@@ -1,7 +1,14 @@
 #include "actionsaccesschecker.h"
+#include "defs.h"
 
+#include <KLocalizedString>
 #include <QProcess>
+#include <QDir>
 #include <QNetworkInterface>
+#include <QMessageBox>
+
+ActionsAccessChecker* ActionsAccessChecker::instance{nullptr};
+QMutex ActionsAccessChecker::mutex;
 
 ActionsAccessChecker::ActionsAccessChecker() :
     is_asp_installed(false),
@@ -10,32 +17,45 @@ ActionsAccessChecker::ActionsAccessChecker() :
     is_git_installed(false),
     is_online(false)
 {
-
+    qInfo() << "Environment variable PATH: " << QString(getenv("PATH")).split(":");
 }
 
 
-void ActionsAccessChecker::update()
+ActionsAccessChecker::~ActionsAccessChecker()
 {
-#ifdef ASP_FOUND
-    is_asp_installed = true;
-#endif
+   mutex.unlock();
+}
 
-#ifdef AURACLE_GIT_FOUND
-    is_auracle_installed = true;
-#endif
 
-#ifdef REFLECTOR_FOUND
-    is_reflector_installed = true;
-#endif
-
-#ifdef GIT_FOUND
-    is_git_installed = true;
-#endif
+void ActionsAccessChecker::run()
+{
+    findRequiredPackages();
+    is_asp_installed = findPackage(ASP_EXEC_FILE);
+    is_auracle_installed = findPackage(AURACLE_EXEC_FILE);
+    is_reflector_installed = findPackage(REFLECTOR_EXEC_FILE);
+    is_git_installed = findPackage(GIT_EXEC_FILE);
 
     checkInternetConnection();
     emitSignals();
 }
 
+
+bool ActionsAccessChecker::findPackage(const QString& package_name)
+{
+    QDir::setSearchPaths(package_name, QStringList() << QDir::currentPath() << QString(getenv("PATH")).split(":"));
+    QFile executable(package_name + ":" + package_name);
+    return executable.exists();
+}
+
+
+ActionsAccessChecker *ActionsAccessChecker::actionsAccessChecker()
+{
+    mutex.lock();
+    if (instance == nullptr)
+        instance = new ActionsAccessChecker();
+
+    return instance;
+}
 
 bool ActionsAccessChecker::isAspInstalled() const
 {
@@ -67,10 +87,24 @@ bool ActionsAccessChecker::isOnline() const
 }
 
 
+void ActionsAccessChecker::findRequiredPackages()
+{
+    if (!findPackage(PAK_EXEC_FILE) || !findPackage(PACMAN_EXEC_FILE) || !findPackage(PACMAN_CONTRIB_EXEC_FILE))
+    {
+        QMessageBox::critical(new QWidget, i18n("Missing packages"), i18n("Required packages are missing."
+                                                                          "Check if all of them:\n\"pak\"\n\"pacman\"\n\"pacman-contrib\\n\n"
+                                                                          "are installed before application start!"));
+        emit requiredPackagesNotFound();
+    }
+}
+
+
 void ActionsAccessChecker::checkInternetConnection()
 {
     for(const QNetworkInterface& interface : QNetworkInterface::allInterfaces())
     {
+        if (interface.type() == QNetworkInterface::Loopback)
+            continue;
         is_online = interface.flags().testFlag(QNetworkInterface::IsUp) &&
                 interface.flags().testFlag(QNetworkInterface::IsRunning);
         if (is_online)

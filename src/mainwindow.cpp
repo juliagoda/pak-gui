@@ -22,10 +22,12 @@
 MainWindow::MainWindow()
     : KXmlGuiWindow(),
       process(QSharedPointer<Process>(new Process)),
-      actions_access_checker(new ActionsAccessChecker)
+      actions_access_checker(ActionsAccessChecker::actionsAccessChecker())
 {
     mainWindowView = new MainWindowView(process, actions_access_checker, this);
     setCentralWidget(mainWindowView);
+
+    QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::requiredPackagesNotFound, [this]() { emit closeApp(); });
 
     KActionCollection* actionCollection = this->actionCollection();
 

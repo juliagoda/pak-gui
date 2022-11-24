@@ -67,6 +67,7 @@ signals:
     void packagesToUpdateFillEnded();
 
 private:
+    void setTimerOnActionsAccessChecker();
     void connectSignals();
     void hideWidgets();
     void init();

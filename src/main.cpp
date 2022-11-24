@@ -58,7 +58,8 @@ int main(int argc, char **argv)
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
-    MainWindow *window = new MainWindow;
+    MainWindow* window = new MainWindow;
+    QObject::connect(window, &MainWindow::closeApp, &application, &QCoreApplication::quit);
     window->show();
 
     return application.exec();

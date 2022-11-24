@@ -29,6 +29,7 @@
 #include <KMainWindow>
 #include <QChartView>
 #include <QPieSeries>
+#include <QTimer>
 
 
 MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
@@ -69,8 +70,8 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     QObject::connect(process.data(), &Process::finished, available_packages_column.data(), [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::finished, this, &MainWindowView::stopAnimation);
 
+    setTimerOnActionsAccessChecker();
     init();
-    actions_access_checker->update();
 }
 
 
@@ -133,6 +134,14 @@ void MainWindowView::hideWidgets()
     m_ui.available_packages_list->hide();
     m_ui.installed_packages_list->hide();
     m_ui.packages_to_update_list->hide();
+}
+
+
+void MainWindowView::setTimerOnActionsAccessChecker()
+{
+    QPointer<QTimer> timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::run);
+    timer->start(10000);
 }
 
 
@@ -349,7 +358,6 @@ void MainWindowView::handleSettingsChanged()
 
 void MainWindowView::refresh()
 {
-    actions_access_checker->update();
     emit initStarted();
 
     available_packages_column.data()->clear();
