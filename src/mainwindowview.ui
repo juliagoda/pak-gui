@@ -110,8 +110,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>255</width>
-            <height>709</height>
+            <width>260</width>
+            <height>702</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -146,7 +146,6 @@
               <widget class="QLabel" name="installed_packages_label">
                <property name="font">
                 <font>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -288,8 +287,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>239</width>
-                <height>204</height>
+                <width>240</width>
+                <height>210</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -409,8 +408,8 @@ padding: 3px;</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>272</width>
-            <height>527</height>
+            <width>274</width>
+            <height>523</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -445,7 +444,6 @@ padding: 3px;</string>
               <widget class="QLabel" name="packages_to_update_label">
                <property name="font">
                 <font>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -587,8 +585,8 @@ padding: 3px;</string>
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>256</width>
-                <height>143</height>
+                <width>254</width>
+                <height>150</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -692,6 +690,16 @@ padding: 3px;</string>
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QCheckBox" name="check_all_updates_checkbox">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Check all</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
           </layout>
@@ -708,8 +716,8 @@ padding: 3px;</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>272</width>
-            <height>527</height>
+            <width>274</width>
+            <height>523</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -744,7 +752,6 @@ padding: 3px;</string>
               <widget class="QLabel" name="accessible_packages">
                <property name="font">
                 <font>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -886,8 +893,8 @@ padding: 3px;</string>
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>256</width>
-                <height>143</height>
+                <width>254</width>
+                <height>150</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1017,11 +1024,7 @@ padding: 3px;</string>
            <number>2</number>
           </property>
           <item>
-           <widget class="KLed" name="repos_kled">
-            <property name="state">
-             <enum>KLed::On</enum>
-            </property>
-           </widget>
+           <widget class="KLed" name="repos_kled" native="true"/>
           </item>
           <item>
            <widget class="QLabel" name="repo_led_label">
@@ -1031,7 +1034,7 @@ padding: 3px;</string>
            </widget>
           </item>
           <item>
-           <widget class="KLed" name="aur_kled"/>
+           <widget class="KLed" name="aur_kled" native="true"/>
           </item>
           <item>
            <widget class="QLabel" name="aur_led_label">
@@ -1041,7 +1044,7 @@ padding: 3px;</string>
            </widget>
           </item>
           <item>
-           <widget class="KLed" name="polaur_kled"/>
+           <widget class="KLed" name="polaur_kled" native="true"/>
           </item>
           <item>
            <widget class="QLabel" name="polaur_led_label">

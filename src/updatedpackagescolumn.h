@@ -14,6 +14,9 @@ public:
     QStringList collectCheckedPackages() override;
     void fill() override;
 
+public Q_SLOTS:
+    void toggleAllPackages(bool is_all_checked);
+
 protected:
     QStringList getPackagesList() override;
 

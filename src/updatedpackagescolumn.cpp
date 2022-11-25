@@ -5,6 +5,7 @@
 
 #include <QPointer>
 #include <QMessageBox>
+#include <QtConcurrent/QtConcurrent>
 
 
 UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
@@ -59,4 +60,17 @@ void UpdatedPackagesColumn::fill()
 
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 packages to update").arg(list_widget->count()));
     list_widget->update();
+}
+
+
+void UpdatedPackagesColumn::toggleAllPackages(bool is_all_checked)
+{
+    for(int i = 0; i < list_widget->count(); ++i)
+    {
+        QListWidgetItem* item = list_widget->item(i);
+        if (is_all_checked)
+            item->setCheckState(Qt::Checked);
+        else
+            item->setCheckState(Qt::Unchecked);
+    }
 }

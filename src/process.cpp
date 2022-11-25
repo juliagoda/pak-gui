@@ -26,7 +26,7 @@ Process::Process() :
 
     commands_map.insert(Task::Clean, QStringList() << "-c" << "y | pak -Sc");
     commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << "pak -m");
-    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << "/usr/bin/kdesu -t -n -c | y | pak -Su --noconfirm");
+    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << "y | pak -Su --noconfirm");
     commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << "pak --vcs");
     commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << "pak -Sy");
 }
@@ -134,7 +134,7 @@ QString Process::questionForm(QStringList& new_checked_packages, Task new_task)
 {
     QString question = i18n("Are you sure you want to %1", messages_map.value(new_task).second);
 
-    if (new_checked_packages.count() > 0)
+    if (new_task != Task::Update && new_checked_packages.count() > 0)
         question.append(":\n\n" + new_checked_packages.join("\n"));
 
     return question;

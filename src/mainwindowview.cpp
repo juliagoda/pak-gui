@@ -64,6 +64,7 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     QObject::connect(this, &MainWindowView::operationsAmountIncreased, m_ui.progress_view_checkbox, &QCheckBox::show);
     QObject::connect(progress_view.data(), &QDialog::rejected, [this](){ m_ui.progress_view_checkbox->setChecked(false); });
     QObject::connect(m_ui.progress_view_checkbox, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) { progress_view->resize(500, 500); progress_view.data()->show(); } else progress_view.data()->hide(); });
+    QObject::connect(m_ui.check_all_updates_checkbox, &QCheckBox::toggled, updated_packages_column.get(), &UpdatedPackagesColumn::toggleAllPackages);
     QObject::connect(m_ui.console_view_install, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.available_preview_area->show(); else m_ui.available_preview_area->hide(); });
     QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
     QObject::connect(m_ui.console_view_update, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.updated_preview_area->show(); else m_ui.updated_preview_area->hide(); });
@@ -96,6 +97,10 @@ void MainWindowView::init()
     m_ui.available_packages_list->hide();
     m_ui.installed_packages_list->hide();
     m_ui.packages_to_update_list->hide();
+    m_ui.search_packages_to_update_checkbox->setEnabled(false);
+    m_ui.check_all_updates_checkbox->setEnabled(false);
+    m_ui.search_available_packages_checkbox->setEnabled(false);
+    m_ui.search_installed_packages_checkbox->setEnabled(false);
 
     QObject::connect(updated_packages_thread, &QThread::started, [this]() { updated_packages_column->fill(); emit packagesToUpdateFillEnded(); });
     QObject::connect(available_packages_thread, &QThread::started, [this]() {  available_packages_column->fill(); emit availablePackagesFillEnded(); });
@@ -243,6 +248,7 @@ void MainWindowView::connectSignalsForUpdatedPackages()
     {
         m_ui.packages_to_update_list->show();
         m_ui.search_packages_to_update_checkbox->setEnabled(true);
+        m_ui.check_all_updates_checkbox->setEnabled(true);
     }
 
     if (m_ui.packages_to_update_list->count() == 0 && actions_access_checker->isOnline())
