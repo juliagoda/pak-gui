@@ -1,15 +1,15 @@
 #include "availablepackagescolumn.h"
 
+#include "packagescolumn.h"
+#include "sipackage.h"
+#include "sicommandparser.h"
+#include "logger.h"
+
 #include <QObject>
 #include <QListWidgetItem>
 #include <QPointer>
 #include <QMessageBox>
-
-#include "packagescolumn.h"
-#include "qlistwidget.h"
-#include "qnamespace.h"
-#include "sipackage.h"
-#include "sicommandparser.h"
+#include <QListWidet>
 
 
 AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
@@ -34,7 +34,10 @@ QStringList AvailablePackagesColumn::collectCheckedPackages()
         SiPackage* item = dynamic_cast<SiPackage*>(list_widget->item(i));
 
         if (item && item->checkState() == Qt::Checked)
+        {
+            Logger::logger()->logDebug(QStringLiteral("Checked package to install: %1").arg(item->getName()));
             checked_packages.append(item->getName());
+        }
     }
 
     return checked_packages;
@@ -55,5 +58,6 @@ void AvailablePackagesColumn::fill()
         i++;
     }
 
+    Logger::logger()->logInfo(QStringLiteral("Filled column with %1 available packages").arg(list_widget->count()));
     list_widget->update();
 }

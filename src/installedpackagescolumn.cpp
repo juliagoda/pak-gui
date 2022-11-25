@@ -1,11 +1,12 @@
 #include "installedpackagescolumn.h"
 
+#include "qipackage.h"
+#include "qicommandparser.h"
+#include "logger.h"
+
 #include <QListWidgetItem>
 #include <QPointer>
 #include <QMessageBox>
-
-#include "qipackage.h"
-#include "qicommandparser.h"
 
 
 InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
@@ -30,7 +31,10 @@ QStringList InstalledPackagesColumn::collectCheckedPackages()
         QiPackage* item = dynamic_cast<QiPackage*>(list_widget->item(i));
 
         if (item && item->checkState() == Qt::Checked)
+        {
+            Logger::logger()->logDebug(QStringLiteral("Checked package to remove: %1").arg(item->getName()));
             checked_packages.append(item->getName());
+        }
     }
 
     return checked_packages;
@@ -52,5 +56,6 @@ void InstalledPackagesColumn::fill()
         i++;
     }
 
+    Logger::logger()->logInfo(QStringLiteral("Filled column with %1 installed packages").arg(list_widget->count()));
     list_widget->update();
 }

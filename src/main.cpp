@@ -7,6 +7,7 @@
 #include "mainwindow.h"
 #include "pakGuiSettings.h"
 #include "defs.h"
+#include "logger.h"
 
 #include <KCrash>
 #include <KDBusService>
@@ -61,7 +62,7 @@ int main(int argc, char **argv)
     QString config_path = Converter::toAbsolutePath(pakGuiSettings::logs_filepath());
     if (!QDir().exists(config_path) &&
         !QDir().mkpath(config_path))
-           qWarning() << "Path \"" << config_path << "\" couldn't be created!";
+           Logger::logger()->logWarning(QStringLiteral("Path %1 couldn't be created!").arg(config_path));
 
     MainWindow* window = new MainWindow;
     QObject::connect(window, &MainWindow::closeApp, &application, &QCoreApplication::quit);

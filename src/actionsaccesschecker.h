@@ -32,7 +32,7 @@ signals:
 private:
     explicit ActionsAccessChecker();
 
-
+    QStringList getNotInstalledPackagesList();
     void findRequiredPackages();
     bool findPackage(const QString& package_name);
     void checkInternetConnection();

@@ -1,5 +1,6 @@
 #include "actionsaccesschecker.h"
 #include "defs.h"
+#include "logger.h"
 
 #include <KLocalizedString>
 #include <QProcess>
@@ -19,7 +20,7 @@ ActionsAccessChecker::ActionsAccessChecker() :
     is_git_installed(false),
     is_online(false)
 {
-    qInfo() << "Environment variable PATH: " << QString(getenv("PATH")).split(":");
+    Logger::logger()->logInfo(QStringLiteral("Environment variable PATH: %1").arg(QString(getenv("PATH"))));
 }
 
 
@@ -59,6 +60,7 @@ ActionsAccessChecker *ActionsAccessChecker::actionsAccessChecker()
     return instance;
 }
 
+
 bool ActionsAccessChecker::isAspInstalled() const
 {
     return is_asp_installed;
@@ -89,13 +91,34 @@ bool ActionsAccessChecker::isOnline() const
 }
 
 
+QStringList ActionsAccessChecker::getNotInstalledPackagesList()
+{
+    QStringList not_installed_packages = QStringList();
+
+    if (!findPackage(PAK_EXEC_FILE))
+        not_installed_packages.append("pak");
+
+    if (!findPackage(PACMAN_EXEC_FILE))
+        not_installed_packages.append("pacman");
+
+    if (!findPackage(PACMAN_CONTRIB_EXEC_FILE))
+        not_installed_packages.append("pacman-contrib");
+
+    if (!findPackage(KDESU_EXEC_FILE))
+        not_installed_packages.append("kdesu");
+
+    return not_installed_packages;
+}
+
+
 void ActionsAccessChecker::findRequiredPackages()
 {
-    if (!findPackage(PAK_EXEC_FILE) || !findPackage(PACMAN_EXEC_FILE) || !findPackage(PACMAN_CONTRIB_EXEC_FILE))
+    QStringList not_installed_packages = getNotInstalledPackagesList();
+    if (!not_installed_packages.isEmpty())
     {
-        QMessageBox::critical(new QWidget, i18n("Missing packages"), i18n("Required packages are missing."
-                                                                          "Check if all of them:\n\"pak\"\n\"pacman\"\n\"pacman-contrib\\n\n"
-                                                                          "are installed before application start!"));
+        QMessageBox::critical(new QWidget, i18n("Missing packages"), i18n("Required packages are missing:\n\n") +
+                                                                          not_installed_packages.join("\n"));
+        Logger::logger()->logFatal(QStringLiteral("Required packages are missing:\n\n %1").arg(not_installed_packages.join("\n")));
         emit requiredPackagesNotFound();
     }
 }
@@ -107,8 +130,13 @@ void ActionsAccessChecker::checkInternetConnection()
     {
         if (interface.type() == QNetworkInterface::Loopback)
             continue;
+
+        bool connection_state_changed = is_online;
         is_online = interface.flags().testFlag(QNetworkInterface::IsUp) &&
                 interface.flags().testFlag(QNetworkInterface::IsRunning);
+
+        if (connection_state_changed != is_online)
+            Logger::logger()->logWarning(QStringLiteral("Application has been turned into %1 state").arg(is_online ? QString("online") : QString("offline")));
         if (is_online)
             break;
     }

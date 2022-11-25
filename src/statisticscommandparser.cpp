@@ -1,4 +1,6 @@
 #include "statisticscommandparser.h"
+#include "logger.h"
+#include "outputfilter.h"
 
 #include <QProcess>
 #include <QString>
@@ -17,6 +19,7 @@ QStringList StatisticsCommandParser::retrieveInfo()
     pacman_qi->waitForStarted();
     pacman_qi->waitForFinished();
     QString output = QString::fromUtf8(pacman_qi->readAll());
+    Logger::logger()->writeToFile(output, Logger::WriteOperations::ShowStatistics);
     QStringList output_list = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
     QStringListIterator it(output_list);
     QStringList result = QStringList();
@@ -25,11 +28,7 @@ QStringList StatisticsCommandParser::retrieveInfo()
     {
         QString line = it.next().toUtf8();
         if (line.contains("actions:"))
-        {
-           QString trimmedLeft = line.remove(QString("\033[1;39m"));
-           QString trimmedRight = trimmedLeft.remove(QString("\033[0m "));
-           result.append(trimmedRight);
-        }
+           result.append(OutputFilter::filteredOutput(line));
     }
 
     return result;

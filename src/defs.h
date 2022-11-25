@@ -16,6 +16,7 @@ constexpr int PACKAGE_SI_DEPENDENCIES_LINE = 9;
 
 const QString PACMAN_EXEC_FILE = "pacman";
 const QString PACMAN_CONTRIB_EXEC_FILE = "checkupdates";
+const QString KDESU_EXEC_FILE = "kdesu";
 const QString PAK_EXEC_FILE = "pak";
 const QString ASP_EXEC_FILE = "asp";
 const QString GIT_EXEC_FILE = "git";

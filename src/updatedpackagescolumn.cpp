@@ -1,4 +1,5 @@
 #include "updatedpackagescolumn.h"
+#include "logger.h"
 
 #include <QPointer>
 #include <QMessageBox>
@@ -30,7 +31,10 @@ QStringList UpdatedPackagesColumn::collectCheckedPackages()
         CheckPackage* item = dynamic_cast<CheckPackage*>(list_widget->item(i));
 
         if (item && item->checkState() == Qt::Checked)
+        {
+            Logger::logger()->logDebug(QStringLiteral("Checked package to update: %1").arg(item->getName()));
             checked_packages.append(item->getName());
+        }
     }
 
     return checked_packages;
@@ -51,5 +55,6 @@ void UpdatedPackagesColumn::fill()
         i++;
     }
 
+    Logger::logger()->logInfo(QStringLiteral("Filled column with %1 packages to update").arg(list_widget->count()));
     list_widget->update();
 }

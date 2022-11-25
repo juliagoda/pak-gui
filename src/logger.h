@@ -20,7 +20,8 @@ public:
         UpdateAll,
         CheckUpdates,
         CheckAvailable,
-        CheckInstalled
+        CheckInstalled,
+        ShowStatistics
     };
     Q_ENUM(WriteOperations)
 
@@ -29,16 +30,23 @@ public:
     Logger(Logger& instance) = delete;
     void operator=(const Logger& instance) = delete;
     void writeToFile(QString& text, WriteOperations section);
+    void logInfo(const QString& text);
+    void logWarning(const QString& text);
+    void logFatal(const QString& text);
+    void logDebug(const QString& text);
 
 private:
     explicit Logger();
 
-    void appendSection(QTextStream& out, WriteOperations section);
-    void appendSeparator(QTextStream& out);
-    void appendNewLine(QTextStream& out);
+    void appendSection(WriteOperations section);
+    void appendSeparator();
+    void appendNewLine();
+    void logIntoFile(const QString& section, const QString& text);
     bool isWritePossible();
+    void closeOnQuit();
 
     QFile logs_file;
+    QTextStream output_stream;
     static Logger* instance;
     static QMutex instance_mutex;
     static QMutex write_mutex;
