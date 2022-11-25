@@ -22,7 +22,7 @@ Process::Process() :
     messages_map.insert(Task::UpdateInstalledPackages, {i18n("Installed packages update"), i18n("update installed packages?")});
     messages_map.insert(Task::Uninstall, {i18n("Uninstallation"), i18n("remove packages?")});
     messages_map.insert(Task::Install, {i18n("Installation"), i18n("install packages?")});
-    messages_map.insert(Task::Update, {i18n("Update"), i18n("update mirrors?")});
+    messages_map.insert(Task::Update, {i18n("Update"), i18n("update package(s)?")});
 
     commands_map.insert(Task::Clean, QStringList() << "-c" << "y | pak -Sc");
     commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << "pak -m");
@@ -105,7 +105,7 @@ void Process::connectSignals(QSharedPointer<QProcess>& process, Task new_task)
 
 void Process::updateMap(QStringList& checked_packages)
 {
-    commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -S --noconfirm " + checked_packages.join(" ") + "\"");
+    commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Uninstall, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -R --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Install, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -S --noconfirm " + checked_packages.join(" ") + "\"");
 }

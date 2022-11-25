@@ -37,7 +37,8 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
       actions_access_checker(new_actions_access_checker),
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView)),
-      spinning_animation(nullptr)
+      spinning_animation(nullptr),
+      spinning_animation_small(nullptr)
 
 {
     m_ui.setupUi(this);
@@ -293,10 +294,13 @@ void MainWindowView::generatePreview(Process::Task task)
 
 void MainWindowView::showAnimation()
 {
-    spinning_animation.reset(new QMovie(":/waiting-small.gif"), &QObject::deleteLater);
-    m_ui.actions_spinning_animation_label->setMovie(spinning_animation.get());
+    if (spinning_animation_small.isNull())
+    {
+        spinning_animation_small.reset(new QMovie(":/waiting-small.gif"), &QObject::deleteLater);
+        m_ui.actions_spinning_animation_label->setMovie(spinning_animation_small.get());
+    }
     m_ui.actions_spinning_animation_label->show();
-    spinning_animation->start();
+    spinning_animation_small->start();
     Logger::logger()->logDebug(QStringLiteral("Animation in main window started"));
 }
 
@@ -304,7 +308,8 @@ void MainWindowView::showAnimation()
 void MainWindowView::stopAnimation()
 {
     m_ui.actions_spinning_animation_label->hide();
-    spinning_animation->stop();
+    if (!spinning_animation_small.isNull())
+        spinning_animation_small->stop();
     Logger::logger()->logDebug(QStringLiteral("Animation in main window stopped"));
 }
 
@@ -401,10 +406,13 @@ void MainWindowView::startAnimations()
     m_ui.installation_spinning_widget->show();
     m_ui.update_spinning_widget->show();
 
-    spinning_animation.reset(new QMovie(":/waiting.gif"), &QObject::deleteLater);
-    m_ui.installation_spinning_label->setMovie(spinning_animation.get());
-    m_ui.remove_spinning_label->setMovie(spinning_animation.get());
-    m_ui.update_spinning_label->setMovie(spinning_animation.get());
+    if (spinning_animation.isNull())
+    {
+        spinning_animation.reset(new QMovie(":/waiting.gif"), &QObject::deleteLater);
+        m_ui.installation_spinning_label->setMovie(spinning_animation.get());
+        m_ui.remove_spinning_label->setMovie(spinning_animation.get());
+        m_ui.update_spinning_label->setMovie(spinning_animation.get());
+    }
     spinning_animation->start();
 }
 

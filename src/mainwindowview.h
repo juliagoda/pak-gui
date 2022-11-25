@@ -75,4 +75,5 @@ private:
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
     QSharedPointer<QMovie> spinning_animation;
+    QSharedPointer<QMovie> spinning_animation_small;
 };
