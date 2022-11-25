@@ -43,7 +43,9 @@ target_sources(pak-gui PRIVATE
     actionsaccesschecker.cpp
     actionsaccesschecker.h
     settings.cpp
-    settings.h)
+    settings.h
+    logger.cpp
+    logger.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 

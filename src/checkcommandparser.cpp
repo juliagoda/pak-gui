@@ -1,10 +1,12 @@
 #include "checkcommandparser.h"
 #include "outputfilter.h"
+#include "logger.h"
 
 #include <QProcess>
 #include <QString>
 #include <QRegularExpression>
-
+#include <QFile>
+#include <QTextStream>
 
 CheckCommandParser::CheckCommandParser()
 {
@@ -20,6 +22,8 @@ QStringList CheckCommandParser::retrieveInfo()
     pacman_qi->waitForStarted();
     pacman_qi->waitForFinished(100000);
     QString output(pacman_qi->readAllStandardOutput());
+
+    Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
 
     QStringList system_packages = QStringList();
     QStringList output_list = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);

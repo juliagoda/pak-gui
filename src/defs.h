@@ -1,6 +1,8 @@
 #pragma once
 
+#include "pakGuiSettings.h"
 #include <QString>
+#include <QDir>
 
 constexpr int PACKAGE_QI_NAME_LINE = 0;
 constexpr int PACKAGE_QI_VERSION_LINE = 1;
@@ -19,3 +21,20 @@ const QString ASP_EXEC_FILE = "asp";
 const QString GIT_EXEC_FILE = "git";
 const QString REFLECTOR_EXEC_FILE = "reflector";
 const QString AURACLE_EXEC_FILE = "auracle-git";
+
+struct Converter
+{
+   static QString toAbsolutePath(const QString& new_path)
+   {
+       QString path = new_path;
+       if (path.startsWith("~/"))
+           return path.remove(0, 1).prepend(QDir().homePath());
+
+       return path;
+   }
+
+   static QString fullConfigPath()
+   {
+       return toAbsolutePath(pakGuiSettings::logs_filepath()).append("/" + pakGuiSettings::logs_filename());
+   }
+};

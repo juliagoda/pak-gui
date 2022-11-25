@@ -4,16 +4,15 @@
     SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
 
-// application header
 #include "mainwindow.h"
+#include "pakGuiSettings.h"
+#include "defs.h"
 
-// KF headers
 #include <KCrash>
 #include <KDBusService>
 #include <KAboutData>
 #include <KLocalizedString>
 
-// Qt headers
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QIcon>
@@ -21,6 +20,7 @@
 #include <QTextCodec>
 #include <QLoggingCategory>
 #include <QResource>
+#include <QDir>
 
 int main(int argc, char **argv)
 {
@@ -57,6 +57,11 @@ int main(int argc, char **argv)
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
+
+    QString config_path = Converter::toAbsolutePath(pakGuiSettings::logs_filepath());
+    if (!QDir().exists(config_path) &&
+        !QDir().mkpath(config_path))
+           qWarning() << "Path \"" << config_path << "\" couldn't be created!";
 
     MainWindow* window = new MainWindow;
     QObject::connect(window, &MainWindow::closeApp, &application, &QCoreApplication::quit);
