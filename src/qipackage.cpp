@@ -1,9 +1,8 @@
 #include "qipackage.h"
+#include "logger.h"
+#include "defs.h"
 
 #include <QTextStream>
-#include <QDebug>
-
-#include "defs.h"
 
 
 QiPackage::QiPackage(QString& package_content) :
@@ -14,6 +13,7 @@ QiPackage::QiPackage(QString& package_content) :
     setFlags(flags() | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
     setToolTip(getDescription() + QString("\n\n") + QString("dependencies: ") + getDependencies());
+    Logger::logger()->logDebug(QStringLiteral("tooltip on installed package looks like this now:\n\"%1\"").arg(toolTip()));
 }
 
 

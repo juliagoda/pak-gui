@@ -5,12 +5,13 @@
 #include <QProcess>
 #include <QString>
 #include <QRegularExpression>
-#include <QTextDecoder>
+
 
 StatisticsCommandParser::StatisticsCommandParser()
 {
 
 }
+
 
 QStringList StatisticsCommandParser::retrieveInfo()
 {
@@ -33,6 +34,7 @@ QStringList StatisticsCommandParser::retrieveInfo()
 
     return result;
 }
+
 
 QMap<QString, uint> StatisticsCommandParser::convertToMap(QStringList& retrievedInfos)
 {

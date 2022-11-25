@@ -1,11 +1,10 @@
 #include "updatedpackagescolumn.h"
 #include "logger.h"
+#include "checkpackage.h"
+#include "checkcommandparser.h"
 
 #include <QPointer>
 #include <QMessageBox>
-
-#include "checkpackage.h"
-#include "checkcommandparser.h"
 
 
 UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :

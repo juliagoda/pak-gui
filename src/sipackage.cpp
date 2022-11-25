@@ -1,8 +1,4 @@
 #include "sipackage.h"
-
-#include <QTextStream>
-#include <QDebug>
-
 #include "defs.h"
 
 
@@ -14,6 +10,7 @@ SiPackage::SiPackage(QString& package_content) :
     setFlags(flags() | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
     setToolTip(getDescription() + QString("\n\n") + QString("dependencies: ") + getDependencies());
+    Logger::logger()->logDebug(QStringLiteral("tooltip on available package looks like this now:\n\"%1\"").arg(toolTip()));
 }
 
 

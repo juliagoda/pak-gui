@@ -1,27 +1,31 @@
 #include "settings.h"
-
+#include "logger.h"
 #include "mainwindow.h"
 #include "pakGuiSettings.h"
 
 #include <QListWidget>
 #include <QPointer>
 
+
 Settings::Settings(MainWindow* main_window) :
     KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self()),
     settings()
 {
-    qDebug() << "show debug" << pakGuiSettings::show_debug();
     init();
     connectSignals();
     loadPackagesInfoSettings();
 
     if (packagesInfoNotDefault())
+    {
+        Logger::logger()->logDebug(QStringLiteral("saved selected packages info are not equal to default ones - enable reset button"));
         enableDefaultButton();
+    }
 }
 
 
 void Settings::updateWidgetsDefault()
 {
+    Logger::logger()->logInfo(QStringLiteral("changed settings to default ones"));
     packages_info_settings.packages_info_selector->availableListWidget()->clear();
     packages_info_settings.packages_info_selector->selectedListWidget()->clear();
     packages_info_settings.packages_info_selector->availableListWidget()->addItems(pakGuiSettings::packages_info_available());
@@ -31,6 +35,7 @@ void Settings::updateWidgetsDefault()
 
 void Settings::updateSettings()
 {
+    Logger::logger()->logInfo(QStringLiteral("settings have been saved"));
     updateAvailableInfoList();
     updateSelectedInfoList();
 }
@@ -85,6 +90,7 @@ void Settings::enableDefaultButton()
 
 void Settings::enableButtons()
 {
+    Logger::logger()->logDebug(QStringLiteral("enabled buttons in settings after packages info change"));
     enableDefaultButton();
     this->button(QDialogButtonBox::StandardButton::Apply)->setEnabled(true);
 }
@@ -105,6 +111,7 @@ void Settings::updateSelectedInfoList()
     for(const auto& selected_item : packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard))
         selected_info_list.append(selected_item->text());
     settings.setValue("packages_info_selected", selected_info_list);
+    Logger::logger()->logDebug(QStringLiteral("selected packages info saved: %1").arg(selected_info_list.join(", ")));
 }
 
 

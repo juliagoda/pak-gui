@@ -1,8 +1,12 @@
 #pragma once
 
 #include "pakGuiSettings.h"
+#include "process.h"
+#include "logger.h"
+
 #include <QString>
 #include <QDir>
+#include <QMap>
 
 constexpr int PACKAGE_QI_NAME_LINE = 0;
 constexpr int PACKAGE_QI_VERSION_LINE = 1;
@@ -23,24 +27,35 @@ const QString GIT_EXEC_FILE = "git";
 const QString REFLECTOR_EXEC_FILE = "reflector";
 const QString AURACLE_EXEC_FILE = "auracle-git";
 
+const QMap<Process::Task, Logger::WriteOperations> task_to_write_operation_map{
+    {Process::Task::Clean, Logger::WriteOperations::Clean},
+    {Process::Task::MirrorsUpdate, Logger::WriteOperations::MirrorsUpdate},
+    {Process::Task::UpdateAll, Logger::WriteOperations::UpdateAll},
+    {Process::Task::PrintVCSPackages, Logger::WriteOperations::PrintVCSPackages},
+    {Process::Task::UpdateInstalledPackages, Logger::WriteOperations::UpdateInstalled},
+    {Process::Task::Uninstall, Logger::WriteOperations::Remove},
+    {Process::Task::Install, Logger::WriteOperations::Install},
+    {Process::Task::Update, Logger::WriteOperations::Update}
+};
+
 struct Converter
 {
-   static QString toAbsolutePath(const QString& new_path)
-   {
-       QString path = new_path;
-       if (path.startsWith("~/"))
-           return path.remove(0, 1).prepend(QDir().homePath());
+    static QString toAbsolutePath(const QString& new_path)
+    {
+        QString path = new_path;
+        if (path.startsWith("~/"))
+            return path.remove(0, 1).prepend(QDir().homePath());
 
-       return path;
-   }
+        return path;
+    }
 
-   static QString fullConfigPath()
-   {
-       return toAbsolutePath(pakGuiSettings::logs_filepath()).append("/" + pakGuiSettings::logs_filename());
-   }
+    static QString fullConfigPath()
+    {
+        return toAbsolutePath(pakGuiSettings::logs_filepath()).append("/" + pakGuiSettings::logs_filename());
+    }
 
-   static int minutesToMiliseconds(int minutes)
-   {
-       return minutes * 60000;
-   }
+    static int minutesToMiliseconds(int minutes)
+    {
+        return minutes * 60000;
+    }
 };

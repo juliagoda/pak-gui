@@ -9,7 +9,6 @@
 #include <QListWidgetItem>
 #include <QPointer>
 #include <QMessageBox>
-#include <QListWidet>
 
 
 AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :

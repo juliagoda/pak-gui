@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QMutex>
 
+
 class Logger : public QObject
 {
     Q_OBJECT
@@ -21,7 +22,11 @@ public:
         CheckUpdates,
         CheckAvailable,
         CheckInstalled,
-        ShowStatistics
+        ShowStatistics,
+        MirrorsUpdate,
+        UpdateInstalled,
+        PrintVCSPackages,
+        SearchAll
     };
     Q_ENUM(WriteOperations)
 

@@ -124,12 +124,12 @@ void ActionsAccessChecker::findRequiredPackages()
 
 void ActionsAccessChecker::checkInternetConnection()
 {
+    static bool connection_state_changed = is_online;
     for(const QNetworkInterface& interface : QNetworkInterface::allInterfaces())
     {
         if (interface.type() == QNetworkInterface::Loopback)
             continue;
 
-        bool connection_state_changed = is_online;
         is_online = interface.flags().testFlag(QNetworkInterface::IsUp) &&
                 interface.flags().testFlag(QNetworkInterface::IsRunning);
 
@@ -137,6 +137,7 @@ void ActionsAccessChecker::checkInternetConnection()
         {
             Logger::logger()->logWarning(QStringLiteral("Application has been turned into %1 state").arg(is_online ? QString("online") : QString("offline")));
             emit internetAccessChanged(is_online);
+            connection_state_changed = is_online;
         }
 
         if (is_online)

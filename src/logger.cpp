@@ -17,10 +17,10 @@ Logger::Logger() :
     logs_file(Converter::fullConfigPath()),
     output_stream()
 {
-    if (logs_file.open(QIODevice::WriteOnly | QIODevice::Append))
-        qInfo() << "Opened logs file \"" << logs_file.fileName() << "\" successfully";
-
+    logs_file.open(QIODevice::WriteOnly | QIODevice::Append);
     output_stream.setDevice(&logs_file);
+    if (logs_file.isOpen())
+        logInfo(QStringLiteral("Logs file \"%1\" successfully opened\n").arg(logs_file.fileName()));
 }
 
 
@@ -69,21 +69,21 @@ void Logger::logInfo(const QString &text)
         return;
 
     logIntoFile(QString("INFO"), text);
-    qInfo() << text;
+    qInfo() << "[INFO] " << text;
 }
 
 
 void Logger::logWarning(const QString &text)
 {
     logIntoFile(QString("WARNING"), text);
-    qWarning() << text;
+    qWarning() << "[WARNING] " << text;
 }
 
 
 void Logger::logFatal(const QString &text)
 {
     logIntoFile(QString("FATAL"), text);
-    qCritical() << text;
+    qCritical() << "[FATAL] " << text;
 }
 
 
@@ -93,7 +93,7 @@ void Logger::logDebug(const QString &text)
         return;
 
     logIntoFile(QString("DEBUG"), text);
-    qDebug() << text;
+    qDebug() << "[DEBUG] " << text;
 }
 
 
@@ -101,7 +101,8 @@ void Logger::appendSection(WriteOperations section)
 {
     QString section_text = QVariant::fromValue(section).toString();
     QString local_time = QDateTime::currentDateTime().toLocalTime().toString();
-    QString line = QString("---------------[").append(local_time + " - " + section_text.toUpper()).append(QString("]---------------"));
+    QString line = QString("---------------[").append(section_text.toUpper()).append(QString("]---------------"));
+    output_stream << local_time;
     output_stream << line;
 }
 
@@ -120,10 +121,12 @@ void Logger::appendNewLine()
 
 void Logger::logIntoFile(const QString& section, const QString& text)
 {
+    write_mutex.lock();
     QString local_time = QDateTime::currentDateTime().toLocalTime().toString();
     QString local_text = text;
     if (pakGuiSettings::save_logs_into_file())
-       output_stream << local_time << " [" << section << "]  " << OutputFilter::filteredOutput(local_text);
+       output_stream << " [" << section << "]  " << OutputFilter::filteredOutput(local_text) << "(" << local_time << ")\n";
+    write_mutex.unlock();
 }
 
 
@@ -132,8 +135,7 @@ bool Logger::isWritePossible()
     if (logs_file.exists() && logs_file.isOpen() && logs_file.isWritable())
         return true;
 
-    qWarning() << "Cannot write to file \"" << logs_file.fileName() << "\" - file is not opened or "
-                  "you don't have permissions to write into or even doesn't exist";
+    logWarning(QStringLiteral("Cannot write to file \"%1\" - file is not opened or you don't have permissions to write into or even doesn't exist").arg(logs_file.fileName()));
     return false;
 }
 
@@ -144,7 +146,7 @@ void Logger::closeOnQuit()
         logs_file.close();
 
     if (logs_file.isOpen())
-        qWarning() << "Logs file \"" << logs_file.fileName() << "\" couldn't be properly closed!";
+        logWarning(QStringLiteral("Logs file \"%1\" couldn't be properly closed!").arg(logs_file.fileName()));
 
     instance_mutex.unlock();
 }

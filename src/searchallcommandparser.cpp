@@ -1,10 +1,12 @@
 #include "searchallcommandparser.h"
+#include "logger.h"
 
 SearchAllCommandParser::SearchAllCommandParser(const QString& new_package_name) :
     package_name(new_package_name)
 {
 
 }
+
 
 QStringList SearchAllCommandParser::retrieveInfo()
 {
@@ -13,5 +15,6 @@ QStringList SearchAllCommandParser::retrieveInfo()
     pacman_qi->waitForStarted();
     pacman_qi->waitForFinished();
     QString output(pacman_qi->readAllStandardOutput());
+    Logger::logger()->writeToFile(output, Logger::WriteOperations::SearchAll);
     return output.split(QRegularExpression("(([0-9]+(\.|-){1}[0-9]+)|(\[installed\]))"));
 }

@@ -1,4 +1,6 @@
 #include "sorter.h"
+#include "logger.h"
+#include "pakGuiSettings.h"
 
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
@@ -29,6 +31,14 @@ void Sorter::sortReverse()
     {
         list_widget->addItem(*widgets_it);
     }
+
+    if (!pakGuiSettings::show_debug())
+        return;
+
+    auto all_items = list_widget->findItems("*", Qt::MatchWildcard);
+    QList<QListWidgetItem*>::iterator first_list_iterator = all_items.begin();
+    QList<QListWidgetItem*>::iterator last_list_iterator = all_items.end();
+    Logger::logger()->logDebug(QStringLiteral("Reverse sorting - now first package is \"%1\" and last one \"%2\"").arg((*first_list_iterator)->text()).arg((*last_list_iterator)->text()));
 }
 
 
@@ -45,6 +55,12 @@ void Sorter::sortByText(const QString& text)
         list_widget->addItem(new QListWidgetItem(**widgets_it));
         i++;
     }
+
+    if (!pakGuiSettings::show_debug())
+        return;
+
+    auto all_items = list_widget->findItems("*", Qt::MatchWildcard);
+    Logger::logger()->logDebug(QStringLiteral("Count of sorted packages: %1").arg(all_items.count()));
 }
 
 

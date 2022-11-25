@@ -38,6 +38,9 @@ private:
     void prepareMapForNextTask();
     void emitSideTask(Process::Task task);
     QString questionForm(QStringList& new_checked_packages, Task new_task);
+    bool askQuestion(Task new_task, QStringList new_checked_packages);
+    QSharedPointer<QProcess> startProcess(Task new_task);
+    void connectSignals(QSharedPointer<QProcess> &process, Task new_task);
 
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;
