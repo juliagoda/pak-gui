@@ -10,6 +10,7 @@ Settings::Settings(MainWindow* main_window) :
     KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self()),
     settings()
 {
+    qDebug() << "show debug" << pakGuiSettings::show_debug();
     init();
     connectSignals();
     loadPackagesInfoSettings();

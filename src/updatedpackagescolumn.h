@@ -16,5 +16,8 @@ public:
 
 protected:
     QStringList getPackagesList() override;
+
+signals:
+    void startOtherThreads();
 };
 
