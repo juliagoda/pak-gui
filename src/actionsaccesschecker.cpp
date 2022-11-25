@@ -18,7 +18,7 @@ ActionsAccessChecker::ActionsAccessChecker() :
     is_auracle_installed(false),
     is_reflector_installed(false),
     is_git_installed(false),
-    is_online(false)
+    is_online(true)
 {
     Logger::logger()->logInfo(QStringLiteral("Environment variable PATH: %1").arg(QString(getenv("PATH"))));
 }
@@ -43,8 +43,10 @@ void ActionsAccessChecker::checkRequiredPackages()
 
 bool ActionsAccessChecker::findPackage(const QString& package_name)
 {
-    QDir::setSearchPaths(package_name, QStringList() << QDir::currentPath() << QString(getenv("PATH")).split(":"));
-    QFile executable(package_name + ":" + package_name);
+    QString prefix = package_name;
+    QString filtered_prefix = prefix.remove(QRegExp("-"));
+    QDir::setSearchPaths(filtered_prefix, QStringList() << QDir::currentPath() << QString(getenv("PATH")).split(":"));
+    QFile executable(filtered_prefix + ":" + package_name);
     return executable.exists();
 }
 
@@ -133,15 +135,15 @@ void ActionsAccessChecker::checkInternetConnection()
         is_online = interface.flags().testFlag(QNetworkInterface::IsUp) &&
                 interface.flags().testFlag(QNetworkInterface::IsRunning);
 
-        if (connection_state_changed != is_online)
-        {
-            Logger::logger()->logWarning(QStringLiteral("Application has been turned into %1 state").arg(is_online ? QString("online") : QString("offline")));
-            emit internetAccessChanged(is_online);
-            connection_state_changed = is_online;
-        }
-
         if (is_online)
             break;
+    }
+
+    if (connection_state_changed != is_online)
+    {
+        Logger::logger()->logWarning(QStringLiteral("Application has been turned into %1 state").arg(is_online ? "online" : "offline"));
+        emit internetAccessChanged(is_online);
+        connection_state_changed = is_online;
     }
 }
 

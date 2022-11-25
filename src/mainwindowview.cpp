@@ -153,7 +153,7 @@ void MainWindowView::setTimerOnActionsAccessChecker()
     connect(packages_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkRequiredPackages);
     int miliseconds = Converter::minutesToMiliseconds(pakGuiSettings::internet_reconnection_time_in_minutes());
     startCheckTimer(internet_connection_timer, miliseconds, QString("Internet connection checker "));
-    startCheckTimer(packages_timer, 20000, QString("Required packages checker "));
+    startCheckTimer(packages_timer, 8000, QString("Required packages checker "));
 }
 
 
