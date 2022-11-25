@@ -35,8 +35,8 @@ QStringList InstalledPackagesColumn::collectCheckedPackages()
 
         if (item && item->checkState() == Qt::Checked)
         {
-            Logger::logger()->logDebug(QStringLiteral("Checked package to remove: %1").arg(item->getName().trimmed()));
-            checked_packages.append(item->getName().trimmed());
+            Logger::logger()->logDebug(QStringLiteral("Checked package to remove: %1").arg(item->getName()));
+            checked_packages.append(item->getName());
         }
     }
 

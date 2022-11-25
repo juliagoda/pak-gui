@@ -63,7 +63,7 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::gitAccessChanged, [this](bool is_git_installed){ is_git_installed && actions_access_checker->isOnline() ? m_ui.polaur_kled->on() : m_ui.polaur_kled->off();});
     QObject::connect(this, &MainWindowView::operationsAmountIncreased, m_ui.progress_view_checkbox, &QCheckBox::show);
     QObject::connect(progress_view.data(), &QDialog::rejected, [this](){ m_ui.progress_view_checkbox->setChecked(false); });
-    QObject::connect(m_ui.progress_view_checkbox, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) progress_view.data()->show(); else progress_view.data()->hide(); });
+    QObject::connect(m_ui.progress_view_checkbox, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) { progress_view->resize(500, 500); progress_view.data()->show(); } else progress_view.data()->hide(); });
     QObject::connect(m_ui.console_view_install, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.available_preview_area->show(); else m_ui.available_preview_area->hide(); });
     QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
     QObject::connect(m_ui.console_view_update, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.updated_preview_area->show(); else m_ui.updated_preview_area->hide(); });
@@ -153,6 +153,12 @@ void MainWindowView::setTimerOnActionsAccessChecker()
     int miliseconds = Converter::minutesToMiliseconds(pakGuiSettings::internet_reconnection_time_in_minutes());
     startCheckTimer(internet_connection_timer, miliseconds, QString("Internet connection checker "));
     startCheckTimer(packages_timer, 8000, QString("Required packages checker "));
+}
+
+
+void MainWindowView::setTimerOnUpdatesCheck()
+{
+    // TODO
 }
 
 
@@ -321,7 +327,7 @@ void MainWindowView::showStatisticsWindow()
     auto map_result = command_parser.data()->convertToMap(list_result);
 
     QPointer<Statistics> statistics = new Statistics(map_result, this);
-    statistics->resize(800, 500);
+    statistics->resize(800, 800);
     statistics->show();
 }
 

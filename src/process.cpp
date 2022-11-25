@@ -26,7 +26,7 @@ Process::Process() :
 
     commands_map.insert(Task::Clean, QStringList() << "-c" << "y | pak -Sc");
     commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << "pak -m");
-    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << "pak -Su");
+    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << "/usr/bin/kdesu -t -n -c | y | pak -Su --noconfirm");
     commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << "pak --vcs");
     commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << "pak -Sy");
 }

@@ -30,14 +30,36 @@
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
           <layout class="QGridLayout" name="gridLayout">
+           <item row="2" column="1">
+            <widget class="QSpinBox" name="kcfg_internet_reconnection_time_in_minutes"/>
+           </item>
+           <item row="3" column="1">
+            <widget class="QSpinBox" name="kcfg_update_check_time_in_days"/>
+           </item>
+           <item row="3" column="3">
+            <widget class="QSpinBox" name="kcfg_update_check_time_in_hours"/>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="kcfg_history_store_time_in_days"/>
+           </item>
            <item row="3" column="2">
-            <widget class="QLabel" name="label_9">
+            <widget class="QLabel" name="label_11">
              <property name="text">
-              <string>minutes</string>
+              <string>day(s)</string>
              </property>
             </widget>
            </item>
            <item row="3" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Check packages ready to update every </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
               <string>Try to reconnect to the internet every </string>
@@ -47,21 +69,36 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QSpinBox" name="kcfg_update_check_time_in_days"/>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>days</string>
+             </property>
+            </widget>
            </item>
-           <item row="4" column="4">
+           <item row="2" column="2">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>minutes</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="kcfg_history_file_size_limit_in_Mb"/>
+           </item>
+           <item row="3" column="6">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>minutes</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="4">
             <widget class="QLabel" name="label_12">
              <property name="text">
               <string>hours</string>
              </property>
             </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="kcfg_history_store_time_in_days"/>
-           </item>
-           <item row="2" column="1">
-            <widget class="QSpinBox" name="kcfg_refresh_interval_in_hours"/>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label">
@@ -83,80 +120,13 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="2">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>hours</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="3">
-            <widget class="QSpinBox" name="kcfg_update_check_time_in_hours"/>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>days</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="5">
+           <item row="3" column="5">
             <widget class="QSpinBox" name="kcfg_update_check_time_in_minutes"/>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Check packages ready to update every </string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
            </item>
            <item row="1" column="2">
             <widget class="QLabel" name="label_4">
              <property name="text">
               <string>MB</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>Refresh every </string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="4">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>minutes</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="2">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>day(s)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QSpinBox" name="kcfg_internet_reconnection_time_in_minutes"/>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="kcfg_history_file_size_limit_in_Mb"/>
-           </item>
-           <item row="2" column="3">
-            <widget class="QSpinBox" name="kcfg_refresh_interval_in_minutes"/>
-           </item>
-           <item row="4" column="6">
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>minutes</string>
              </property>
             </widget>
            </item>

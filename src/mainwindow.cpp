@@ -65,10 +65,10 @@ MainWindow::MainWindow()
     connect(m_updateMirrorsAction, &QAction::triggered, this, [this]() { process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
 
     m_cleanAction = new QAction(this);
-    m_cleanAction->setText(i18n("&Clear"));
-    m_cleanAction->setIcon(QIcon::fromTheme("clear"));
+    m_cleanAction->setText(i18n("&Clean"));
+    m_cleanAction->setIcon(QIcon::fromTheme("clean"));
     actionCollection->setDefaultShortcut(m_cleanAction, Qt::CTRL + Qt::Key_C);
-    actionCollection->addAction(i18n("clear"), m_cleanAction);
+    actionCollection->addAction(i18n("clean"), m_cleanAction);
     connect(m_cleanAction, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
 
     m_printStatisticsAction = new QAction(this);
