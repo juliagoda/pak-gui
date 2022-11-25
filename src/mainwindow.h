@@ -1,11 +1,4 @@
-/*
-    SPDX-FileCopyrightText: %{CURRENT_YEAR} %{AUTHOR} <%{EMAIL}>
-
-    SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
-*/
-
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <KXmlGuiWindow>
 #include <QSharedPointer>
@@ -17,14 +10,6 @@
 
 class MainWindowView;
 
-/**
- * This class serves as the main window for pak-gui.  It handles the
- * menus, toolbars and status bars.
- *
- * @short Main window class
- * @author %{AUTHOR} <%{EMAIL}>
- * @version %{VERSION}
- */
 class MainWindow : public KXmlGuiWindow
 {
     Q_OBJECT
@@ -51,10 +36,7 @@ private:
     QAction* m_updateAllAction;
     QAction* m_updateMirrorsAction;
     QAction* m_cleanAction;
-    QAction* m_undoAction;
     QPointer<MainWindowView> main_window_view;
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
 };
-
-#endif // MAINWINDOW_H

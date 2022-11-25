@@ -69,6 +69,7 @@ signals:
 
 private:
     void setTimerOnActionsAccessChecker();
+    void startCheckTimer(QPointer<QTimer> timer, int miliseconds, const QString& timer_type)
     void connectSignals();
     void hideWidgets();
     void hideWidgetsExceptInstalled();

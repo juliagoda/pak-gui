@@ -1,6 +1,5 @@
 #include "progressview.h"
-
-#include <QDebug>
+#include "logger.h"
 
 
 ProgressView::ProgressView(QDialog* parent)
@@ -13,6 +12,7 @@ ProgressView::ProgressView(QDialog* parent)
 
 void ProgressView::addProgressView(QWidget* progress_view)
 {
+    Logger::logger()->logDebug(QStringLiteral("Generated operation tab in preview window titled \"%1\"").arg(progress_view->objectName()));
     m_ui.progress_view_tabwidget->addTab(progress_view, progress_view->objectName());
 }
 
@@ -23,10 +23,11 @@ void ProgressView::removeProgressView(QWidget* progress_view)
 
     if (index == -1)
     {
-        qWarning() << "progress view titled \"" << progress_view->objectName() << "\" couldn't be removed from tabwidget window - couldn't be found";
+        Logger::logger()->logWarning(QStringLiteral("progress view titled \"%1\" couldn't be removed from tabwidget window - couldn't be found").arg(progress_view->objectName()));
         return;
     }
 
+    Logger::logger()->logDebug(QStringLiteral("Removing tab widget titled \"%1\"").arg(progress_view->objectName()));
     m_ui.progress_view_tabwidget->removeTab(index);
 }
 

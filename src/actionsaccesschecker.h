@@ -19,7 +19,8 @@ public:
     bool isOnline() const;
 
 public Q_SLOTS:
-    void run();
+    void checkRequiredPackages();
+    void checkInternetConnection();
 
 signals:
     void aspAccessChanged(bool is_asp_installed);
@@ -35,7 +36,6 @@ private:
     QStringList getNotInstalledPackagesList();
     void findRequiredPackages();
     bool findPackage(const QString& package_name);
-    void checkInternetConnection();
     void emitSignals();
 
     bool is_asp_installed;

@@ -1,17 +1,19 @@
 #include "downloadcommandparser.h"
 
 #include "outputfilter.h"
-#include "qmessagebox.h"
+#include "logger.h"
+#include "qstringliteral.h"
 
 #include <KLocalizedString>
 #include <QScopedPointer>
 #include <QMessageBox>
 #include <QProcess>
-#include <QString>
+#include <QStringLiteral>
 #include <QRegularExpression>
 #include <QMessageBox>
 #include <QtDebug>
 #include <QtConcurrent/QtConcurrent>
+
 
 DownloadCommandParser::DownloadCommandParser(const QString& new_package_name) :
     pak_download(new QProcess),
@@ -22,7 +24,7 @@ DownloadCommandParser::DownloadCommandParser(const QString& new_package_name) :
 {
     pak_download->setProcessChannelMode(QProcess::MergedChannels);
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
-    QObject::connect(pak_download.get(), &QProcess::errorOccurred, [=]() { qDebug() << "Error in Process: " << pak_download->errorString();});
+    QObject::connect(pak_download.get(), &QProcess::errorOccurred, [=]() { Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString())); });
     QObject::connect(pak_download.get(), &QProcess::readyReadStandardOutput, [=]() mutable {
         while (pak_download.data()->canReadLine())
         {
@@ -62,10 +64,9 @@ void DownloadCommandParser::updateParameter(const QString& new_command)
 void DownloadCommandParser::start()
 {
     if (!validate())
-        qWarning() << "retrieving paths from download command parser is not possible";
+        Logger::logger()->logWarning("retrieving paths from download command parser is not possible");
 
-    qInfo() << "Trying download package: " << package_name << " with command " << command.trimmed();
-
+    Logger::logger()->logInfo(QStringLiteral("Trying download package: %1 with command %2").arg(package_name).arg(command.trimmed()));
     pak_download->start("/bin/bash", QStringList() << "-c" << command + " " + package_name.trimmed());
     pak_download->waitForStarted();
     pak_download->waitForReadyRead();
@@ -76,12 +77,11 @@ void DownloadCommandParser::inputAnswer(const QString& new_answer)
 {
     if (pak_download->state() != QProcess::Running && !pak_download->isWritable())
     {
-        qWarning() << "Download command parser process is not running. Answer input is not possible";
+        Logger::logger()->logWarning("Download command parser process is not running. Answer input is not possible");
         return;
     }
 
-    qInfo() << "Chosen option: " << new_answer;
-
+    Logger::logger()->logInfo(QStringLiteral("Chosen option: %1").arg(new_answer));
     pak_download->write(new_answer.toLocal8Bit());
     pak_download->waitForReadyRead();
 }
@@ -94,13 +94,7 @@ bool DownloadCommandParser::validate()
         QMessageBox::warning(new QWidget, QObject::tr("Package Name"),
                              QObject::tr("Package name cannot be empty"),
                              QMessageBox::Ok);
-        return false;
-    }
-
-    if (QString::compare(command, QString("pak -GB")) != 0 &&
-            QString::compare(command, QString("pak -G")) != 0)
-    {
-        qWarning() << "Package download command is not correct";
+        Logger::logger()->logWarning("Given package name for download is empty!");
         return false;
     }
 
@@ -119,9 +113,11 @@ void DownloadCommandParser::validateFinishedOutput(int exit_code)
    Q_UNUSED(exit_code)
    if (!result_output.contains("PKGBUILD has been downloaded to"))
    {
-       QMessageBox::critical(new QWidget, i18n("Package download failure"), i18n("Package couldn't be downloaded:\n\nError lines:\n%1", error_lines.join("\n")));
+       QMessageBox::warning(new QWidget, i18n("Package download failure"), i18n("Package couldn't be downloaded:\n\nError lines:\n%1", error_lines.join("\n")));
+       Logger::logger()->logWarning(QStringLiteral("Package couldn't be downloaded:\n\nError lines:\n %1").arg(error_lines.join("\n")));
        return;
    }
 
    QMessageBox::information(new QWidget, i18n("Package download"), i18n("Package %1 has been downloaded %2", package_name, QString::compare(command, "pak -GB") == 0 ? i18n("and installed") : ""));
+   Logger::logger()->logWarning(QStringLiteral("Package %1 has been downloaded %2").arg(package_name).arg(QString::compare(command, "pak -GB") == 0 ? i18n("and installed") : ""));
 }

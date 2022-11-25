@@ -1,10 +1,5 @@
-/*
-    SPDX-FileCopyrightText: %{CURRENT_YEAR} %{AUTHOR} <%{EMAIL}>
 
-    SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
-*/
 
-// application headers
 #include "mainwindow.h"
 
 #include "actionsaccesschecker.h"
@@ -13,11 +8,11 @@
 #include <QAction>
 #include <QStatusBar>
 
-// KF headers
 #include <KActionCollection>
 #include <KConfigDialog>
 #include <KLocalizedString>
 #include <KStandardAction>
+
 
 MainWindow::MainWindow()
     : KXmlGuiWindow(),
@@ -76,12 +71,6 @@ MainWindow::MainWindow()
     actionCollection->addAction(i18n("clear"), m_cleanAction);
     connect(m_cleanAction, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
 
-    m_undoAction = actionCollection->addAction(QStringLiteral("undo"));
-    m_undoAction->setText(i18nc("@action", "Undo"));
-    m_undoAction->setIcon(QIcon::fromTheme(QStringLiteral("undo")));
-    //connect(m_undoAction, &QAction::triggered, mainWindowView, &MainWindowView::switchColors);
-
-    // action - statistics part:
     m_printStatisticsAction = new QAction(this);
     m_printStatisticsAction->setText(i18n("&Statistics"));
     m_printStatisticsAction->setIcon(QIcon::fromTheme("statistics"));
@@ -89,7 +78,6 @@ MainWindow::MainWindow()
     actionCollection->addAction("statistics", m_printStatisticsAction);
     connect(m_printStatisticsAction, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
 
-    // action - vcs part:
     m_printVCSPackagesAction = new QAction(this);
     m_printVCSPackagesAction->setText(i18n("&Installed vcs packages"));
     m_printVCSPackagesAction->setIcon(QIcon::fromTheme("installedVcsPackages"));
@@ -120,7 +108,6 @@ void MainWindow::disableActions()
     m_updateAllAction->setDisabled(true);
     m_updateMirrorsAction->setDisabled(true);
     m_cleanAction->setDisabled(true);
-    m_undoAction->setDisabled(true);
     m_printStatisticsAction->setDisabled(true);
     m_printVCSPackagesAction->setDisabled(true);
 }
@@ -132,10 +119,8 @@ void MainWindow::disableOnlineActions()
     m_downloadAction->setDisabled(true);
     m_updateAllAction->setDisabled(true);
     m_updateMirrorsAction->setDisabled(true);
-    m_undoAction->setDisabled(true);
     m_refreshAction->setDisabled(false);
     m_cleanAction->setDisabled(false);
-    m_undoAction->setDisabled(false);
     m_printStatisticsAction->setDisabled(false);
     m_printVCSPackagesAction->setDisabled(false);
 }
@@ -149,7 +134,6 @@ void MainWindow::enableActions()
     m_updateAllAction->setDisabled(false);
     m_updateMirrorsAction->setDisabled(false);
     m_cleanAction->setDisabled(false);
-    m_undoAction->setDisabled(false);
     m_printStatisticsAction->setDisabled(false);
     m_printVCSPackagesAction->setDisabled(false);
 }

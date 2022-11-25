@@ -30,15 +30,13 @@ ActionsAccessChecker::~ActionsAccessChecker()
 }
 
 
-void ActionsAccessChecker::run()
+void ActionsAccessChecker::checkRequiredPackages()
 {
     findRequiredPackages();
     is_asp_installed = findPackage(ASP_EXEC_FILE);
     is_auracle_installed = findPackage(AURACLE_EXEC_FILE);
     is_reflector_installed = findPackage(REFLECTOR_EXEC_FILE);
     is_git_installed = findPackage(GIT_EXEC_FILE);
-
-    checkInternetConnection();
     emitSignals();
 }
 
@@ -136,7 +134,11 @@ void ActionsAccessChecker::checkInternetConnection()
                 interface.flags().testFlag(QNetworkInterface::IsRunning);
 
         if (connection_state_changed != is_online)
+        {
             Logger::logger()->logWarning(QStringLiteral("Application has been turned into %1 state").arg(is_online ? QString("online") : QString("offline")));
+            emit internetAccessChanged(is_online);
+        }
+
         if (is_online)
             break;
     }
@@ -149,5 +151,4 @@ void ActionsAccessChecker::emitSignals()
     emit auracleAccessChanged(is_auracle_installed);
     emit reflectorAccessChanged(is_reflector_installed);
     emit gitAccessChanged(is_git_installed);
-    emit internetAccessChanged(is_online);
 }

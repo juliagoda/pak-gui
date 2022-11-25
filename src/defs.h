@@ -38,4 +38,9 @@ struct Converter
    {
        return toAbsolutePath(pakGuiSettings::logs_filepath()).append("/" + pakGuiSettings::logs_filename());
    }
+
+   static int minutesToMiliseconds(int minutes)
+   {
+       return minutes * 60000;
+   }
 };

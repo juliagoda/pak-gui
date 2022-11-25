@@ -1,10 +1,3 @@
-/*
-    SPDX-FileCopyrightText: %{CURRENT_YEAR} %{AUTHOR} <%{EMAIL}>
-
-    SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
-*/
-
-// application headers
 #include "mainwindowview.h"
 
 #include "availablepackagescolumn.h"
@@ -15,6 +8,8 @@
 #include "statisticscommandparser.h"
 #include "process.h"
 #include "packagedownloader.h"
+#include "logger.h"
+#include "defs.h"
 
 #include <KLocalizedString>
 #include <KLed>
@@ -49,6 +44,7 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     updated_packages_column = QSharedPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit), &QObject::deleteLater);
 
     emit initStarted();
+    Logger::logger()->logInfo("Initialization started");
 
     generated_previews_map.insert(Process::Task::Install, m_ui.installed_preview_area);
     generated_previews_map.insert(Process::Task::Uninstall, m_ui.updated_preview_area);
@@ -151,9 +147,24 @@ void MainWindowView::hideWidgetsExceptInstalled()
 
 void MainWindowView::setTimerOnActionsAccessChecker()
 {
-    QPointer<QTimer> timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::run);
-    timer->start(10000);
+    QPointer<QTimer> internet_connection_timer = new QTimer(this);
+    QPointer<QTimer> packages_timer = new QTimer(this);
+    connect(internet_connection_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkInternetConnection);
+    connect(packages_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkRequiredPackages);
+    int miliseconds = Converter::minutesToMiliseconds(pakGuiSettings::internet_reconnection_time_in_minutes());
+    startCheckTimer(internet_connection_timer, miliseconds, QString("Internet connection checker "));
+    startCheckTimer(packages_timer, 20000, QString("Required packages checker "));
+}
+
+
+void MainWindowView::startCheckTimer(QPointer<QTimer> timer, int miliseconds, const QString& timer_type)
+{
+    timer->start(miliseconds);
+
+    if (miliseconds == 0)
+        timer->stop();
+
+    Logger::logger()->logDebug(QStringLiteral("%1 started with interval %2").arg(timer_type).arg(miliseconds));
 }
 
 
@@ -174,6 +185,7 @@ void MainWindowView::toggleWidgetsAccess(bool is_online)
         return;
     }
 
+    Logger::logger()->logInfo(QStringLiteral("Disabling widgets accordingly to offline state"));
     is_online ? m_ui.repos_kled->on() : m_ui.repos_kled->off();
     m_ui.packages_to_update_label->setStyleSheet("color: black; font-size: 15px;");
     m_ui.packages_to_update_label->setText(i18n("No internet connection"));
@@ -251,6 +263,7 @@ void MainWindowView::checkSpinningVisibility()
         actions_access_checker->isOnline())
     {
         emit initEnded();
+        Logger::logger()->logInfo(QStringLiteral("Refresh/initialization ended"));
     }
 }
 
@@ -287,6 +300,7 @@ void MainWindowView::showAnimation()
     m_ui.actions_spinning_animation_label->setMovie(spinning_animation.get());
     m_ui.actions_spinning_animation_label->show();
     spinning_animation->start();
+    Logger::logger()->logDebug(QStringLiteral("Animation in main window started"));
 }
 
 
@@ -294,6 +308,7 @@ void MainWindowView::stopAnimation()
 {
     m_ui.actions_spinning_animation_label->hide();
     spinning_animation->stop();
+    Logger::logger()->logDebug(QStringLiteral("Animation in main window stopped"));
 }
 
 

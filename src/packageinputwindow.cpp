@@ -1,11 +1,6 @@
-/*
-    SPDX-FileCopyrightText: %{CURRENT_YEAR} %{AUTHOR} <%{EMAIL}>
-
-    SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
-*/
 
 #include "packageinputwindow.h"
-#include "qnamespace.h"
+#include "logger.h"
 
 #include <QPushButton>
 #include <QDialogButtonBox>
@@ -23,6 +18,9 @@ PackageInputWindow::PackageInputWindow(QWidget* parent)
 
 void PackageInputWindow::toggleOkButton(const QString& new_package_name)
 {
-     m_ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!new_package_name.isEmpty());
+    auto ok_button = m_ui.buttonBox->button(QDialogButtonBox::Ok);
+    ok_button->setEnabled(!new_package_name.isEmpty());
+    Logger::logger()->logDebug(new_package_name.isEmpty() ? "Package name is empty" : "Package name is not empty");
+    Logger::logger()->logDebug(ok_button->isEnabled() ? "OK button is now enabled" : "OK button is now disabled");
 }
 
