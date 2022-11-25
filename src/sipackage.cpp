@@ -10,7 +10,20 @@ SiPackage::SiPackage(QString& package_content) :
     setFlags(flags() | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
     setToolTip(getDescription() + QString("\n\n") + QString("dependencies: ") + getDependencies());
-    Logger::logger()->logDebug(QStringLiteral("tooltip on available package looks like this now:\n\"%1\"").arg(toolTip()));
+}
+
+
+SiPackage::SiPackage(SiPackage& si_package) :
+    Package(si_package)
+{
+    setName(si_package.getName());
+    setVersion(si_package.getVersion());
+    setDescription(si_package.getDescription());
+    setDependencies(si_package.getDependencies());
+    setText(getName() + "-" + getVersion());
+    setFlags(flags() | Qt::ItemIsUserCheckable);
+    setCheckState(Qt::Unchecked);
+    setToolTip(getDescription() + QString("\n\n") + QString("dependencies: ") + getDependencies());
 }
 
 

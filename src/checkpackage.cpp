@@ -13,6 +13,17 @@ CheckPackage::CheckPackage(QString& package_content) :
 }
 
 
+CheckPackage::CheckPackage(CheckPackage& check_package) :
+    Package(check_package)
+{
+   setName(check_package.getName());
+   setVersion(check_package.getVersion());
+   setText(getName() + "-" + getVersion());
+   setFlags(flags() | Qt::ItemIsUserCheckable);
+   setCheckState(Qt::Unchecked);
+}
+
+
 void CheckPackage::updateData(QString& packageContent)
 {
     if (packageContent.isEmpty())

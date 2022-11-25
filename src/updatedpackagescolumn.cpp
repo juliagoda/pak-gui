@@ -10,7 +10,10 @@
 UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
     PackagesColumn(new_list_widget, new_search_lineedit)
 {
-
+    QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
+                     &Sorter::sortPackagesToUpdateByText);
+    QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
+                     &Sorter::sortPackagesToUpdateByText);
 }
 
 
@@ -31,8 +34,8 @@ QStringList UpdatedPackagesColumn::collectCheckedPackages()
 
         if (item && item->checkState() == Qt::Checked)
         {
-            Logger::logger()->logDebug(QStringLiteral("Checked package to update: %1").arg(item->getName()));
-            checked_packages.append(item->getName());
+            Logger::logger()->logDebug(QStringLiteral("Checked package to update: %1").arg(item->getName().trimmed()));
+            checked_packages.append(item->getName().trimmed());
         }
     }
 

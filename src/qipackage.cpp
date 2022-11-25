@@ -13,7 +13,20 @@ QiPackage::QiPackage(QString& package_content) :
     setFlags(flags() | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
     setToolTip(getDescription() + QString("\n\n") + QString("dependencies: ") + getDependencies());
-    Logger::logger()->logDebug(QStringLiteral("tooltip on installed package looks like this now:\n\"%1\"").arg(toolTip()));
+}
+
+
+QiPackage::QiPackage(QiPackage& qi_package) :
+    Package(qi_package)
+{
+    setName(qi_package.getName());
+    setVersion(qi_package.getVersion());
+    setDescription(qi_package.getDescription());
+    setDependencies(qi_package.getDependencies());
+    setText(getName() + "-" + getVersion());
+    setFlags(flags() | Qt::ItemIsUserCheckable);
+    setCheckState(Qt::Unchecked);
+    setToolTip(getDescription() + QString("\n\n") + QString("dependencies: ") + getDependencies());
 }
 
 

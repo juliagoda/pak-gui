@@ -21,14 +21,14 @@ public:
         search_lineedit(new_search_lineedit),
         packages_sorter(new Sorter(list_widget), &QObject::deleteLater)
     {
-        QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
-                         &Sorter::sortByText);
-        QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
-                         &Sorter::sortByText);
+
     };
 
     virtual QStringList collectCheckedPackages() { return QStringList(); };
-    virtual void fill() {};
+    virtual void fill()
+    {
+
+    };
     virtual void clear()
     {
         checked_packages = 0;

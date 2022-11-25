@@ -19,6 +19,15 @@ public:
         Q_UNUSED(package_content)
     }
 
+    Package(Package& package) :
+        QListWidgetItem()
+    {
+        name = package.name;
+        version = package.version;
+        description = package.description;
+        dependencies = package.dependencies;
+    }
+
     virtual const QString& getName() { return name; };
     virtual const QString& getVersion() const { return version; };
     virtual const QString& getDescription() const { return description; };

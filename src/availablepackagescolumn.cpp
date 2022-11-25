@@ -9,12 +9,16 @@
 #include <QListWidgetItem>
 #include <QPointer>
 #include <QMessageBox>
+#include <QDebug>
 
 
 AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
     PackagesColumn(new_list_widget, new_search_lineedit)
 {
-
+    QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
+                     &Sorter::sortAvailablePackagesByText);
+    QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
+                     &Sorter::sortAvailablePackagesByText);
 }
 
 

@@ -38,6 +38,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void showAnimation();
+    void startAnimations();
     void stopAnimation();
     void connectSignalsForAvailablePackages();
     void connectSignalsForInstalledPackages();
@@ -63,6 +64,7 @@ private:
     void hideWidgetsExceptInstalled();
     void init();
     void checkSpinningVisibility();
+    void startAnimation();
 
     Ui::MainWindowView m_ui;
     QSharedPointer<Process> process;

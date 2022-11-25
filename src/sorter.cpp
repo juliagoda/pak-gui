@@ -1,6 +1,9 @@
 #include "sorter.h"
 #include "logger.h"
 #include "pakGuiSettings.h"
+#include "checkpackage.h"
+#include "sipackage.h"
+#include "qipackage.h"
 
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
@@ -42,20 +45,57 @@ void Sorter::sortReverse()
 }
 
 
-void Sorter::sortByText(const QString& text)
+void Sorter::sortPackagesToUpdateByText(const QString &text)
 {
+
     auto widgets_list = untouched_list_widget->findItems(QString(" ") + text, Qt::MatchStartsWith);
-
     clear();
-
     int i = 0;
     QList<QListWidgetItem*>::iterator widgets_it;
     for(widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
     {
-        list_widget->addItem(new QListWidgetItem(**widgets_it));
+        CheckPackage* item = dynamic_cast<CheckPackage*>(*widgets_it);
+        list_widget->addItem(new CheckPackage(*item));
         i++;
     }
+    showInfo();
+}
 
+
+void Sorter::sortAvailablePackagesByText(const QString &text)
+{
+    auto widgets_list = untouched_list_widget->findItems(QString(" ") + text, Qt::MatchStartsWith);
+    clear();
+    int i = 0;
+    QList<QListWidgetItem*>::iterator widgets_it;
+    for(widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
+    {
+        SiPackage* item = dynamic_cast<SiPackage*>(*widgets_it);
+        list_widget->addItem(new SiPackage(*item));
+        i++;
+    }
+    showInfo();
+}
+
+
+void Sorter::sortInstalledPackagesByText(const QString &text)
+{
+    auto widgets_list = untouched_list_widget->findItems(QString(" ") + text, Qt::MatchStartsWith);
+    clear();
+    int i = 0;
+    QList<QListWidgetItem*>::iterator widgets_it;
+    for(widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
+    {
+        QiPackage* item = dynamic_cast<QiPackage*>(*widgets_it);
+        list_widget->addItem(new QiPackage(*item));
+        i++;
+    }
+    showInfo();
+}
+
+
+void Sorter::showInfo()
+{
     if (!pakGuiSettings::show_debug())
         return;
 
@@ -66,11 +106,7 @@ void Sorter::sortByText(const QString& text)
 
 void Sorter::clear()
 {
-    while(list_widget->count() > 0)
-    {
-        if (list_widget->item(0))
-            list_widget->takeItem(0);
-    }
+    list_widget->clear();
 }
 
 

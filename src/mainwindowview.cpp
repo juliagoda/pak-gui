@@ -8,6 +8,7 @@
 #include "statisticscommandparser.h"
 #include "process.h"
 #include "packagedownloader.h"
+#include "previewdesign.h"
 #include "logger.h"
 #include "defs.h"
 
@@ -25,6 +26,7 @@
 #include <QChartView>
 #include <QPieSeries>
 #include <QTimer>
+#include <QtConcurrent/QtConcurrent>
 
 
 MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
@@ -39,6 +41,11 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
 
 {
     m_ui.setupUi(this);
+
+    PreviewDesign::update(m_ui.text_browser_tab_uninstall);
+    PreviewDesign::update(m_ui.text_browser_tab_install);
+    PreviewDesign::update(m_ui.text_browser_tab_update);
+
     available_packages_column = QSharedPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit), &QObject::deleteLater);
     installed_packages_column = QSharedPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit), &QObject::deleteLater);
     updated_packages_column = QSharedPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit), &QObject::deleteLater);
@@ -63,11 +70,12 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     QObject::connect(process.data(), &Process::generatedOutput, this, &MainWindowView::generateOutput, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::showAnimation);
-    QObject::connect(process.data(), &Process::finished, available_packages_column.data(), [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
+    QObject::connect(process.data(), &Process::finished, this, [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::finished, this, &MainWindowView::stopAnimation);
 
     hideWidgets();
     setTimerOnActionsAccessChecker();
+    startAnimations();
     init();
 }
 
@@ -87,16 +95,6 @@ void MainWindowView::init()
     m_ui.available_packages_list->hide();
     m_ui.installed_packages_list->hide();
     m_ui.packages_to_update_list->hide();
-
-    m_ui.remove_spinning_widget->show();
-    m_ui.installation_spinning_widget->show();
-    m_ui.update_spinning_widget->show();
-
-    spinning_animation.reset(new QMovie(":/waiting.gif"), &QObject::deleteLater);
-    m_ui.installation_spinning_label->setMovie(spinning_animation.get());
-    m_ui.remove_spinning_label->setMovie(spinning_animation.get());
-    m_ui.update_spinning_label->setMovie(spinning_animation.get());
-    spinning_animation->start();
 
     QObject::connect(updated_packages_thread, &QThread::started, [this]() { updated_packages_column->fill(); emit packagesToUpdateFillEnded(); });
     QObject::connect(available_packages_thread, &QThread::started, [this]() {  available_packages_column->fill(); emit availablePackagesFillEnded(); });
@@ -203,7 +201,7 @@ void MainWindowView::connectSignalsForAvailablePackages()
     if (m_ui.available_packages_list->count() > 0)
     {
         m_ui.available_packages_list->show();
-        m_ui.search_available_packages_checkbox->setEnabled(true);   
+        m_ui.search_available_packages_checkbox->setEnabled(true);
     }
 
     m_ui.installation_spinning_widget->hide();
@@ -258,11 +256,12 @@ void MainWindowView::connectSignalsForUpdatedPackages()
 void MainWindowView::checkSpinningVisibility()
 {
     if (m_ui.update_spinning_widget->isHidden() &&
-        m_ui.remove_spinning_widget->isHidden() &&
-        m_ui.installation_spinning_widget->isHidden() &&
-        actions_access_checker->isOnline())
+            m_ui.remove_spinning_widget->isHidden() &&
+            m_ui.installation_spinning_widget->isHidden() &&
+            actions_access_checker->isOnline())
     {
         emit initEnded();
+        spinning_animation->stop();
         Logger::logger()->logInfo(QStringLiteral("Refresh/initialization ended"));
     }
 }
@@ -270,27 +269,25 @@ void MainWindowView::checkSpinningVisibility()
 
 void MainWindowView::generatePreview(Process::Task task)
 {
-   QWidget* operation_preview = new QWidget;
-   operation_preview->setObjectName(QVariant::fromValue(task).toString());
-   QVBoxLayout* vertical_layout = new QVBoxLayout(operation_preview);
-   QScrollArea* scroll_area = new QScrollArea(operation_preview);
-   scroll_area->setWidgetResizable(true);
-   QWidget* scroll_area_widget_contents = new QWidget();
-   scroll_area_widget_contents->setGeometry(QRect(0, 0, 358, 200));
-   QVBoxLayout* vertical_layout2 = new QVBoxLayout(scroll_area_widget_contents);
-   QTextBrowser* text_browser_tab = new QTextBrowser(scroll_area_widget_contents);
-   text_browser_tab->setStyleSheet("color: white; background-color: black;"
-                                   "font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;"
-                                   "padding: 3px;");
-   text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()));
+    QWidget* operation_preview = new QWidget;
+    operation_preview->setObjectName(QVariant::fromValue(task).toString());
+    QVBoxLayout* vertical_layout = new QVBoxLayout(operation_preview);
+    QScrollArea* scroll_area = new QScrollArea(operation_preview);
+    scroll_area->setWidgetResizable(true);
+    QWidget* scroll_area_widget_contents = new QWidget();
+    scroll_area_widget_contents->setGeometry(QRect(0, 0, 358, 200));
+    QVBoxLayout* vertical_layout2 = new QVBoxLayout(scroll_area_widget_contents);
+    QTextBrowser* text_browser_tab = new QTextBrowser(scroll_area_widget_contents);
+    PreviewDesign::update(text_browser_tab);
+    text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()));
 
-   vertical_layout2->addWidget(text_browser_tab);
-   scroll_area->setWidget(scroll_area_widget_contents);
-   vertical_layout->addWidget(scroll_area);
-   generated_previews_map.insert(task, operation_preview);
-   progress_view.data()->addProgressView(operation_preview);
+    vertical_layout2->addWidget(text_browser_tab);
+    scroll_area->setWidget(scroll_area_widget_contents);
+    vertical_layout->addWidget(scroll_area);
+    generated_previews_map.insert(task, operation_preview);
+    progress_view.data()->addProgressView(operation_preview);
 
-   emit operationsAmountIncreased();
+    emit operationsAmountIncreased();
 }
 
 
@@ -326,14 +323,14 @@ void MainWindowView::showStatisticsWindow()
 
 void MainWindowView::downloadPackage()
 {
-   QPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString()));
-   QPointer<DownloaderWindow> automatic_installation(new AutomaticInstallation(download_command_parser));
-   QPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser));
-   QPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser));
-   QPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser));
+    QPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString()));
+    QPointer<DownloaderWindow> automatic_installation(new AutomaticInstallation(download_command_parser));
+    QPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser));
+    QPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser));
+    QPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser));
 
-   automatic_installation->setNext(package_input)->setNext(paths_choice_input)->setNext(repos_choice_input);
-   automatic_installation->handle();
+    automatic_installation->setNext(package_input)->setNext(paths_choice_input)->setNext(repos_choice_input);
+    automatic_installation->handle();
 }
 
 
@@ -341,42 +338,31 @@ void MainWindowView::generateOutput(Process::Task task, const QString& line)
 {
     switch(task)
     {
-      case Process::Task::Install:
+    case Process::Task::Install:
         m_ui.text_browser_tab_install->append(line);
-      break;
+        break;
 
-      case Process::Task::Update:
+    case Process::Task::Update:
         m_ui.text_browser_tab_update->append(line);
-      break;
+        break;
 
-      case Process::Task::Uninstall:
+    case Process::Task::Uninstall:
         m_ui.text_browser_tab_uninstall->append(line);
-      break;
+        break;
 
-      default:
+    default:
         generated_previews_map.value(task)->findChild<QTextBrowser*>(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()))->append(line);
-      break;
+        break;
     }
 }
 
 
 void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status)
 {
-    switch(task)
+    if (task != Process::Task::Install &&
+        task != Process::Task::Update &&
+        task != Process::Task::Uninstall)
     {
-      case Process::Task::Install:
-         available_packages_column.data()->update(exit_code, exit_status, tr("Installation"), tr("installed"));
-      break;
-
-      case Process::Task::Update:
-        updated_packages_column.data()->update(exit_code, exit_status, tr("Update"), tr("updated"));
-      break;
-
-      case Process::Task::Uninstall:
-        installed_packages_column.data()->update(exit_code, exit_status, tr("Uninstallation"), tr("removed"));
-      break;
-
-      default:
         progress_view.data()->removeProgressView(generated_previews_map.value(task));
         generated_previews_map.remove(task);
         if (progress_view.data()->tabsCount() == 0)
@@ -385,8 +371,13 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
             m_ui.progress_view_checkbox->hide();
             QMessageBox::information(this, i18n("All processes ended"), i18n("All processes have been completed."));
         }
-      break;
     }
+
+    available_packages_column.data()->clear();
+    installed_packages_column.data()->clear();
+    updated_packages_column.data()->clear();
+    startAnimations();
+    init();
 }
 
 
@@ -399,6 +390,21 @@ void MainWindowView::refresh()
     installed_packages_column.data()->clear();
     available_packages_column.data()->clear();
 
+    startAnimations();
     init();
+}
+
+
+void MainWindowView::startAnimations()
+{
+    m_ui.remove_spinning_widget->show();
+    m_ui.installation_spinning_widget->show();
+    m_ui.update_spinning_widget->show();
+
+    spinning_animation.reset(new QMovie(":/waiting.gif"), &QObject::deleteLater);
+    m_ui.installation_spinning_label->setMovie(spinning_animation.get());
+    m_ui.remove_spinning_label->setMovie(spinning_animation.get());
+    m_ui.update_spinning_label->setMovie(spinning_animation.get());
+    spinning_animation->start();
 }
 

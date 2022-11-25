@@ -45,7 +45,9 @@ target_sources(pak-gui PRIVATE
     settings.cpp
     settings.h
     logger.cpp
-    logger.h)
+    logger.h
+    previewdesign.cpp
+    previewdesign.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 

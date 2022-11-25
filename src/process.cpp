@@ -35,13 +35,13 @@ Process::Process() :
 void Process::run(Task new_task,
                   QStringList new_checked_packages)
 {
-    if (!askQuestion(new_task, new_checked_packages));
-        return
+    if (!askQuestion(new_task, new_checked_packages))
+        return;
 
+    Logger::logger()->logDebug(QStringLiteral("Packages in current task: %1").arg(new_checked_packages.join(" ")));
     updateMap(new_checked_packages);
     emitSideTask(new_task);
-    auto process = startProcess(new_task);
-    connectSignals(process, new_task);
+    startProcess(new_task);
     prepareMapForNextTask();
 }
 
@@ -63,13 +63,16 @@ bool Process::askQuestion(Task new_task,
 }
 
 
-QSharedPointer<QProcess> Process::startProcess(Task new_task)
+void Process::startProcess(Task new_task)
 {
+    Logger::logger()->logInfo(QStringLiteral("Started task \"%1\"").arg(QVariant::fromValue(new_task).toString()));
     bool containsPacman = commands_map.value(new_task).join(" ").contains("pacman");
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
+    pak_s->setProcessChannelMode(QProcess::MergedChannels);
+    connectSignals(pak_s, new_task);
     pak_s.data()->start(containsPacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
     QString output = QString();
-    QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [=, &output]() {
+    QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [=, output]() mutable {
         while (pak_s.data()->canReadLine())
         {
             QString line = pak_s.data()->readLine();
@@ -79,7 +82,6 @@ QSharedPointer<QProcess> Process::startProcess(Task new_task)
         }});
 
     Logger::logger()->writeToFile(output, task_to_write_operation_map.value(new_task));
-    return pak_s;
 }
 
 
