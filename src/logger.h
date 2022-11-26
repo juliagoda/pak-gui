@@ -50,6 +50,7 @@ private:
     bool isWritePossible();
     void closeOnQuit();
     void reopenFile();
+    void resizeFileSizeNotWithinRange();
 
     QFile logs_file;
     QTextStream output_stream;

@@ -55,4 +55,14 @@ struct Converter
     {
         return minutes * 60000;
     }
+
+    static int bytesToMegabytes(int bytes)
+    {
+        return bytes / 1000000;
+    }
+
+    static int megabytesToBytes(int megabytes)
+    {
+        return megabytes * 1000000;
+    }
 };

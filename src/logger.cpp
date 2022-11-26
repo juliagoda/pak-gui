@@ -47,6 +47,7 @@ void Logger::writeToFile(QString& text, WriteOperations section)
         reopenFile();
 
     write_mutex.lock();
+    resizeFileSizeNotWithinRange();
 
     if (isWritePossible())
     {
@@ -125,10 +126,13 @@ void Logger::logIntoFile(const QString& section, const QString& text)
         reopenFile();
 
     write_mutex.lock();
+    resizeFileSizeNotWithinRange();
+
     QString local_time = QDateTime::currentDateTime().toLocalTime().toString();
     QString local_text = text;
     if (pakGuiSettings::save_logs_into_file())
-        output_stream << " [" << section << "]  " << OutputFilter::filteredOutput(local_text) << "(" << local_time << ")\n";
+        output_stream << " [" << section << "]  " << OutputFilter::filteredOutput(local_text) << "  (" << local_time << ")\n";
+
     write_mutex.unlock();
 }
 
@@ -164,4 +168,15 @@ void Logger::reopenFile()
     output_stream.setDevice(&logs_file);
     if (logs_file.isOpen())
         logInfo(QStringLiteral("Logs file \"%1\" successfully opened\n").arg(logs_file.fileName()));
+}
+
+
+void Logger::resizeFileSizeNotWithinRange()
+{
+    int size_limit = pakGuiSettings::history_file_size_limit_in_Mb();
+   if (size_limit == 0)
+       return;
+
+   if (Converter::bytesToMegabytes(logs_file.size()) > size_limit)
+       logs_file.resize(Converter::megabytesToBytes(size_limit));
 }
