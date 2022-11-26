@@ -49,6 +49,7 @@ private:
     void logIntoFile(const QString& section, const QString& text);
     bool isWritePossible();
     void closeOnQuit();
+    void reopenFile();
 
     QFile logs_file;
     QTextStream output_stream;

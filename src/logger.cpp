@@ -17,10 +17,7 @@ Logger::Logger() :
     logs_file(Converter::fullConfigPath()),
     output_stream()
 {
-    logs_file.open(QIODevice::WriteOnly | QIODevice::Append);
-    output_stream.setDevice(&logs_file);
-    if (logs_file.isOpen())
-        logInfo(QStringLiteral("Logs file \"%1\" successfully opened\n").arg(logs_file.fileName()));
+    reopenFile();
 }
 
 
@@ -45,6 +42,9 @@ void Logger::writeToFile(QString& text, WriteOperations section)
 {
     if (!pakGuiSettings::save_logs_into_file())
         return;
+
+    if (!logs_file.exists())
+        reopenFile();
 
     write_mutex.lock();
 
@@ -109,23 +109,26 @@ void Logger::appendSection(WriteOperations section)
 
 void Logger::appendSeparator()
 {
-   output_stream << QString("////////////////////////////////////////////////////////////");
+    output_stream << QString("////////////////////////////////////////////////////////////");
 }
 
 
 void Logger::appendNewLine()
 {
-   output_stream << QString("\n\n");
+    output_stream << QString("\n\n");
 }
 
 
 void Logger::logIntoFile(const QString& section, const QString& text)
 {
+    if (!logs_file.exists())
+        reopenFile();
+
     write_mutex.lock();
     QString local_time = QDateTime::currentDateTime().toLocalTime().toString();
     QString local_text = text;
     if (pakGuiSettings::save_logs_into_file())
-       output_stream << " [" << section << "]  " << OutputFilter::filteredOutput(local_text) << "(" << local_time << ")\n";
+        output_stream << " [" << section << "]  " << OutputFilter::filteredOutput(local_text) << "(" << local_time << ")\n";
     write_mutex.unlock();
 }
 
@@ -149,4 +152,16 @@ void Logger::closeOnQuit()
         logWarning(QStringLiteral("Logs file \"%1\" couldn't be properly closed!").arg(logs_file.fileName()));
 
     instance_mutex.unlock();
+}
+
+
+void Logger::reopenFile()
+{
+    if (logs_file.isOpen())
+        logs_file.close();
+
+    logs_file.open(QIODevice::WriteOnly | QIODevice::Append);
+    output_stream.setDevice(&logs_file);
+    if (logs_file.isOpen())
+        logInfo(QStringLiteral("Logs file \"%1\" successfully opened\n").arg(logs_file.fileName()));
 }
