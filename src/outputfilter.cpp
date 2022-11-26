@@ -16,16 +16,19 @@ QString OutputFilter::filteredOutput(QString& text_output)
     return text_output;
 }
 
+
 void OutputFilter::addToList(QStringList& lines_list, const QString& line)
 {
     lines_list.append(line);
 }
+
 
 QStringList OutputFilter::filteredLines(QStringList& output_lines, std::function<bool (const QString&)> conditional)
 {
     QFuture<QStringList> filtered_strings = QtConcurrent::filteredReduced(output_lines, conditional, addToList);
     return filtered_strings.result();
 }
+
 
 QList<QRegExp> OutputFilter::initializeList()
 {
@@ -41,6 +44,7 @@ QList<QRegExp> OutputFilter::initializeList()
 
     return filters;
 }
+
 
 bool OutputFilter::startsFromNumber(const QString& output_line)
 {

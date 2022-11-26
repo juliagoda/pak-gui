@@ -4,7 +4,6 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 #include <QComboBox>
-#include <QtDebug>
 
 
 ChoiceWindow::ChoiceWindow(const QString& new_title,

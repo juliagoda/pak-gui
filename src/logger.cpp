@@ -101,7 +101,7 @@ void Logger::appendSection(WriteOperations section)
 {
     QString section_text = QVariant::fromValue(section).toString();
     QString local_time = QDateTime::currentDateTime().toLocalTime().toString();
-    QString line = QString("---------------[").append(section_text.toUpper()).append(QString("]---------------"));
+    QString line = QString("\n\n\n---------------[").append(section_text.toUpper()).append(QString("]---------------"));
     output_stream << local_time;
     output_stream << line;
 }

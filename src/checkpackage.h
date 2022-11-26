@@ -9,6 +9,6 @@ public:
     CheckPackage(CheckPackage& check_package);
 
 private:
-    virtual void updateData(QString &packageContent) override;
+    virtual void updateData(QString &packageContent, int name_line, int version_line) override;
 };
 

@@ -6,7 +6,7 @@
 CheckPackage::CheckPackage(QString& package_content) :
     Package(package_content)
 {
-    updateData(package_content);
+    updateData(package_content, 0, 0);
     setText(getName() + "-" + getVersion());
     setFlags(flags() | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
@@ -18,14 +18,17 @@ CheckPackage::CheckPackage(CheckPackage& check_package) :
 {
    setName(check_package.getName());
    setVersion(check_package.getVersion());
-   setText(getName() + "-" + getVersion());
+   setText(getName().trimmed() + "-" + getVersion().trimmed());
    setFlags(flags() | Qt::ItemIsUserCheckable);
    setCheckState(Qt::Unchecked);
 }
 
 
-void CheckPackage::updateData(QString& packageContent)
+void CheckPackage::updateData(QString& packageContent, int name_line, int version_line)
 {
+    Q_UNUSED(name_line)
+    Q_UNUSED(version_line)
+
     if (packageContent.isEmpty())
         return;
 
