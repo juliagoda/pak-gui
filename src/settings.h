@@ -40,7 +40,9 @@ public:
         ValidatedBy
     };
 
-explicit Settings(MainWindow* main_window);
+    explicit Settings(MainWindow* main_window);
+    static void saveInitDateTimesWhenEmpty();
+    static QDateTime getDateTime(const QString &setting);
 
 private Q_SLOTS:
     void updateWidgetsDefault() override;
@@ -60,5 +62,5 @@ private:
     Ui::PreviewsAppearanceSettings previews_appearance_settings;
     Ui::PackagesInfoSettings packages_info_settings;
     Ui::LogsSettings logs_settings;
-    QSettings settings;
+    static QSettings settings;
 };

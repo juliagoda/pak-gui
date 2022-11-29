@@ -1,7 +1,8 @@
 #include "logger.h"
 
 #include "outputfilter.h"
-#include "defs.h"
+#include "sizeconverter.h"
+#include "pathconverter.h"
 #include "pakGuiSettings.h"
 
 #include <QDebug>
@@ -14,7 +15,7 @@ QMutex Logger::write_mutex;
 
 
 Logger::Logger() :
-    logs_file(Converter::fullConfigPath()),
+    logs_file(PathConverter::fullConfigPath()),
     output_stream()
 {
     reopenFile();
@@ -40,26 +41,38 @@ Logger* Logger::logger()
 
 void Logger::writeToFile(QString& text, WriteOperations section)
 {
-    if (!pakGuiSettings::save_logs_into_file())
+    if (!validate())
         return;
 
-    if (!logs_file.exists())
-        reopenFile();
+    write_mutex.lock();
+    appendSection(section);
+    appendNewLine();
+    output_stream << OutputFilter::filteredOutput(text);
+    appendNewLine();
+    appendSeparator();
+    appendNewLine();
+    appendNewLine();
+    write_mutex.unlock();
+}
+
+
+void Logger::writeSectionToFile(WriteOperations section)
+{
+    if (!validate())
+        return;
 
     write_mutex.lock();
-    resizeFileSizeNotWithinRange();
+    appendSection(section);
+    appendNewLine();
+    write_mutex.unlock();
+}
 
-    if (isWritePossible())
-    {
-        appendSection(section);
-        appendNewLine();
-        output_stream << OutputFilter::filteredOutput(text);
-        appendNewLine();
-        appendSeparator();
-        appendNewLine();
-        appendNewLine();
-    }
 
+void Logger::writeLineToFile(QString &line)
+{
+    write_mutex.lock();
+    output_stream << OutputFilter::filteredOutput(line);
+    appendNewLine();
     write_mutex.unlock();
 }
 
@@ -95,6 +108,15 @@ void Logger::logDebug(const QString &text)
 
     logIntoFile(QString("DEBUG"), text);
     qDebug() << "[DEBUG] " << text;
+}
+
+
+void Logger::clearLogsFile()
+{
+    Logger::logger()->logInfo(QStringLiteral("Clear logs file - %1").arg(QDateTime::currentDateTime().toString()));
+
+    if (!logs_file.resize(0))
+        logWarning(QStringLiteral("Logs file couldn't be removed: %1").arg(logs_file.errorString()));
 }
 
 
@@ -164,7 +186,7 @@ void Logger::reopenFile()
     if (logs_file.isOpen())
         logs_file.close();
 
-    logs_file.open(QIODevice::WriteOnly | QIODevice::Append);
+    logs_file.open(QIODevice::ReadWrite | QIODevice::Append);
     output_stream.setDevice(&logs_file);
     if (logs_file.isOpen())
         logInfo(QStringLiteral("Logs file \"%1\" successfully opened\n").arg(logs_file.fileName()));
@@ -174,9 +196,38 @@ void Logger::reopenFile()
 void Logger::resizeFileSizeNotWithinRange()
 {
     int size_limit = pakGuiSettings::history_file_size_limit_in_Mb();
-   if (size_limit == 0)
-       return;
+    if (size_limit == 0)
+        return;
 
-   if (Converter::bytesToMegabytes(logs_file.size()) > size_limit)
-       logs_file.resize(Converter::megabytesToBytes(size_limit));
+    int preferredBytes = SizeConverter::megabytesToBytes(size_limit);
+    bool is_file_too_big = SizeConverter::bytesToMegabytes(logs_file.size()) > size_limit;
+    if (is_file_too_big && !pakGuiSettings::overwrite_full_history_file())
+    {
+        logs_file.seek(logs_file.size() - preferredBytes);
+        QByteArray last_bytes = logs_file.read(preferredBytes);
+        QString last_lines = QString::fromStdString(last_bytes.toStdString());
+        logs_file.resize(0);
+        output_stream << last_bytes;
+        return;
+    }
+
+    if (is_file_too_big && pakGuiSettings::overwrite_full_history_file())
+        clearLogsFile();
+}
+
+
+bool Logger::validate()
+{
+    if (!pakGuiSettings::save_logs_into_file())
+        return false;
+
+    if (!logs_file.exists())
+        reopenFile();
+
+    resizeFileSizeNotWithinRange();
+
+    if (!isWritePossible())
+        return false;
+
+    return true;
 }

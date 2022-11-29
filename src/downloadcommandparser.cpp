@@ -25,11 +25,13 @@ DownloadCommandParser::DownloadCommandParser(const QString& new_package_name) :
     pak_download->setProcessChannelMode(QProcess::MergedChannels);
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
     QObject::connect(pak_download.get(), &QProcess::errorOccurred, [=]() { Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString())); });
+
     QObject::connect(pak_download.get(), &QProcess::readyReadStandardOutput, [=]() mutable {
         while (pak_download.data()->canReadLine())
         {
             QString line = pak_download.data()->readLine();
             auto filtered_line = OutputFilter::filteredOutput(line);
+            Logger::logger()->writeLineToFile(filtered_line);
             result_output += filtered_line;
 
             if (line.contains("error:"))
@@ -67,6 +69,7 @@ void DownloadCommandParser::start()
         Logger::logger()->logWarning("retrieving paths from download command parser is not possible");
 
     Logger::logger()->logInfo(QStringLiteral("Trying download package: %1 with command %2").arg(package_name).arg(command.trimmed()));
+    Logger::logger()->writeSectionToFile(Logger::WriteOperations::Download);
     pak_download->start("/bin/bash", QStringList() << "-c" << command + " " + package_name.trimmed());
     pak_download->waitForStarted();
     pak_download->waitForReadyRead();

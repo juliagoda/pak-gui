@@ -4,6 +4,8 @@
 
 #include "actionsaccesschecker.h"
 #include "mainwindowview.h"
+#include "timeconverter.h"
+#include "logger.h"
 
 #include <QAction>
 #include <QStatusBar>
@@ -23,6 +25,9 @@ MainWindow::MainWindow()
     setCentralWidget(main_window_view);
 
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::requiredPackagesNotFound, [this]() { emit closeApp(); });
+
+    Settings::saveInitDateTimesWhenEmpty();
+    setTimersOnChecks();
 
     KActionCollection* actionCollection = this->actionCollection();
 
@@ -94,6 +99,7 @@ MainWindow::MainWindow()
     setXMLFile("pak-gui.rc");
 }
 
+
 MainWindow::~MainWindow()
 {
 
@@ -123,6 +129,47 @@ void MainWindow::disableOnlineActions()
     m_cleanAction->setDisabled(false);
     m_printStatisticsAction->setDisabled(false);
     m_printVCSPackagesAction->setDisabled(false);
+}
+
+
+void MainWindow::setTimersOnChecks()
+{
+    QObject::connect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
+    QObject::connect(&timer_on_logs, &QTimer::timeout, Logger::logger(), &Logger::clearLogsFile);
+    startTimerOnOperation(QString("start_datetime_for_updates_check"),
+                          timer_on_updates,
+                          TimeConverter::toMilliseconds(pakGuiSettings::update_check_time_in_days(),
+                                                        pakGuiSettings::update_check_time_in_hours(),
+                                                        pakGuiSettings::update_check_time_in_minutes()),
+                          QString("update"));
+    startTimerOnOperation(QString("start_datetime_for_history_store"),
+                          timer_on_logs,
+                          TimeConverter::daysToMilliseconds(pakGuiSettings::history_store_time_in_days()),
+                          QString("logs remove"));
+}
+
+
+void MainWindow::startTimerOnOperation(const QString& settings_value, QTimer& timer,
+                                       int time_limit_in_milliseconds, const QString& operation)
+{
+    QDateTime init_datetime = Settings::getDateTime(settings_value);
+    if (!init_datetime.isValid() || time_limit_in_milliseconds == 0)
+        return;
+
+    qint64 time_passed_in_milliseconds = init_datetime.msecsTo(QDateTime::currentDateTime());
+    if (time_passed_in_milliseconds > time_limit_in_milliseconds)
+    {
+        Logger::logger()->logDebug(QStringLiteral("Restart timer for %1").arg(operation));
+        timer.start(time_limit_in_milliseconds);
+    }
+    else
+    {
+        timer.start(time_limit_in_milliseconds - time_passed_in_milliseconds);
+    }
+
+    Logger::logger()->logDebug(QStringLiteral("Time passed for %1: %2")
+                               .arg(operation)
+                               .arg(TimeConverter::timeToString(time_passed_in_milliseconds)));
 }
 
 

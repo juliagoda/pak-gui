@@ -47,7 +47,13 @@ target_sources(pak-gui PRIVATE
     logger.cpp
     logger.h
     previewdesign.cpp
-    previewdesign.h)
+    previewdesign.h
+    timeconverter.cpp
+    timeconverter.h
+    sizeconverter.cpp
+    sizeconverter.h
+    pathconverter.cpp
+    pathconverter.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 

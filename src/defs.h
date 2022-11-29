@@ -34,35 +34,3 @@ const QMap<Process::Task, Logger::WriteOperations> task_to_write_operation_map{
     {Process::Task::Install, Logger::WriteOperations::Install},
     {Process::Task::Update, Logger::WriteOperations::Update}
 };
-
-struct Converter
-{
-    static QString toAbsolutePath(const QString& new_path)
-    {
-        QString path = new_path;
-        if (path.startsWith("~/"))
-            return path.remove(0, 1).prepend(QDir().homePath());
-
-        return path;
-    }
-
-    static QString fullConfigPath()
-    {
-        return toAbsolutePath(pakGuiSettings::logs_filepath()).append("/" + pakGuiSettings::logs_filename());
-    }
-
-    static int minutesToMiliseconds(int minutes)
-    {
-        return minutes * 60000;
-    }
-
-    static int bytesToMegabytes(int bytes)
-    {
-        return bytes / 1000000;
-    }
-
-    static int megabytesToBytes(int megabytes)
-    {
-        return megabytes * 1000000;
-    }
-};

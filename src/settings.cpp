@@ -6,10 +6,10 @@
 #include <QListWidget>
 #include <QPointer>
 
+QSettings Settings::settings(QSettings::NativeFormat, QSettings::UserScope, QString("CachyOS"), QString("pak-gui"));
 
 Settings::Settings(MainWindow* main_window) :
-    KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self()),
-    settings()
+    KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self())
 {
     init();
     connectSignals();
@@ -20,6 +20,22 @@ Settings::Settings(MainWindow* main_window) :
         Logger::logger()->logDebug(QStringLiteral("saved selected packages info are not equal to default ones - enable reset button"));
         enableDefaultButton();
     }
+}
+
+
+QDateTime Settings::getDateTime(const QString& setting)
+{
+   return QDateTime::fromString(settings.value(setting).value<QString>(), "yyyy-M-dThh:mm:ss");
+}
+
+
+void Settings::saveInitDateTimesWhenEmpty()
+{
+   if (settings.value("start_datetime_for_updates_check").value<QString>().isEmpty())
+       settings.setValue("start_datetime_for_updates_check", QDateTime::currentDateTime().toString(Qt::ISODate));
+
+   if (settings.value("start_datetime_for_history_store").value<QString>().isEmpty())
+       settings.setValue("start_datetime_for_history_store", QDateTime::currentDateTime().toString(Qt::ISODate));
 }
 
 

@@ -35,10 +35,15 @@ public:
     Logger(Logger& instance) = delete;
     void operator=(const Logger& instance) = delete;
     void writeToFile(QString& text, WriteOperations section);
+    void writeSectionToFile(WriteOperations section);
+    void writeLineToFile(QString& line);
     void logInfo(const QString& text);
     void logWarning(const QString& text);
     void logFatal(const QString& text);
     void logDebug(const QString& text);
+
+public Q_SLOTS:
+    void clearLogsFile();
 
 private:
     explicit Logger();
@@ -51,6 +56,7 @@ private:
     void closeOnQuit();
     void reopenFile();
     void resizeFileSizeNotWithinRange();
+    bool validate();
 
     QFile logs_file;
     QTextStream output_stream;

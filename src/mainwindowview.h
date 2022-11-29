@@ -35,6 +35,7 @@ public Q_SLOTS:
     void showStatisticsWindow();
     void downloadPackage();
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
+    void checkUpdates();
 
 private Q_SLOTS:
     void showAnimation();

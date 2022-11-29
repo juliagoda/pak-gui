@@ -2,6 +2,7 @@
 
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
+#include "qdatetime.h"
 #include "updatedpackagescolumn.h"
 #include "pakGuiSettings.h"
 #include "statistics.h"
@@ -11,6 +12,7 @@
 #include "previewdesign.h"
 #include "logger.h"
 #include "defs.h"
+#include "timeconverter.h"
 
 #include <KLocalizedString>
 #include <KLed>
@@ -92,17 +94,12 @@ void MainWindowView::init()
 {
     QThread* available_packages_thread(new QThread);
     QThread* installed_packages_thread(new QThread);
-    QThread* updated_packages_thread(new QThread);
 
     m_ui.available_packages_list->hide();
     m_ui.installed_packages_list->hide();
-    m_ui.packages_to_update_list->hide();
-    m_ui.search_packages_to_update_checkbox->setEnabled(false);
-    m_ui.check_all_updates_checkbox->setEnabled(false);
     m_ui.search_available_packages_checkbox->setEnabled(false);
     m_ui.search_installed_packages_checkbox->setEnabled(false);
 
-    QObject::connect(updated_packages_thread, &QThread::started, [this]() { updated_packages_column->fill(); emit packagesToUpdateFillEnded(); });
     QObject::connect(available_packages_thread, &QThread::started, [this]() {  available_packages_column->fill(); emit availablePackagesFillEnded(); });
     QObject::connect(installed_packages_thread, &QThread::started, [this]() { installed_packages_column->fill(); emit installedPackagesFillEnded(); });
     QObject::connect(updated_packages_column.get(), &UpdatedPackagesColumn::startOtherThreads, [this]()
@@ -116,12 +113,9 @@ void MainWindowView::init()
     });
     QObject::connect(this, &MainWindowView::availablePackagesFillEnded, this, &MainWindowView::connectSignalsForAvailablePackages);
     QObject::connect(this, &MainWindowView::installedPackagesFillEnded, this, &MainWindowView::connectSignalsForInstalledPackages);
-    QObject::connect(this, &MainWindowView::packagesToUpdateFillEnded, this, &MainWindowView::connectSignalsForUpdatedPackages);
     QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
     QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread,  &QThread::deleteLater);
-    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
-
-    updated_packages_thread->start(QThread::InheritPriority);
+    checkUpdates();
 }
 
 
@@ -155,7 +149,7 @@ void MainWindowView::setTimerOnActionsAccessChecker()
     QPointer<QTimer> packages_timer = new QTimer(this);
     connect(internet_connection_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkInternetConnection);
     connect(packages_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkRequiredPackages);
-    int miliseconds = Converter::minutesToMiliseconds(pakGuiSettings::internet_reconnection_time_in_minutes());
+    int miliseconds = TimeConverter::minutesToMilliseconds(pakGuiSettings::internet_reconnection_time_in_minutes());
     startCheckTimer(internet_connection_timer, miliseconds, QString("Internet connection checker "));
     startCheckTimer(packages_timer, 8000, QString("Required packages checker "));
 }
@@ -398,6 +392,30 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
 }
 
 
+void MainWindowView::checkUpdates()
+{
+   Logger::logger()->logInfo(QStringLiteral("Start check updates - %1").arg(QDateTime::currentDateTime().toString()));
+
+   updated_packages_column.data()->clear();
+   m_ui.update_spinning_widget->show();
+   if (spinning_animation.isNull())
+   {
+       spinning_animation.reset(new QMovie(":/waiting.gif"), &QObject::deleteLater);
+       m_ui.update_spinning_label->setMovie(spinning_animation.get());
+   }
+   spinning_animation->start();
+   QThread* updated_packages_thread(new QThread);
+   m_ui.packages_to_update_list->hide();
+   m_ui.search_packages_to_update_checkbox->setEnabled(false);
+   m_ui.check_all_updates_checkbox->setEnabled(false);
+   QObject::connect(updated_packages_thread, &QThread::started, [this]() { updated_packages_column->fill(); emit packagesToUpdateFillEnded(); });
+   QObject::connect(this, &MainWindowView::packagesToUpdateFillEnded, this, &MainWindowView::connectSignalsForUpdatedPackages);
+   QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
+
+   updated_packages_thread->start(QThread::InheritPriority);
+}
+
+
 void MainWindowView::refresh()
 {
     hideWidgets();
@@ -405,7 +423,7 @@ void MainWindowView::refresh()
 
     available_packages_column.data()->clear();
     installed_packages_column.data()->clear();
-    available_packages_column.data()->clear();
+    updated_packages_column.data()->clear();
 
     startAnimations();
     init();

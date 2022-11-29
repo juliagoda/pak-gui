@@ -71,17 +71,15 @@ void Process::startProcess(Task new_task)
     pak_s->setProcessChannelMode(QProcess::MergedChannels);
     connectSignals(pak_s, new_task);
     pak_s.data()->start(containsPacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
-    QString output = QString();
-    QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [=, output]() mutable {
+    Logger::logger()->writeSectionToFile(task_to_write_operation_map.value(new_task));
+    QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [=]() {
         while (pak_s.data()->canReadLine())
         {
             QString line = pak_s.data()->readLine();
             QString filtered_line = OutputFilter::filteredOutput(line);
             emit generatedOutput(new_task, filtered_line);
-            output += filtered_line;
+            Logger::logger()->writeLineToFile(filtered_line);
         }});
-
-    Logger::logger()->writeToFile(output, task_to_write_operation_map.value(new_task));
 }
 
 

@@ -3,6 +3,7 @@
 #include <KXmlGuiWindow>
 #include <QSharedPointer>
 #include <QPointer>
+#include <QTimer>
 
 #include "settings.h"
 #include "process.h"
@@ -23,11 +24,17 @@ private Q_SLOTS:
     void enableActions();
     void disableActions();
     void disableOnlineActions();
+    void setTimersOnChecks();
 
 signals:
     void closeApp();
 
 private:
+    void startTimerOnOperation(const QString& settings_value,
+                               QTimer& timer,
+                               int time_limit_in_milliseconds,
+                               const QString& operation);
+
     QAction* m_updateAction;
     QAction* m_refreshAction;
     QAction* m_downloadAction;
@@ -39,4 +46,6 @@ private:
     QPointer<MainWindowView> main_window_view;
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
+    QTimer timer_on_updates;
+    QTimer timer_on_logs;
 };
