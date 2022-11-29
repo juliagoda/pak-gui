@@ -13,14 +13,6 @@
 	    <label></label>
 	    <default>5</default>
     </entry>
-    <entry name="refresh_interval_in_hours" type="Int">
-	    <label></label>
-	    <default>1</default>
-    </entry>
-    <entry name="refresh_interval_in_minutes" type="Int">
-	    <label></label>
-	    <default>30</default>
-    </entry>
     <entry name="internet_reconnection_time_in_minutes" type="Int">
 	    <label></label>
 	    <default>1</default>
@@ -41,7 +33,7 @@
 	    <label></label>
 	    <default>false</default>
     </entry>
-    <entry name="always_minimalize_to_tray" type="Bool">
+    <entry name="use_system_tray_icon" type="Bool">
 	    <label></label>
 	    <default>false</default>
     </entry>

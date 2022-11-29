@@ -52,7 +52,8 @@ find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
     DBusAddons
     DocTools
     I18n
-    XmlGui)
+    XmlGui
+    Notifications)
 
 find_package(Qt5 REQUIRED COMPONENTS Concurrent Network)
 

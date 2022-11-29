@@ -2,12 +2,16 @@
 
 #include <KXmlGuiWindow>
 #include <QSharedPointer>
+#include <QScopedPointer>
 #include <QPointer>
 #include <QTimer>
+#include <KStatusNotifierItem>
 
+#include "qkeysequence.h"
 #include "settings.h"
 #include "process.h"
 #include "actionsaccesschecker.h"
+
 
 class MainWindowView;
 
@@ -34,18 +38,24 @@ private:
                                QTimer& timer,
                                int time_limit_in_milliseconds,
                                const QString& operation);
+    void setupSystemTrayIcon();
+    void setAction(QPointer<QAction>& action,
+                   QString text,
+                   QString icon,
+                   QKeySequence key_sequence);
 
-    QAction* m_updateAction;
-    QAction* m_refreshAction;
-    QAction* m_downloadAction;
-    QAction* m_printStatisticsAction;
-    QAction* m_printVCSPackagesAction;
-    QAction* m_updateAllAction;
-    QAction* m_updateMirrorsAction;
-    QAction* m_cleanAction;
+    QTimer timer_on_updates;
+    QTimer timer_on_logs;
+    QPointer<QAction> update_action;
+    QPointer<QAction> refresh_action;
+    QPointer<QAction> download_action;
+    QPointer<QAction> print_statistics_action;
+    QPointer<QAction> print_vcs_packages_action;
+    QPointer<QAction> update_all_action;
+    QPointer<QAction> update_mirrors_action;
+    QPointer<QAction> clean_action;
     QPointer<MainWindowView> main_window_view;
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
-    QTimer timer_on_updates;
-    QTimer timer_on_logs;
+    QScopedPointer<KStatusNotifierItem> system_tray_icon;
 };

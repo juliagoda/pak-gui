@@ -66,6 +66,7 @@ target_link_libraries(pak-gui
     KF5::ConfigWidgets
     KF5::DBusAddons
     KF5::Crash
+    KF5::Notifications
     Qt5::Widgets
     Qt5::Charts
     Qt5::Concurrent

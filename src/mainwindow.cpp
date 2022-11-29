@@ -4,6 +4,7 @@
 
 #include "actionsaccesschecker.h"
 #include "mainwindowview.h"
+#include "pakGuiSettings.h"
 #include "timeconverter.h"
 #include "logger.h"
 
@@ -19,76 +20,43 @@
 MainWindow::MainWindow()
     : KXmlGuiWindow(),
       process(QSharedPointer<Process>(new Process)),
-      actions_access_checker(ActionsAccessChecker::actionsAccessChecker())
+      actions_access_checker(ActionsAccessChecker::actionsAccessChecker()),
+      system_tray_icon(nullptr)
 {
     main_window_view = new MainWindowView(process, actions_access_checker, this);
     setCentralWidget(main_window_view);
-
+    setupSystemTrayIcon();
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::requiredPackagesNotFound, [this]() { emit closeApp(); });
-
     Settings::saveInitDateTimesWhenEmpty();
     setTimersOnChecks();
 
     KActionCollection* actionCollection = this->actionCollection();
+    setAction(update_action, i18n("&Update"), QString("update"), QKeySequence(Qt::CTRL, Qt::Key_U));
+    connect(update_action, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
 
-    m_updateAction = new QAction(this);
-    m_updateAction->setText(i18n("&Update"));
-    m_updateAction->setIcon(QIcon::fromTheme("update"));
-    actionCollection->setDefaultShortcut(m_updateAction, Qt::CTRL + Qt::Key_U);
-    actionCollection->addAction("update", m_updateAction);
-    connect(m_updateAction, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
-
-    m_refreshAction = new QAction(this);
-    m_refreshAction->setText(i18n("&Refresh"));
-    m_refreshAction->setIcon(QIcon::fromTheme("refresh"));
-    actionCollection->setDefaultShortcut(m_refreshAction, Qt::CTRL + Qt::Key_R);
-    actionCollection->addAction("refresh", m_refreshAction);
-    connect(m_refreshAction, &QAction::triggered, main_window_view, &MainWindowView::refresh);
+    setAction(refresh_action, i18n("&Refresh"), QString("refresh"), QKeySequence(Qt::CTRL, Qt::Key_R));
+    connect(refresh_action, &QAction::triggered, main_window_view, &MainWindowView::refresh);
     connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
     connect(main_window_view, &MainWindowView::initEnded, this, &MainWindow::enableActions);
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
 
-    m_downloadAction = new QAction(this);
-    m_downloadAction->setText(i18n("&Download"));
-    m_downloadAction->setIcon(QIcon::fromTheme("download"));
-    actionCollection->setDefaultShortcut(m_downloadAction, Qt::CTRL + Qt::Key_D);
-    actionCollection->addAction("download", m_downloadAction);
-    connect(m_downloadAction, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
+    setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
+    connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
 
-    m_updateAllAction = new QAction(this);
-    m_updateAllAction->setText(i18n("&Update all packages"));
-    m_updateAllAction->setIcon(QIcon::fromTheme("updateAllPackages"));
-    actionCollection->setDefaultShortcut(m_updateAllAction, Qt::CTRL + Qt::Key_U + Qt::Key_A);
-    actionCollection->addAction("updateAllPackages", m_updateAllAction);
-    connect(m_updateAllAction, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
+    setAction(update_all_action, i18n("&Update all packages"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A));
+    connect(update_all_action, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
 
-    m_updateMirrorsAction = new QAction(this);
-    m_updateMirrorsAction->setText(i18n("&Update mirrors"));
-    m_updateMirrorsAction->setIcon(QIcon::fromTheme("updateMirrors"));
-    actionCollection->setDefaultShortcut(m_updateMirrorsAction, Qt::CTRL + Qt::Key_U + Qt::Key_M);
-    actionCollection->addAction("updateMirrors", m_updateMirrorsAction);
-    connect(m_updateMirrorsAction, &QAction::triggered, this, [this]() { process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
+    setAction(update_mirrors_action, i18n("&Update mirrors"), QString("updateMirrors"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_M));
+    connect(update_mirrors_action, &QAction::triggered, this, [this]() { process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
 
-    m_cleanAction = new QAction(this);
-    m_cleanAction->setText(i18n("&Clean"));
-    m_cleanAction->setIcon(QIcon::fromTheme("clean"));
-    actionCollection->setDefaultShortcut(m_cleanAction, Qt::CTRL + Qt::Key_C);
-    actionCollection->addAction(i18n("clean"), m_cleanAction);
-    connect(m_cleanAction, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
+    setAction(clean_action, i18n("&Clean"), QString("clean"), QKeySequence(Qt::CTRL, Qt::Key_C));
+    connect(clean_action, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
 
-    m_printStatisticsAction = new QAction(this);
-    m_printStatisticsAction->setText(i18n("&Statistics"));
-    m_printStatisticsAction->setIcon(QIcon::fromTheme("statistics"));
-    actionCollection->setDefaultShortcut(m_printStatisticsAction, Qt::CTRL + Qt::Key_S);
-    actionCollection->addAction("statistics", m_printStatisticsAction);
-    connect(m_printStatisticsAction, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
+    setAction(print_statistics_action, i18n("&Statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S));
+    connect(print_statistics_action, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
 
-    m_printVCSPackagesAction = new QAction(this);
-    m_printVCSPackagesAction->setText(i18n("&Installed vcs packages"));
-    m_printVCSPackagesAction->setIcon(QIcon::fromTheme("installedVcsPackages"));
-    actionCollection->setDefaultShortcut(m_printVCSPackagesAction, Qt::CTRL + Qt::Key_P);
-    actionCollection->addAction("installedVcsPackages", m_printVCSPackagesAction);
-    connect(m_printVCSPackagesAction, &QAction::triggered, this, [this]() { process->run(Process::Task::PrintVCSPackages); }, Qt::AutoConnection);
+    setAction(print_vcs_packages_action, i18n("&Installed vcs packages"), QString("installedVcsPackages"), QKeySequence(Qt::CTRL, Qt::Key_P));
+    connect(print_vcs_packages_action, &QAction::triggered, this, [this]() { process->run(Process::Task::PrintVCSPackages); }, Qt::AutoConnection);
 
     disableActions();
 
@@ -108,27 +76,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::disableActions()
 {
-    m_updateAction->setDisabled(true);
-    m_refreshAction->setDisabled(true);
-    m_downloadAction->setDisabled(true);
-    m_updateAllAction->setDisabled(true);
-    m_updateMirrorsAction->setDisabled(true);
-    m_cleanAction->setDisabled(true);
-    m_printStatisticsAction->setDisabled(true);
-    m_printVCSPackagesAction->setDisabled(true);
+    update_action->setDisabled(true);
+    refresh_action->setDisabled(true);
+    download_action->setDisabled(true);
+    update_all_action->setDisabled(true);
+    update_mirrors_action->setDisabled(true);
+    clean_action->setDisabled(true);
+    print_statistics_action->setDisabled(true);
+    print_vcs_packages_action->setDisabled(true);
 }
 
 
 void MainWindow::disableOnlineActions()
 {
-    m_updateAction->setDisabled(true);
-    m_downloadAction->setDisabled(true);
-    m_updateAllAction->setDisabled(true);
-    m_updateMirrorsAction->setDisabled(true);
-    m_refreshAction->setDisabled(false);
-    m_cleanAction->setDisabled(false);
-    m_printStatisticsAction->setDisabled(false);
-    m_printVCSPackagesAction->setDisabled(false);
+    update_action->setDisabled(true);
+    download_action->setDisabled(true);
+    update_all_action->setDisabled(true);
+    update_mirrors_action->setDisabled(true);
+    refresh_action->setDisabled(false);
+    clean_action->setDisabled(false);
+    print_statistics_action->setDisabled(false);
+    print_vcs_packages_action->setDisabled(false);
 }
 
 
@@ -173,16 +141,42 @@ void MainWindow::startTimerOnOperation(const QString& settings_value, QTimer& ti
 }
 
 
+void MainWindow::setupSystemTrayIcon()
+{
+    if (!pakGuiSettings::use_system_tray_icon())
+        return;
+
+    system_tray_icon.reset(new KStatusNotifierItem(this));
+    system_tray_icon->setStandardActionsEnabled(true);
+    system_tray_icon->setAssociatedWidget(this);
+    system_tray_icon->setIconByName(QStringLiteral("pak-gui"));
+    system_tray_icon->setStatus(KStatusNotifierItem::Passive);
+}
+
+
+void MainWindow::setAction(QPointer<QAction>& action,
+                           QString text,
+                           QString icon,
+                           QKeySequence key_sequence)
+{
+    action = new QAction(this);
+    action->setText(text);
+    action->setIcon(QIcon::fromTheme(icon));
+    this->actionCollection()->setDefaultShortcut(action, key_sequence);
+    this->actionCollection()->addAction(icon, action);
+}
+
+
 void MainWindow::enableActions()
 {
-    m_updateAction->setDisabled(false);
-    m_refreshAction->setDisabled(false);
-    m_downloadAction->setDisabled(false);
-    m_updateAllAction->setDisabled(false);
-    m_updateMirrorsAction->setDisabled(false);
-    m_cleanAction->setDisabled(false);
-    m_printStatisticsAction->setDisabled(false);
-    m_printVCSPackagesAction->setDisabled(false);
+    update_action->setDisabled(false);
+    refresh_action->setDisabled(false);
+    download_action->setDisabled(false);
+    update_all_action->setDisabled(false);
+    update_mirrors_action->setDisabled(false);
+    clean_action->setDisabled(false);
+    print_statistics_action->setDisabled(false);
+    print_vcs_packages_action->setDisabled(false);
 }
 
 
