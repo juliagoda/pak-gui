@@ -22,5 +22,11 @@ protected:
 
 signals:
     void startOtherThreads();
+    void currentPackagesCountChanged(int new_current_packages_count);
+
+private:
+    void updatePackagesCount(int new_current_packages_count);
+
+    int current_packages_count;
 };
 

@@ -43,6 +43,7 @@ private:
                    QString text,
                    QString icon,
                    QKeySequence key_sequence);
+    void updateSystemTray(int packages_count);
 
     QTimer timer_on_updates;
     QTimer timer_on_logs;

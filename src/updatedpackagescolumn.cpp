@@ -9,7 +9,8 @@
 
 
 UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
-    PackagesColumn(new_list_widget, new_search_lineedit)
+    PackagesColumn(new_list_widget, new_search_lineedit),
+    current_packages_count(0)
 {
     QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
                      &Sorter::sortPackagesToUpdateByText);
@@ -48,6 +49,7 @@ void UpdatedPackagesColumn::fill()
 {
     packages_sorter->resetOriginalList();
     QStringList pak_packages = getPackagesList();
+    updatePackagesCount(pak_packages.count());
     QStringList::iterator it = pak_packages.begin();
     int i = 0;
 
@@ -73,4 +75,14 @@ void UpdatedPackagesColumn::toggleAllPackages(bool is_all_checked)
         else
             item->setCheckState(Qt::Unchecked);
     }
+}
+
+
+void UpdatedPackagesColumn::updatePackagesCount(int new_current_packages_count)
+{
+    if (current_packages_count != new_current_packages_count)
+        emit currentPackagesCountChanged(new_current_packages_count);
+
+    current_packages_count = new_current_packages_count;
+
 }

@@ -15,6 +15,7 @@
 #include <KConfigDialog>
 #include <KLocalizedString>
 #include <KStandardAction>
+#include <KNotification>
 
 
 MainWindow::MainWindow()
@@ -39,6 +40,7 @@ MainWindow::MainWindow()
     connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
     connect(main_window_view, &MainWindowView::initEnded, this, &MainWindow::enableActions);
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
+    connect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, [this](int packages_count){ updateSystemTray(packages_count); });
 
     setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
     connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
@@ -164,6 +166,21 @@ void MainWindow::setAction(QPointer<QAction>& action,
     action->setIcon(QIcon::fromTheme(icon));
     this->actionCollection()->setDefaultShortcut(action, key_sequence);
     this->actionCollection()->addAction(icon, action);
+}
+
+
+void MainWindow::updateSystemTray(int packages_count)
+{
+    if (!pakGuiSettings::use_system_tray_icon())
+        return;
+
+    system_tray_icon->setStatus(KStatusNotifierItem::Passive);
+    if (packages_count > 0)
+    {
+        constexpr int message_timeout = 20000;
+        system_tray_icon->setStatus(KStatusNotifierItem::NeedsAttention);
+        system_tray_icon->showMessage(i18n("Update"), i18n("%1 to update").arg(packages_count), QString("pak-gui"), message_timeout);
+    }
 }
 
 

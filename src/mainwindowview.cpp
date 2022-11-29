@@ -57,6 +57,7 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     generated_previews_map.insert(Process::Task::Uninstall, m_ui.updated_preview_area);
     generated_previews_map.insert(Process::Task::Update, m_ui.available_preview_area);
 
+    QObject::connect(updated_packages_column.get(), &UpdatedPackagesColumn::currentPackagesCountChanged, [this](int packages_count){ emit packagesToUpdateCountChanged(packages_count); });
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::internetAccessChanged, this, &MainWindowView::toggleWidgetsAccess);
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::auracleAccessChanged, [this](bool is_auracle_installed){ is_auracle_installed && actions_access_checker->isOnline() ? m_ui.aur_kled->on() : m_ui.aur_kled->off();});
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::gitAccessChanged, [this](bool is_git_installed){ is_git_installed && actions_access_checker->isOnline() ? m_ui.polaur_kled->on() : m_ui.polaur_kled->off();});

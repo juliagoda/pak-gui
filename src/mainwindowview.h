@@ -54,6 +54,7 @@ signals:
     void packagesToUpdateFillEnded();
     void hideOnlineActions();
     void startOtherThreads();
+    void packagesToUpdateCountChanged(int packages_count);
 
 private:
     void setTimerOnActionsAccessChecker();
