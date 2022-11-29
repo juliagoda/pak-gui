@@ -10,13 +10,13 @@
 #include "progressview.h"
 #include "process.h"
 #include "actionsaccesschecker.h"
+#include "spinninganimation.h"
 
 #include <QStringList>
 #include <QSharedPointer>
 #include <QPointer>
 #include <QThread>
 #include <QMap>
-#include <QMovie>
 
 
 class MainWindowView : public QWidget
@@ -38,9 +38,7 @@ public Q_SLOTS:
     void checkUpdates();
 
 private Q_SLOTS:
-    void showAnimation();
     void startAnimations();
-    void stopAnimation();
     void connectSignalsForAvailablePackages();
     void connectSignalsForInstalledPackages();
     void connectSignalsForUpdatedPackages();
@@ -59,14 +57,12 @@ signals:
 
 private:
     void setTimerOnActionsAccessChecker();
-    void setTimerOnUpdatesCheck();
     void startCheckTimer(QPointer<QTimer> timer, int miliseconds, const QString& timer_type);
     void connectSignals();
     void hideWidgets();
     void hideWidgetsExceptInstalled();
     void init();
     void checkSpinningVisibility();
-    void startAnimation();
 
     Ui::MainWindowView m_ui;
     QSharedPointer<Process> process;
@@ -76,6 +72,5 @@ private:
     QSharedPointer<UpdatedPackagesColumn> updated_packages_column;
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
-    QSharedPointer<QMovie> spinning_animation;
-    QSharedPointer<QMovie> spinning_animation_small;
+    QSharedPointer<SpinningAnimation> spinning_animation;
 };

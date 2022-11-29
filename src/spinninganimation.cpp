@@ -2,22 +2,10 @@
 #include "logger.h"
 
 SpinningAnimation::SpinningAnimation() :
-    animation(new QMovie(":/waiting.gif"), &QObject::deleteLater)
+    animation(new QMovie(":/waiting.gif"), &QObject::deleteLater),
+    small_animation(new QMovie(":/waiting-small.gif"), &QObject::deleteLater)
 {
 
-}
-
-void SpinningAnimation::changeToSmallSize()
-{
-    if (isValid())
-        animation->setFileName(":/waiting-small.gif");
-}
-
-
-void SpinningAnimation::changeToBiggerSize()
-{
-    if (isValid())
-        animation->setFileName(":/waiting.gif");
 }
 
 
@@ -25,10 +13,9 @@ void SpinningAnimation::startOnMainWidgets(QPointer<QLabel> first_label,
                                            QPointer<QLabel> second_label,
                                            QPointer<QLabel> third_label)
 {
-    if (animation.isNull())
+    if (!isValid(animation))
         return;
 
-    animation->setFileName(":/waiting.gif");
     first_label->setMovie(animation.get());
     first_label->show();
     second_label->setMovie(animation.get());
@@ -36,13 +23,28 @@ void SpinningAnimation::startOnMainWidgets(QPointer<QLabel> first_label,
     third_label->setMovie(animation.get());
     third_label->show();
     animation->start();
-    Logger::logger()->logDebug(QStringLiteral("Animation started!"));
+    Logger::logger()->logDebug(QStringLiteral("Main animation started!"));
+}
+
+
+void SpinningAnimation::stopOnMainWidgets(QPointer<QLabel> first_label,
+                                          QPointer<QLabel> second_label,
+                                          QPointer<QLabel> third_label)
+{
+    if (!isValid(animation))
+        return;
+
+    first_label->hide();
+    second_label->hide();
+    third_label->hide();
+    animation->stop();
+    Logger::logger()->logDebug(QStringLiteral("Main animations stopped!"));
 }
 
 
 void SpinningAnimation::startOnWidget(QPointer<QLabel> label)
 {
-    if (animation.isNull())
+    if (!isValid(animation))
         return;
 
     label->setMovie(animation.get());
@@ -54,7 +56,7 @@ void SpinningAnimation::startOnWidget(QPointer<QLabel> label)
 
 void SpinningAnimation::stopOnWidget(QPointer<QLabel> label)
 {
-    if (animation.isNull())
+    if (!isValid(animation))
         return;
 
     label->hide();
@@ -63,25 +65,34 @@ void SpinningAnimation::stopOnWidget(QPointer<QLabel> label)
 }
 
 
-void SpinningAnimation::startOnWidgetWithChangeToSmall(QPointer<QLabel> label)
+void SpinningAnimation::startSmallOnWidget(QPointer<QLabel> label)
 {
-    changeToSmallSize();
-    startOnWidget(label);
+    if (!isValid(small_animation))
+        return;
+
+    label->setMovie(small_animation.get());
+    label->show();
+    small_animation->start();
+    Logger::logger()->logDebug(QStringLiteral("Small animation started!"));
 }
 
 
-void SpinningAnimation::startOnWidgetWithChangeToBigger(QPointer<QLabel> label)
+void SpinningAnimation::stopSmallOnWidget(QPointer<QLabel> label)
 {
-    changeToBiggerSize();
-    startOnWidget(label);
+    if (!isValid(small_animation))
+        return;
+
+    label->hide();
+    small_animation->stop();
+    Logger::logger()->logDebug(QStringLiteral("Small animation stopped!"));
 }
 
 
-bool SpinningAnimation::isValid()
+bool SpinningAnimation::isValid(QSharedPointer<QMovie>& animation)
 {
-    if (animation.isNull() || animation->state() == QMovie::MovieState::Running)
+    if (animation.isNull())
     {
-        Logger::logger()->logDebug("Cannot toggle animation - animation is running or not exists");
+        Logger::logger()->logDebug("Cannot toggle animation - animation instance doesn't exist");
         return false;
     }
 

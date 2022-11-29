@@ -10,15 +10,14 @@ ChoiceWindow::ChoiceWindow(const QString& new_title,
                            QDialog* new_parent)
     : QDialog(new_parent),
       title(new_title),
-      spinning_animation(nullptr)
+      spinning_animation(new SpinningAnimation)
 {
     m_ui.setupUi(this);
-
-    startAnimation();
+    spinning_animation->startSmallOnWidget(m_ui.spinning_animation_label);
     init();
 
     m_ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
-    connect(this, &ChoiceWindow::filledOptionsBox, this, &ChoiceWindow::stopAnimation);
+    connect(this, &ChoiceWindow::filledOptionsBox, [this](){ spinning_animation->stopSmallOnWidget(m_ui.spinning_animation_label); });
     connect(m_ui.choice_combo_box, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ChoiceWindow::toggleOkButton);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentIndex()); }, Qt::AutoConnection);
 }
@@ -41,22 +40,6 @@ void ChoiceWindow::fillComboBox(QString& output)
     m_ui.choice_combo_box->update();
     if (m_ui.choice_combo_box->count() > 0)
         emit filledOptionsBox();
-}
-
-
-void ChoiceWindow::startAnimation()
-{
-    spinning_animation.reset(new QMovie(":/waiting-small.gif"), &QObject::deleteLater);
-    m_ui.spinning_animation_label->setMovie(spinning_animation.get());
-    m_ui.spinning_animation_label->show();
-    spinning_animation->start();
-}
-
-
-void ChoiceWindow::stopAnimation()
-{
-    m_ui.spinning_animation_label->hide();
-    spinning_animation->stop();
 }
 
 

@@ -6,6 +6,7 @@
 #include <QListWidget>
 #include <QPointer>
 
+
 QSettings Settings::settings(QSettings::NativeFormat, QSettings::UserScope, QString("CachyOS"), QString("pak-gui"));
 
 Settings::Settings(MainWindow* main_window) :

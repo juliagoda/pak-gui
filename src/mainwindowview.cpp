@@ -2,16 +2,14 @@
 
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
-#include "qdatetime.h"
+#include "statisticscommandparser.h"
 #include "updatedpackagescolumn.h"
 #include "pakGuiSettings.h"
 #include "statistics.h"
-#include "statisticscommandparser.h"
 #include "process.h"
 #include "packagedownloader.h"
 #include "previewdesign.h"
 #include "logger.h"
-#include "defs.h"
 #include "timeconverter.h"
 
 #include <KLocalizedString>
@@ -28,6 +26,7 @@
 #include <QChartView>
 #include <QPieSeries>
 #include <QTimer>
+#include <QDateTime>
 #include <QtConcurrent/QtConcurrent>
 
 
@@ -39,9 +38,7 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
       actions_access_checker(new_actions_access_checker),
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView)),
-      spinning_animation(nullptr),
-      spinning_animation_small(nullptr)
-
+      spinning_animation(new SpinningAnimation)
 {
     m_ui.setupUi(this);
 
@@ -73,9 +70,9 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
 
     QObject::connect(process.data(), &Process::generatedOutput, this, &MainWindowView::generateOutput, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
-    QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::showAnimation);
+    QObject::connect(process.data(), &Process::acceptedTask, [this](){ spinning_animation->startSmallOnWidget(m_ui.actions_spinning_animation_label);  });
     QObject::connect(process.data(), &Process::finished, this, [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
-    QObject::connect(process.data(), &Process::finished, this, &MainWindowView::stopAnimation);
+    QObject::connect(process.data(), &Process::finished, [this](){ spinning_animation->stopSmallOnWidget(m_ui.actions_spinning_animation_label);  });
 
     hideWidgets();
     setTimerOnActionsAccessChecker();
@@ -152,12 +149,6 @@ void MainWindowView::setTimerOnActionsAccessChecker()
     int miliseconds = TimeConverter::minutesToMilliseconds(pakGuiSettings::internet_reconnection_time_in_minutes());
     startCheckTimer(internet_connection_timer, miliseconds, QString("Internet connection checker "));
     startCheckTimer(packages_timer, 8000, QString("Required packages checker "));
-}
-
-
-void MainWindowView::setTimerOnUpdatesCheck()
-{
-    // TODO
 }
 
 
@@ -263,12 +254,14 @@ void MainWindowView::connectSignalsForUpdatedPackages()
 void MainWindowView::checkSpinningVisibility()
 {
     if (m_ui.update_spinning_widget->isHidden() &&
-            m_ui.remove_spinning_widget->isHidden() &&
-            m_ui.installation_spinning_widget->isHidden() &&
-            actions_access_checker->isOnline())
+        m_ui.remove_spinning_widget->isHidden() &&
+        m_ui.installation_spinning_widget->isHidden() &&
+        actions_access_checker->isOnline())
     {
         emit initEnded();
-        spinning_animation->stop();
+        spinning_animation->stopOnMainWidgets(m_ui.installation_spinning_label,
+                                              m_ui.remove_spinning_label,
+                                              m_ui.update_spinning_label);
         Logger::logger()->logInfo(QStringLiteral("Refresh/initialization ended"));
     }
 }
@@ -295,28 +288,6 @@ void MainWindowView::generatePreview(Process::Task task)
     progress_view.data()->addProgressView(operation_preview);
 
     emit operationsAmountIncreased();
-}
-
-
-void MainWindowView::showAnimation()
-{
-    if (spinning_animation_small.isNull())
-    {
-        spinning_animation_small.reset(new QMovie(":/waiting-small.gif"), &QObject::deleteLater);
-        m_ui.actions_spinning_animation_label->setMovie(spinning_animation_small.get());
-    }
-    m_ui.actions_spinning_animation_label->show();
-    spinning_animation_small->start();
-    Logger::logger()->logDebug(QStringLiteral("Animation in main window started"));
-}
-
-
-void MainWindowView::stopAnimation()
-{
-    m_ui.actions_spinning_animation_label->hide();
-    if (!spinning_animation_small.isNull())
-        spinning_animation_small->stop();
-    Logger::logger()->logDebug(QStringLiteral("Animation in main window stopped"));
 }
 
 
@@ -398,12 +369,7 @@ void MainWindowView::checkUpdates()
 
    updated_packages_column.data()->clear();
    m_ui.update_spinning_widget->show();
-   if (spinning_animation.isNull())
-   {
-       spinning_animation.reset(new QMovie(":/waiting.gif"), &QObject::deleteLater);
-       m_ui.update_spinning_label->setMovie(spinning_animation.get());
-   }
-   spinning_animation->start();
+   spinning_animation->startOnWidget(m_ui.update_spinning_label);
    QThread* updated_packages_thread(new QThread);
    m_ui.packages_to_update_list->hide();
    m_ui.search_packages_to_update_checkbox->setEnabled(false);
@@ -436,13 +402,8 @@ void MainWindowView::startAnimations()
     m_ui.installation_spinning_widget->show();
     m_ui.update_spinning_widget->show();
 
-    if (spinning_animation.isNull())
-    {
-        spinning_animation.reset(new QMovie(":/waiting.gif"), &QObject::deleteLater);
-        m_ui.installation_spinning_label->setMovie(spinning_animation.get());
-        m_ui.remove_spinning_label->setMovie(spinning_animation.get());
-        m_ui.update_spinning_label->setMovie(spinning_animation.get());
-    }
-    spinning_animation->start();
+    spinning_animation->startOnMainWidgets(m_ui.installation_spinning_label,
+                                           m_ui.remove_spinning_label,
+                                           m_ui.update_spinning_label);
 }
 

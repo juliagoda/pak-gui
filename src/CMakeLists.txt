@@ -53,7 +53,9 @@ target_sources(pak-gui PRIVATE
     sizeconverter.cpp
     sizeconverter.h
     pathconverter.cpp
-    pathconverter.h)
+    pathconverter.h
+    spinninganimation.cpp
+    spinninganimation.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 

@@ -208,7 +208,6 @@ void Logger::resizeFileSizeNotWithinRange()
         QString last_lines = QString::fromStdString(last_bytes.toStdString());
         logs_file.resize(0);
         output_stream << last_bytes;
-        return;
     }
 
     if (is_file_too_big && pakGuiSettings::overwrite_full_history_file())
