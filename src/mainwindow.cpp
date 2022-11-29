@@ -177,9 +177,9 @@ void MainWindow::updateSystemTray(int packages_count)
     system_tray_icon->setStatus(KStatusNotifierItem::Passive);
     if (packages_count > 0)
     {
-        constexpr int message_timeout = 20000;
         system_tray_icon->setStatus(KStatusNotifierItem::NeedsAttention);
-        system_tray_icon->showMessage(i18n("Update"), i18n("%1 to update").arg(packages_count), QString("pak-gui"), message_timeout);
+        system_tray_icon->setToolTipTitle(i18n("Update"));
+        system_tray_icon->setToolTipSubTitle(i18n("%1 packages to update", QString::number(packages_count)));
     }
 }
 
