@@ -30,6 +30,12 @@ QDateTime Settings::getDateTime(const QString& setting)
 }
 
 
+QStringList Settings::getPackagesInfoList()
+{
+    return settings.value("packages_info_selected").value<QStringList>();
+}
+
+
 void Settings::saveInitDateTimesWhenEmpty()
 {
    if (settings.value("start_datetime_for_updates_check").value<QString>().isEmpty())

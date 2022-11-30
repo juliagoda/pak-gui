@@ -43,6 +43,7 @@ public:
     explicit Settings(MainWindow* main_window);
     static void saveInitDateTimesWhenEmpty();
     static QDateTime getDateTime(const QString &setting);
+    static QStringList getPackagesInfoList();
 
 private Q_SLOTS:
     void updateWidgetsDefault() override;

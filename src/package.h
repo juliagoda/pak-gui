@@ -48,9 +48,8 @@ protected:
 
     void setToolTipOnPackage(const QString& text)
     {
-        QSettings settings;
-        auto selected_info_list = !settings.value("packages_info_selected").value<QStringList>().isEmpty() ?
-                    settings.value("packages_info_selected").value<QStringList>() :
+        auto selected_info_list = !Settings::getPackagesInfoList().isEmpty() ?
+                    Settings::getPackagesInfoList() :
                     pakGuiSettings::packages_info_selected();
 
         decltype(selected_info_list)::iterator selected_info_it;
