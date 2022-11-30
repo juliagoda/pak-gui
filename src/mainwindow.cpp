@@ -1,5 +1,3 @@
-
-
 #include "mainwindow.h"
 
 #include "actionsaccesschecker.h"
@@ -26,7 +24,13 @@ MainWindow::MainWindow()
 {
     main_window_view = new MainWindowView(process, actions_access_checker, this);
     setCentralWidget(main_window_view);
-    setupSystemTrayIcon();
+
+    if (pakGuiSettings::use_system_tray_icon())
+    {
+        system_tray_icon.reset(new SystemTray(this));
+        connect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
+    }
+
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::requiredPackagesNotFound, [this]() { emit closeApp(); });
     Settings::saveInitDateTimesWhenEmpty();
     setTimersOnChecks();
@@ -40,7 +44,6 @@ MainWindow::MainWindow()
     connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
     connect(main_window_view, &MainWindowView::initEnded, this, &MainWindow::enableActions);
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
-    connect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, [this](int packages_count){ updateSystemTray(packages_count); });
 
     setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
     connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
@@ -143,19 +146,6 @@ void MainWindow::startTimerOnOperation(const QString& settings_value, QTimer& ti
 }
 
 
-void MainWindow::setupSystemTrayIcon()
-{
-    if (!pakGuiSettings::use_system_tray_icon())
-        return;
-
-    system_tray_icon.reset(new KStatusNotifierItem(this));
-    system_tray_icon->setStandardActionsEnabled(true);
-    system_tray_icon->setAssociatedWidget(this);
-    system_tray_icon->setIconByName(QStringLiteral("pak-gui"));
-    system_tray_icon->setStatus(KStatusNotifierItem::Passive);
-}
-
-
 void MainWindow::setAction(QPointer<QAction>& action,
                            QString text,
                            QString icon,
@@ -166,21 +156,6 @@ void MainWindow::setAction(QPointer<QAction>& action,
     action->setIcon(QIcon::fromTheme(icon));
     this->actionCollection()->setDefaultShortcut(action, key_sequence);
     this->actionCollection()->addAction(icon, action);
-}
-
-
-void MainWindow::updateSystemTray(int packages_count)
-{
-    if (!pakGuiSettings::use_system_tray_icon())
-        return;
-
-    system_tray_icon->setStatus(KStatusNotifierItem::Passive);
-    if (packages_count > 0)
-    {
-        system_tray_icon->setStatus(KStatusNotifierItem::NeedsAttention);
-        system_tray_icon->setToolTipTitle(i18n("Update"));
-        system_tray_icon->setToolTipSubTitle(i18n("%1 packages to update", QString::number(packages_count)));
-    }
 }
 
 

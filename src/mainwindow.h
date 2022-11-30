@@ -5,12 +5,12 @@
 #include <QScopedPointer>
 #include <QPointer>
 #include <QTimer>
-#include <KStatusNotifierItem>
+#include <QKeySequence>
 
-#include "qkeysequence.h"
 #include "settings.h"
 #include "process.h"
 #include "actionsaccesschecker.h"
+#include "systemtray.h"
 
 
 class MainWindowView;
@@ -38,12 +38,10 @@ private:
                                QTimer& timer,
                                int time_limit_in_milliseconds,
                                const QString& operation);
-    void setupSystemTrayIcon();
     void setAction(QPointer<QAction>& action,
                    QString text,
                    QString icon,
                    QKeySequence key_sequence);
-    void updateSystemTray(int packages_count);
 
     QTimer timer_on_updates;
     QTimer timer_on_logs;
@@ -58,5 +56,5 @@ private:
     QPointer<MainWindowView> main_window_view;
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
-    QScopedPointer<KStatusNotifierItem> system_tray_icon;
+    QScopedPointer<SystemTray> system_tray_icon;
 };

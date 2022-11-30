@@ -55,7 +55,9 @@ target_sources(pak-gui PRIVATE
     pathconverter.cpp
     pathconverter.h
     spinninganimation.cpp
-    spinninganimation.h)
+    spinninganimation.h
+    systemtray.cpp
+    systemtray.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 
