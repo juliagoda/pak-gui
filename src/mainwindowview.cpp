@@ -147,7 +147,7 @@ void MainWindowView::setTimerOnActionsAccessChecker()
     QPointer<QTimer> packages_timer = new QTimer(this);
     connect(internet_connection_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkInternetConnection);
     connect(packages_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkRequiredPackages);
-    int miliseconds = TimeConverter::minutesToMilliseconds(pakGuiSettings::internet_reconnection_time_in_minutes());
+    int miliseconds = TimeConverter::minutesToMilliseconds(Settings::records()->internetReconnectionTimeMinutes());
     startCheckTimer(internet_connection_timer, miliseconds, QString("Internet connection checker "));
     startCheckTimer(packages_timer, 8000, QString("Required packages checker "));
 }
@@ -342,6 +342,9 @@ void MainWindowView::generateOutput(Process::Task task, const QString& line)
 
 void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status)
 {
+    Q_UNUSED(exit_code)
+    Q_UNUSED(exit_status)
+
     if (task != Process::Task::Install &&
         task != Process::Task::Update &&
         task != Process::Task::Uninstall)

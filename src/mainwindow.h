@@ -7,7 +7,6 @@
 #include <QTimer>
 #include <QKeySequence>
 
-#include "settings.h"
 #include "process.h"
 #include "actionsaccesschecker.h"
 #include "systemtray.h"
@@ -34,7 +33,7 @@ signals:
     void closeApp();
 
 private:
-    void startTimerOnOperation(const QString& settings_value,
+    void startTimerOnOperation(const QDateTime& time,
                                QTimer& timer,
                                int time_limit_in_milliseconds,
                                const QString& operation);

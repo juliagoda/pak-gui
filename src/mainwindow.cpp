@@ -4,6 +4,7 @@
 #include "mainwindowview.h"
 #include "pakGuiSettings.h"
 #include "timeconverter.h"
+#include "settings.h"
 #include "logger.h"
 
 #include <QAction>
@@ -25,7 +26,7 @@ MainWindow::MainWindow()
     main_window_view = new MainWindowView(process, actions_access_checker, this);
     setCentralWidget(main_window_view);
 
-    if (pakGuiSettings::use_system_tray_icon())
+    if (Settings::records()->useSystemTray())
     {
         system_tray_icon.reset(new SystemTray(this));
         connect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
@@ -109,27 +110,26 @@ void MainWindow::setTimersOnChecks()
 {
     QObject::connect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
     QObject::connect(&timer_on_logs, &QTimer::timeout, Logger::logger(), &Logger::clearLogsFile);
-    startTimerOnOperation(QString("start_datetime_for_updates_check"),
+    startTimerOnOperation(Settings::records()->startDateTimeForUpdatesCheck(),
                           timer_on_updates,
-                          TimeConverter::toMilliseconds(pakGuiSettings::update_check_time_in_days(),
-                                                        pakGuiSettings::update_check_time_in_hours(),
-                                                        pakGuiSettings::update_check_time_in_minutes()),
+                          TimeConverter::toMilliseconds(Settings::records()->updateCheckTimeDays(),
+                                                        Settings::records()->updateCheckTimeHours(),
+                                                        Settings::records()->updateCheckTimeMinutes()),
                           QString("update"));
-    startTimerOnOperation(QString("start_datetime_for_history_store"),
+    startTimerOnOperation(Settings::records()->startDateTimeForHistoryStore(),
                           timer_on_logs,
-                          TimeConverter::daysToMilliseconds(pakGuiSettings::history_store_time_in_days()),
+                          TimeConverter::daysToMilliseconds(Settings::records()->historyStoreTimeDays()),
                           QString("logs remove"));
 }
 
 
-void MainWindow::startTimerOnOperation(const QString& settings_value, QTimer& timer,
+void MainWindow::startTimerOnOperation(const QDateTime& time, QTimer& timer,
                                        int time_limit_in_milliseconds, const QString& operation)
 {
-    QDateTime init_datetime = Settings::getDateTime(settings_value);
-    if (!init_datetime.isValid() || time_limit_in_milliseconds == 0)
+    if (!time.isValid() || time_limit_in_milliseconds == 0)
         return;
 
-    qint64 time_passed_in_milliseconds = init_datetime.msecsTo(QDateTime::currentDateTime());
+    qint64 time_passed_in_milliseconds = time.msecsTo(QDateTime::currentDateTime());
     if (time_passed_in_milliseconds > time_limit_in_milliseconds)
     {
         Logger::logger()->logDebug(QStringLiteral("Restart timer for %1").arg(operation));

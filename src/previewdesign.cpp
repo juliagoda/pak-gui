@@ -1,5 +1,5 @@
 #include "previewdesign.h"
-#include "pakGuiSettings.h"
+#include "settings.h"
 
 
 PreviewDesign::PreviewDesign()
@@ -29,23 +29,23 @@ QString PreviewDesign::generateCss()
 
 void PreviewDesign::appendBackgroundColor(QStringList& css_lines)
 {
-    css_lines.append(QStringLiteral("background-color: %1").arg(pakGuiSettings::background_preview_color().name(QColor::HexArgb)));
+    css_lines.append(QStringLiteral("background-color: %1").arg(Settings::records()->backgroundPreviewColor().name(QColor::HexArgb)));
 }
 
 
 void PreviewDesign::appendFontColor(QStringList& css_lines)
 {
-    css_lines.append(QStringLiteral("color: %1").arg(pakGuiSettings::preview_font_color().name(QColor::HexArgb)));
+    css_lines.append(QStringLiteral("color: %1").arg(Settings::records()->previewFontColor().name(QColor::HexArgb)));
 }
 
 
 void PreviewDesign::appendFontSize(QStringList& css_lines)
 {
-    css_lines.append(QStringLiteral("font-size: %1").arg(pakGuiSettings::preview_font_size()));
+    css_lines.append(QStringLiteral("font-size: %1").arg(Settings::records()->previewFontSize()));
 }
 
 
 void PreviewDesign::appendFontFamily(QStringList& css_lines)
 {
-    css_lines.append(QStringLiteral("font-family: %1").arg(pakGuiSettings::preview_font_family()));
+    css_lines.append(QStringLiteral("font-family: %1").arg(Settings::records()->previewFontFamily()));
 }

@@ -1,5 +1,5 @@
 #include "pathconverter.h"
-#include "pakGuiSettings.h"
+#include "settings.h"
 
 
 QString PathConverter::toAbsolutePath(const QString& new_path)
@@ -14,5 +14,6 @@ QString PathConverter::toAbsolutePath(const QString& new_path)
 
 QString PathConverter::fullConfigPath()
 {
-    return toAbsolutePath(pakGuiSettings::logs_filepath()).append("/" + pakGuiSettings::logs_filename());
+    QString path = Settings::records()->logsFilePath();
+    return path.append("/" + Settings::records()->logsFileName());
 }

@@ -5,8 +5,7 @@
 */
 
 #include "mainwindow.h"
-#include "pakGuiSettings.h"
-#include "pathconverter.h"
+#include "settings.h"
 #include "logger.h"
 
 #include <KCrash>
@@ -59,7 +58,7 @@ int main(int argc, char **argv)
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
-    QString config_path = PathConverter::toAbsolutePath(pakGuiSettings::logs_filepath());
+    QString config_path = Settings::records()->logsFilePath();
     if (!QDir().exists(config_path) &&
         !QDir().mkpath(config_path))
            Logger::logger()->logWarning(QStringLiteral("Path %1 couldn't be created!").arg(config_path));

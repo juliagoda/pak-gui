@@ -1,6 +1,6 @@
 #include "sorter.h"
 #include "logger.h"
-#include "pakGuiSettings.h"
+#include "settings.h"
 #include "checkpackage.h"
 #include "sipackage.h"
 #include "qipackage.h"
@@ -8,6 +8,7 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 #include <algorithm>
+
 
 Sorter::Sorter(QListWidget* list_widgets) :
     list_widget(list_widgets),
@@ -35,7 +36,7 @@ void Sorter::sortReverse()
         list_widget->addItem(*widgets_it);
     }
 
-    if (!pakGuiSettings::show_debug())
+    if (!Settings::records()->showDebug())
         return;
 
     auto all_items = list_widget->findItems("*", Qt::MatchWildcard);
@@ -47,7 +48,6 @@ void Sorter::sortReverse()
 
 void Sorter::sortPackagesToUpdateByText(const QString &text)
 {
-
     auto widgets_list = untouched_list_widget->findItems(QString(" ") + text, Qt::MatchStartsWith);
     clear();
     int i = 0;
@@ -68,6 +68,7 @@ void Sorter::sortAvailablePackagesByText(const QString &text)
     clear();
     int i = 0;
     QList<QListWidgetItem*>::iterator widgets_it;
+
     for(widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
     {
         SiPackage* item = dynamic_cast<SiPackage*>(*widgets_it);
@@ -96,7 +97,7 @@ void Sorter::sortInstalledPackagesByText(const QString &text)
 
 void Sorter::showInfo()
 {
-    if (!pakGuiSettings::show_debug())
+    if (!Settings::records()->showDebug())
         return;
 
     auto all_items = list_widget->findItems("*", Qt::MatchWildcard);

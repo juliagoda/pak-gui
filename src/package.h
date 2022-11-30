@@ -48,12 +48,10 @@ protected:
 
     void setToolTipOnPackage(const QString& text)
     {
-        auto selected_info_list = !Settings::getPackagesInfoList().isEmpty() ?
-                    Settings::getPackagesInfoList() :
-                    pakGuiSettings::packages_info_selected();
-
+        auto selected_info_list = Settings::records()->packagesInfoSelected();
         decltype(selected_info_list)::iterator selected_info_it;
         QStringList selected_infos = QStringList();
+
         for(selected_info_it = selected_info_list.begin(); selected_info_it != selected_info_list.end(); selected_info_it++)
         {
             QRegularExpression regex(QStringLiteral("(%1.*)\\n").arg(*selected_info_it));

@@ -57,7 +57,9 @@ target_sources(pak-gui PRIVATE
     spinninganimation.cpp
     spinninganimation.h
     systemtray.cpp
-    systemtray.h)
+    systemtray.h
+    settingsrecords.cpp
+    settingsrecords.h)
 
 kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
 

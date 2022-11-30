@@ -2,12 +2,13 @@
 #include "logger.h"
 #include "mainwindow.h"
 #include "pakGuiSettings.h"
+#include "settingsrecords.h"
 
 #include <QListWidget>
 #include <QPointer>
 
 
-QSettings Settings::settings(QSettings::NativeFormat, QSettings::UserScope, QString("CachyOS"), QString("pak-gui"));
+QSharedPointer<SettingsRecords> Settings::settings_records(new SettingsRecords);
 
 Settings::Settings(MainWindow* main_window) :
     KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self())
@@ -15,34 +16,19 @@ Settings::Settings(MainWindow* main_window) :
     init();
     connectSignals();
     loadPackagesInfoSettings();
-
-    if (packagesInfoNotDefault())
-    {
-        Logger::logger()->logDebug(QStringLiteral("saved selected packages info are not equal to default ones - enable reset button"));
-        enableDefaultButton();
-    }
 }
 
 
-QDateTime Settings::getDateTime(const QString& setting)
+QSharedPointer<SettingsRecords> Settings::records()
 {
-   return QDateTime::fromString(settings.value(setting).value<QString>(), "yyyy-M-dThh:mm:ss");
-}
-
-
-QStringList Settings::getPackagesInfoList()
-{
-    return settings.value("packages_info_selected").value<QStringList>();
+   return settings_records;
 }
 
 
 void Settings::saveInitDateTimesWhenEmpty()
-{
-   if (settings.value("start_datetime_for_updates_check").value<QString>().isEmpty())
-       settings.setValue("start_datetime_for_updates_check", QDateTime::currentDateTime().toString(Qt::ISODate));
-
-   if (settings.value("start_datetime_for_history_store").value<QString>().isEmpty())
-       settings.setValue("start_datetime_for_history_store", QDateTime::currentDateTime().toString(Qt::ISODate));
+{    
+    settings_records->setStartDateTimeForUpdatesCheck();
+    settings_records->setStartDateTimeForHistoryStore();
 }
 
 
@@ -85,14 +71,10 @@ void Settings::init()
 
 void Settings::loadPackagesInfoSettings()
 {
-    QStringList available_info_list = QStringList();
-    QStringList selected_info_list = pakGuiSettings::packages_info_selected();
-    available_info_list = !settings.value("packages_info_available").value<QStringList>().isEmpty() ? settings.value("packages_info_available").value<QStringList>() : pakGuiSettings::packages_info_available();
-    selected_info_list = !settings.value("packages_info_selected").value<QStringList>().isEmpty() ? settings.value("packages_info_selected").value<QStringList>() : pakGuiSettings::packages_info_selected();
     packages_info_settings.packages_info_selector->availableListWidget()->clear();
     packages_info_settings.packages_info_selector->selectedListWidget()->clear();
-    packages_info_settings.packages_info_selector->availableListWidget()->addItems(available_info_list);
-    packages_info_settings.packages_info_selector->selectedListWidget()->addItems(selected_info_list);
+    packages_info_settings.packages_info_selector->availableListWidget()->addItems(settings_records->packagesInfoAvailable());
+    packages_info_settings.packages_info_selector->selectedListWidget()->addItems(settings_records->packagesInfoSelected());
 }
 
 
@@ -124,7 +106,7 @@ void Settings::updateAvailableInfoList()
     QStringList available_info_list = QStringList();
     for(const auto& available_item : packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard))
         available_info_list.append(available_item->text());
-    settings.setValue("packages_info_available", available_info_list);
+    settings_records->setAvailablePackageInfo(available_info_list);
 }
 
 
@@ -133,27 +115,6 @@ void Settings::updateSelectedInfoList()
     QStringList selected_info_list = QStringList();
     for(const auto& selected_item : packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard))
         selected_info_list.append(selected_item->text());
-    settings.setValue("packages_info_selected", selected_info_list);
+    settings_records->setSelectedPackageInfo(selected_info_list);
     Logger::logger()->logDebug(QStringLiteral("selected packages info saved: %1").arg(selected_info_list.join(", ")));
 }
-
-
-bool Settings::packagesInfoNotDefault()
-{
-    auto all_selected_items = settings.value("packages_info_selected").value<QStringList>();
-
-    if (all_selected_items.isEmpty())
-        return false;
-
-    if (all_selected_items.count() != pakGuiSettings::packages_info_selected().count())
-        return true;
-
-    for(int i = 0; i < all_selected_items.count(); i++)
-    {
-        if (all_selected_items.at(i) != pakGuiSettings::packages_info_selected().at(i))
-            return true;
-    }
-
-    return false;
-}
-

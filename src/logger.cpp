@@ -3,7 +3,7 @@
 #include "outputfilter.h"
 #include "sizeconverter.h"
 #include "pathconverter.h"
-#include "pakGuiSettings.h"
+#include "settings.h"
 
 #include <QDebug>
 #include <QMetaEnum>
@@ -79,7 +79,7 @@ void Logger::writeLineToFile(QString &line)
 
 void Logger::logInfo(const QString &text)
 {
-    if (pakGuiSettings::hide_info_logs())
+    if (Settings::records()->hideInfoLogs())
         return;
 
     logIntoFile(QString("INFO"), text);
@@ -103,7 +103,7 @@ void Logger::logFatal(const QString &text)
 
 void Logger::logDebug(const QString &text)
 {
-    if (!pakGuiSettings::show_debug())
+    if (!Settings::records()->showDebug())
         return;
 
     logIntoFile(QString("DEBUG"), text);
@@ -152,7 +152,7 @@ void Logger::logIntoFile(const QString& section, const QString& text)
 
     QString local_time = QDateTime::currentDateTime().toLocalTime().toString();
     QString local_text = text;
-    if (pakGuiSettings::save_logs_into_file())
+    if (Settings::records()->saveLogsIntoFile())
         output_stream << " [" << section << "]  " << OutputFilter::filteredOutput(local_text) << "  (" << local_time << ")\n";
 
     write_mutex.unlock();
@@ -195,13 +195,13 @@ void Logger::reopenFile()
 
 void Logger::resizeFileSizeNotWithinRange()
 {
-    int size_limit = pakGuiSettings::history_file_size_limit_in_Mb();
+    int size_limit = Settings::records()->historyFileSizeLimitMb();
     if (size_limit == 0)
         return;
 
     int preferredBytes = SizeConverter::megabytesToBytes(size_limit);
     bool is_file_too_big = SizeConverter::bytesToMegabytes(logs_file.size()) > size_limit;
-    if (is_file_too_big && !pakGuiSettings::overwrite_full_history_file())
+    if (is_file_too_big && !Settings::records()->overwriteFullHistoryFile())
     {
         logs_file.seek(logs_file.size() - preferredBytes);
         QByteArray last_bytes = logs_file.read(preferredBytes);
@@ -210,14 +210,14 @@ void Logger::resizeFileSizeNotWithinRange()
         output_stream << last_bytes;
     }
 
-    if (is_file_too_big && pakGuiSettings::overwrite_full_history_file())
+    if (is_file_too_big && Settings::records()->overwriteFullHistoryFile())
         clearLogsFile();
 }
 
 
 bool Logger::validate()
 {
-    if (!pakGuiSettings::save_logs_into_file())
+    if (!Settings::records()->saveLogsIntoFile())
         return false;
 
     if (!logs_file.exists())

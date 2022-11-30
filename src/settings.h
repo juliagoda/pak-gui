@@ -2,12 +2,13 @@
 
 #include <QObject>
 #include <KConfigDialog>
-#include <QSettings>
 
 #include "ui_generalsettings.h"
 #include "ui_packagesinfosettings.h"
 #include "ui_previewsappearancesettings.h"
 #include "ui_logssettings.h"
+#include "settingsrecords.h"
+
 
 class MainWindow;
 
@@ -42,8 +43,7 @@ public:
 
     explicit Settings(MainWindow* main_window);
     static void saveInitDateTimesWhenEmpty();
-    static QDateTime getDateTime(const QString &setting);
-    static QStringList getPackagesInfoList();
+    static QSharedPointer<SettingsRecords> records();
 
 private Q_SLOTS:
     void updateWidgetsDefault() override;
@@ -57,11 +57,10 @@ private:
     void enableButtons();
     void updateAvailableInfoList();
     void updateSelectedInfoList();
-    bool packagesInfoNotDefault();
 
     Ui::GeneralSettings general_settings;
     Ui::PreviewsAppearanceSettings previews_appearance_settings;
     Ui::PackagesInfoSettings packages_info_settings;
     Ui::LogsSettings logs_settings;
-    static QSettings settings;
+    static QSharedPointer<SettingsRecords> settings_records;
 };

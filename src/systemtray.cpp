@@ -2,6 +2,8 @@
 #include "pakGuiSettings.h"
 #include "mainwindow.h"
 
+#include <KLocalizedString>
+
 
 SystemTray::SystemTray(MainWindow* parent)
     : KStatusNotifierItem{parent}
