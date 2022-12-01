@@ -44,6 +44,7 @@ public:
 
 public Q_SLOTS:
     void clearLogsFile();
+    void reopenFile();
 
 private:
     explicit Logger();
@@ -54,7 +55,6 @@ private:
     void logIntoFile(const QString& section, const QString& text);
     bool isWritePossible();
     void closeOnQuit();
-    void reopenFile();
     void resizeFileSizeNotWithinRange();
     bool validate();
 

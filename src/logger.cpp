@@ -144,6 +144,9 @@ void Logger::appendNewLine()
 
 void Logger::logIntoFile(const QString& section, const QString& text)
 {
+    if (!Settings::records()->saveLogsIntoFile())
+        return;
+
     if (!logs_file.exists())
         reopenFile();
 
@@ -152,8 +155,7 @@ void Logger::logIntoFile(const QString& section, const QString& text)
 
     QString local_time = QDateTime::currentDateTime().toLocalTime().toString();
     QString local_text = text;
-    if (Settings::records()->saveLogsIntoFile())
-        output_stream << " [" << section << "]  " << OutputFilter::filteredOutput(local_text) << "  (" << local_time << ")\n";
+    output_stream << " [" << section << "]  " << OutputFilter::filteredOutput(local_text) << "  (" << local_time << ")\n";
 
     write_mutex.unlock();
 }
@@ -185,6 +187,9 @@ void Logger::reopenFile()
 {
     if (logs_file.isOpen())
         logs_file.close();
+
+    if (QString::compare(PathConverter::toAbsolutePath(logs_file.fileName()), PathConverter::fullConfigPath()) != 0)
+        logs_file.setFileName(PathConverter::fullConfigPath());
 
     logs_file.open(QIODevice::ReadWrite | QIODevice::Append);
     output_stream.setDevice(&logs_file);

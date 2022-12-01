@@ -151,6 +151,9 @@ void SettingsRecords::setAvailablePackageInfo(const QStringList& info)
 
 void SettingsRecords::setSelectedPackageInfo(const QStringList& info)
 {
+    if (settings.value("packages_info_selected").value<QStringList>() != info)
+        emit selectedPackageInfoListChanged();
+
     settings.setValue("packages_info_selected", info);
 }
 
@@ -166,4 +169,16 @@ void SettingsRecords::setStartDateTimeForHistoryStore()
 {
     if (settings.value("start_datetime_for_history_store").value<QString>().isEmpty())
         settings.setValue("start_datetime_for_history_store", QDateTime::currentDateTime().toString(Qt::ISODate));
+}
+
+
+void SettingsRecords::resetStartDateTimeForUpdatesCheck()
+{
+    settings.setValue("start_datetime_for_updates_check", QDateTime::currentDateTime().toString(Qt::ISODate));
+}
+
+
+void SettingsRecords::resetStartDateTimeForHistoryStore()
+{
+    settings.setValue("start_datetime_for_history_store", QDateTime::currentDateTime().toString(Qt::ISODate));
 }

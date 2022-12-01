@@ -1,7 +1,6 @@
 #pragma once
 
 #include "settings.h"
-#include "pakGuiSettings.h"
 
 #include <QListWidgetItem>
 #include <QString>
@@ -58,7 +57,7 @@ protected:
             selected_infos.append(regex.match(text).captured(1));
         }
 
-        setToolTip(selected_infos.join(QString("\n\n")));
+        setToolTip(selected_infos.join(QString("\n")));
     }
 
     virtual void setName(const QString& new_name) { name = new_name; };

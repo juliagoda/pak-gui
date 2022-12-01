@@ -3,6 +3,7 @@
 #include "actionsaccesschecker.h"
 #include "mainwindowview.h"
 #include "pakGuiSettings.h"
+#include "settingsrecords.h"
 #include "timeconverter.h"
 #include "settings.h"
 #include "logger.h"
@@ -21,16 +22,12 @@ MainWindow::MainWindow()
     : KXmlGuiWindow(),
       process(QSharedPointer<Process>(new Process)),
       actions_access_checker(ActionsAccessChecker::actionsAccessChecker()),
-      system_tray_icon(nullptr)
+      system_tray_icon(nullptr),
+      settings_window(new Settings(this))
 {
     main_window_view = new MainWindowView(process, actions_access_checker, this);
     setCentralWidget(main_window_view);
-
-    if (Settings::records()->useSystemTray())
-    {
-        system_tray_icon.reset(new SystemTray(this));
-        connect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
-    }
+    startSystemTray();
 
     QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::requiredPackagesNotFound, [this]() { emit closeApp(); });
     Settings::saveInitDateTimesWhenEmpty();
@@ -45,6 +42,8 @@ MainWindow::MainWindow()
     connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
     connect(main_window_view, &MainWindowView::initEnded, this, &MainWindow::enableActions);
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
+    connect(this, &MainWindow::widgetsChanged, main_window_view, &MainWindowView::updateWidgets);
+    connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
 
     setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
     connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
@@ -108,18 +107,22 @@ void MainWindow::disableOnlineActions()
 
 void MainWindow::setTimersOnChecks()
 {
-    QObject::connect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
-    QObject::connect(&timer_on_logs, &QTimer::timeout, Logger::logger(), &Logger::clearLogsFile);
-    startTimerOnOperation(Settings::records()->startDateTimeForUpdatesCheck(),
-                          timer_on_updates,
-                          TimeConverter::toMilliseconds(Settings::records()->updateCheckTimeDays(),
-                                                        Settings::records()->updateCheckTimeHours(),
-                                                        Settings::records()->updateCheckTimeMinutes()),
-                          QString("update"));
-    startTimerOnOperation(Settings::records()->startDateTimeForHistoryStore(),
-                          timer_on_logs,
-                          TimeConverter::daysToMilliseconds(Settings::records()->historyStoreTimeDays()),
-                          QString("logs remove"));
+    QObject::disconnect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
+    QObject::disconnect(&timer_on_logs, &QTimer::timeout, Logger::logger(), &Logger::clearLogsFile);
+    connectSignalForUpdateCheck();
+    connectSignalForHistoryStore();
+}
+
+
+void MainWindow::startSystemTray()
+{
+    system_tray_icon.reset(nullptr);
+    disconnect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
+    if (Settings::records()->useSystemTray())
+    {
+        system_tray_icon.reset(new SystemTray(this));
+        connect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
+    }
 }
 
 
@@ -133,6 +136,7 @@ void MainWindow::startTimerOnOperation(const QDateTime& time, QTimer& timer,
     if (time_passed_in_milliseconds > time_limit_in_milliseconds)
     {
         Logger::logger()->logDebug(QStringLiteral("Restart timer for %1").arg(operation));
+        settings_window->saveInitDateTime(operation);
         timer.start(time_limit_in_milliseconds);
     }
     else
@@ -159,6 +163,35 @@ void MainWindow::setAction(QPointer<QAction>& action,
 }
 
 
+void MainWindow::connectSignalForUpdateCheck()
+{
+    if (Settings::records()->updateCheckTimeDays() > 0 || Settings::records()->updateCheckTimeHours() > 0 ||
+            Settings::records()->updateCheckTimeMinutes())
+    {
+        QObject::connect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
+        startTimerOnOperation(Settings::records()->startDateTimeForUpdatesCheck(),
+                              timer_on_updates,
+                              TimeConverter::toMilliseconds(Settings::records()->updateCheckTimeDays(),
+                                                            Settings::records()->updateCheckTimeHours(),
+                                                            Settings::records()->updateCheckTimeMinutes()),
+                              QString("update"));
+    }
+}
+
+
+void MainWindow::connectSignalForHistoryStore()
+{
+    if (Settings::records()->historyStoreTimeDays() > 0)
+    {
+        QObject::connect(&timer_on_logs, &QTimer::timeout, Logger::logger(), &Logger::clearLogsFile);
+        startTimerOnOperation(Settings::records()->startDateTimeForHistoryStore(),
+                              timer_on_logs,
+                              TimeConverter::daysToMilliseconds(Settings::records()->historyStoreTimeDays()),
+                              QString("logs remove"));
+    }
+}
+
+
 void MainWindow::enableActions()
 {
     update_action->setDisabled(false);
@@ -174,6 +207,5 @@ void MainWindow::enableActions()
 
 void MainWindow::settingsConfigure()
 {
-    QPointer<Settings> settings_window = new Settings(this);
     settings_window->show();
 }

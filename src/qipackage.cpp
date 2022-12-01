@@ -1,6 +1,5 @@
 #include "qipackage.h"
 #include "defs.h"
-#include "settings.h"
 
 #include <QTextStream>
 

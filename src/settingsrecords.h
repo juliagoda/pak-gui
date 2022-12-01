@@ -8,8 +8,11 @@
 #include <QSettings>
 
 
-class SettingsRecords
+class SettingsRecords : public QObject
 {
+
+    Q_OBJECT
+
 public:
     SettingsRecords();
 
@@ -42,6 +45,11 @@ public:
     void setSelectedPackageInfo(const QStringList& info);
     void setStartDateTimeForUpdatesCheck();
     void setStartDateTimeForHistoryStore();
+    void resetStartDateTimeForUpdatesCheck();
+    void resetStartDateTimeForHistoryStore();
+
+signals:
+    void selectedPackageInfoListChanged();
 
 private:
     static QSettings settings;

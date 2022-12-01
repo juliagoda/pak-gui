@@ -10,6 +10,7 @@
 #include "process.h"
 #include "actionsaccesschecker.h"
 #include "systemtray.h"
+#include "settings.h"
 
 
 class MainWindowView;
@@ -22,15 +23,20 @@ public:
     MainWindow();
     ~MainWindow() override;
 
+public Q_SLOTS:
+    void startSystemTray();
+    void setTimersOnChecks();
+
 private Q_SLOTS:
     void settingsConfigure();
     void enableActions();
     void disableActions();
     void disableOnlineActions();
-    void setTimersOnChecks();
 
 signals:
     void closeApp();
+    void widgetsChanged();
+    void updatedPackageInfoList();
 
 private:
     void startTimerOnOperation(const QDateTime& time,
@@ -41,6 +47,8 @@ private:
                    QString text,
                    QString icon,
                    QKeySequence key_sequence);
+    void connectSignalForUpdateCheck();
+    void connectSignalForHistoryStore();
 
     QTimer timer_on_updates;
     QTimer timer_on_logs;
@@ -56,4 +64,5 @@ private:
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
     QScopedPointer<SystemTray> system_tray_icon;
+    QScopedPointer<Settings> settings_window;
 };

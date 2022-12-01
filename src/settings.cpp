@@ -13,15 +13,25 @@ QSharedPointer<SettingsRecords> Settings::settings_records(new SettingsRecords);
 Settings::Settings(MainWindow* main_window) :
     KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self())
 {
-    init();
-    connectSignals();
+    init(main_window);
+    connectSignals(main_window);
     loadPackagesInfoSettings();
 }
 
 
 QSharedPointer<SettingsRecords> Settings::records()
 {
-   return settings_records;
+    return settings_records;
+}
+
+
+void Settings::saveInitDateTime(const QString& operation_name)
+{
+   if (QString::compare(operation_name, QString("update")) == 0)
+       settings_records->resetStartDateTimeForUpdatesCheck();
+
+   if (QString::compare(operation_name, QString("logs remove")) == 0)
+       settings_records->resetStartDateTimeForHistoryStore();
 }
 
 
@@ -50,7 +60,7 @@ void Settings::updateSettings()
 }
 
 
-void Settings::init()
+void Settings::init(MainWindow* main_window)
 {
     QPointer<QWidget> general_page = new QWidget;
     general_settings.setupUi(general_page);
@@ -64,7 +74,9 @@ void Settings::init()
     addPage(previews_appearance_page, i18nc("@title:tab", "Previews appearance"), QStringLiteral(":/icons/general-settings.png"));
     addPage(packages_info_page, i18nc("@title:tab", "Packages informations"), QStringLiteral(":/icons/package-info-settings.png"));
     addPage(logs_page, i18nc("@title:tab", "Logs"), QStringLiteral(":/icons/logs-settings.png"));
-    //connect(this, &Settings::settingsChanged, //mainWindowView, &MainWindowView::handleSettingsChanged);
+    connect(this, &Settings::settingsChanged, main_window, &MainWindow::startSystemTray);
+    connect(this, &Settings::settingsChanged, main_window, &MainWindow::setTimersOnChecks);
+    connect(this, &Settings::settingsChanged, [main_window](){ emit main_window->widgetsChanged(); });
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -78,12 +90,13 @@ void Settings::loadPackagesInfoSettings()
 }
 
 
-void Settings::connectSignals()
+void Settings::connectSignals(MainWindow* main_window)
 {
     connect(packages_info_settings.packages_info_selector, &KActionSelector::added, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
     connect(packages_info_settings.packages_info_selector, &KActionSelector::removed, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
     connect(packages_info_settings.packages_info_selector, &KActionSelector::movedUp, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
     connect(packages_info_settings.packages_info_selector, &KActionSelector::movedDown, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
+    connect(settings_records.get(), &SettingsRecords::selectedPackageInfoListChanged, [main_window]() { emit main_window->updatedPackageInfoList(); });
 }
 
 

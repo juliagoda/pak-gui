@@ -1,5 +1,4 @@
 #include "systemtray.h"
-#include "pakGuiSettings.h"
 #include "mainwindow.h"
 
 #include <KLocalizedString>

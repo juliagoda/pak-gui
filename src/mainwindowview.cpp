@@ -4,7 +4,6 @@
 #include "installedpackagescolumn.h"
 #include "statisticscommandparser.h"
 #include "updatedpackagescolumn.h"
-#include "pakGuiSettings.h"
 #include "statistics.h"
 #include "process.h"
 #include "packagedownloader.h"
@@ -38,7 +37,8 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
       actions_access_checker(new_actions_access_checker),
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView)),
-      spinning_animation(new SpinningAnimation)
+      spinning_animation(new SpinningAnimation),
+      internet_connection_timer(new QTimer(this))
 {
     m_ui.setupUi(this);
 
@@ -76,7 +76,8 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     QObject::connect(process.data(), &Process::finished, [this](){ spinning_animation->stopSmallOnWidget(m_ui.actions_spinning_animation_label);  });
 
     hideWidgets();
-    setTimerOnActionsAccessChecker();
+    startInternetCheckTimer();
+    startPackagesCheckTimer();
     startAnimations();
     init();
 }
@@ -141,26 +142,25 @@ void MainWindowView::hideWidgetsExceptInstalled()
 }
 
 
-void MainWindowView::setTimerOnActionsAccessChecker()
+void MainWindowView::startInternetCheckTimer()
 {
-    QPointer<QTimer> internet_connection_timer = new QTimer(this);
-    QPointer<QTimer> packages_timer = new QTimer(this);
+    disconnect(internet_connection_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkInternetConnection);
+    if (Settings::records()->internetReconnectionTimeMinutes() == 0)
+        return;
+
     connect(internet_connection_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkInternetConnection);
-    connect(packages_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkRequiredPackages);
-    int miliseconds = TimeConverter::minutesToMilliseconds(Settings::records()->internetReconnectionTimeMinutes());
-    startCheckTimer(internet_connection_timer, miliseconds, QString("Internet connection checker "));
-    startCheckTimer(packages_timer, 8000, QString("Required packages checker "));
+    int milliseconds = TimeConverter::minutesToMilliseconds(Settings::records()->internetReconnectionTimeMinutes());
+    internet_connection_timer->start(milliseconds);
+    Logger::logger()->logDebug(QStringLiteral("Internet connection checker started with interval %2").arg(milliseconds));
 }
 
 
-void MainWindowView::startCheckTimer(QPointer<QTimer> timer, int miliseconds, const QString& timer_type)
+void MainWindowView::startPackagesCheckTimer()
 {
-    timer->start(miliseconds);
-
-    if (miliseconds == 0)
-        timer->stop();
-
-    Logger::logger()->logDebug(QStringLiteral("%1 started with interval %2").arg(timer_type).arg(miliseconds));
+    QPointer<QTimer> packages_timer = new QTimer(this);
+    connect(packages_timer, &QTimer::timeout, actions_access_checker.get(), &ActionsAccessChecker::checkRequiredPackages);
+    packages_timer->start(8000);
+    Logger::logger()->logDebug(QStringLiteral("Required packages checker started with interval %2").arg(8000));
 }
 
 
@@ -383,6 +383,18 @@ void MainWindowView::checkUpdates()
    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
 
    updated_packages_thread->start(QThread::InheritPriority);
+}
+
+
+void MainWindowView::updateWidgets()
+{
+    Logger::logger()->logInfo("Update widgets and data after settings change");
+    PreviewDesign::update(m_ui.text_browser_tab_uninstall);
+    PreviewDesign::update(m_ui.text_browser_tab_install);
+    PreviewDesign::update(m_ui.text_browser_tab_update);
+
+    startInternetCheckTimer();
+    Logger::logger()->reopenFile();
 }
 
 

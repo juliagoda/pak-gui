@@ -35,8 +35,6 @@ void SiPackage::updateData(QString& packageContent, int name_line, int version_l
     if (lines.count() == 0)
         return;
 
-    setToolTipOnPackage(packageContent);
-
     int repo_separator_index = lines.at(PACKAGE_SI_REPO_NAME).indexOf(": ") + 1;
     setRepo(lines.at(PACKAGE_SI_REPO_NAME).mid(repo_separator_index));
 

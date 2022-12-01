@@ -44,15 +44,16 @@ public:
     explicit Settings(MainWindow* main_window);
     static void saveInitDateTimesWhenEmpty();
     static QSharedPointer<SettingsRecords> records();
+    void saveInitDateTime(const QString& operation_name);
 
 private Q_SLOTS:
     void updateWidgetsDefault() override;
     void updateSettings() override;
 
 private:
-    void init();
+    void init(MainWindow* main_window);
     void loadPackagesInfoSettings();
-    void connectSignals();
+    void connectSignals(MainWindow* main_window);
     void enableDefaultButton();
     void enableButtons();
     void updateAvailableInfoList();

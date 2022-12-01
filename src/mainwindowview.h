@@ -36,6 +36,7 @@ public Q_SLOTS:
     void downloadPackage();
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
     void checkUpdates();
+    void updateWidgets();
 
 private Q_SLOTS:
     void startAnimations();
@@ -44,6 +45,7 @@ private Q_SLOTS:
     void connectSignalsForUpdatedPackages();
     void generateOutput(Process::Task task, const QString& line);
     void toggleWidgetsAccess(bool is_online);
+    void startInternetCheckTimer();
 
 signals:
     void operationsAmountIncreased();
@@ -64,6 +66,7 @@ private:
     void hideWidgetsExceptInstalled();
     void init();
     void checkSpinningVisibility();
+    void startPackagesCheckTimer();
 
     Ui::MainWindowView m_ui;
     QSharedPointer<Process> process;
@@ -74,4 +77,5 @@ private:
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
     QSharedPointer<SpinningAnimation> spinning_animation;
+    QPointer<QTimer> internet_connection_timer;
 };
