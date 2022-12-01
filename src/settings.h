@@ -15,36 +15,12 @@ class MainWindow;
 class Settings : public KConfigDialog
 {
     Q_OBJECT
-public:
-    enum class PackageInfo
-    {
-        Name = 0,
-        Version,
-        Description,
-        Architecture,
-        URL,
-        Licenses,
-        Groups,
-        Provides,
-        DependsOn,
-        OptionalDeps,
-        RequiredBy,
-        OptionalFor,
-        ConflictsWith,
-        Replaces,
-        InstalledSize,
-        Packager,
-        BuildDate,
-        InstallDate,
-        InstallReason,
-        InstallScript,
-        ValidatedBy
-    };
 
+public:
     explicit Settings(MainWindow* main_window);
     static void saveInitDateTimesWhenEmpty();
     static QSharedPointer<SettingsRecords> records();
-    void saveInitDateTime(const QString& operation_name);
+    static void saveInitDateTime(const QString& operation_name);
 
 private Q_SLOTS:
     void updateWidgetsDefault() override;

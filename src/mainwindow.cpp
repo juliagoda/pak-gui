@@ -2,7 +2,6 @@
 
 #include "actionsaccesschecker.h"
 #include "mainwindowview.h"
-#include "pakGuiSettings.h"
 #include "settingsrecords.h"
 #include "timeconverter.h"
 #include "settings.h"
@@ -22,8 +21,7 @@ MainWindow::MainWindow()
     : KXmlGuiWindow(),
       process(QSharedPointer<Process>(new Process)),
       actions_access_checker(ActionsAccessChecker::actionsAccessChecker()),
-      system_tray_icon(nullptr),
-      settings_window(new Settings(this))
+      system_tray_icon(nullptr)
 {
     main_window_view = new MainWindowView(process, actions_access_checker, this);
     setCentralWidget(main_window_view);
@@ -116,8 +114,8 @@ void MainWindow::setTimersOnChecks()
 
 void MainWindow::startSystemTray()
 {
-    system_tray_icon.reset(nullptr);
     disconnect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
+    system_tray_icon.reset(nullptr);
     if (Settings::records()->useSystemTray())
     {
         system_tray_icon.reset(new SystemTray(this));
@@ -133,17 +131,15 @@ void MainWindow::startTimerOnOperation(const QDateTime& time, QTimer& timer,
         return;
 
     qint64 time_passed_in_milliseconds = time.msecsTo(QDateTime::currentDateTime());
+    qint64 rest_time = time_limit_in_milliseconds - time_passed_in_milliseconds;
     if (time_passed_in_milliseconds > time_limit_in_milliseconds)
     {
         Logger::logger()->logDebug(QStringLiteral("Restart timer for %1").arg(operation));
-        settings_window->saveInitDateTime(operation);
-        timer.start(time_limit_in_milliseconds);
-    }
-    else
-    {
-        timer.start(time_limit_in_milliseconds - time_passed_in_milliseconds);
+        Settings::saveInitDateTime(operation);
+        rest_time = time_limit_in_milliseconds;
     }
 
+    timer.start(rest_time);
     Logger::logger()->logDebug(QStringLiteral("Time passed for %1: %2")
                                .arg(operation)
                                .arg(TimeConverter::timeToString(time_passed_in_milliseconds)));
@@ -207,5 +203,6 @@ void MainWindow::enableActions()
 
 void MainWindow::settingsConfigure()
 {
-    settings_window->show();
+    QPointer<Settings> settings = new Settings(this);
+    settings->show();
 }

@@ -10,7 +10,6 @@
 #include "process.h"
 #include "actionsaccesschecker.h"
 #include "systemtray.h"
-#include "settings.h"
 
 
 class MainWindowView;
@@ -64,5 +63,4 @@ private:
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
     QScopedPointer<SystemTray> system_tray_icon;
-    QScopedPointer<Settings> settings_window;
 };
