@@ -63,7 +63,7 @@ MainWindow::MainWindow()
 
     disableActions();
 
-    KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection);
+    KStandardAction::quit(main_window_view, SLOT(checkRunningThreadsBeforeQuit()), actionCollection);
     KStandardAction::preferences(this, SLOT(settingsConfigure()), actionCollection);
 
     setupGUI(Default, "pak-gui.rc");

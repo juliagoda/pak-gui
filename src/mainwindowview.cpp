@@ -38,7 +38,8 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView)),
       spinning_animation(new SpinningAnimation),
-      internet_connection_timer(new QTimer(this))
+      internet_connection_timer(new QTimer(this)),
+      is_operation_running(false)
 {
     m_ui.setupUi(this);
 
@@ -260,6 +261,7 @@ void MainWindowView::checkSpinningVisibility()
         actions_access_checker->isOnline())
     {
         emit initEnded();
+        is_operation_running = false;
         spinning_animation->stopOnMainWidgets(m_ui.installation_spinning_label,
                                               m_ui.remove_spinning_label,
                                               m_ui.update_spinning_label);
@@ -369,6 +371,7 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
 
 void MainWindowView::checkUpdates()
 {
+   is_operation_running = true;
    Logger::logger()->logInfo(QStringLiteral("Start check updates - %1").arg(QDateTime::currentDateTime().toString()));
 
    updated_packages_column.data()->clear();
@@ -398,8 +401,21 @@ void MainWindowView::updateWidgets()
 }
 
 
+void MainWindowView::checkRunningThreadsBeforeQuit()
+{
+    if (is_operation_running)
+    {
+        QMessageBox::warning(this, i18n("Quit"), i18n("Application cannot be closed immediately. Try again after end of running operations."));
+        return;
+    }
+
+    QApplication::closeAllWindows();
+}
+
+
 void MainWindowView::refresh()
 {
+    is_operation_running = true;
     hideWidgets();
     emit initStarted();
 

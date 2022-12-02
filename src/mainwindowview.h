@@ -37,6 +37,7 @@ public Q_SLOTS:
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
     void checkUpdates();
     void updateWidgets();
+    void checkRunningThreadsBeforeQuit();
 
 private Q_SLOTS:
     void startAnimations();
@@ -59,6 +60,7 @@ signals:
     void packagesToUpdateCountChanged(int packages_count);
 
 private:
+    void stopRunningThread(QSharedPointer<QThread> &thread);
     void setTimerOnActionsAccessChecker();
     void startCheckTimer(QPointer<QTimer> timer, int miliseconds, const QString& timer_type);
     void connectSignals();
@@ -78,4 +80,5 @@ private:
     QSharedPointer<ProgressView> progress_view;
     QSharedPointer<SpinningAnimation> spinning_animation;
     QPointer<QTimer> internet_connection_timer;
+    bool is_operation_running;
 };
