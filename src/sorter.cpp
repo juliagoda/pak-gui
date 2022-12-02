@@ -48,7 +48,7 @@ void Sorter::sortReverse()
 
 void Sorter::sortPackagesToUpdateByText(const QString &text)
 {
-    auto widgets_list = untouched_list_widget->findItems(QString(" ") + text, Qt::MatchStartsWith);
+    auto widgets_list = untouched_list_widget->findItems(text, Qt::MatchStartsWith);
     clear();
     int i = 0;
     QList<QListWidgetItem*>::iterator widgets_it;
@@ -64,7 +64,7 @@ void Sorter::sortPackagesToUpdateByText(const QString &text)
 
 void Sorter::sortAvailablePackagesByText(const QString &text)
 {
-    auto widgets_list = untouched_list_widget->findItems(QString(" ") + text, Qt::MatchStartsWith);
+    auto widgets_list = untouched_list_widget->findItems(text, Qt::MatchStartsWith);
     clear();
     int i = 0;
     QList<QListWidgetItem*>::iterator widgets_it;
@@ -81,7 +81,7 @@ void Sorter::sortAvailablePackagesByText(const QString &text)
 
 void Sorter::sortInstalledPackagesByText(const QString &text)
 {
-    auto widgets_list = untouched_list_widget->findItems(QString(" ") + text, Qt::MatchStartsWith);
+    auto widgets_list = untouched_list_widget->findItems(text, Qt::MatchStartsWith);
     clear();
     int i = 0;
     QList<QListWidgetItem*>::iterator widgets_it;

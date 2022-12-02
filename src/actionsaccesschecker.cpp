@@ -147,7 +147,7 @@ void ActionsAccessChecker::checkInternetConnection()
     }
 }
 
-
+// TODO - lock/unlock actions (reflector - pak -m)
 void ActionsAccessChecker::emitSignals()
 {
     emit aspAccessChanged(is_asp_installed);

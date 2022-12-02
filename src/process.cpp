@@ -24,9 +24,9 @@ Process::Process() :
     messages_map.insert(Task::Install, {i18n("Installation"), i18n("install packages?")});
     messages_map.insert(Task::Update, {i18n("Update"), i18n("update package(s)?")});
 
-    commands_map.insert(Task::Clean, QStringList() << "-c" << "y | pak -Sc");
+    commands_map.insert(Task::Clean, QStringList() << "-c" << "echo -e \"y\" | pak -Sc");
     commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << "pak -m");
-    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << "y | pak -Su --noconfirm");
+    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << "echo -e \"y\ny\" | pak -Su | echo $(zenity --password --title=\"Enter sudo password\") ");
     commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << "pak --vcs");
     commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << "pak -Sy");
 }
@@ -66,11 +66,11 @@ bool Process::askQuestion(Task new_task,
 void Process::startProcess(Task new_task)
 {
     Logger::logger()->logInfo(QStringLiteral("Started task \"%1\"").arg(QVariant::fromValue(new_task).toString()));
-    bool containsPacman = commands_map.value(new_task).join(" ").contains("pacman");
+    bool is_interactive = commands_map.value(new_task).join(" ").contains("-t");
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
     pak_s->setProcessChannelMode(QProcess::MergedChannels);
     connectSignals(pak_s, new_task);
-    pak_s.data()->start(containsPacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
+    pak_s.data()->start(is_interactive ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
     Logger::logger()->writeSectionToFile(task_to_write_operation_map.value(new_task));
     QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [=]() {
         while (pak_s.data()->canReadLine())
