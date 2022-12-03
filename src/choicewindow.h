@@ -21,8 +21,10 @@ public:
 public Q_SLOTS:
     void toggleOkButton(int new_index);
     void fillComboBox(QString& output);
+    void fillComboBox(QStringList output_list);
 
 signals:
+    bool choiceDefined(QString choice);
     bool choiceDefined(int new_index);
     void filledOptionsBox();
 

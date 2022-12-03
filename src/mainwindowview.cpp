@@ -4,6 +4,8 @@
 #include "installedpackagescolumn.h"
 #include "statisticscommandparser.h"
 #include "updatedpackagescolumn.h"
+#include "installcommandparser.h"
+#include "packagesearch.h"
 #include "statistics.h"
 #include "process.h"
 #include "packagedownloader.h"
@@ -308,7 +310,7 @@ void MainWindowView::showStatisticsWindow()
 
 void MainWindowView::downloadPackage()
 {
-    QPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString()));
+    QSharedPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString()), &QObject::deleteLater);
     QPointer<DownloaderWindow> automatic_installation(new AutomaticInstallation(download_command_parser));
     QPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser));
     QPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser));
@@ -316,6 +318,17 @@ void MainWindowView::downloadPackage()
 
     automatic_installation->setNext(package_input)->setNext(paths_choice_input)->setNext(repos_choice_input);
     automatic_installation->handle();
+}
+
+
+void MainWindowView::searchPackage()
+{
+    QSharedPointer<InstallCommandParser> search_command_parser(new InstallCommandParser(), &QObject::deleteLater);
+    QPointer<SearchWindow> package_input(new PackageSearchInput(search_command_parser));
+    QPointer<SearchWindow> search_results_list(new SearchResultsList(search_command_parser, process));
+
+    package_input->setNext(search_results_list);
+    package_input->handle();
 }
 
 

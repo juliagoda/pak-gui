@@ -54,8 +54,8 @@ private:
     QPointer<QAction> update_action;
     QPointer<QAction> refresh_action;
     QPointer<QAction> download_action;
+    QPointer<QAction> search_action;
     QPointer<QAction> print_statistics_action;
-    QPointer<QAction> print_vcs_packages_action;
     QPointer<QAction> update_all_action;
     QPointer<QAction> update_mirrors_action;
     QPointer<QAction> clean_action;

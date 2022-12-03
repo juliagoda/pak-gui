@@ -14,17 +14,17 @@
       <Action name="clean"/>
       <Action name="refresh"/>
       <Action name="download"/>
+      <Action name="search"/>
     </Menu>
     <Menu name="Print">
       <text>P&amp;rint</text>
       <Action name="statistics"/>
-      <Action name="installedVcsPackages"/>
     </Menu>
 </MenuBar>
 
 <ToolBar name="mainToolBar" noMerge="1">
     <text>Main Toolbar</text>
-    <Action name="update"/>
+    <Action name="search"/>
     <Separator/>
     <Action name="refresh"/>
     <Separator/>

@@ -42,9 +42,13 @@ MainWindow::MainWindow()
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
     connect(this, &MainWindow::widgetsChanged, main_window_view, &MainWindowView::updateWidgets);
     connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
+    connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, update_mirrors_action, &QAction::setEnabled);
 
     setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
     connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
+
+    setAction(search_action, i18n("&Search"), QString("search"), QKeySequence(Qt::CTRL, Qt::Key_S));
+    connect(search_action, &QAction::triggered, main_window_view, &MainWindowView::searchPackage);
 
     setAction(update_all_action, i18n("&Update all packages"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A));
     connect(update_all_action, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
@@ -55,11 +59,8 @@ MainWindow::MainWindow()
     setAction(clean_action, i18n("&Clean"), QString("clean"), QKeySequence(Qt::CTRL, Qt::Key_C));
     connect(clean_action, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
 
-    setAction(print_statistics_action, i18n("&Statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S));
+    setAction(print_statistics_action, i18n("&Statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_T));
     connect(print_statistics_action, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
-
-    setAction(print_vcs_packages_action, i18n("&Installed vcs packages"), QString("installedVcsPackages"), QKeySequence(Qt::CTRL, Qt::Key_P));
-    connect(print_vcs_packages_action, &QAction::triggered, this, [this]() { process->run(Process::Task::PrintVCSPackages); }, Qt::AutoConnection);
 
     disableActions();
 
@@ -86,7 +87,7 @@ void MainWindow::disableActions()
     update_mirrors_action->setDisabled(true);
     clean_action->setDisabled(true);
     print_statistics_action->setDisabled(true);
-    print_vcs_packages_action->setDisabled(true);
+    search_action->setDisabled(true);
 }
 
 
@@ -99,7 +100,7 @@ void MainWindow::disableOnlineActions()
     refresh_action->setDisabled(false);
     clean_action->setDisabled(false);
     print_statistics_action->setDisabled(false);
-    print_vcs_packages_action->setDisabled(false);
+    search_action->setDisabled(true);
 }
 
 
@@ -197,7 +198,7 @@ void MainWindow::enableActions()
     update_mirrors_action->setDisabled(false);
     clean_action->setDisabled(false);
     print_statistics_action->setDisabled(false);
-    print_vcs_packages_action->setDisabled(false);
+    search_action->setDisabled(false);
 }
 
 

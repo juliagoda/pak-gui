@@ -19,7 +19,7 @@ private Q_SLOTS:
     void toggleOkButton(const QString& new_package_name);
 
 signals:
-    bool packageNameInserted(const QString& new_name);
+    void packageNameInserted(const QString& new_name);
 
 private:
     Ui::PackageInputWindow m_ui;

@@ -26,6 +26,8 @@ target_sources(pak-gui PRIVATE
     searchallcommandparser.h
     downloadcommandparser.cpp
     downloadcommandparser.h
+    installcommandparser.cpp
+    installcommandparser.h
     statistics.cpp
     statistics.h
     process.cpp
@@ -34,6 +36,8 @@ target_sources(pak-gui PRIVATE
     packageinputwindow.h
     packagedownloader.cpp
     packagedownloader.h
+    packagesearch.cpp
+    packagesearch.h
     choicewindow.cpp
     choicewindow.h
     outputfilter.cpp

@@ -20,6 +20,7 @@ ChoiceWindow::ChoiceWindow(const QString& new_title,
     connect(this, &ChoiceWindow::filledOptionsBox, [this](){ spinning_animation->stopSmallOnWidget(m_ui.spinning_animation_label); });
     connect(m_ui.choice_combo_box, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ChoiceWindow::toggleOkButton);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentIndex()); }, Qt::AutoConnection);
+    connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentText()); }, Qt::AutoConnection);
 }
 
 
@@ -40,6 +41,15 @@ void ChoiceWindow::fillComboBox(QString& output)
     m_ui.choice_combo_box->update();
     if (m_ui.choice_combo_box->count() > 0)
         emit filledOptionsBox();
+}
+
+
+void ChoiceWindow::fillComboBox(QStringList output_list)
+{
+    m_ui.choice_combo_box->clear();
+    m_ui.choice_combo_box->addItems(output_list);
+    m_ui.choice_combo_box->update();
+    emit filledOptionsBox();
 }
 
 

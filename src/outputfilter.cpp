@@ -4,6 +4,7 @@
 #include <QRegExp>
 #include <QtConcurrent/QtConcurrent>
 
+
 QList<QRegExp> OutputFilter::filtersList = initializeList();
 
 
@@ -14,6 +15,26 @@ QString OutputFilter::filteredOutput(QString& text_output)
         text_output.remove(*filters_it);
 
     return text_output;
+}
+
+
+QString OutputFilter::getSourceFromDoubleColon(QString& output_line)
+{
+    return output_line.remove(QString("::")).trimmed();
+}
+
+
+QString OutputFilter::getSourceFromSearchLine(QString& output_line)
+{
+    QRegularExpression regex(".*\\[(.*)\\].*");
+    return regex.match(output_line).captured(1);
+}
+
+
+QString OutputFilter::getPackageFromSearchLine(QString& output_line)
+{
+    QRegularExpression regex("^(\\S*)\\s*\\S*");
+    return regex.match(output_line).captured(1);
 }
 
 
@@ -49,6 +70,18 @@ QList<QRegExp> OutputFilter::initializeList()
 bool OutputFilter::startsFromNumber(const QString& output_line)
 {
     return output_line.contains(QRegExp("^\\s*[0-9]+\\.?\\s+"));
+}
+
+
+bool OutputFilter::startsFromDoubleColon(const QString& output_line)
+{
+    return output_line.startsWith(QString(":: "));
+}
+
+
+bool OutputFilter::isPackageLine(const QString &output_line)
+{
+    return output_line.contains(QRegExp("^.*/\\S+\\s+\\S+"));
 }
 
 

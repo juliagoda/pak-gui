@@ -20,6 +20,9 @@ public:
         UpdateInstalledPackages,
         Uninstall,
         Install,
+        InstallAfterSearchRepo,
+        InstallAfterSearchAUR,
+        InstallAfterSearchPOLAUR,
         Update
     };
     Q_ENUM(Task)

@@ -66,11 +66,11 @@ bool Process::askQuestion(Task new_task,
 void Process::startProcess(Task new_task)
 {
     Logger::logger()->logInfo(QStringLiteral("Started task \"%1\"").arg(QVariant::fromValue(new_task).toString()));
-    bool is_interactive = commands_map.value(new_task).join(" ").contains("-t");
+    bool contains_pacman = commands_map.value(new_task).join(" ").contains("pacman");
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
     pak_s->setProcessChannelMode(QProcess::MergedChannels);
     connectSignals(pak_s, new_task);
-    pak_s.data()->start(is_interactive ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
+    pak_s.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
     Logger::logger()->writeSectionToFile(task_to_write_operation_map.value(new_task));
     QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [=]() {
         while (pak_s.data()->canReadLine())
@@ -106,6 +106,9 @@ void Process::updateMap(QStringList& checked_packages)
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Uninstall, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -R --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Install, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -S --noconfirm " + checked_packages.join(" ") + "\"");
+    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << "pak -S " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << "pak -SA " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << "echo $(zenity --password --title=\"Enter sudo password\") | pak -SP " + checked_packages.join(" ")); // try with kdialog (needs sudo, not su passwd)
 }
 
 
@@ -114,6 +117,9 @@ void Process::prepareMapForNextTask()
     commands_map.remove(Task::Update);
     commands_map.remove(Task::Uninstall);
     commands_map.remove(Task::Install);
+    commands_map.remove(Task::InstallAfterSearchRepo);
+    commands_map.remove(Task::InstallAfterSearchAUR);
+    commands_map.remove(Task::InstallAfterSearchPOLAUR);
 }
 
 
