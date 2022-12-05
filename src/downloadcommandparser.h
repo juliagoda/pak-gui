@@ -11,7 +11,7 @@ class DownloadCommandParser : public CommandParser
 {
     Q_OBJECT
 public:
-    DownloadCommandParser(const QString& new_package_name);
+    DownloadCommandParser(const QString& new_package_name, QWidget* new_parent);
 
     void updatePackageName(const QString& new_package_name);
     void updateParameter(const QString& new_parameter);
@@ -34,5 +34,6 @@ private:
     QString command;
     QString result_output;
     QStringList error_lines;
+    QWidget* parent;
 };
 

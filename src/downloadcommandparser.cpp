@@ -15,12 +15,14 @@
 #include <QtConcurrent/QtConcurrent>
 
 
-DownloadCommandParser::DownloadCommandParser(const QString& new_package_name) :
+DownloadCommandParser::DownloadCommandParser(const QString& new_package_name,
+                                             QWidget* new_parent) :
     pak_download(new QProcess),
     package_name(new_package_name),
     command(QString("pak -G")),
     result_output(),
-    error_lines()
+    error_lines(),
+    parent(new_parent)
 {
     pak_download->setProcessChannelMode(QProcess::MergedChannels);
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
@@ -94,7 +96,7 @@ bool DownloadCommandParser::validate()
 {
     if (package_name.isEmpty())
     {
-        QMessageBox::warning(new QWidget, QObject::tr("Package Name"),
+        QMessageBox::warning(parent, QObject::tr("Package Name"),
                              QObject::tr("Package name cannot be empty"),
                              QMessageBox::Ok);
         Logger::logger()->logWarning("Given package name for download is empty!");
@@ -116,11 +118,11 @@ void DownloadCommandParser::validateFinishedOutput(int exit_code)
    Q_UNUSED(exit_code)
    if (!result_output.contains("PKGBUILD has been downloaded to"))
    {
-       QMessageBox::warning(new QWidget, i18n("Package download failure"), i18n("Package couldn't be downloaded:\n\nError lines:\n%1", error_lines.join("\n")));
+       QMessageBox::warning(parent, i18n("Package download failure"), i18n("Package couldn't be downloaded:\n\nError lines:\n%1", error_lines.join("\n")));
        Logger::logger()->logWarning(QStringLiteral("Package couldn't be downloaded:\n\nError lines:\n %1").arg(error_lines.join("\n")));
        return;
    }
 
-   QMessageBox::information(new QWidget, i18n("Package download"), i18n("Package %1 has been downloaded %2", package_name, QString::compare(command, "pak -GB") == 0 ? i18n("and installed") : ""));
+   QMessageBox::information(parent, i18n("Package download"), i18n("Package %1 has been downloaded %2", package_name, QString::compare(command, "pak -GB") == 0 ? i18n("and installed") : ""));
    Logger::logger()->logWarning(QStringLiteral("Package %1 has been downloaded %2").arg(package_name).arg(QString::compare(command, "pak -GB") == 0 ? i18n("and installed") : ""));
 }

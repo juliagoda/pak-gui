@@ -12,7 +12,7 @@ class AvailablePackagesColumn : public PackagesColumn
     Q_OBJECT
 
 public:
-    AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit);
+    AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
     QStringList collectCheckedPackages() override;
     void fill() override;
 

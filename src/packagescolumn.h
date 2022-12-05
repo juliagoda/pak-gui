@@ -14,12 +14,13 @@ class PackagesColumn : public QObject
     Q_OBJECT
 
 public:
-    PackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
+    PackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent) :
         QObject(),
         checked_packages(0),
         list_widget(new_list_widget),
         search_lineedit(new_search_lineedit),
-        packages_sorter(new Sorter(list_widget), &QObject::deleteLater)
+        packages_sorter(new Sorter(list_widget), &QObject::deleteLater),
+        parent(new_parent)
     {
 
     };
@@ -42,7 +43,7 @@ public Q_SLOTS:
     {
         if (exit_status == QProcess::ExitStatus::CrashExit)
         {
-            QMessageBox::warning(new QWidget, warning_title,
+            QMessageBox::warning(parent, warning_title,
                                  tr("Packages couln't be %1\n"
                                     "Do you want to see logs?").arg(action_verb),
                                  QMessageBox::Yes | QMessageBox::Cancel);
@@ -81,5 +82,6 @@ protected:
     QListWidget* list_widget;
     QLineEdit* search_lineedit;
     QSharedPointer<Sorter> packages_sorter;
+    QWidget* parent;
 };
 

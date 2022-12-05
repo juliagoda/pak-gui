@@ -7,7 +7,7 @@ class ActionsAccessChecker : public QObject
 {
     Q_OBJECT
 public:
-    static ActionsAccessChecker* actionsAccessChecker();
+    static ActionsAccessChecker* actionsAccessChecker(QWidget* new_parent);
     ~ActionsAccessChecker();
     ActionsAccessChecker(ActionsAccessChecker& instance) = delete;
     void operator=(const ActionsAccessChecker& instance) = delete;
@@ -31,7 +31,7 @@ signals:
     void requiredPackagesNotFound();
 
 private:
-    explicit ActionsAccessChecker();
+    explicit ActionsAccessChecker(QWidget* new_parent);
 
     QStringList getNotInstalledPackagesList();
     void findRequiredPackages();
@@ -44,6 +44,7 @@ private:
     bool is_reflector_installed;
     bool is_git_installed;
     bool is_online;
+    QWidget* parent;
 
     static ActionsAccessChecker* instance;
     static QMutex mutex;

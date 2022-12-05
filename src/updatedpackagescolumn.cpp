@@ -1,4 +1,5 @@
 #include "updatedpackagescolumn.h"
+
 #include "logger.h"
 #include "checkpackage.h"
 #include "checkcommandparser.h"
@@ -8,8 +9,8 @@
 #include <QtConcurrent/QtConcurrent>
 
 
-UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit) :
-    PackagesColumn(new_list_widget, new_search_lineedit),
+UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent) :
+    PackagesColumn(new_list_widget, new_search_lineedit, new_parent),
     current_packages_count(0)
 {
     QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),

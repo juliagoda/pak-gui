@@ -19,8 +19,8 @@
 
 MainWindow::MainWindow()
     : KXmlGuiWindow(),
-      process(QSharedPointer<Process>(new Process)),
-      actions_access_checker(ActionsAccessChecker::actionsAccessChecker()),
+      actions_access_checker(ActionsAccessChecker::actionsAccessChecker(this)),
+      process(QSharedPointer<Process>(new Process(actions_access_checker, this))),
       system_tray_icon(nullptr)
 {
     main_window_view = new MainWindowView(process, actions_access_checker, this);

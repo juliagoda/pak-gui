@@ -5,6 +5,9 @@
 #include <QString>
 #include <QMap>
 #include <QStringList>
+#include <QSharedPointer>
+
+class ActionsAccessChecker;
 
 class Process : public QObject
 {
@@ -27,9 +30,12 @@ public:
     };
     Q_ENUM(Task)
 
-    Process();
+    Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent);
     void run(Task new_task,
              QStringList new_checked_packages = QStringList());
+
+private Q_SLOTS:
+    void updateCleanCommand(bool is_auracle_installed);
 
 signals:
     void finished(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
@@ -47,5 +53,6 @@ private:
 
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;
+    QWidget* parent;
 };
 

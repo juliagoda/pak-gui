@@ -52,15 +52,17 @@ class AutomaticInstallation : public PackageDownloader
     Q_OBJECT
 
 public:
-    AutomaticInstallation(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
+    AutomaticInstallation(QSharedPointer<DownloadCommandParser>& new_download_command_parser,
+                          QWidget* new_parent) :
         PackageDownloader(),
-        download_command_parser(new_download_command_parser)
+        download_command_parser(new_download_command_parser),
+        parent(new_parent)
     {}
 
     void handle() override
     {
         bool answer = true;
-        int answer_gui = QMessageBox::information(new QWidget, tr("Downloader's option"),
+        int answer_gui = QMessageBox::information(parent, tr("Downloader's option"),
                                                   tr("Do you want to install chosen package automatically after download?"),
                                                   QMessageBox::Yes | QMessageBox::No);
 
@@ -73,6 +75,7 @@ public:
 
 private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
+    QWidget* parent;
 };
 
 

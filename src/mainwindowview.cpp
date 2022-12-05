@@ -49,9 +49,9 @@ MainWindowView::MainWindowView(QSharedPointer<Process> new_process,
     PreviewDesign::update(m_ui.text_browser_tab_install);
     PreviewDesign::update(m_ui.text_browser_tab_update);
 
-    available_packages_column = QSharedPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit), &QObject::deleteLater);
-    installed_packages_column = QSharedPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit), &QObject::deleteLater);
-    updated_packages_column = QSharedPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit), &QObject::deleteLater);
+    available_packages_column = QSharedPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit, this), &QObject::deleteLater);
+    installed_packages_column = QSharedPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit, this), &QObject::deleteLater);
+    updated_packages_column = QSharedPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit, this), &QObject::deleteLater);
 
     emit initStarted();
     Logger::logger()->logInfo("Initialization started");
@@ -310,8 +310,8 @@ void MainWindowView::showStatisticsWindow()
 
 void MainWindowView::downloadPackage()
 {
-    QSharedPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString()), &QObject::deleteLater);
-    QPointer<DownloaderWindow> automatic_installation(new AutomaticInstallation(download_command_parser));
+    QSharedPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString(), this), &QObject::deleteLater);
+    QPointer<DownloaderWindow> automatic_installation(new AutomaticInstallation(download_command_parser, this));
     QPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser));
     QPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser));
     QPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser));

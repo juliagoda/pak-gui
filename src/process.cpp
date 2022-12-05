@@ -1,5 +1,7 @@
 #include "process.h"
+
 #include "outputfilter.h"
+#include "actionsaccesschecker.h"
 #include "logger.h"
 #include "defs.h"
 
@@ -11,10 +13,13 @@
 #include <utility>
 
 
-Process::Process() :
+Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
     messages_map(),
-    commands_map()
+    commands_map(),
+    parent(new_parent)
 {
+    connect(new_actions_access_checker.get(), &ActionsAccessChecker::auracleAccessChanged, this, &Process::updateCleanCommand);
+
     messages_map.insert(Task::Clean, {i18n("Clean"), i18n("clean packages after installation?")});
     messages_map.insert(Task::MirrorsUpdate, {i18n("Update mirrors"), i18n("update mirrors?")});
     messages_map.insert(Task::UpdateAll, {i18n("Update all"), i18n("update all packages?")});
@@ -46,10 +51,22 @@ void Process::run(Task new_task,
 }
 
 
+void Process::updateCleanCommand(bool is_auracle_installed)
+{
+    QString basic_command = ASKPASS_COMMAND + " && echo -e \"y\" | pak -Sc";
+    commands_map.remove(Task::Clean);
+
+    if (is_auracle_installed)
+        commands_map.insert(Task::Clean, QStringList() << "-c" << basic_command + " && echo -e \"y\" | pak -ScA");
+    else
+        commands_map.insert(Task::Clean, QStringList() << "-c" << basic_command);
+}
+
+
 bool Process::askQuestion(Task new_task,
                           QStringList new_checked_packages)
 {
-    int answer = QMessageBox::information(new QWidget, messages_map.value(new_task).first,
+    int answer = QMessageBox::information(parent, messages_map.value(new_task).first,
                                           questionForm(new_checked_packages, new_task),
                                           QMessageBox::Yes | QMessageBox::No);
 
@@ -88,7 +105,7 @@ void Process::connectSignals(QSharedPointer<QProcess>& process, Task new_task)
     QObject::connect(process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
         [=](QProcess::ProcessError process_error)
     {
-        QMessageBox::warning(new QWidget, messages_map.value(new_task).first, tr("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(process.data()->error()), QMessageBox::Ok);
+        QMessageBox::warning(parent, messages_map.value(new_task).first, tr("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(process.data()->error()), QMessageBox::Ok);
         Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString()).arg(QVariant::fromValue(process_error).toString()));
     });
 

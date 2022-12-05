@@ -60,7 +60,7 @@ private:
     QPointer<QAction> update_mirrors_action;
     QPointer<QAction> clean_action;
     QPointer<MainWindowView> main_window_view;
-    QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
+    QSharedPointer<Process> process;
     QScopedPointer<SystemTray> system_tray_icon;
 };
