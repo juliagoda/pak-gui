@@ -38,6 +38,7 @@ private:
     bool findPackage(const QString& package_name);
     void emitSignals();
 
+    QStringList required_packages;
     bool is_asp_installed;
     bool is_auracle_installed;
     bool is_reflector_installed;

@@ -16,6 +16,7 @@ constexpr int PACKAGE_SI_VERSION_LINE = 2;
 const QString PACMAN_EXEC_FILE = "pacman";
 const QString PACMAN_CONTRIB_EXEC_FILE = "checkupdates";
 const QString KDESU_EXEC_FILE = "kdesu";
+const QString KSSHASKPASS_EXEC_FILE = "ksshaskpass";
 const QString PAK_EXEC_FILE = "pak";
 const QString ASP_EXEC_FILE = "asp";
 const QString GIT_EXEC_FILE = "git";

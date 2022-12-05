@@ -29,6 +29,7 @@ option(RUN_TESTS "Allow tests for classes" OFF)
 find_package(pak REQUIRED)
 find_package(pacman-contrib REQUIRED)
 find_package(kdesu REQUIRED)
+find_package(ksshaskpass REQUIRED)
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets Charts)
 
 find_package(Git)

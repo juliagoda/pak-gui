@@ -14,12 +14,14 @@ QMutex ActionsAccessChecker::mutex;
 
 
 ActionsAccessChecker::ActionsAccessChecker() :
+    required_packages(),
     is_asp_installed(false),
     is_auracle_installed(false),
     is_reflector_installed(false),
     is_git_installed(false),
     is_online(true)
 {
+    required_packages << PAK_EXEC_FILE << PACMAN_EXEC_FILE << PACMAN_CONTRIB_EXEC_FILE << KDESU_EXEC_FILE << KSSHASKPASS_EXEC_FILE;
     Logger::logger()->logInfo(QStringLiteral("Environment variable PATH: %1").arg(QString(getenv("PATH"))));
 }
 
@@ -95,17 +97,12 @@ QStringList ActionsAccessChecker::getNotInstalledPackagesList()
 {
     QStringList not_installed_packages = QStringList();
 
-    if (!findPackage(PAK_EXEC_FILE))
-        not_installed_packages.append("pak");
-
-    if (!findPackage(PACMAN_EXEC_FILE))
-        not_installed_packages.append("pacman");
-
-    if (!findPackage(PACMAN_CONTRIB_EXEC_FILE))
-        not_installed_packages.append("pacman-contrib");
-
-    if (!findPackage(KDESU_EXEC_FILE))
-        not_installed_packages.append("kdesu");
+    QStringList::iterator it;
+    for(it = required_packages.begin(); it != required_packages.end(); it++)
+    {
+        if (!findPackage(*it))
+            not_installed_packages.append(*it);
+    }
 
     return not_installed_packages;
 }
