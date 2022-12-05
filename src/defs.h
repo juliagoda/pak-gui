@@ -1,11 +1,9 @@
 #pragma once
 
-#include "pakGuiSettings.h"
 #include "process.h"
 #include "logger.h"
 
 #include <QString>
-#include <QDir>
 #include <QMap>
 
 constexpr int PACKAGE_QI_NAME_LINE = 0;
@@ -23,6 +21,8 @@ const QString ASP_EXEC_FILE = "asp";
 const QString GIT_EXEC_FILE = "git";
 const QString REFLECTOR_EXEC_FILE = "reflector";
 const QString AURACLE_EXEC_FILE = "auracle-git";
+
+const QString ASKPASS_COMMAND = "export SUDO_ASKPASS=/usr/bin/ksshaskpass && sudo --askpass true";
 
 const QMap<Process::Task, Logger::WriteOperations> task_to_write_operation_map{
     {Process::Task::Clean, Logger::WriteOperations::Clean},

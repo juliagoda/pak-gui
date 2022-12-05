@@ -24,11 +24,11 @@ Process::Process() :
     messages_map.insert(Task::Install, {i18n("Installation"), i18n("install packages?")});
     messages_map.insert(Task::Update, {i18n("Update"), i18n("update package(s)?")});
 
-    commands_map.insert(Task::Clean, QStringList() << "-c" << "echo -e \"y\" | pak -Sc");
-    commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << "pak -m");
-    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << "echo -e \"y\ny\" | pak -Su | echo $(zenity --password --title=\"Enter sudo password\") ");
-    commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << "pak --vcs");
-    commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << "pak -Sy");
+    commands_map.insert(Task::Clean, QStringList() << "-c" << ASKPASS_COMMAND + " && echo -e \"y\" | pak -Sc");
+    commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -m");
+    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << ASKPASS_COMMAND + " && echo -e \"y\ny\" | pak -Su");
+    commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << ASKPASS_COMMAND + " && pak --vcs");
+    commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -Sy");
 }
 
 
@@ -66,9 +66,9 @@ bool Process::askQuestion(Task new_task,
 void Process::startProcess(Task new_task)
 {
     Logger::logger()->logInfo(QStringLiteral("Started task \"%1\"").arg(QVariant::fromValue(new_task).toString()));
-    bool contains_pacman = commands_map.value(new_task).join(" ").contains("pacman");
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
     pak_s->setProcessChannelMode(QProcess::MergedChannels);
+    bool contains_pacman = commands_map.value(new_task).join(" ").contains("pacman");
     connectSignals(pak_s, new_task);
     pak_s.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
     Logger::logger()->writeSectionToFile(task_to_write_operation_map.value(new_task));
@@ -106,9 +106,9 @@ void Process::updateMap(QStringList& checked_packages)
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Uninstall, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -R --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Install, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -S --noconfirm " + checked_packages.join(" ") + "\"");
-    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << "pak -S " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << "pak -SA " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << "echo $(zenity --password --title=\"Enter sudo password\") | pak -SP " + checked_packages.join(" ")); // try with kdialog (needs sudo, not su passwd)
+    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -S " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -SA " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -SP " + checked_packages.join(" "));
 }
 
 

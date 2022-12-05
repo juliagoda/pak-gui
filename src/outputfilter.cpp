@@ -62,6 +62,7 @@ QList<QRegExp> OutputFilter::initializeList()
     filters.append(QRegExp("\\[?25l"));
     filters.append(QRegExp("\\[\\?"));
     filters.append(QRegExp("\\[[0-9]{1}F "));
+    filters.append(QRegExp("\\[1E"));
 
     return filters;
 }

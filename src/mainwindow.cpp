@@ -42,7 +42,8 @@ MainWindow::MainWindow()
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
     connect(this, &MainWindow::widgetsChanged, main_window_view, &MainWindowView::updateWidgets);
     connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
-    connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, update_mirrors_action, &QAction::setEnabled);
+    connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed){
+        update_mirrors_action->setEnabled(is_installed); });
 
     setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
     connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
