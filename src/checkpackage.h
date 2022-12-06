@@ -5,10 +5,9 @@
 class CheckPackage : public Package
 {
 public:
-    CheckPackage(QString& package_content);
+    CheckPackage(const QString& package_content, Package::Source new_source);
     CheckPackage(CheckPackage& check_package);
 
 private:
-    virtual void updateData(QString &packageContent, int name_line, int version_line) override;
+    virtual void updateData(QString& packageContent, int name_line, int version_line) override;
 };
-

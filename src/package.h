@@ -1,5 +1,6 @@
 #pragma once
 
+#include "qlistwidget.h"
 #include "settings.h"
 
 #include <QListWidgetItem>
@@ -10,10 +11,19 @@
 class Package : public QListWidgetItem
 {
 public:
-    Package(QString& package_content) :
+    enum class Source
+    {
+        Repo = 0,
+        AUR,
+        POLAUR,
+        Unknown
+    };
+
+    Package(const QString& package_content, Source new_source) :
         QListWidgetItem(),
         name(),
-        version()
+        version(),
+        source(new_source)
     {
         Q_UNUSED(package_content)
     }
@@ -23,10 +33,12 @@ public:
     {
         name = package.name;
         version = package.version;
+        source = package.source;
     }
 
     virtual const QString& getName() { return name; };
     virtual const QString& getVersion() const { return version; };
+    virtual Package::Source getSource() const { return source; }
 
 protected:
     virtual void updateData(QString& packageContent, int name_line, int version_line)
@@ -62,7 +74,9 @@ protected:
 
     virtual void setName(const QString& new_name) { name = new_name; };
     virtual void setVersion(const QString& new_version) { version = new_version; };
+    virtual void setSource(Source new_source) { source = new_source; }
 
     QString name;
     QString version;
+    Package::Source source;
 };

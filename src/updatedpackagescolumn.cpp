@@ -20,44 +20,28 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLine
 }
 
 
-QStringList UpdatedPackagesColumn::getPackagesList()
+QHash<QString, Package::Source> UpdatedPackagesColumn::getPackagesList()
 {
     QSharedPointer<CheckCommandParser> command_parser(new CheckCommandParser);
     connect(command_parser.get(), &CheckCommandParser::startOtherThreads, [this]() { emit startOtherThreads(); });
-    return command_parser.data()->retrieveInfo();
+    return command_parser.data()->retrieveInfoMap();
 }
 
-
-QStringList UpdatedPackagesColumn::collectCheckedPackages()
-{
-    QStringList checked_packages = QStringList();
-    for(int i = 0; i < list_widget->count(); ++i)
-    {
-        CheckPackage* item = dynamic_cast<CheckPackage*>(list_widget->item(i));
-
-        if (item && item->checkState() == Qt::Checked)
-        {
-            Logger::logger()->logDebug(QStringLiteral("Checked package to update: %1").arg(item->getName().trimmed()));
-            checked_packages.append(item->getName().trimmed());
-        }
-    }
-
-    return checked_packages;
-}
-
+// TODO - collect during checking - show warning if there is any package from AUR/POLAUR but not all of them are checked (repo+aur+polaur)
+// cause is not possible with pak to update single packages from AUR/POLAUR
 
 void UpdatedPackagesColumn::fill()
 {
     packages_sorter->resetOriginalList();
-    QStringList pak_packages = getPackagesList();
+    auto pak_packages = getPackagesList();
     updatePackagesCount(pak_packages.count());
-    QStringList::iterator it = pak_packages.begin();
+    decltype(pak_packages)::iterator it = pak_packages.begin();
     int i = 0;
 
     for(;it != pak_packages.end(); it++)
     {
-        list_widget->insertItem(i, new CheckPackage(*it));
-        packages_sorter->updateOriginalList(i, new CheckPackage(*it));
+        list_widget->insertItem(i, new CheckPackage(it.key(), it.value()));
+        packages_sorter->updateOriginalList(i, new CheckPackage(it.key(), it.value()));
         i++;
     }
 

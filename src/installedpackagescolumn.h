@@ -11,11 +11,10 @@ class InstalledPackagesColumn : public PackagesColumn
 
 public:
     InstalledPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
-    QStringList collectCheckedPackages() override;
     void fill() override;
 
 protected:
-    QStringList getPackagesList() override;
+    QStringList getPackagesList();
 };
 
 

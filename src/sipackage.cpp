@@ -3,12 +3,12 @@
 
 
 SiPackage::SiPackage(QString& package_content) :
-    Package(package_content),
+    Package(package_content, Package::Source::Unknown),
     repo()
 {
     updateData(package_content, PACKAGE_SI_NAME_LINE, PACKAGE_SI_VERSION_LINE);
     setText(getName().trimmed() + "-" + getVersion().trimmed() + " [" + getRepo().trimmed() + "]");
-    setFlags(flags() | Qt::ItemIsUserCheckable);
+    setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
 }
 
@@ -21,8 +21,8 @@ SiPackage::SiPackage(SiPackage& si_package) :
     setVersion(si_package.getVersion());
     setRepo(si_package.getRepo());
     setText(getName().trimmed() + "-" + getVersion().trimmed() + " [" + getRepo().trimmed() + "]");
-    setFlags(flags() | Qt::ItemIsUserCheckable);
-    setCheckState(Qt::Unchecked);
+    setFlags(si_package.flags());
+    setCheckState(si_package.checkState());
     setToolTip(si_package.toolTip());
 }
 

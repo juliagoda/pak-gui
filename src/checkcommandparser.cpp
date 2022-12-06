@@ -1,4 +1,5 @@
 #include "checkcommandparser.h"
+
 #include "outputfilter.h"
 #include "logger.h"
 
@@ -8,13 +9,17 @@
 #include <QFile>
 #include <QTextStream>
 
-CheckCommandParser::CheckCommandParser()
-{
 
+CheckCommandParser::CheckCommandParser() :
+    line_to_source_map()
+{
+     line_to_source_map.insert(QString("System"), Package::Source::Repo);
+     line_to_source_map.insert(QString("AUR"), Package::Source::AUR);
+     line_to_source_map.insert(QString("POLAUR"), Package::Source::POLAUR);
 }
 
 
-QStringList CheckCommandParser::retrieveInfo()
+QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
 {
     QScopedPointer<QProcess> pacman_qi(new QProcess);
     pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
@@ -25,19 +30,23 @@ QStringList CheckCommandParser::retrieveInfo()
 
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
 
-    QStringList system_packages = QStringList();
+    QHash<QString, Package::Source> system_packages{};
     QStringList output_list = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
-    QStringListIterator it(output_list);
-
+    QString current_source_line = QString();
     emit startOtherThreads();
+
+    QStringListIterator it(output_list);
 
     while (it.hasNext())
     {
         QString line = it.next();
+        QString filtered_line = OutputFilter::filteredOutput(line).simplified();
+
+        if (OutputFilter::startsFromDoubleColon(filtered_line))
+            current_source_line = OutputFilter::getSourceFromDoubleColon(filtered_line);
+
         if (line.contains("=>"))
-        {
-           system_packages.append(OutputFilter::filteredOutput(line).simplified());
-        }
+           system_packages.insert(filtered_line, line_to_source_map.value(current_source_line));
     }
 
     return system_packages;

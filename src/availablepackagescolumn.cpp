@@ -29,24 +29,6 @@ QStringList AvailablePackagesColumn::getPackagesList()
 }
 
 
-QStringList AvailablePackagesColumn::collectCheckedPackages()
-{
-    QStringList checked_packages = QStringList();
-    for(int i = 0; i < list_widget->count(); ++i)
-    {
-        SiPackage* item = dynamic_cast<SiPackage*>(list_widget->item(i));
-
-        if (item && item->checkState() == Qt::Checked)
-        {
-            Logger::logger()->logDebug(QStringLiteral("Checked package to install: %1").arg(item->getName()));
-            checked_packages.append(item->getName());
-        }
-    }
-
-    return checked_packages;
-}
-
-
 void AvailablePackagesColumn::fill()
 {
     packages_sorter->resetOriginalList();

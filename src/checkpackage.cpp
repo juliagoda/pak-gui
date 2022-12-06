@@ -3,12 +3,13 @@
 #include <QRegularExpression>
 
 
-CheckPackage::CheckPackage(QString& package_content) :
-    Package(package_content)
+CheckPackage::CheckPackage(const QString& new_package_content, Package::Source new_source) :
+    Package(new_package_content, new_source)
 {
+    QString package_content = new_package_content;
     updateData(package_content, 0, 0);
     setText(getName() + "-" + getVersion());
-    setFlags(flags() | Qt::ItemIsUserCheckable);
+    setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
 }
 
@@ -19,8 +20,8 @@ CheckPackage::CheckPackage(CheckPackage& check_package) :
    setName(check_package.getName());
    setVersion(check_package.getVersion());
    setText(getName().trimmed() + "-" + getVersion().trimmed());
-   setFlags(flags() | Qt::ItemIsUserCheckable);
-   setCheckState(Qt::Unchecked);
+   setFlags(check_package.flags());
+   setCheckState(check_package.checkState());
 }
 
 

@@ -5,11 +5,11 @@
 
 
 QiPackage::QiPackage(QString& package_content) :
-    Package(package_content)
+    Package(package_content, Package::Source::Unknown)
 {
     updateData(package_content, PACKAGE_QI_NAME_LINE, PACKAGE_QI_VERSION_LINE);
     setText(getName().trimmed() + "-" + getVersion().trimmed());
-    setFlags(flags() | Qt::ItemIsUserCheckable);
+    setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
 }
 
@@ -20,7 +20,7 @@ QiPackage::QiPackage(QiPackage& qi_package) :
     setName(qi_package.getName());
     setVersion(qi_package.getVersion());
     setText(getName().trimmed() + "-" + getVersion().trimmed());
-    setFlags(flags() | Qt::ItemIsUserCheckable);
-    setCheckState(Qt::Unchecked);
+    setFlags(qi_package.flags());
+    setCheckState(qi_package.checkState());
     setToolTip(qi_package.toolTip());
 }

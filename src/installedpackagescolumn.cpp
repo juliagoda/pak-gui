@@ -26,24 +26,6 @@ QStringList InstalledPackagesColumn::getPackagesList()
 }
 
 
-QStringList InstalledPackagesColumn::collectCheckedPackages()
-{
-    QStringList checked_packages = QStringList();
-    for(int i = 0; i < list_widget->count(); ++i)
-    {
-        QiPackage* item = dynamic_cast<QiPackage*>(list_widget->item(i));
-
-        if (item && item->checkState() == Qt::Checked)
-        {
-            Logger::logger()->logDebug(QStringLiteral("Checked package to remove: %1").arg(item->getName()));
-            checked_packages.append(item->getName());
-        }
-    }
-
-    return checked_packages;
-}
-
-
 void InstalledPackagesColumn::fill()
 {
     packages_sorter->resetOriginalList();

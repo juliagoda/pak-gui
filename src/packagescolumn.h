@@ -3,11 +3,13 @@
 #include "qlineedit.h"
 #include "qobjectdefs.h"
 #include "sorter.h"
+#include "logger.h"
 
 #include <QListWidget>
 #include <QProcess>
 #include <QStringList>
 #include <QMessageBox>
+
 
 class PackagesColumn : public QObject
 {
@@ -20,12 +22,12 @@ public:
         list_widget(new_list_widget),
         search_lineedit(new_search_lineedit),
         packages_sorter(new Sorter(list_widget), &QObject::deleteLater),
-        parent(new_parent)
+        parent(new_parent),
+        checked_packages_list()
     {
-
+        QObject::connect(list_widget, &QListWidget::itemChanged, this, &PackagesColumn::countCheckedPackages);
     };
 
-    virtual QStringList collectCheckedPackages() { return QStringList(); };
     virtual void fill()
     {
 
@@ -37,10 +39,14 @@ public:
         list_widget->update();
     };
 
+    QStringList getCheckedPackagesList() const { return checked_packages_list; }
+
 public Q_SLOTS:
     virtual void update(int exit_code, QProcess::ExitStatus exit_status,
-                const QString& warning_title, const QString& action_verb)
+                        const QString& warning_title, const QString& action_verb)
     {
+        Q_UNUSED(exit_code)
+
         if (exit_status == QProcess::ExitStatus::CrashExit)
         {
             QMessageBox::warning(parent, warning_title,
@@ -62,26 +68,48 @@ public Q_SLOTS:
         list_widget->update();
     }
 
-    virtual void updateCheckedPackagesCounter(QListWidgetItem* package_item)
+    virtual void countCheckedPackages(QListWidgetItem* item)
     {
-        if (package_item->checkState() == Qt::Checked)
-            checked_packages++;
+        Package* package = dynamic_cast<Package*>(item);
+        if (package->checkState() == Qt::Checked)
+            addCheckedPackage(package);
         else
-            checked_packages--;
+            removeUncheckedPackage(package);
 
-        emit checkedPackagesCounterChanged(checked_packages > 0);
+        emit checkedPackagesCounterChanged(checked_packages_list.count() > 0);
     }
 
 signals:
     void checkedPackagesCounterChanged(bool has_checked_buttons);
 
 protected:
-    virtual QStringList getPackagesList() { return QStringList(); };
+    void addCheckedPackage(Package* package)
+    {
+        if (package->getSource() == Package::Source::AUR ||
+            package->getSource() == Package::Source::POLAUR)
+        {
+            checked_packages_list.prepend(package->getName());
+            Logger::logger()->logDebug(QStringLiteral("Added at the beginning of list package: %1").arg(package->getName()));
+        }
+        else
+        {
+            checked_packages_list.append(package->getName());
+            Logger::logger()->logDebug(QStringLiteral("Added at the end of list package: %1").arg(package->getName()));
+        }
+    }
+
+    void removeUncheckedPackage(Package* package)
+    {
+        int index = checked_packages_list.indexOf(package->getName());
+        checked_packages_list.removeAt(index);
+        Logger::logger()->logDebug(QStringLiteral("Removed package name from list: %1 - index: %2").arg(package->getName(), index));
+    }
 
     int checked_packages;
     QListWidget* list_widget;
     QLineEdit* search_lineedit;
     QSharedPointer<Sorter> packages_sorter;
     QWidget* parent;
+    QStringList checked_packages_list;
 };
 
