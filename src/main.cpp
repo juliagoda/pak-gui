@@ -63,8 +63,8 @@ int main(int argc, char **argv)
         !QDir().mkpath(config_path))
            Logger::logger()->logWarning(QStringLiteral("Path %1 couldn't be created!").arg(config_path));
 
-    QScopedPointer<MainWindow> window(new MainWindow);
-    QObject::connect(window.get(), &MainWindow::closeApp, &application, &QCoreApplication::quit);
+    QPointer<MainWindow> window = new MainWindow;
+    QObject::connect(window, &MainWindow::closeApp, &application, &QCoreApplication::quit);
     window->show();
 
     return application.exec();

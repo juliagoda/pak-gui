@@ -15,6 +15,9 @@ public:
     AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
     void fill() override;
 
+signals:
+    void startOtherThreads();
+
 protected:
     QStringList getPackagesList();
 };

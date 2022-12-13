@@ -21,7 +21,7 @@ SiPackage::SiPackage(SiPackage& si_package) :
     setName(si_package.getName());
     setVersion(si_package.getVersion());
     setRepo(si_package.getRepo());
-    setText(getName().trimmed() + "-" + getVersion().trimmed() + " [" + getRepo().trimmed() + "]");
+    setText(text());
     setFlags(si_package.flags());
     setCheckState(si_package.checkState());
     setToolTip(si_package.toolTip());

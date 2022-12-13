@@ -25,7 +25,7 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
     pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -C --noconfirm");
     pacman_qi->waitForStarted();
-    pacman_qi->waitForFinished(50000);
+    pacman_qi->waitForFinished(100000);
     QString output(pacman_qi->readAllStandardOutput());
 
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
@@ -33,17 +33,22 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
     QHash<QString, Package::Source> system_packages{};
     QStringList output_list = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
     QString current_source_line = QString();
-    emit startOtherThreads();
-
     QStringListIterator it(output_list);
 
     while (it.hasNext())
     {
         QString line = it.next();
         QString filtered_line = OutputFilter::filteredOutput(line).simplified();
+        bool startsFromDoubleColon = OutputFilter::startsFromDoubleColon(filtered_line);
 
-        if (OutputFilter::startsFromDoubleColon(filtered_line))
+        if (startsFromDoubleColon)
             current_source_line = OutputFilter::getSourceFromDoubleColon(filtered_line);
+
+        if (startsFromDoubleColon && QString::compare(current_source_line, "Unmerged pacnew/pacsave files") == 0)
+        {
+            emit pacman_qi.data()->finished(0, QProcess::ExitStatus::NormalExit);
+            break;
+        }
 
         if (line.contains("=>"))
            system_packages.insert(filtered_line, line_to_source_map.value(current_source_line));

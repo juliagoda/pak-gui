@@ -15,9 +15,6 @@ public:
     QStringList retrieveInfo() override { return QStringList(); };
     QHash<QString, Package::Source> retrieveInfoMap();
 
-signals:
-    void startOtherThreads();
-
 private:
     QHash<QString, Package::Source> line_to_source_map;
 };

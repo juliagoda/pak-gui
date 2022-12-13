@@ -24,7 +24,6 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLine
 QHash<QString, Package::Source> UpdatedPackagesColumn::getPackagesList()
 {
     QSharedPointer<CheckCommandParser> command_parser(new CheckCommandParser);
-    connect(command_parser.get(), &CheckCommandParser::startOtherThreads, [this]() { emit startOtherThreads(); });
     return command_parser.data()->retrieveInfoMap();
 }
 

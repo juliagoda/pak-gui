@@ -23,7 +23,6 @@ protected:
     QHash<QString, Package::Source> getPackagesList();
 
 signals:
-    void startOtherThreads();
     void currentPackagesCountChanged(int new_current_packages_count);
     void chosenUpdateAll();
     void chosenUncheckSidePackages();

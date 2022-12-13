@@ -104,19 +104,17 @@ void MainWindowView::init()
 
     QObject::connect(available_packages_thread, &QThread::started, [this]() {  available_packages_column->fill(); emit availablePackagesFillEnded(); });
     QObject::connect(installed_packages_thread, &QThread::started, [this]() { installed_packages_column->fill(); emit installedPackagesFillEnded(); });
-    QObject::connect(updated_packages_column.get(), &UpdatedPackagesColumn::startOtherThreads, [this]()
+    QObject::connect(available_packages_column.get(), &AvailablePackagesColumn::startOtherThreads, [this]()
     {
         emit startOtherThreads();
     });
-    QObject::connect(this, &MainWindowView::startOtherThreads, [=]()
-    {
-        available_packages_thread->start();
-        installed_packages_thread->start();
-    });
+
     QObject::connect(this, &MainWindowView::availablePackagesFillEnded, this, &MainWindowView::connectSignalsForAvailablePackages);
     QObject::connect(this, &MainWindowView::installedPackagesFillEnded, this, &MainWindowView::connectSignalsForInstalledPackages);
     QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
     QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread,  &QThread::deleteLater);
+    installed_packages_thread->start(QThread::TimeCriticalPriority);
+    available_packages_thread->start(QThread::TimeCriticalPriority);
     checkUpdates();
 }
 
@@ -398,7 +396,10 @@ void MainWindowView::checkUpdates()
    QObject::connect(this, &MainWindowView::packagesToUpdateFillEnded, this, &MainWindowView::connectSignalsForUpdatedPackages);
    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
 
-   updated_packages_thread->start(QThread::InheritPriority);
+   QObject::connect(this, &MainWindowView::startOtherThreads, [=]()
+   {
+       updated_packages_thread->start(QThread::TimeCriticalPriority);
+   });
 }
 
 

@@ -33,6 +33,7 @@ void AvailablePackagesColumn::fill()
 {
     packages_sorter->resetOriginalList();
     QStringList pak_packages = getPackagesList();
+    emit startOtherThreads();
     QStringList::iterator it = pak_packages.begin();
     int i = 0;
 

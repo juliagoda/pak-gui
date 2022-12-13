@@ -1,4 +1,5 @@
 #include "choicewindow.h"
+
 #include "outputfilter.h"
 
 #include <QPushButton>
