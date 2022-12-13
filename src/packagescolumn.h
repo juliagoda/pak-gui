@@ -1,10 +1,9 @@
 #pragma once
 
-#include "qlineedit.h"
-#include "qobjectdefs.h"
 #include "sorter.h"
 #include "logger.h"
 
+#include <QLineEdit>
 #include <QListWidget>
 #include <QProcess>
 #include <QStringList>
@@ -39,7 +38,17 @@ public:
         list_widget->update();
     };
 
-    QStringList getCheckedPackagesList() const { return checked_packages_list; }
+    QList<Package*> getCheckedPackagesList() const { return checked_packages_list; }
+
+    QStringList getCheckedPackagesStringList()
+    {
+        QStringList checked_packages;
+        decltype(checked_packages_list)::iterator it;
+        for(it = checked_packages_list.begin(); it != checked_packages_list.end(); it++)
+            checked_packages.append((*it)->getName());
+
+        return checked_packages;
+    }
 
 public Q_SLOTS:
     virtual void update(int exit_code, QProcess::ExitStatus exit_status,
@@ -88,19 +97,19 @@ protected:
         if (package->getSource() == Package::Source::AUR ||
             package->getSource() == Package::Source::POLAUR)
         {
-            checked_packages_list.prepend(package->getName());
+            checked_packages_list.prepend(package);
             Logger::logger()->logDebug(QStringLiteral("Added at the beginning of list package: %1").arg(package->getName()));
         }
         else
         {
-            checked_packages_list.append(package->getName());
+            checked_packages_list.append(package);
             Logger::logger()->logDebug(QStringLiteral("Added at the end of list package: %1").arg(package->getName()));
         }
     }
 
     void removeUncheckedPackage(Package* package)
     {
-        int index = checked_packages_list.indexOf(package->getName());
+        int index = checked_packages_list.indexOf(package);
         checked_packages_list.removeAt(index);
         Logger::logger()->logDebug(QStringLiteral("Removed package name from list: %1 - index: %2").arg(package->getName(), index));
     }
@@ -110,6 +119,6 @@ protected:
     QLineEdit* search_lineedit;
     QSharedPointer<Sorter> packages_sorter;
     QWidget* parent;
-    QStringList checked_packages_list;
+    QList<Package*> checked_packages_list;
 };
 

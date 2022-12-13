@@ -3,6 +3,7 @@
 #include "logger.h"
 #include "checkpackage.h"
 #include "checkcommandparser.h"
+#include "qmessagebox.h"
 
 #include <QPointer>
 #include <QMessageBox>
@@ -11,7 +12,8 @@
 
 UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent) :
     PackagesColumn(new_list_widget, new_search_lineedit, new_parent),
-    current_packages_count(0)
+    current_packages_count(0),
+    parent(new_parent)
 {
     QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
                      &Sorter::sortPackagesToUpdateByText);
@@ -63,11 +65,43 @@ void UpdatedPackagesColumn::toggleAllPackages(bool is_all_checked)
 }
 
 
+void UpdatedPackagesColumn::prepareBeforeProcessRun()
+{
+    int result = 3;
+    auto first_package_source = getCheckedPackagesList().at(0)->getSource();
+    bool containsSideSource = first_package_source == Package::Source::AUR || first_package_source == Package::Source::POLAUR;
+    if (getCheckedPackagesList().count() != list_widget->count() && containsSideSource)
+    {
+        result = QMessageBox::warning(parent, i18n("Single AUR/POLAUR packages"), i18n("It's not possible to update single AUR/POLAUR packages"),
+                                      i18n("Update all"), i18n("Uncheck these packages"), i18n("Cancel"));
+    }
+
+    QList<Package*>::iterator it;
+
+    if (result == 2)
+        return;
+
+    if (result == 0)
+        toggleAllPackages(true);
+
+    if (result == 1)
+    {
+        for(it = getCheckedPackagesList().begin(); it != getCheckedPackagesList().end(); it++)
+        {
+            if ((*it)->getSource() == Package::Source::AUR || (*it)->getSource() == Package::Source::POLAUR)
+                (*it)->setCheckState(Qt::Unchecked);
+        }
+    }
+
+    bool isAllChecked = getCheckedPackagesList().count() == list_widget->count();
+    emit preparedList(getCheckedPackagesStringList(), isAllChecked ? Process::Task::UpdateAll : Process::Task::Update);
+}
+
+
 void UpdatedPackagesColumn::updatePackagesCount(int new_current_packages_count)
 {
     if (current_packages_count != new_current_packages_count)
         emit currentPackagesCountChanged(new_current_packages_count);
 
     current_packages_count = new_current_packages_count;
-
 }

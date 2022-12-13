@@ -1,6 +1,7 @@
 #pragma once
 
 #include "packagescolumn.h"
+#include "process.h"
 
 #include <QStringList>
 #include <QHash>
@@ -16,6 +17,7 @@ public:
 
 public Q_SLOTS:
     void toggleAllPackages(bool is_all_checked);
+    void prepareBeforeProcessRun();
 
 protected:
     QHash<QString, Package::Source> getPackagesList();
@@ -23,10 +25,14 @@ protected:
 signals:
     void startOtherThreads();
     void currentPackagesCountChanged(int new_current_packages_count);
+    void chosenUpdateAll();
+    void chosenUncheckSidePackages();
+    void preparedList(QStringList packages, Process::Task);
 
 private:
     void updatePackagesCount(int new_current_packages_count);
 
     int current_packages_count;
+    QWidget* parent;
 };
 
