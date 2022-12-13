@@ -1,11 +1,6 @@
 #include "previewdesign.h"
+
 #include "settings.h"
-
-
-PreviewDesign::PreviewDesign()
-{
-
-}
 
 
 void PreviewDesign::update(QPointer<QTextBrowser> preview)

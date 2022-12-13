@@ -1,4 +1,5 @@
 #include "packageinputwindow.h"
+
 #include "logger.h"
 
 #include <QPushButton>

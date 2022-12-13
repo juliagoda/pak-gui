@@ -1,16 +1,11 @@
 #include "statisticscommandparser.h"
+
 #include "logger.h"
 #include "outputfilter.h"
 
 #include <QProcess>
 #include <QString>
 #include <QRegularExpression>
-
-
-StatisticsCommandParser::StatisticsCommandParser()
-{
-
-}
 
 
 QStringList StatisticsCommandParser::retrieveInfo()

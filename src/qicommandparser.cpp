@@ -1,15 +1,10 @@
 #include "qicommandparser.h"
+
 #include "logger.h"
 
 #include <QProcess>
 #include <QString>
 #include <QRegularExpression>
-
-
-QiCommandParser::QiCommandParser()
-{
-
-}
 
 
 QStringList QiCommandParser::retrieveInfo()

@@ -11,8 +11,8 @@
 #include <QStringLiteral>
 #include <QRegularExpression>
 #include <QMessageBox>
-#include <QtDebug>
 #include <QtConcurrent/QtConcurrent>
+#include <QStringLiteral>
 
 
 DownloadCommandParser::DownloadCommandParser(const QString& new_package_name,

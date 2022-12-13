@@ -6,7 +6,6 @@
 class SiCommandParser : public CommandParser
 {
 public:
-    SiCommandParser();
     QStringList retrieveInfo() override;
 };
 

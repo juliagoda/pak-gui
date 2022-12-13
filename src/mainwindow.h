@@ -20,7 +20,6 @@ class MainWindow : public KXmlGuiWindow
 
 public:
     MainWindow();
-    ~MainWindow() override;
 
 public Q_SLOTS:
     void startSystemTray();

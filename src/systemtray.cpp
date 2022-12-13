@@ -1,4 +1,5 @@
 #include "systemtray.h"
+
 #include "mainwindow.h"
 
 #include <KLocalizedString>

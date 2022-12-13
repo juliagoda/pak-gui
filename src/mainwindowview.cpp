@@ -339,6 +339,7 @@ void MainWindowView::generateOutput(Process::Task task, const QString& line)
         break;
 
     case Process::Task::Update:
+    case Process::Task::UpdateAll:
         m_ui.text_browser_tab_update->append(line);
         break;
 
@@ -360,7 +361,8 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
 
     if (task != Process::Task::Install &&
         task != Process::Task::Update &&
-        task != Process::Task::Uninstall)
+        task != Process::Task::Uninstall &&
+        task != Process::Task::UpdateAll)
     {
         progress_view.data()->removeProgressView(generated_previews_map.value(task));
         generated_previews_map.remove(task);

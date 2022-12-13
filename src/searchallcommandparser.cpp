@@ -1,4 +1,5 @@
 #include "searchallcommandparser.h"
+
 #include "outputfilter.h"
 #include "logger.h"
 

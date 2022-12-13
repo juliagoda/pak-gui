@@ -9,7 +9,6 @@
 class PreviewDesign
 {
 public:
-    PreviewDesign();
     static void update(QPointer<QTextBrowser> preview);
 
 private:

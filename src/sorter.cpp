@@ -1,4 +1,5 @@
 #include "sorter.h"
+
 #include "logger.h"
 #include "settings.h"
 #include "checkpackage.h"

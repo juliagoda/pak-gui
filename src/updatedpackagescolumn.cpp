@@ -3,7 +3,6 @@
 #include "logger.h"
 #include "checkpackage.h"
 #include "checkcommandparser.h"
-#include "qmessagebox.h"
 
 #include <QPointer>
 #include <QMessageBox>
@@ -29,8 +28,6 @@ QHash<QString, Package::Source> UpdatedPackagesColumn::getPackagesList()
     return command_parser.data()->retrieveInfoMap();
 }
 
-// TODO - collect during checking - show warning if there is any package from AUR/POLAUR but not all of them are checked (repo+aur+polaur)
-// cause is not possible with pak to update single packages from AUR/POLAUR
 
 void UpdatedPackagesColumn::fill()
 {

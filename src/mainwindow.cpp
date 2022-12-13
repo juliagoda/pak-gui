@@ -42,7 +42,7 @@ MainWindow::MainWindow()
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
     connect(this, &MainWindow::widgetsChanged, main_window_view, &MainWindowView::updateWidgets);
     connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
-    connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed){
+    connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed) {
         update_mirrors_action->setEnabled(is_installed); });
 
     setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
@@ -70,12 +70,6 @@ MainWindow::MainWindow()
 
     setupGUI(Default, "pak-gui.rc");
     setXMLFile("pak-gui.rc");
-}
-
-
-MainWindow::~MainWindow()
-{
-
 }
 
 

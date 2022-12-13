@@ -1,4 +1,5 @@
 #include "statistics.h"
+
 #include "logger.h"
 
 #include <QtCharts>

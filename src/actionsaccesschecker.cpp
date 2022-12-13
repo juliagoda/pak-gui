@@ -131,7 +131,7 @@ void ActionsAccessChecker::checkInternetConnection()
             continue;
 
         is_online = interface.flags().testFlag(QNetworkInterface::IsUp) &&
-                interface.flags().testFlag(QNetworkInterface::IsRunning);
+                    interface.flags().testFlag(QNetworkInterface::IsRunning);
 
         if (is_online)
             break;

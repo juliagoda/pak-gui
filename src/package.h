@@ -1,8 +1,8 @@
 #pragma once
 
-#include "qlistwidget.h"
 #include "settings.h"
 
+#include <QListWidget>
 #include <QListWidgetItem>
 #include <QString>
 #include <QRegularExpression>

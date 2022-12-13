@@ -36,8 +36,8 @@ int main(int argc, char **argv)
                           KAboutLicense::GPL_V3,
                           i18n("Copyright 2022, Jagoda \"juliagoda\" Górska"),
                           QLatin1String(),
-                          QStringLiteral("https://github.com/juliagoda/pak-gui"),
-                          QStringLiteral("https://github.com/juliagoda/pak-gui/issues"));
+                          QStringLiteral("https://github.com/CachyOS/pak-gui"),
+                          QStringLiteral("https://github.com/CachyOS/pak-gui/issues"));
 
     aboutData.addAuthor(i18n("Jagoda \"juliagoda\" Górska"),i18n("Author"), QStringLiteral("juliagoda.pl@protonmail.com"));
     aboutData.setOrganizationDomain("CachyOS.github.com");
@@ -63,8 +63,8 @@ int main(int argc, char **argv)
         !QDir().mkpath(config_path))
            Logger::logger()->logWarning(QStringLiteral("Path %1 couldn't be created!").arg(config_path));
 
-    MainWindow* window = new MainWindow;
-    QObject::connect(window, &MainWindow::closeApp, &application, &QCoreApplication::quit);
+    QScopedPointer<MainWindow> window(new MainWindow);
+    QObject::connect(window.get(), &MainWindow::closeApp, &application, &QCoreApplication::quit);
     window->show();
 
     return application.exec();

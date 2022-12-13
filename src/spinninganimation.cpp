@@ -1,4 +1,5 @@
 #include "spinninganimation.h"
+
 #include "logger.h"
 
 SpinningAnimation::SpinningAnimation() :

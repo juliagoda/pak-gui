@@ -144,7 +144,8 @@ void Process::emitSideTask(Task task)
 {
     if (task != Task::Install &&
         task != Task::Uninstall &&
-        task != Task::Update)
+        task != Task::Update &&
+        task != Task::UpdateAll)
     {
         emit acceptedTask(task);
     }

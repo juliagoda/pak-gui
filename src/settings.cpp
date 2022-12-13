@@ -1,4 +1,5 @@
 #include "settings.h"
+
 #include "logger.h"
 #include "mainwindow.h"
 #include "pakGuiSettings.h"

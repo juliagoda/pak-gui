@@ -1,4 +1,5 @@
 #include "progressview.h"
+
 #include "logger.h"
 
 
