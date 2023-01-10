@@ -104,7 +104,7 @@ void MainWindow::disableOnlineActions()
 
 void MainWindow::setTimersOnChecks()
 {
-  //  QObject::disconnect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
+    QObject::disconnect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
     QObject::disconnect(&timer_on_logs, &QTimer::timeout, Logger::logger(), &Logger::clearLogsFile);
     connectSignalForUpdateCheck();
     connectSignalForHistoryStore();
@@ -113,12 +113,12 @@ void MainWindow::setTimersOnChecks()
 
 void MainWindow::startSystemTray()
 {
- //   disconnect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
+    disconnect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
     system_tray_icon.reset(nullptr);
     if (Settings::records()->useSystemTray())
     {
         system_tray_icon.reset(new SystemTray(this));
-   //     connect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
+        connect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
     }
 }
 
@@ -163,7 +163,7 @@ void MainWindow::connectSignalForUpdateCheck()
     if (Settings::records()->updateCheckTimeDays() > 0 || Settings::records()->updateCheckTimeHours() > 0 ||
             Settings::records()->updateCheckTimeMinutes())
     {
-  //      QObject::connect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
+        QObject::connect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
         startTimerOnOperation(Settings::records()->startDateTimeForUpdatesCheck(),
                               timer_on_updates,
                               TimeConverter::toMilliseconds(Settings::records()->updateCheckTimeDays(),

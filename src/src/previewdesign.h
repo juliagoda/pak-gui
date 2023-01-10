@@ -7,7 +7,7 @@
 #include <QObject>
 
 
-class PreviewDesign : public QObject
+class PreviewDesign
 {
 public:
     static void update(QPointer<QTextBrowser> preview);
