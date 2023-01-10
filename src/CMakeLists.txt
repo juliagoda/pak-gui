@@ -4,68 +4,80 @@ add_executable(pak-gui ${RESOURCES})
 
 target_sources(pak-gui PRIVATE
     main.cpp
-    mainwindow.cpp
-    mainwindowview.cpp
-    availablepackagescolumn.cpp
-    updatedpackagescolumn.cpp
-    installedpackagescolumn.cpp
-    packagescolumn.h
-    qipackage.cpp
-    sipackage.cpp
-    checkpackage.cpp
-    defs.h
-    package.h
-    commandparser.h
-    sicommandparser.cpp
-    qicommandparser.cpp
-    checkcommandparser.cpp
-    progressview.cpp
-    statisticscommandparser.cpp
-    statisticscommandparser.h
-    searchallcommandparser.cpp
-    searchallcommandparser.h
-    downloadcommandparser.cpp
-    downloadcommandparser.h
-    installcommandparser.cpp
-    installcommandparser.h
-    statistics.cpp
-    statistics.h
-    process.cpp
-    process.h
-    packageinputwindow.cpp
-    packageinputwindow.h
-    packagedownloader.cpp
-    packagedownloader.h
-    packagesearch.cpp
-    packagesearch.h
-    choicewindow.cpp
-    choicewindow.h
-    outputfilter.cpp
-    outputfilter.h
-    sorter.cpp
-    sorter.h
-    actionsaccesschecker.cpp
-    actionsaccesschecker.h
-    settings.cpp
-    settings.h
-    logger.cpp
-    logger.h
-    previewdesign.cpp
-    previewdesign.h
-    timeconverter.cpp
-    timeconverter.h
-    sizeconverter.cpp
-    sizeconverter.h
-    pathconverter.cpp
-    pathconverter.h
-    spinninganimation.cpp
-    spinninganimation.h
-    systemtray.cpp
-    systemtray.h
-    settingsrecords.cpp
-    settingsrecords.h)
+    src/mainwindow.cpp
+    src/mainwindow.h
+    src/mainwindowview.cpp
+    src/mainwindowview.h
+    src/availablepackagescolumn.cpp
+    src/availablepackagescolumn.h
+    src/updatedpackagescolumn.cpp
+    src/updatedpackagescolumn.h
+    src/installedpackagescolumn.cpp
+    src/installedpackagescolumn.h
+    src/packagescolumn.h
+    src/qipackage.cpp
+    src/qipackage.h
+    src/sipackage.cpp
+    src/sipackage.h
+    src/checkpackage.cpp
+    src/checkpackage.h
+    src/defs.h
+    src/package.h
+    src/commandparser.h
+    src/sicommandparser.cpp
+    src/sicommandparser.h
+    src/qicommandparser.cpp
+    src/qicommandparser.h
+    src/checkcommandparser.cpp
+    src/checkcommandparser.h
+    src/progressview.cpp
+    src/progressview.h
+    src/statisticscommandparser.cpp
+    src/statisticscommandparser.h
+    src/searchallcommandparser.cpp
+    src/searchallcommandparser.h
+    src/downloadcommandparser.cpp
+    src/downloadcommandparser.h
+    src/installcommandparser.cpp
+    src/installcommandparser.h
+    src/statistics.cpp
+    src/statistics.h
+    src/process.cpp
+    src/process.h
+    src/packageinputwindow.cpp
+    src/packageinputwindow.h
+    src/packagedownloader.cpp
+    src/packagedownloader.h
+    src/packagesearch.cpp
+    src/packagesearch.h
+    src/choicewindow.cpp
+    src/choicewindow.h
+    src/outputfilter.cpp
+    src/outputfilter.h
+    src/sorter.cpp
+    src/sorter.h
+    src/actionsaccesschecker.cpp
+    src/actionsaccesschecker.h
+    src/settings.cpp
+    src/settings.h
+    src/logger.cpp
+    src/logger.h
+    src/previewdesign.cpp
+    src/previewdesign.h
+    src/timeconverter.cpp
+    src/timeconverter.h
+    src/sizeconverter.cpp
+    src/sizeconverter.h
+    src/pathconverter.cpp
+    src/pathconverter.h
+    src/spinninganimation.cpp
+    src/spinninganimation.h
+    src/systemtray.cpp
+    src/systemtray.h
+    src/settingsrecords.cpp
+    src/settingsrecords.h)
 
-kconfig_add_kcfg_files(pak-gui pakGuiSettings.kcfgc)
+kconfig_add_kcfg_files(pak-gui src/pakGuiSettings.kcfgc)
 
 target_link_libraries(pak-gui
     KF5::CoreAddons
@@ -82,15 +94,15 @@ target_link_libraries(pak-gui
 )
 
 ki18n_wrap_ui(pak-gui
-    mainwindowview.ui
-    generalsettings.ui
-    progressview.ui
-    packageinput.ui
-    choicewindow.ui
-    previewsappearancesettings.ui
-    packagesinfosettings.ui
-    logssettings.ui)
+    src/mainwindowview.ui
+    src/generalsettings.ui
+    src/progressview.ui
+    src/packageinput.ui
+    src/choicewindow.ui
+    src/previewsappearancesettings.ui
+    src/packagesinfosettings.ui
+    src/logssettings.ui)
 
-install(FILES org.cachyos.pak-gui.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
-install(FILES pak-gui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/pak-gui)
+install(FILES src/org.cachyos.pak-gui.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
+install(FILES src/pak-gui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/pak-gui)
 install(TARGETS pak-gui ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
