@@ -11,7 +11,7 @@ class Sorter : public QObject
 
 public:
     Sorter(QListWidget* list_widgets);
-    virtual ~Sorter() = default;
+    ~Sorter() override = default;
 
     void reverseSort();
     void updateOriginalList(int index, Package* package);

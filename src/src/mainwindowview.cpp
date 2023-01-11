@@ -91,7 +91,6 @@ void MainWindowView::run()
     QObject::connect(process.data(), &Process::finished, this, [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::finished, [this](){ spinning_animation->stopSmallOnWidget(m_ui.actions_spinning_animation_label);  });
 
-    //hideWidgets();
     startInternetCheckTimer();
     startPackagesCheckTimer();
     startAnimations();

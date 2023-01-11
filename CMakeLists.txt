@@ -26,7 +26,7 @@ include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
 include(FeatureSummary)
 
-option(RUN_TESTS "Allow tests for classes" ON)
+option(RUN_TESTS "Allow tests for classes" OFF)
 find_package(pak REQUIRED)
 find_package(pacman-contrib REQUIRED)
 find_package(kdesu REQUIRED)

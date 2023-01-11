@@ -108,7 +108,11 @@ void Sorter::showInfo()
 
 void Sorter::clear()
 {
-    list_widget->clear();
+    while(list_widget->count() > 0)
+    {
+        if (list_widget->item(0))
+            list_widget->takeItem(0);
+    }
 }
 
 
