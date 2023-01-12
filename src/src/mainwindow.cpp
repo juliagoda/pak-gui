@@ -113,7 +113,8 @@ void MainWindow::setTimersOnChecks()
 
 void MainWindow::startSystemTray()
 {
-    disconnect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
+    if (!main_window_view.isNull() && !system_tray_icon.isNull())
+        disconnect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
     system_tray_icon.reset(nullptr);
     if (Settings::records()->useSystemTray())
     {
