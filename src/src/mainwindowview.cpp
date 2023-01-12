@@ -176,20 +176,14 @@ void MainWindowView::initSignals()
 {
     QObject::connect(m_ui.installed_packages_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.search_installed_packages_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(m_ui.installed_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.installed_packages_list->count() == 0) m_ui.search_installed_packages_checkbox->setEnabled(false); }, Qt::AutoConnection);
-    QObject::connect(m_ui.installed_packages_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.installed_packages_list->show(); }, Qt::AutoConnection);
-    QObject::connect(m_ui.installed_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.installed_packages_list->count() == 0) m_ui.installed_packages_list->hide(); }, Qt::AutoConnection);
 
     QObject::connect(m_ui.available_packages_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.search_available_packages_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(m_ui.available_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.available_packages_list->count() == 0) m_ui.search_available_packages_checkbox->setEnabled(false); }, Qt::AutoConnection);
-    QObject::connect(m_ui.available_packages_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.available_packages_list->show(); }, Qt::AutoConnection);
-    QObject::connect(m_ui.available_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.available_packages_list->count() == 0) m_ui.available_packages_list->hide(); }, Qt::AutoConnection);
 
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.search_packages_to_update_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.packages_to_update_list->count() == 0) m_ui.search_packages_to_update_checkbox->setEnabled(false); }, Qt::AutoConnection);
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.check_all_updates_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.packages_to_update_list->count() == 0) m_ui.check_all_updates_checkbox->setEnabled(false); }, Qt::AutoConnection);
-    QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.packages_to_update_list->show(); }, Qt::AutoConnection);
-    QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.packages_to_update_list->count() == 0) m_ui.packages_to_update_list->hide(); }, Qt::AutoConnection);
 
     QObject::connect(m_ui.console_view_install, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.available_preview_area->show(); else m_ui.available_preview_area->hide(); });
     QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
@@ -229,6 +223,9 @@ void MainWindowView::toggleWidgetsAccess(bool is_online)
 
 void MainWindowView::connectSignalsForAvailablePackages()
 {
+    if (m_ui.available_packages_list->count() > 0)
+        m_ui.available_packages_list->show();
+
     m_ui.installation_spinning_widget->hide();
     QObject::connect(m_ui.sort_available_packages, &QCheckBox::toggled, available_packages_column.data(), &AvailablePackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(available_packages_column.data(), &AvailablePackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.install_packages_button->setEnabled(has_checked_buttons); });
@@ -239,6 +236,9 @@ void MainWindowView::connectSignalsForAvailablePackages()
 
 void MainWindowView::connectSignalsForInstalledPackages()
 {
+    if (m_ui.installed_packages_list->count() > 0)
+        m_ui.installed_packages_list->show();
+
     m_ui.remove_spinning_widget->hide();
     QObject::connect(m_ui.sort_installed_packages, &QCheckBox::toggled, installed_packages_column.data(), &InstalledPackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(installed_packages_column.data(), &InstalledPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.uninstall_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
@@ -249,6 +249,9 @@ void MainWindowView::connectSignalsForInstalledPackages()
 
 void MainWindowView::connectSignalsForUpdatedPackages()
 {
+    if (m_ui.packages_to_update_list->count() > 0)
+        m_ui.packages_to_update_list->show();
+
     if (m_ui.packages_to_update_list->count() == 0 && actions_access_checker->isOnline())
     {
         m_ui.packages_to_update_label->setStyleSheet("color: black; font-size: 15px;");
