@@ -78,6 +78,7 @@ private:
     void checkSpinningVisibility();
     void startPackagesCheckTimer();
     void initSignals();
+    void initColumns();
 
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;

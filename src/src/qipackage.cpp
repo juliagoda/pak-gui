@@ -3,7 +3,7 @@
 #include "defs.h"
 
 #include <QTextStream>
-
+#include <QDebug>
 
 QiPackage::QiPackage(QString& package_content) :
     Package(package_content, Package::Source::Unknown)

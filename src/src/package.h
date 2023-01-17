@@ -36,12 +36,9 @@ public:
         source = package.source;
     }
 
-    virtual ~Package()
-    {
+    ~Package() override = default;
 
-    }
-
-    virtual const QString& getName() { return name; };
+    virtual const QString& getName() const { return name; };
     virtual const QString& getVersion() const { return version; };
     virtual Package::Source getSource() const { return source; }
 

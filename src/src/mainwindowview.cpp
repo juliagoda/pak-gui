@@ -43,6 +43,7 @@ MainWindowView::MainWindowView(QWidget *parent)
       is_operation_running(false)
 {
     m_ui.setupUi(this);
+    initColumns();
     initSignals();
     hideWidgets();
 }
@@ -66,10 +67,6 @@ void MainWindowView::run()
     PreviewDesign::update(m_ui.text_browser_tab_install);
     PreviewDesign::update(m_ui.text_browser_tab_update);
 
-    available_packages_column = QSharedPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit, this), &QObject::deleteLater);
-    installed_packages_column = QSharedPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit, this), &QObject::deleteLater);
-    updated_packages_column = QSharedPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit, this), &QObject::deleteLater);
-
     emit initStarted();
     Logger::logger()->logInfo("Initialization started");
 
@@ -89,7 +86,7 @@ void MainWindowView::run()
     QObject::connect(process.data(), &Process::generatedOutput, this, &MainWindowView::generateOutput, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
     QObject::connect(process.data(), &Process::acceptedTask, [this](){ spinning_animation->startSmallOnWidget(m_ui.actions_spinning_animation_label);  });
-    QObject::connect(process.data(), &Process::finished, this, [=](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
+    QObject::connect(process.data(), &Process::finished, this, [this](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::finished, [this](){ spinning_animation->stopSmallOnWidget(m_ui.actions_spinning_animation_label);  });
 
     startInternetCheckTimer();
@@ -185,9 +182,33 @@ void MainWindowView::initSignals()
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.check_all_updates_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.packages_to_update_list->count() == 0) m_ui.check_all_updates_checkbox->setEnabled(false); }, Qt::AutoConnection);
 
-    QObject::connect(m_ui.console_view_install, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.available_preview_area->show(); else m_ui.available_preview_area->hide(); });
-    QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
-    QObject::connect(m_ui.console_view_update, &QCheckBox::toggled, [=](bool is_checked) { if (is_checked) m_ui.updated_preview_area->show(); else m_ui.updated_preview_area->hide(); });
+    QObject::connect(m_ui.console_view_install, &QCheckBox::toggled, [this](bool is_checked) { if (is_checked) m_ui.available_preview_area->show(); else m_ui.available_preview_area->hide(); });
+    QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [this](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
+    QObject::connect(m_ui.console_view_update, &QCheckBox::toggled, [this](bool is_checked) { if (is_checked) m_ui.updated_preview_area->show(); else m_ui.updated_preview_area->hide(); });
+}
+
+
+void MainWindowView::initColumns()
+{
+    available_packages_column = QSharedPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit, this), &QObject::deleteLater);
+    installed_packages_column = QSharedPointer<InstalledPackagesColumn>(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit, this), &QObject::deleteLater);
+    updated_packages_column = QSharedPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit, this), &QObject::deleteLater);
+
+    QObject::connect(m_ui.sort_available_packages, &QCheckBox::toggled, available_packages_column.data(), &AvailablePackagesColumn::sort, Qt::AutoConnection);
+    QObject::connect(available_packages_column.data(), &AvailablePackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.install_packages_button->setEnabled(has_checked_buttons); });
+    QObject::connect(m_ui.install_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_install->clear(); process->run(Process::Task::Install, available_packages_column.data()->getCheckedPackagesStringList()); }, Qt::AutoConnection);
+    QObject::connect(m_ui.installed_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.installed_packages_list->count() == 0) m_ui.installed_packages_list->hide(); m_ui.uninstall_packages_button->setEnabled(false); }, Qt::AutoConnection);
+
+    QObject::connect(m_ui.sort_installed_packages, &QCheckBox::toggled, installed_packages_column.data(), &InstalledPackagesColumn::sort, Qt::AutoConnection);
+    QObject::connect(installed_packages_column.data(), &InstalledPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.uninstall_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
+    QObject::connect(m_ui.uninstall_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_uninstall->clear(); process->run(Process::Task::Uninstall, installed_packages_column.data()->getCheckedPackagesStringList()); }, Qt::AutoConnection);
+    QObject::connect(m_ui.available_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.available_packages_list->count() == 0) m_ui.available_packages_list->hide(); m_ui.install_packages_button->setEnabled(false); }, Qt::AutoConnection);
+
+    QObject::connect(m_ui.sort_packages_to_update, &QCheckBox::toggled, updated_packages_column.data(), &UpdatedPackagesColumn::sort, Qt::AutoConnection);
+    QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.update_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
+    QObject::connect(m_ui.update_packages_button, &QPushButton::clicked, this, [this]() { updated_packages_column.data()->prepareBeforeProcessRun(); }, Qt::AutoConnection);
+    QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::preparedList, this, [this](QStringList packages_list, Process::Task task){ m_ui.text_browser_tab_update->clear(); process->run(task, packages_list); });
+    QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.packages_to_update_list->count() == 0) m_ui.packages_to_update_list->hide(); m_ui.update_packages_button->setEnabled(false); }, Qt::AutoConnection);
 }
 
 
@@ -227,9 +248,6 @@ void MainWindowView::connectSignalsForAvailablePackages()
         m_ui.available_packages_list->show();
 
     m_ui.installation_spinning_widget->hide();
-    QObject::connect(m_ui.sort_available_packages, &QCheckBox::toggled, available_packages_column.data(), &AvailablePackagesColumn::sort, Qt::AutoConnection);
-    QObject::connect(available_packages_column.data(), &AvailablePackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.install_packages_button->setEnabled(has_checked_buttons); });
-    QObject::connect(m_ui.install_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_install->clear(); process->run(Process::Task::Install, available_packages_column.data()->getCheckedPackagesStringList()); }, Qt::AutoConnection);
     checkSpinningVisibility();
 }
 
@@ -240,9 +258,6 @@ void MainWindowView::connectSignalsForInstalledPackages()
         m_ui.installed_packages_list->show();
 
     m_ui.remove_spinning_widget->hide();
-    QObject::connect(m_ui.sort_installed_packages, &QCheckBox::toggled, installed_packages_column.data(), &InstalledPackagesColumn::sort, Qt::AutoConnection);
-    QObject::connect(installed_packages_column.data(), &InstalledPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.uninstall_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
-    QObject::connect(m_ui.uninstall_packages_button, &QPushButton::clicked, this, [this]() { m_ui.text_browser_tab_uninstall->clear(); process->run(Process::Task::Uninstall, installed_packages_column.data()->getCheckedPackagesStringList()); }, Qt::AutoConnection);
     checkSpinningVisibility();
 }
 
@@ -259,10 +274,6 @@ void MainWindowView::connectSignalsForUpdatedPackages()
     }
 
     m_ui.update_spinning_widget->hide();
-    QObject::connect(m_ui.sort_packages_to_update, &QCheckBox::toggled, updated_packages_column.data(), &UpdatedPackagesColumn::sort, Qt::AutoConnection);
-    QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.update_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
-    QObject::connect(m_ui.update_packages_button, &QPushButton::clicked, this, [this]() { updated_packages_column.data()->prepareBeforeProcessRun(); }, Qt::AutoConnection);
-    QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::preparedList, this, [this](QStringList packages_list, Process::Task task){ m_ui.text_browser_tab_update->clear(); process->run(task, packages_list); });
     checkSpinningVisibility();
 }
 
@@ -412,7 +423,7 @@ void MainWindowView::checkUpdates()
    QObject::connect(this, &MainWindowView::packagesToUpdateFillEnded, this, &MainWindowView::connectSignalsForUpdatedPackages);
    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
 
-   QObject::connect(this, &MainWindowView::startOtherThreads, [=]()
+   QObject::connect(this, &MainWindowView::startOtherThreads, [updated_packages_thread]()
    {
        updated_packages_thread->start(QThread::TimeCriticalPriority);
    });
