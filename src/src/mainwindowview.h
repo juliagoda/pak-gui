@@ -32,6 +32,7 @@ public:
     void setProcess(QSharedPointer<Process> new_process);
     void setActionsAccessChecker(QSharedPointer<ActionsAccessChecker> new_actions_access_checker);
     void run();
+    void preparePreviews();
 
 public Q_SLOTS:
     void refresh();
@@ -65,8 +66,6 @@ signals:
     void packagesToUpdateCountChanged(int packages_count);
 
 protected:
-    virtual void initColumns();
-
     Ui::MainWindowView m_ui;
     QSharedPointer<AvailablePackagesColumn> available_packages_column;
     QSharedPointer<InstalledPackagesColumn> installed_packages_column;
@@ -79,10 +78,11 @@ private:
     void connectSignals();
     void hideWidgets();
     void hideWidgetsExceptInstalled();
-    void init();
     void checkSpinningVisibility();
     void startPackagesCheckTimer();
     void initSignals();
+    void initColumns();
+    void updatePreviewsDesign();
 
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;

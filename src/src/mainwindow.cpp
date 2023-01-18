@@ -26,6 +26,7 @@ MainWindow::MainWindow()
     main_window_view = new MainWindowView(this);
     main_window_view->setProcess(process);
     main_window_view->setActionsAccessChecker(actions_access_checker);
+    main_window_view->preparePreviews();
     main_window_view->run();
     setCentralWidget(main_window_view);
     startSystemTray();

@@ -52,6 +52,8 @@ const QString package_content_alsa_utils = "Name            : alsa-utils\n"
                                            "Install Reason  : Explicitly installed\n"
                                            "Install Script  : No\n";
 
+const QString defaultStylesheet = "color: white;\nbackground-color: black;\nfont-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;\npadding: 3px;";
+
 
 class MockInstalledPackagesColumn : public InstalledPackagesColumn
 {
@@ -99,23 +101,12 @@ class MockMainWindowView : public MainWindowView
 public:
     MockMainWindowView();
     friend class TestInstalledPackagesColumn;
-
-protected:
-    void initColumns() override;
 };
 
 MockMainWindowView::MockMainWindowView() :
     MainWindowView(new QWidget)
 {
 
-}
-
-
-void MockMainWindowView::initColumns()
-{
-    available_packages_column = QSharedPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit, this), &QObject::deleteLater);
-    installed_packages_column = QSharedPointer<MockInstalledPackagesColumn>(new MockInstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit, this), &QObject::deleteLater);
-    updated_packages_column = QSharedPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit, this), &QObject::deleteLater);
 }
 
 
@@ -202,8 +193,7 @@ void TestInstalledPackagesColumn::hideInstallationPreview()
 
 void TestInstalledPackagesColumn::installatonPreviewHasDefaultStyle()
 {
-    QCOMPARE(main_window_view.m_ui.text_browser_tab_uninstall->styleSheet(),
-             QString("color: white;\nbackground-color: black;\nfont-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;\npadding: 3px;"));
+    QCOMPARE(main_window_view.m_ui.text_browser_tab_uninstall->styleSheet(), defaultStylesheet);
 }
 
 
