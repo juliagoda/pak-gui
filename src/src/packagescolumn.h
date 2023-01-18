@@ -8,6 +8,7 @@
 #include <QProcess>
 #include <QStringList>
 #include <QMessageBox>
+#include <QtConcurrent>
 
 
 class PackagesColumn : public QObject
@@ -73,7 +74,7 @@ public Q_SLOTS:
     virtual void sort(bool is_sorted)
     {
         Q_UNUSED(is_sorted)
-        packages_sorter->reverseSort();
+        QtConcurrent::run(packages_sorter.get(), &Sorter::sortReverse);
         list_widget->update();
     }
 

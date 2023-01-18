@@ -10,6 +10,7 @@
 #include <QtConcurrent/QtConcurrent>
 #include <algorithm>
 
+QMutex Sorter::mutex;
 
 Sorter::Sorter(QListWidget* list_widgets) :
     list_widget(list_widgets),
@@ -19,14 +20,9 @@ Sorter::Sorter(QListWidget* list_widgets) :
 }
 
 
-void Sorter::reverseSort()
-{
-    QtConcurrent::run(this, &Sorter::sortReverse);
-}
-
-
 void Sorter::sortReverse()
 {
+    mutex.tryLock();
     auto widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
 
     clear();
@@ -37,6 +33,7 @@ void Sorter::sortReverse()
         list_widget->addItem(*widgets_it);
     }
 
+    mutex.unlock();
     if (!Settings::records()->showDebug())
         return;
 

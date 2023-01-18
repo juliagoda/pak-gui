@@ -14,7 +14,7 @@ public:
     void fill() override;
 
 protected:
-    QStringList getPackagesList();
+    virtual QStringList getPackagesList();
 };
 
 

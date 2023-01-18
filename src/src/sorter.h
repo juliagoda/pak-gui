@@ -4,6 +4,7 @@
 
 #include <QList>
 #include <QListWidgetItem>
+#include <QMutex>
 
 class Sorter : public QObject
 {
@@ -13,7 +14,6 @@ public:
     Sorter(QListWidget* list_widgets);
     ~Sorter() override = default;
 
-    void reverseSort();
     void updateOriginalList(int index, Package* package);
     void resetOriginalList();
     QListWidget* listWidget() { return untouched_list_widget.get(); }
@@ -30,5 +30,6 @@ private:
 
     QListWidget* list_widget;
     QSharedPointer<QListWidget> untouched_list_widget;
+    static QMutex mutex;
 };
 

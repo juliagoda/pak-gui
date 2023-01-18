@@ -65,7 +65,12 @@ signals:
     void packagesToUpdateCountChanged(int packages_count);
 
 protected:
+    virtual void initColumns();
+
     Ui::MainWindowView m_ui;
+    QSharedPointer<AvailablePackagesColumn> available_packages_column;
+    QSharedPointer<InstalledPackagesColumn> installed_packages_column;
+    QSharedPointer<UpdatedPackagesColumn> updated_packages_column;
 
 private:
     void stopRunningThread(QSharedPointer<QThread> &thread);
@@ -78,13 +83,9 @@ private:
     void checkSpinningVisibility();
     void startPackagesCheckTimer();
     void initSignals();
-    void initColumns();
 
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
-    QSharedPointer<AvailablePackagesColumn> available_packages_column;
-    QSharedPointer<InstalledPackagesColumn> installed_packages_column;
-    QSharedPointer<UpdatedPackagesColumn> updated_packages_column;
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
     QSharedPointer<SpinningAnimation> spinning_animation;

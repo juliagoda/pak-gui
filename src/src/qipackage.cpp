@@ -14,7 +14,6 @@ QiPackage::QiPackage(QString& package_content) :
     setCheckState(Qt::Unchecked);
 }
 
-
 QiPackage::QiPackage(QiPackage& qi_package) :
     Package(qi_package)
 {

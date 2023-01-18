@@ -1,3 +1,4 @@
+#include "installedpackagescolumn.h"
 #include "mainwindowview.h"
 #include "qipackage.h"
 #include "qnamespace.h"
@@ -50,6 +51,46 @@ const QString package_content_alsa_utils = "Name            : alsa-utils\n"
                                            "Install Reason  : Explicitly installed\n"
                                            "Install Script  : No\n";
 
+
+class MockInstalledPackagesColumn : public InstalledPackagesColumn
+{
+    Q_OBJECT
+
+public:
+    explicit MockInstalledPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
+    friend class TestInstalledPackagesColumn;
+
+protected:
+    QStringList getPackagesList() override;
+
+public Q_SLOTS:
+    void sort(bool is_sorted) override;
+};
+
+
+MockInstalledPackagesColumn::MockInstalledPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent) :
+    InstalledPackagesColumn(new_list_widget, new_search_lineedit, new_parent)
+{
+
+}
+
+
+void MockInstalledPackagesColumn::sort(bool is_sorted)
+{
+   Q_UNUSED(is_sorted)
+   packages_sorter->sortReverse();
+   list_widget->update();
+}
+
+
+QStringList MockInstalledPackagesColumn::getPackagesList()
+{
+    QString package_content1 = package_content_a52dec;
+    QString package_content2 = package_content_alsa_utils;
+    return QStringList() << package_content1 << package_content2;
+}
+
+
 class MockMainWindowView : public MainWindowView
 {
     Q_OBJECT
@@ -57,12 +98,23 @@ class MockMainWindowView : public MainWindowView
 public:
     MockMainWindowView();
     friend class TestInstalledPackagesColumn;
+
+protected:
+    void initColumns() override;
 };
 
 MockMainWindowView::MockMainWindowView() :
     MainWindowView(new QWidget)
 {
 
+}
+
+
+void MockMainWindowView::initColumns()
+{
+    available_packages_column = QSharedPointer<AvailablePackagesColumn>(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit, this), &QObject::deleteLater);
+    installed_packages_column = QSharedPointer<MockInstalledPackagesColumn>(new MockInstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit, this), &QObject::deleteLater);
+    updated_packages_column = QSharedPointer<UpdatedPackagesColumn>(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit, this), &QObject::deleteLater);
 }
 
 
@@ -104,6 +156,7 @@ private slots:
     void uninstallButtonEnabledAfterPackageCheck();
     void uninstallButtonDisabledAfterPackageUncheck();
     void uninstallButtonEnabledAfterPackagesRemove();
+    void packagesOrderIsReversedAfterButtonCheck();
 
     void cleanup();
 
@@ -242,13 +295,31 @@ void TestInstalledPackagesColumn::uninstallButtonEnabledAfterPackagesRemove()
 }
 
 
+void TestInstalledPackagesColumn::packagesOrderIsReversedAfterButtonCheck()
+{
+   auto column = QSharedPointer<MockInstalledPackagesColumn>(new MockInstalledPackagesColumn(main_window_view.m_ui.installed_packages_list, main_window_view.m_ui.search_installed_packages_lineedit, &main_window_view), &QObject::deleteLater);
+   disconnect(main_window_view.m_ui.sort_installed_packages, &QCheckBox::toggled, main_window_view.installed_packages_column.data(), &InstalledPackagesColumn::sort);
+   connect(main_window_view.m_ui.sort_installed_packages, &QCheckBox::toggled, column.data(), &MockInstalledPackagesColumn::sort);
+   column->fill();
+   QTest::mouseClick(&*main_window_view.m_ui.sort_installed_packages, Qt::LeftButton);
+   qDebug() << "Sort button checkstate: " << main_window_view.m_ui.sort_installed_packages->checkState();
+   auto first_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).first());
+   auto last_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).last());
+   disconnect(main_window_view.m_ui.sort_installed_packages, &QCheckBox::toggled, column.data(), &MockInstalledPackagesColumn::sort);
+   QCOMPARE(last_package->text(), "a52dec-0.7.4-12.1");
+   QCOMPARE(first_package->text(), "alsa-utils-1.2.8-1.1");
+}
+
+
 void TestInstalledPackagesColumn::cleanup()
 {
+    connect(main_window_view.m_ui.sort_installed_packages, &QCheckBox::toggled, main_window_view.installed_packages_column.data(), &InstalledPackagesColumn::sort);
     main_window_view.m_ui.installed_packages_list->clear();
     main_window_view.m_ui.console_view_uninstall->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.search_installed_packages_checkbox->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.search_installed_packages_checkbox->setDisabled(true);
     main_window_view.m_ui.uninstall_packages_button->setEnabled(false);
+    main_window_view.m_ui.sort_installed_packages->setCheckState(Qt::Unchecked);
 
     while(main_window_view.m_ui.installed_packages_list->count() > 0)
     {
