@@ -19,6 +19,6 @@ signals:
     void startOtherThreads();
 
 protected:
-    QStringList getPackagesList();
+    virtual QStringList getPackagesList();
 };
 

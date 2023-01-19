@@ -252,6 +252,12 @@ void MainWindowView::connectSignalsForAvailablePackages()
     if (m_ui.available_packages_list->count() > 0)
         m_ui.available_packages_list->show();
 
+    if (m_ui.available_packages_list->count() == 0)
+    {
+        m_ui.accessible_packages->setStyleSheet("color: black; font-size: 15px;");
+        m_ui.accessible_packages->setText(i18n("Something went wrong. Try to refresh"));
+    }
+
     m_ui.installation_spinning_widget->hide();
     checkSpinningVisibility();
 }
@@ -262,7 +268,7 @@ void MainWindowView::connectSignalsForInstalledPackages()
     if (m_ui.installed_packages_list->count() > 0)
         m_ui.installed_packages_list->show();
 
-    if (m_ui.packages_to_update_list->count() == 0)
+    if (m_ui.installed_packages_list->count() == 0)
     {
         m_ui.installed_packages_label->setStyleSheet("color: black; font-size: 15px;");
         m_ui.installed_packages_label->setText(i18n("Something went wrong. Try to refresh"));

@@ -82,7 +82,8 @@ target_link_libraries(pak-gui-src
 
 target_include_directories(pak-gui-src  PUBLIC ${CMAKE_SOURCE_DIR}/src/src)
 add_executable(pak-tests ${CMAKE_SOURCE_DIR}/tests/main.cpp ${CMAKE_SOURCE_DIR}/tests/tests.cpp)
-add_executable(mainwindow-gui ${CMAKE_SOURCE_DIR}/tests/gui/installedpackagescolumn.cpp  ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
+add_executable(installed-packages-column ${CMAKE_SOURCE_DIR}/tests/gui/installedpackagescolumn.cpp  ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
+add_executable(available-packages-column ${CMAKE_SOURCE_DIR}/tests/gui/availablepackagescolumn.cpp  ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
 add_test(NAME mainwindow-gui COMMAND mainwindow-gui)
 
 target_link_libraries(pak-tests
@@ -96,7 +97,18 @@ target_link_libraries(pak-tests
     pak-gui-src
 )
 
-target_link_libraries(mainwindow-gui
+target_link_libraries(installed-packages-column
+    GTest::gtest
+    GTest::gtest_main
+    KF5::CoreAddons
+    Qt5::Test
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    pak-gui-src
+)
+
+target_link_libraries(available-packages-column
     GTest::gtest
     GTest::gtest_main
     KF5::CoreAddons
