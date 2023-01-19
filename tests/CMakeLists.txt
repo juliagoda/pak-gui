@@ -82,7 +82,7 @@ target_link_libraries(pak-gui-src
 
 target_include_directories(pak-gui-src  PUBLIC ${CMAKE_SOURCE_DIR}/src/src)
 add_executable(pak-tests ${CMAKE_SOURCE_DIR}/tests/main.cpp ${CMAKE_SOURCE_DIR}/tests/tests.cpp)
-add_executable(mainwindow-gui ${CMAKE_SOURCE_DIR}/tests/gui/mainwindow.cpp ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
+add_executable(mainwindow-gui ${CMAKE_SOURCE_DIR}/tests/gui/installedpackagescolumn.cpp  ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
 add_test(NAME mainwindow-gui COMMAND mainwindow-gui)
 
 target_link_libraries(pak-tests
