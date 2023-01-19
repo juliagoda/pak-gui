@@ -70,6 +70,7 @@ protected:
     QSharedPointer<AvailablePackagesColumn> available_packages_column;
     QSharedPointer<InstalledPackagesColumn> installed_packages_column;
     QSharedPointer<UpdatedPackagesColumn> updated_packages_column;
+    QSharedPointer<SpinningAnimation> spinning_animation;
 
 private:
     void stopRunningThread(QSharedPointer<QThread> &thread);
@@ -88,7 +89,6 @@ private:
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
-    QSharedPointer<SpinningAnimation> spinning_animation;
     QPointer<QTimer> internet_connection_timer;
     bool is_operation_running;
 };

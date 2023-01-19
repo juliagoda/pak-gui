@@ -152,6 +152,12 @@ private slots:
     void packageOrderIsAlphabeticallByDefault();
     void textInputSortBya52IsEqualToOne();
     void textInputSortByaaIsEqualToZero();
+    void animationsRunOnStart();
+    void animationWidgetIsVisible();
+    void packagesListIsHiddenOnStart();
+    void animationIsHiddenAfterSignalSend();
+    void notEmptyPackagesListIsVisibleAfterSignalSend();
+    void titleIsVisibleWhenPackagesListIsEmptyAfterSignalSend();
 
     void cleanup();
 
@@ -332,6 +338,47 @@ void TestInstalledPackagesColumn::textInputSortByaaIsEqualToZero()
     column->fill();
     QTest::keyClicks(&*main_window_view.m_ui.search_installed_packages_lineedit, "aa");
     QCOMPARE(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).count(), 0);
+}
+
+
+void TestInstalledPackagesColumn::animationsRunOnStart()
+{
+    QVERIFY(main_window_view.spinning_animation->isAnimationRunning());
+}
+
+
+void TestInstalledPackagesColumn::animationWidgetIsVisible()
+{
+    QVERIFY(!main_window_view.m_ui.remove_spinning_widget->isHidden());
+}
+
+
+void TestInstalledPackagesColumn::packagesListIsHiddenOnStart()
+{
+    QVERIFY(main_window_view.m_ui.installed_packages_list->isHidden());
+}
+
+
+void TestInstalledPackagesColumn::animationIsHiddenAfterSignalSend()
+{
+    emit main_window_view.installedPackagesFillEnded();
+    QVERIFY(main_window_view.m_ui.remove_spinning_widget->isHidden());
+}
+
+
+void TestInstalledPackagesColumn::notEmptyPackagesListIsVisibleAfterSignalSend()
+{
+    auto column = QSharedPointer<MockInstalledPackagesColumn>(new MockInstalledPackagesColumn(main_window_view.m_ui.installed_packages_list, main_window_view.m_ui.search_installed_packages_lineedit, &main_window_view), &QObject::deleteLater);
+    column->fill();
+    emit main_window_view.installedPackagesFillEnded();
+    QVERIFY(!main_window_view.m_ui.installed_packages_list->isHidden());
+}
+
+
+void TestInstalledPackagesColumn::titleIsVisibleWhenPackagesListIsEmptyAfterSignalSend()
+{
+    emit main_window_view.installedPackagesFillEnded();
+    QCOMPARE(main_window_view.m_ui.installed_packages_label->text(), QString("Something went wrong. Try to refresh"));
 }
 
 

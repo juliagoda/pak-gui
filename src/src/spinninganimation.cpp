@@ -43,6 +43,18 @@ void SpinningAnimation::stopOnMainWidgets(QPointer<QLabel> first_label,
 }
 
 
+bool SpinningAnimation::isAnimationRunning() const
+{
+   return !animation.isNull() ? animation->state() == QMovie::Running : false;
+}
+
+
+bool SpinningAnimation::isSmallAnimationRunning() const
+{
+    return !small_animation.isNull() ? small_animation->state() == QMovie::Running : false;
+}
+
+
 void SpinningAnimation::startOnWidget(QPointer<QLabel> label)
 {
     if (!isValid(animation))

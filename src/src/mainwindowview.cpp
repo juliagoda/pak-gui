@@ -34,11 +34,11 @@
 
 MainWindowView::MainWindowView(QWidget *parent)
     : QWidget(parent),
+      spinning_animation(new SpinningAnimation),
       process(nullptr),
       actions_access_checker(nullptr),
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
       progress_view(QSharedPointer<ProgressView>(new ProgressView)),
-      spinning_animation(new SpinningAnimation),
       internet_connection_timer(new QTimer(this)),
       is_operation_running(false)
 {
@@ -81,8 +81,6 @@ void MainWindowView::run()
         emit startOtherThreads();
     });
 
-    QObject::connect(this, &MainWindowView::availablePackagesFillEnded, this, &MainWindowView::connectSignalsForAvailablePackages);
-    QObject::connect(this, &MainWindowView::installedPackagesFillEnded, this, &MainWindowView::connectSignalsForInstalledPackages);
     QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
     QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread,  &QThread::deleteLater);
     installed_packages_thread->start(QThread::TimeCriticalPriority);
@@ -139,6 +137,10 @@ void MainWindowView::startPackagesCheckTimer()
 
 void MainWindowView::initSignals()
 {
+    QObject::connect(this, &MainWindowView::availablePackagesFillEnded, this, &MainWindowView::connectSignalsForAvailablePackages);
+    QObject::connect(this, &MainWindowView::installedPackagesFillEnded, this, &MainWindowView::connectSignalsForInstalledPackages);
+    QObject::connect(this, &MainWindowView::packagesToUpdateFillEnded, this, &MainWindowView::connectSignalsForUpdatedPackages);
+
     QObject::connect(m_ui.console_view_install, &QCheckBox::toggled, [this](bool is_checked) { if (is_checked) m_ui.available_preview_area->show(); else m_ui.available_preview_area->hide(); });
     QObject::connect(m_ui.console_view_uninstall, &QCheckBox::toggled, [this](bool is_checked) { if (is_checked) m_ui.installed_preview_area->show(); else m_ui.installed_preview_area->hide(); });
     QObject::connect(m_ui.console_view_update, &QCheckBox::toggled, [this](bool is_checked) { if (is_checked) m_ui.updated_preview_area->show(); else m_ui.updated_preview_area->hide(); });
@@ -259,6 +261,12 @@ void MainWindowView::connectSignalsForInstalledPackages()
 {
     if (m_ui.installed_packages_list->count() > 0)
         m_ui.installed_packages_list->show();
+
+    if (m_ui.packages_to_update_list->count() == 0)
+    {
+        m_ui.installed_packages_label->setStyleSheet("color: black; font-size: 15px;");
+        m_ui.installed_packages_label->setText(i18n("Something went wrong. Try to refresh"));
+    }
 
     m_ui.remove_spinning_widget->hide();
     checkSpinningVisibility();
@@ -423,7 +431,6 @@ void MainWindowView::checkUpdates()
    m_ui.search_packages_to_update_checkbox->setEnabled(false);
    m_ui.check_all_updates_checkbox->setEnabled(false);
    QObject::connect(updated_packages_thread, &QThread::started, [this]() { updated_packages_column->fill(); emit packagesToUpdateFillEnded(); });
-   QObject::connect(this, &MainWindowView::packagesToUpdateFillEnded, this, &MainWindowView::connectSignalsForUpdatedPackages);
    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
 
    QObject::connect(this, &MainWindowView::startOtherThreads, [updated_packages_thread]()

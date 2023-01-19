@@ -18,6 +18,8 @@ public:
     void stopOnMainWidgets(QPointer<QLabel> first_label,
                            QPointer<QLabel> second_label,
                            QPointer<QLabel> third_label);
+    bool isAnimationRunning() const;
+    bool isSmallAnimationRunning() const;
 
 public Q_SLOTS:
     void startSmallOnWidget(QPointer<QLabel> label);
