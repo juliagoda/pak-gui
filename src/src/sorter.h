@@ -23,6 +23,7 @@ public Q_SLOTS:
     void sortPackagesToUpdateByText(const QString& text);
     void sortAvailablePackagesByText(const QString& text);
     void sortInstalledPackagesByText(const QString& text);
+    void setCheckStateForUnsortedList(QListWidgetItem* item);
 
 private:
     void clear();

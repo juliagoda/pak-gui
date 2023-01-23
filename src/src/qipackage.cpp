@@ -18,6 +18,7 @@ QiPackage::QiPackage(QiPackage& qi_package) :
     Package(qi_package)
 {
     setName(qi_package.getName());
+    setNo(qi_package.getNo());
     setVersion(qi_package.getVersion());
     setText(getName().trimmed() + "-" + getVersion().trimmed());
     setFlags(qi_package.flags());

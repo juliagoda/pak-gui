@@ -26,6 +26,7 @@ public:
         checked_packages_list()
     {
         QObject::connect(list_widget, &QListWidget::itemChanged, this, &PackagesColumn::countCheckedPackages);
+        QObject::connect(list_widget, &QListWidget::itemChanged, packages_sorter.get(), &Sorter::setCheckStateForUnsortedList);
     };
 
     virtual ~PackagesColumn() = default;

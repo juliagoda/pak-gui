@@ -1,6 +1,7 @@
 #include "sorter.h"
 
 #include "logger.h"
+#include "qnamespace.h"
 #include "settings.h"
 #include "checkpackage.h"
 #include "sipackage.h"
@@ -90,6 +91,13 @@ void Sorter::sortInstalledPackagesByText(const QString &text)
         i++;
     }
     showInfo();
+}
+
+
+void Sorter::setCheckStateForUnsortedList(QListWidgetItem* item)
+{
+    Package* package = dynamic_cast<Package*>(item);
+    untouched_list_widget->item(package->getNo() - 1)->setCheckState(item->checkState());
 }
 
 

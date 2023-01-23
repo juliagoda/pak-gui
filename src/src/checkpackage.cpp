@@ -18,6 +18,7 @@ CheckPackage::CheckPackage(CheckPackage& check_package) :
     Package(check_package)
 {
    setName(check_package.getName());
+   setNo(check_package.getNo());
    setVersion(check_package.getVersion());
    setText(getName().trimmed() + "-" + getVersion().trimmed());
    setFlags(check_package.flags());

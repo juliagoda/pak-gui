@@ -90,6 +90,7 @@ private slots:
     void packagesOrderIsReversedAfterButtonCheck();
     void packageOrderIsAlphabeticallByDefault();
     void textInputSortBya52IsEqualToOne();
+    void checkedPackageIsStillCheckedAfterTextInputClear();
     void textInputSortByaaIsEqualToZero();
     void animationsRunOnStart();
     void animationWidgetIsVisible();
@@ -156,14 +157,14 @@ void TestInstalledPackagesColumn::searchCheckboxDisabledWithoutPackages()
 
 void TestInstalledPackagesColumn::searchCheckboxEnabledWithPackages()
 {
-    main_window_view.m_ui.installed_packages_list->addItems(QStringList() << "gimp 2.10.32-3.1" << "qtcreator 9.0.1-1.1");
+    main_window_view.m_ui.installed_packages_list->addItems(QStringList() << "a52dec-0.7.4-12.1" << "alsa-utils-1.2.8-1.1");
     QVERIFY(main_window_view.m_ui.search_installed_packages_checkbox->isEnabled());
 }
 
 
 void TestInstalledPackagesColumn::searchInputOptionVisibleAfterButtonCheck()
 {
-    main_window_view.m_ui.installed_packages_list->addItems(QStringList() << "gimp 2.10.32-3.1" << "qtcreator 9.0.1-1.1");
+    main_window_view.m_ui.installed_packages_list->addItems(QStringList() << "a52dec-0.7.4-12.1" << "alsa-utils-1.2.8-1.1");
     QTest::mouseClick(&*main_window_view.m_ui.search_installed_packages_checkbox, Qt::LeftButton);
     QVERIFY(!main_window_view.m_ui.search_installed_packages_lineedit->isHidden());
 }
@@ -171,7 +172,7 @@ void TestInstalledPackagesColumn::searchInputOptionVisibleAfterButtonCheck()
 
 void TestInstalledPackagesColumn::reversedSortOptionVisibleAfterButtonCheck()
 {
-    main_window_view.m_ui.installed_packages_list->addItems(QStringList() << "gimp 2.10.32-3.1" << "qtcreator 9.0.1-1.1");
+    main_window_view.m_ui.installed_packages_list->addItems(QStringList() << "a52dec-0.7.4-12.1" << "alsa-utils-1.2.8-1.1");
     QTest::mouseClick(&*main_window_view.m_ui.search_installed_packages_checkbox, Qt::LeftButton);
     QVERIFY(!main_window_view.m_ui.sort_installed_packages->isHidden());
 }
@@ -179,7 +180,7 @@ void TestInstalledPackagesColumn::reversedSortOptionVisibleAfterButtonCheck()
 
 void TestInstalledPackagesColumn::searchInputOptionHiddenAfterButtonUncheck()
 {
-    main_window_view.m_ui.installed_packages_list->addItems(QStringList() << "gimp 2.10.32-3.1" << "qtcreator 9.0.1-1.1");
+    main_window_view.m_ui.installed_packages_list->addItems(QStringList() << "a52dec-0.7.4-12.1" << "alsa-utils-1.2.8-1.1");
     QTest::mouseClick(&*main_window_view.m_ui.search_installed_packages_checkbox, Qt::LeftButton);
     QTest::mouseClick(&*main_window_view.m_ui.search_installed_packages_checkbox, Qt::LeftButton);
     QVERIFY(main_window_view.m_ui.search_installed_packages_lineedit->isHidden());
@@ -262,6 +263,21 @@ void TestInstalledPackagesColumn::packageOrderIsAlphabeticallByDefault()
 }
 
 
+void TestInstalledPackagesColumn::checkedPackageIsStillCheckedAfterTextInputClear()
+{
+    auto column = QSharedPointer<MockInstalledPackagesColumn>(new MockInstalledPackagesColumn(main_window_view.m_ui.installed_packages_list, main_window_view.m_ui.search_installed_packages_lineedit, &main_window_view), &QObject::deleteLater);
+    column->fill();
+    QTest::keyClicks(&*main_window_view.m_ui.search_installed_packages_lineedit, "a52");
+    auto items = main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard);
+    qDebug() << "count after filter: " << main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).count();
+    items.first()->setCheckState(Qt::Checked);
+    qDebug() << "checkstate: " << items.first()->checkState();
+    QTest::keyClicks(&*main_window_view.m_ui.search_installed_packages_lineedit, "");
+    auto itemsAfterClear = main_window_view.m_ui.installed_packages_list->findItems("a52", Qt::MatchStartsWith);
+    QCOMPARE(itemsAfterClear.first()->checkState(), Qt::Checked);
+}
+
+
 void TestInstalledPackagesColumn::textInputSortBya52IsEqualToOne()
 {
     auto column = QSharedPointer<MockInstalledPackagesColumn>(new MockInstalledPackagesColumn(main_window_view.m_ui.installed_packages_list, main_window_view.m_ui.search_installed_packages_lineedit, &main_window_view), &QObject::deleteLater);
@@ -269,6 +285,7 @@ void TestInstalledPackagesColumn::textInputSortBya52IsEqualToOne()
     QTest::keyClicks(&*main_window_view.m_ui.search_installed_packages_lineedit, "a52");
     QCOMPARE(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).count(), 1);
 }
+
 
 
 void TestInstalledPackagesColumn::textInputSortByaaIsEqualToZero()
@@ -325,6 +342,7 @@ void TestInstalledPackagesColumn::cleanup()
 {
     connect(main_window_view.m_ui.sort_installed_packages, &QCheckBox::toggled, main_window_view.installed_packages_column.data(), &InstalledPackagesColumn::sort);
     main_window_view.m_ui.installed_packages_list->clear();
+    main_window_view.m_ui.search_installed_packages_lineedit->clear();
     main_window_view.m_ui.console_view_uninstall->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.search_installed_packages_checkbox->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.search_installed_packages_checkbox->setDisabled(true);

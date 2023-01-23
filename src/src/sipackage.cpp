@@ -19,9 +19,10 @@ SiPackage::SiPackage(SiPackage& si_package) :
     repo()
 {
     setName(si_package.getName());
+    setNo(si_package.getNo());
     setVersion(si_package.getVersion());
     setRepo(si_package.getRepo());
-    setText(text());
+    setText(getName().trimmed() + "-" + getVersion().trimmed() + " [" + getRepo().trimmed() + "]");
     setFlags(si_package.flags());
     setCheckState(si_package.checkState());
     setToolTip(si_package.toolTip());

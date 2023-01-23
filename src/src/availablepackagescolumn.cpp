@@ -39,8 +39,12 @@ void AvailablePackagesColumn::fill()
 
     for(;it != pak_packages.end(); it++)
     {
-        list_widget->insertItem(i, new SiPackage(*it));
-        packages_sorter->updateOriginalList(i, new SiPackage(*it));
+        auto package_item = new SiPackage(*it);
+        package_item->setNo(i+1);
+        list_widget->insertItem(i, package_item);
+        auto package_item_unsorted = new SiPackage(*it);
+        package_item_unsorted->setNo(i+1);
+        packages_sorter->updateOriginalList(i, package_item_unsorted);
         i++;
     }
 

@@ -36,8 +36,11 @@ void InstalledPackagesColumn::fill()
     for(;it != pak_packages.end(); it++)
     {
         QiPackage* package_item = new QiPackage(*it);
+        package_item->setNo(i+1);
         list_widget->insertItem(i, package_item);
-        packages_sorter->updateOriginalList(i, new QiPackage(*it));
+        QiPackage* package_item_unsorted = new QiPackage(*it);
+        package_item_unsorted->setNo(i+1);
+        packages_sorter->updateOriginalList(i, package_item_unsorted);
         i++;
     }
 

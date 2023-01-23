@@ -23,7 +23,8 @@ public:
         QListWidgetItem(),
         name(),
         version(),
-        source(new_source)
+        source(new_source),
+        no(0)
     {
         Q_UNUSED(package_content)
     }
@@ -34,13 +35,17 @@ public:
         name = package.name;
         version = package.version;
         source = package.source;
+        no = package.no;
     }
 
     ~Package() override = default;
 
+    virtual int getNo() const { return no; };
     virtual const QString& getName() const { return name; };
     virtual const QString& getVersion() const { return version; };
     virtual Package::Source getSource() const { return source; }
+
+    virtual void setNo(const int new_no) { no = new_no; };
 
 protected:
     virtual void updateData(QString& packageContent, int name_line, int version_line)
@@ -81,4 +86,5 @@ protected:
     QString name;
     QString version;
     Package::Source source;
+    int no;
 };

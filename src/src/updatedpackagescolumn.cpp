@@ -38,8 +38,12 @@ void UpdatedPackagesColumn::fill()
 
     for(;it != pak_packages.end(); it++)
     {
-        list_widget->insertItem(i, new CheckPackage(it.key(), it.value()));
-        packages_sorter->updateOriginalList(i, new CheckPackage(it.key(), it.value()));
+        CheckPackage* package_item = new CheckPackage(it.key(), it.value());
+        package_item->setNo(i + 1);
+        list_widget->insertItem(i, package_item);
+        CheckPackage* package_item_unsorted = new CheckPackage(it.key(), it.value());
+        package_item_unsorted->setNo(i + 1);
+        packages_sorter->updateOriginalList(i, package_item_unsorted);
         i++;
     }
 
