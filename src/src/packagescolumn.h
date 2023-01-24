@@ -29,7 +29,7 @@ public:
         QObject::connect(list_widget, &QListWidget::itemChanged, packages_sorter.get(), &Sorter::setCheckStateForUnsortedList);
     };
 
-    virtual ~PackagesColumn() = default;
+    ~PackagesColumn() override = default;
 
     virtual void fill() {};
 

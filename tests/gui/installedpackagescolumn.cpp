@@ -86,7 +86,7 @@ private slots:
     void uninstallButtonDisabledOnStart();
     void uninstallButtonEnabledAfterPackageCheck();
     void uninstallButtonDisabledAfterPackageUncheck();
-    void uninstallButtonEnabledAfterPackagesRemove();
+    void uninstallButtonDisabledAfterPackagesRemove();
     void packagesOrderIsReversedAfterButtonCheck();
     void packageOrderIsAlphabeticallByDefault();
     void textInputSortBya52IsEqualToOne();
@@ -222,7 +222,7 @@ void TestInstalledPackagesColumn::uninstallButtonDisabledAfterPackageUncheck()
 }
 
 
-void TestInstalledPackagesColumn::uninstallButtonEnabledAfterPackagesRemove()
+void TestInstalledPackagesColumn::uninstallButtonDisabledAfterPackagesRemove()
 {
     QString package_content1 = package_content_a52dec;
     QScopedPointer<MockQiPackage> package1(new MockQiPackage(package_content1));
@@ -243,8 +243,8 @@ void TestInstalledPackagesColumn::packagesOrderIsReversedAfterButtonCheck()
    column->fill();
    QTest::mouseClick(&*main_window_view.m_ui.sort_installed_packages, Qt::LeftButton);
    qDebug() << "Sort button checkstate: " << main_window_view.m_ui.sort_installed_packages->checkState();
-   auto first_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).first());
-   auto last_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).last());
+   auto first_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).constFirst());
+   auto last_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).constLast());
    disconnect(main_window_view.m_ui.sort_installed_packages, &QCheckBox::toggled, column.data(), &MockInstalledPackagesColumn::sort);
    QCOMPARE(last_package->text(), "a52dec-0.7.4-12.1");
    QCOMPARE(first_package->text(), "alsa-utils-1.2.8-1.1");
@@ -255,8 +255,8 @@ void TestInstalledPackagesColumn::packageOrderIsAlphabeticallByDefault()
 {
     auto column = QSharedPointer<MockInstalledPackagesColumn>(new MockInstalledPackagesColumn(main_window_view.m_ui.installed_packages_list, main_window_view.m_ui.search_installed_packages_lineedit, &main_window_view), &QObject::deleteLater);
     column->fill();
-    auto first_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).first());
-    auto last_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).last());
+    auto first_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).constFirst());
+    auto last_package = dynamic_cast<QiPackage*>(main_window_view.m_ui.installed_packages_list->findItems("*", Qt::MatchWildcard).constLast());
     disconnect(main_window_view.m_ui.sort_installed_packages, &QCheckBox::toggled, column.data(), &MockInstalledPackagesColumn::sort);
     QCOMPARE(first_package->text(), "a52dec-0.7.4-12.1");
     QCOMPARE(last_package->text(), "alsa-utils-1.2.8-1.1");

@@ -86,7 +86,7 @@ private slots:
     void installButtonDisabledOnStart();
     void installButtonEnabledAfterPackageCheck();
     void installButtonDisabledAfterPackageUncheck();
-    void installButtonEnabledAfterPackagesRemove();
+    void installButtonDisabledAfterPackagesRemove();
     void packagesOrderIsReversedAfterButtonCheck();
     void packageOrderIsAlphabeticallByDefault();
     void checkedPackageIsStillCheckedAfterTextInputClear();
@@ -222,7 +222,7 @@ void TestAvailablePackagesColumn::installButtonDisabledAfterPackageUncheck()
 }
 
 
-void TestAvailablePackagesColumn::installButtonEnabledAfterPackagesRemove()
+void TestAvailablePackagesColumn::installButtonDisabledAfterPackagesRemove()
 {
     QString package_content1 = package_content_a52dec;
     QScopedPointer<MockSiPackage> package1(new MockSiPackage(package_content1));
@@ -243,8 +243,8 @@ void TestAvailablePackagesColumn::packagesOrderIsReversedAfterButtonCheck()
    column->fill();
    QTest::mouseClick(&*main_window_view.m_ui.sort_available_packages, Qt::LeftButton);
    qDebug() << "Sort button checkstate: " << main_window_view.m_ui.sort_available_packages->checkState();
-   auto first_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).first());
-   auto last_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).last());
+   auto first_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).constFirst());
+   auto last_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).constLast());
    disconnect(main_window_view.m_ui.sort_available_packages, &QCheckBox::toggled, column.data(), &MockAvailablePackagesColumn::sort);
    QCOMPARE(last_package->text(), "a52dec-0.7.4-12.1 [cachyos-v3]");
    QCOMPARE(first_package->text(), "alsa-utils-1.2.8-1.1 [extra-x86-64-v3]");
@@ -255,8 +255,8 @@ void TestAvailablePackagesColumn::packageOrderIsAlphabeticallByDefault()
 {
     auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, &main_window_view), &QObject::deleteLater);
     column->fill();
-    auto first_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).first());
-    auto last_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).last());
+    auto first_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).constFirst());
+    auto last_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).constLast());
     disconnect(main_window_view.m_ui.sort_available_packages, &QCheckBox::toggled, column.data(), &MockAvailablePackagesColumn::sort);
     QCOMPARE(first_package->text(), "a52dec-0.7.4-12.1 [cachyos-v3]");
     QCOMPARE(last_package->text(), "alsa-utils-1.2.8-1.1 [extra-x86-64-v3]");

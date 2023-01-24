@@ -46,6 +46,11 @@ const QString package_content_a52dec_si = "Repository      : cachyos-v3\n"
                                           "Build Date      : wto, 27 gru 2022, 11:04:37\n"
                                           "Validated By    : MD5 Sum  SHA-256 Sum  Signature\n";
 
+const QString packages_to_update_content_binutils = "binutils                        2.40-1.1 => 2.40-2.1";
+const QString packages_to_update_content_ddrescue = "ddrescue                        1.26-1.1 => 1.27-1.1";
+const QString packages_to_update_content_fwupd = "fwupd                           1.8.9-2.1 => 1.8.10-1.1";
+const QString packages_to_update_content_konsole = "repo-refreshed/konsole          22.12.1-1.1 => 22.12.1-1.2";
+
 
 const QString package_content_alsa_utils = "Name            : alsa-utils\n"
                                            "Version         : 1.2.8-1.1\n"
@@ -106,4 +111,5 @@ public:
 
     friend class TestInstalledPackagesColumn;
     friend class TestAvailablePackagesColumn;
+    friend class TestUpdatedPackagesColumn;
 };

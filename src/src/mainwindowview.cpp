@@ -281,10 +281,17 @@ void MainWindowView::connectSignalsForInstalledPackages()
 
 void MainWindowView::connectSignalsForUpdatedPackages()
 {
+
     if (m_ui.packages_to_update_list->count() > 0)
         m_ui.packages_to_update_list->show();
 
-    if (m_ui.packages_to_update_list->count() == 0 && actions_access_checker->isOnline())
+    if (m_ui.packages_to_update_list->count() == 0 && (actions_access_checker.isNull() || !actions_access_checker->isOnline()))
+    {
+        m_ui.packages_to_update_label->setStyleSheet("color: black; font-size: 15px;");
+        m_ui.packages_to_update_label->setText(i18n("Cannot be updated - try to refresh"));
+    }
+
+    if (m_ui.packages_to_update_list->count() == 0 && !actions_access_checker.isNull() && actions_access_checker->isOnline())
     {
         m_ui.packages_to_update_label->setStyleSheet("color: black; font-size: 15px;");
         m_ui.packages_to_update_label->setText(i18n("There aren't packages to update"));

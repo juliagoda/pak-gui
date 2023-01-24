@@ -96,6 +96,9 @@ void Sorter::sortInstalledPackagesByText(const QString &text)
 
 void Sorter::setCheckStateForUnsortedList(QListWidgetItem* item)
 {
+    if (untouched_list_widget.isNull() || untouched_list_widget->count() == 0)
+        return;
+
     Package* package = dynamic_cast<Package*>(item);
     untouched_list_widget->item(package->getNo() - 1)->setCheckState(item->checkState());
 }

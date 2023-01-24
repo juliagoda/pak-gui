@@ -20,7 +20,7 @@ public Q_SLOTS:
     void prepareBeforeProcessRun();
 
 protected:
-    QHash<QString, Package::Source> getPackagesList();
+    virtual QHash<QString, Package::Source> getPackagesList();
 
 signals:
     void currentPackagesCountChanged(int new_current_packages_count);
