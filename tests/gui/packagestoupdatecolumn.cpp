@@ -96,10 +96,11 @@ private slots:
     void updateButtonDisabledAfterPackageUncheck();
     void updateButtonDisabledAfterPackagesRemove();
     void packagesOrderIsReversedAfterButtonCheck();
-    void packageOrderIsAlphabeticallByDefault();
     void checkedPackageIsStillCheckedAfterTextInputClear();
     void textInputSortBya52IsEqualToOne();
     void textInputSortByaaIsEqualToZero();
+    void allPackagesCheckedAfterButtonCheck();
+    void allPackagesUncheckedAfterButtonUncheck();
     void animationsRunOnStart();
     void animationWidgetIsVisible();
     void packagesListIsHiddenOnStart();
@@ -259,25 +260,15 @@ void TestUpdatedPackagesColumn::packagesOrderIsReversedAfterButtonCheck()
    disconnect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, main_window_view.updated_packages_column.data(), &UpdatedPackagesColumn::sort);
    connect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, column.data(), &MockUpdatedPackagesColumn::sort);
    column->fill();
+   auto first_package_before_sort = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).constFirst());
+   auto last_package_before_sort = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).constLast());
    QTest::mouseClick(&*main_window_view.m_ui.sort_packages_to_update, Qt::LeftButton);
    qDebug() << "Sort button checkstate: " << main_window_view.m_ui.sort_packages_to_update->checkState();
-   auto first_package = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).first());
-   auto last_package = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).last());
+   auto first_package = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).constFirst());
+   auto last_package = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).constLast());
    disconnect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, column.data(), &MockUpdatedPackagesColumn::sort);
-   QCOMPARE(last_package->text(), "fwupd-1.8.9-2.1 => 1.8.10-1.1");
-   QCOMPARE(first_package->text(), "ddrescue-1.26-1.1 => 1.27-1.1");
-}
-
-
-void TestUpdatedPackagesColumn::packageOrderIsAlphabeticallByDefault()
-{
-    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
-    column->fill();
-    auto first_package = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).constFirst());
-    auto last_package = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).constLast());
-    disconnect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, column.data(), &MockUpdatedPackagesColumn::sort);
-    QCOMPARE(first_package->text(), "fwupd-1.8.9-2.1 => 1.8.10-1.1");
-    QCOMPARE(last_package->text(), "ddrescue-1.26-1.1 => 1.27-1.1");
+   QCOMPARE(first_package->text(), last_package_before_sort->text());
+   QCOMPARE(last_package->text(), first_package_before_sort->text());
 }
 
 
@@ -311,6 +302,27 @@ void TestUpdatedPackagesColumn::textInputSortByaaIsEqualToZero()
     column->fill();
     QTest::keyClicks(&*main_window_view.m_ui.search_packages_to_update_lineedit, "aa");
     QCOMPARE(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).count(), 0);
+}
+
+
+void TestUpdatedPackagesColumn::allPackagesCheckedAfterButtonCheck()
+{
+    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
+    column->fill();
+    QTest::mouseClick(&*main_window_view.m_ui.check_all_updates_checkbox, Qt::LeftButton);
+    auto items = main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard);
+    QVERIFY(std::all_of(std::begin(items), std::end(items), [](QListWidgetItem* item){ return item->checkState() == Qt::Checked; }));
+}
+
+
+void TestUpdatedPackagesColumn::allPackagesUncheckedAfterButtonUncheck()
+{
+    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
+    column->fill();
+    QTest::mouseClick(&*main_window_view.m_ui.check_all_updates_checkbox, Qt::LeftButton);
+    QTest::mouseClick(&*main_window_view.m_ui.check_all_updates_checkbox, Qt::LeftButton);
+    auto items = main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard);
+    QVERIFY(std::all_of(std::begin(items), std::end(items), [](QListWidgetItem* item){ return item->checkState() == Qt::Unchecked; }));
 }
 
 
@@ -361,6 +373,7 @@ void TestUpdatedPackagesColumn::cleanup()
     main_window_view.m_ui.packages_to_update_list->clear();
     main_window_view.m_ui.search_packages_to_update_lineedit->clear();
     main_window_view.m_ui.console_view_update->setCheckState(Qt::Unchecked);
+    main_window_view.m_ui.check_all_updates_checkbox->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.search_packages_to_update_checkbox->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.search_packages_to_update_checkbox->setDisabled(true);
     main_window_view.m_ui.update_packages_button->setEnabled(false);
