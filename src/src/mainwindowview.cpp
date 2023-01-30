@@ -43,12 +43,6 @@ MainWindowView::MainWindowView(QWidget *parent)
       is_operation_running(false)
 {
     m_ui.setupUi(this);
-    initColumns();
-    initSignals();
-    hideWidgets();
-    startInternetCheckTimer();
-    startPackagesCheckTimer();
-    startAnimations();
 }
 
 
@@ -61,6 +55,16 @@ void MainWindowView::setProcess(QSharedPointer<Process> new_process)
 void MainWindowView::setActionsAccessChecker(QSharedPointer<ActionsAccessChecker> new_actions_access_checker)
 {
     actions_access_checker = new_actions_access_checker;
+}
+
+void MainWindowView::init()
+{
+    initColumns();
+    initSignals();
+    hideWidgets();
+    startInternetCheckTimer();
+    startPackagesCheckTimer();
+    startAnimations();
 }
 
 

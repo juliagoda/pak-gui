@@ -26,11 +26,13 @@ class MainWindowView : public QWidget
 {
     Q_OBJECT
 
+    Q_SLOT void generateOutput(Process::Task task, const QString& line);
 public:
     explicit MainWindowView(QWidget* parent = nullptr);
     ~MainWindowView() = default;
     void setProcess(QSharedPointer<Process> new_process);
     void setActionsAccessChecker(QSharedPointer<ActionsAccessChecker> new_actions_access_checker);
+    void init();
     void run();
     void preparePreviews();
 
@@ -50,7 +52,6 @@ private Q_SLOTS:
     void connectSignalsForAvailablePackages();
     void connectSignalsForInstalledPackages();
     void connectSignalsForUpdatedPackages();
-    void generateOutput(Process::Task task, const QString& line);
     void toggleWidgetsAccess(bool is_online);
     void startInternetCheckTimer();
 

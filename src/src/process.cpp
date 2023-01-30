@@ -37,7 +37,7 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
 }
 
 
-void Process::run(Task new_task,
+void Process::run(Process::Task new_task,
                   QStringList new_checked_packages)
 {
     if (!askQuestion(new_task, new_checked_packages))
@@ -63,7 +63,7 @@ void Process::updateCleanCommand(bool is_auracle_installed)
 }
 
 
-bool Process::askQuestion(Task new_task,
+bool Process::askQuestion(Process::Task new_task,
                           QStringList new_checked_packages)
 {
     int answer = QMessageBox::information(parent, messages_map.value(new_task).first,
@@ -80,7 +80,7 @@ bool Process::askQuestion(Task new_task,
 }
 
 
-void Process::startProcess(Task new_task)
+void Process::startProcess(Process::Task new_task)
 {
     Logger::logger()->logInfo(QStringLiteral("Started task \"%1\"").arg(QVariant::fromValue(new_task).toString()));
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
@@ -100,7 +100,7 @@ void Process::startProcess(Task new_task)
 }
 
 
-void Process::connectSignals(QSharedPointer<QProcess>& process, Task new_task)
+void Process::connectSignals(QSharedPointer<QProcess>& process, Process::Task new_task)
 {
     QObject::connect(process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
         [=](QProcess::ProcessError process_error)

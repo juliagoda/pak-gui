@@ -85,7 +85,7 @@ add_executable(pak-tests ${CMAKE_SOURCE_DIR}/tests/main.cpp ${CMAKE_SOURCE_DIR}/
 add_executable(installed-packages-column ${CMAKE_SOURCE_DIR}/tests/gui/installedpackagescolumn.cpp  ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
 add_executable(available-packages-column ${CMAKE_SOURCE_DIR}/tests/gui/availablepackagescolumn.cpp  ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
 add_executable(packages-to-update-column ${CMAKE_SOURCE_DIR}/tests/gui/packagestoupdatecolumn.cpp  ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
-add_executable(main-window-view ${CMAKE_SOURCE_DIR}/tests/gui/mainwindowview.cpp  ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
+add_executable(main-window ${CMAKE_SOURCE_DIR}/tests/gui/mainwindow.cpp  ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
 add_test(NAME mainwindow-gui COMMAND mainwindow-gui)
 
 target_link_libraries(pak-tests
@@ -132,7 +132,7 @@ target_link_libraries(packages-to-update-column
     pak-gui-src
 )
 
-target_link_libraries(main-window-view
+target_link_libraries(main-window
     GTest::gtest
     GTest::gtest_main
     KF5::CoreAddons

@@ -21,6 +21,7 @@ class MainWindow : public KXmlGuiWindow
 public:
     MainWindow();
     virtual ~MainWindow() = default;
+    void run();
 
 public Q_SLOTS:
     void startSystemTray();
@@ -39,6 +40,8 @@ signals:
 
 protected:
     QPointer<MainWindowView> main_window_view;
+    void prepareMainWindowView(MainWindowView* new_main_window_view);
+    void prepareProcess(QSharedPointer<Process> new_process);
 
 private:
     void startTimerOnOperation(const QDateTime& time,
@@ -51,6 +54,7 @@ private:
                    QKeySequence key_sequence);
     void connectSignalForUpdateCheck();
     void connectSignalForHistoryStore();
+    void initSignals();
 
     QTimer timer_on_updates;
     QTimer timer_on_logs;

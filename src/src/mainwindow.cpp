@@ -20,58 +20,19 @@
 MainWindow::MainWindow()
     : KXmlGuiWindow(),
       actions_access_checker(ActionsAccessChecker::actionsAccessChecker(this)),
-      process(QSharedPointer<Process>(new Process(actions_access_checker, this))),
       system_tray_icon(nullptr)
 {
-    main_window_view = new MainWindowView(this);
-    main_window_view->setProcess(process);
-    main_window_view->setActionsAccessChecker(actions_access_checker);
-    main_window_view->preparePreviews();
-    main_window_view->run();
+
+}
+
+
+void MainWindow::run()
+{
+    prepareProcess(QSharedPointer<Process>(new Process(actions_access_checker, this)));
+    prepareMainWindowView(new MainWindowView(this));
     setCentralWidget(main_window_view);
     startSystemTray();
-
-    QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::requiredPackagesNotFound, [this]() { emit closeApp(); });
-    Settings::saveInitDateTimesWhenEmpty();
-    setTimersOnChecks();
-
-    KActionCollection* actionCollection = this->actionCollection();
-    setAction(update_action, i18n("&Update"), QString("update"), QKeySequence(Qt::CTRL, Qt::Key_U));
-    connect(update_action, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
-
-    setAction(refresh_action, i18n("&Refresh"), QString("refresh"), QKeySequence(Qt::CTRL, Qt::Key_R));
-    connect(refresh_action, &QAction::triggered, main_window_view, &MainWindowView::refresh);
-    connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
-    connect(main_window_view, &MainWindowView::initEnded, this, &MainWindow::enableActions);
-    connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
-    connect(this, &MainWindow::widgetsChanged, main_window_view, &MainWindowView::updateWidgets);
-    connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
-    connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed) {
-        update_mirrors_action->setEnabled(is_installed); });
-
-    setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
-    connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
-
-    setAction(search_action, i18n("&Search"), QString("search"), QKeySequence(Qt::CTRL, Qt::Key_S));
-    connect(search_action, &QAction::triggered, main_window_view, &MainWindowView::searchPackage);
-
-    setAction(update_all_action, i18n("&Update all packages"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A));
-    connect(update_all_action, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
-
-    setAction(update_mirrors_action, i18n("&Update mirrors"), QString("updateMirrors"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_M));
-    connect(update_mirrors_action, &QAction::triggered, this, [this]() { process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
-
-    setAction(clean_action, i18n("&Clean"), QString("clean"), QKeySequence(Qt::CTRL, Qt::Key_C));
-    connect(clean_action, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
-
-    setAction(print_statistics_action, i18n("&Statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_T));
-    connect(print_statistics_action, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
-
-    disableActions();
-
-    KStandardAction::quit(main_window_view, SLOT(checkRunningThreadsBeforeQuit()), actionCollection);
-    KStandardAction::preferences(this, SLOT(settingsConfigure()), actionCollection);
-
+    initSignals();
     setupGUI(Default, "pak-gui.rc");
     setXMLFile("pak-gui.rc");
 }
@@ -100,6 +61,23 @@ void MainWindow::disableOnlineActions()
     clean_action->setDisabled(false);
     print_statistics_action->setDisabled(false);
     search_action->setDisabled(true);
+}
+
+
+void MainWindow::prepareMainWindowView(MainWindowView* main_window_view)
+{
+    this->main_window_view = main_window_view;
+    main_window_view->setProcess(process);
+    main_window_view->setActionsAccessChecker(actions_access_checker);
+    main_window_view->init();
+    main_window_view->preparePreviews();
+    main_window_view->run();
+}
+
+
+void MainWindow::prepareProcess(QSharedPointer<Process> new_process)
+{
+    process = new_process;
 }
 
 
@@ -186,6 +164,51 @@ void MainWindow::connectSignalForHistoryStore()
                               TimeConverter::daysToMilliseconds(Settings::records()->historyStoreTimeDays()),
                               QString("logs remove"));
     }
+}
+
+
+void MainWindow::initSignals()
+{
+    QObject::connect(actions_access_checker.get(), &ActionsAccessChecker::requiredPackagesNotFound, [this]() { emit closeApp(); });
+    Settings::saveInitDateTimesWhenEmpty();
+    setTimersOnChecks();
+
+    KActionCollection* actionCollection = this->actionCollection();
+    setAction(update_action, i18n("&Update"), QString("update"), QKeySequence(Qt::CTRL, Qt::Key_U));
+    connect(update_action, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
+
+    setAction(refresh_action, i18n("&Refresh"), QString("refresh"), QKeySequence(Qt::CTRL, Qt::Key_R));
+    connect(refresh_action, &QAction::triggered, main_window_view, &MainWindowView::refresh);
+    connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
+    connect(main_window_view, &MainWindowView::initEnded, this, &MainWindow::enableActions);
+    connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
+    connect(this, &MainWindow::widgetsChanged, main_window_view, &MainWindowView::updateWidgets);
+    connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
+    connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed) {
+        update_mirrors_action->setEnabled(is_installed); });
+
+    setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
+    connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
+
+    setAction(search_action, i18n("&Search"), QString("search"), QKeySequence(Qt::CTRL, Qt::Key_S));
+    connect(search_action, &QAction::triggered, main_window_view, &MainWindowView::searchPackage);
+
+    setAction(update_all_action, i18n("&Update all packages"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A));
+    connect(update_all_action, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
+
+    setAction(update_mirrors_action, i18n("&Update mirrors"), QString("updateMirrors"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_M));
+    connect(update_mirrors_action, &QAction::triggered, this, [this]() { process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
+
+    setAction(clean_action, i18n("&Clean"), QString("clean"), QKeySequence(Qt::CTRL, Qt::Key_C));
+    connect(clean_action, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
+
+    setAction(print_statistics_action, i18n("&Statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_T));
+    connect(print_statistics_action, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
+
+    disableActions();
+
+    KStandardAction::quit(main_window_view, SLOT(checkRunningThreadsBeforeQuit()), actionCollection);
+    KStandardAction::preferences(this, SLOT(settingsConfigure()), actionCollection);
 }
 
 

@@ -64,6 +64,7 @@ int main(int argc, char **argv)
            Logger::logger()->logWarning(QStringLiteral("Path %1 couldn't be created!").arg(config_path));
 
     QPointer<MainWindow> window = new MainWindow;
+    window->run();
     QObject::connect(window, &MainWindow::closeApp, &application, &QCoreApplication::quit);
     window->show();
 

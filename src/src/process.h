@@ -32,8 +32,7 @@ public:
 
     Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent);
     virtual ~Process() = default;
-    void run(Task new_task,
-             QStringList new_checked_packages = QStringList());
+    virtual void run(Task new_task, QStringList new_checked_packages = QStringList());
 
 private Q_SLOTS:
     void updateCleanCommand(bool is_auracle_installed);
