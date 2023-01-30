@@ -103,8 +103,8 @@ class MockMainWindowView : public MainWindowView
     Q_OBJECT
 
 public:
-    MockMainWindowView() :
-        MainWindowView(new QWidget)
+    MockMainWindowView(QWidget* new_widget) :
+        MainWindowView(new_widget)
     {
 
     }
@@ -112,4 +112,22 @@ public:
     friend class TestInstalledPackagesColumn;
     friend class TestAvailablePackagesColumn;
     friend class TestUpdatedPackagesColumn;
+};
+
+
+class MockProcess : public Process
+{
+    Q_OBJECT
+
+public:
+    MockProcess(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
+        Process(new_actions_access_checker, new_parent)
+    {
+
+    }
+
+    void startProcess(Task new_task) override
+    {
+        Q_UNUSED(new_task)
+    }
 };

@@ -108,8 +108,9 @@ private:
 
 TestInstalledPackagesColumn::TestInstalledPackagesColumn(QObject* parent) :
     QObject(parent),
-    main_window_view()
+    main_window_view(new QWidget)
 {
+    main_window_view.init();
     QTestEventLoop::instance().enterLoop(1);
 }
 

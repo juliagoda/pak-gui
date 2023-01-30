@@ -7,6 +7,7 @@
 #include <QStringList>
 #include <QSharedPointer>
 
+
 class ActionsAccessChecker;
 
 class Process : public QObject
@@ -31,8 +32,11 @@ public:
     Q_ENUM(Task)
 
     Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent);
-    virtual ~Process() = default;
-    virtual void run(Task new_task, QStringList new_checked_packages = QStringList());
+    ~Process() override = default;
+    void run(Task new_task, QStringList new_checked_packages = QStringList());
+
+protected:
+    virtual void startProcess(Task new_task);
 
 private Q_SLOTS:
     void updateCleanCommand(bool is_auracle_installed);
@@ -48,7 +52,6 @@ private:
     void emitSideTask(Process::Task task);
     QString questionForm(QStringList& new_checked_packages, Task new_task);
     bool askQuestion(Task new_task, QStringList new_checked_packages);
-    void startProcess(Task new_task);
     void connectSignals(QSharedPointer<QProcess> &process, Task new_task);
 
     QMap<Task, QPair<QString, QString>> messages_map;
