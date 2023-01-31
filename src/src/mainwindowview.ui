@@ -1028,6 +1028,9 @@ padding: 3px;</string>
           </item>
           <item>
            <widget class="QLabel" name="repo_led_label">
+            <property name="toolTip">
+             <string>Internet connection state</string>
+            </property>
             <property name="text">
              <string>Repositories</string>
             </property>
@@ -1038,6 +1041,9 @@ padding: 3px;</string>
           </item>
           <item>
            <widget class="QLabel" name="aur_led_label">
+            <property name="toolTip">
+             <string>Internet connection state and auracle-git package presence</string>
+            </property>
             <property name="text">
              <string>AUR</string>
             </property>
@@ -1048,6 +1054,9 @@ padding: 3px;</string>
           </item>
           <item>
            <widget class="QLabel" name="polaur_led_label">
+            <property name="toolTip">
+             <string>Internet connection state and git package presence</string>
+            </property>
             <property name="text">
              <string>POLAUR</string>
             </property>

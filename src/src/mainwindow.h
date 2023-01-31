@@ -39,12 +39,24 @@ signals:
     void updatedPackageInfoList();
 
 protected:
-    QPointer<MainWindowView> main_window_view;
-    QSharedPointer<ActionsAccessChecker> actions_access_checker;
-    QSharedPointer<Process> process;
     void prepareMainWindowView(MainWindowView* new_main_window_view);
     void prepareProcess(QSharedPointer<Process> new_process);
     void initSignals();
+
+    QPointer<MainWindowView> main_window_view;
+    QSharedPointer<ActionsAccessChecker> actions_access_checker;
+    QSharedPointer<Process> process;
+    QTimer timer_on_updates;
+    QTimer timer_on_logs;
+    QPointer<QAction> update_action;
+    QPointer<QAction> refresh_action;
+    QPointer<QAction> download_action;
+    QPointer<QAction> search_action;
+    QPointer<QAction> print_statistics_action;
+    QPointer<QAction> update_all_action;
+    QPointer<QAction> update_mirrors_action;
+    QPointer<QAction> clean_action;
+    QScopedPointer<SystemTray> system_tray_icon;
 
 private:
     void startTimerOnOperation(const QDateTime& time,
@@ -57,16 +69,4 @@ private:
                    QKeySequence key_sequence);
     void connectSignalForUpdateCheck();
     void connectSignalForHistoryStore();
-
-    QTimer timer_on_updates;
-    QTimer timer_on_logs;
-    QPointer<QAction> update_action;
-    QPointer<QAction> refresh_action;
-    QPointer<QAction> download_action;
-    QPointer<QAction> search_action;
-    QPointer<QAction> print_statistics_action;
-    QPointer<QAction> update_all_action;
-    QPointer<QAction> update_mirrors_action;
-    QPointer<QAction> clean_action;
-    QScopedPointer<SystemTray> system_tray_icon;
 };

@@ -33,7 +33,7 @@ public:
     void setProcess(QSharedPointer<Process> new_process);
     void setActionsAccessChecker(QSharedPointer<ActionsAccessChecker> new_actions_access_checker);
     void init();
-    void run();
+    virtual void run();
     void preparePreviews();
 
 public Q_SLOTS:
@@ -43,7 +43,7 @@ public Q_SLOTS:
     void downloadPackage();
     void searchPackage();
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
-    void checkUpdates();
+    virtual void checkUpdates();
     void updateWidgets();
     void checkRunningThreadsBeforeQuit();
 
@@ -72,6 +72,10 @@ protected:
     QSharedPointer<InstalledPackagesColumn> installed_packages_column;
     QSharedPointer<UpdatedPackagesColumn> updated_packages_column;
     QSharedPointer<SpinningAnimation> spinning_animation;
+    QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
+    QSharedPointer<ProgressView> progress_view;
+
+    virtual void showFinishInformation();
 
 private:
     void stopRunningThread(QSharedPointer<QThread> &thread);
@@ -88,8 +92,6 @@ private:
 
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
-    QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
-    QSharedPointer<ProgressView> progress_view;
     QPointer<QTimer> internet_connection_timer;
     bool is_operation_running;
 };

@@ -106,12 +106,28 @@ public:
     MockMainWindowView(QWidget* new_widget) :
         MainWindowView(new_widget)
     {
+        // ...
+    }
 
+    void checkUpdates() override
+    {
+        // ...
+    }
+
+    void run() override
+    {
+        // ...
+    }
+
+    void showFinishInformation() override
+    {
+        // ...
     }
 
     friend class TestInstalledPackagesColumn;
     friend class TestAvailablePackagesColumn;
     friend class TestUpdatedPackagesColumn;
+    friend class TestMainWindow;
 };
 
 
@@ -123,7 +139,7 @@ public:
     MockProcess(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
         Process(new_actions_access_checker, new_parent)
     {
-
+        // ...
     }
 
     void startProcess(Task new_task) override

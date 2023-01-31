@@ -35,14 +35,17 @@
 MainWindowView::MainWindowView(QWidget *parent)
     : QWidget(parent),
       spinning_animation(new SpinningAnimation),
-      process(nullptr),
-      actions_access_checker(nullptr),
       generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
+      process(nullptr),
       progress_view(QSharedPointer<ProgressView>(new ProgressView)),
+      actions_access_checker(nullptr),
       internet_connection_timer(new QTimer(this)),
       is_operation_running(false)
 {
     m_ui.setupUi(this);
+    m_ui.aur_led_label->setToolTip(i18n("Internet connection state and auracle-git package presence"));
+    m_ui.polaur_led_label->setToolTip(i18n("Internet connection state and git package presence"));
+    m_ui.repo_led_label->setToolTip(i18n("Internet connection state"));
 }
 
 
@@ -127,6 +130,12 @@ void MainWindowView::startInternetCheckTimer()
     int milliseconds = TimeConverter::minutesToMilliseconds(Settings::records()->internetReconnectionTimeMinutes());
     internet_connection_timer->start(milliseconds);
     Logger::logger()->logDebug(QStringLiteral("Internet connection checker started with interval %2").arg(milliseconds));
+}
+
+
+void MainWindowView::showFinishInformation()
+{
+    QMessageBox::information(this, i18n("All processes ended"), i18n("All processes have been completed."));
 }
 
 
@@ -423,7 +432,7 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
         {
             progress_view.data()->close();
             m_ui.progress_view_checkbox->hide();
-            QMessageBox::information(this, i18n("All processes ended"), i18n("All processes have been completed."));
+            showFinishInformation();
         }
     }
 
