@@ -1,5 +1,6 @@
 #pragma once
 
+#include "mainwindow.h"
 #include "mainwindowview.h"
 
 #include <QString>
@@ -128,6 +129,7 @@ public:
     friend class TestAvailablePackagesColumn;
     friend class TestUpdatedPackagesColumn;
     friend class TestMainWindow;
+    friend class MainWindowViewGuiTest;
 };
 
 
@@ -146,4 +148,27 @@ public:
     {
         Q_UNUSED(new_task)
     }
+};
+
+class MockMainWindow : public MainWindow
+{
+    Q_OBJECT
+
+public:
+    MockMainWindow() :
+        MainWindow()
+    {
+
+    }
+
+    void run() override
+    {
+        startSystemTray();
+        initSignals();
+        setupGUI(Default, "pak-gui.rc");
+        setXMLFile("pak-gui.rc");
+    }
+
+    friend class TestMainWindow;
+    friend class MainWindowViewGuiTest;
 };

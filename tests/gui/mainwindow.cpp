@@ -1,36 +1,9 @@
-#include "mainwindow.h"
-
 #include "packagescolumnfixtures.h"
 #include "qaction.h"
 #include <QApplication>
 #include <QtTest/QtTest>
+#include <gtest/gtest.h>
 #include <QWidget>
-
-
-class MockMainWindow : public MainWindow
-{
-    Q_OBJECT
-
-public:
-    MockMainWindow() :
-        MainWindow()
-    {
-
-    }
-
-    void run() override;
-
-    friend class TestMainWindow;
-};
-
-
-void MockMainWindow::run()
-{
-    startSystemTray();
-    initSignals();
-    setupGUI(Default, "pak-gui.rc");
-    setXMLFile("pak-gui.rc");
-}
 
 
 class TestMainWindow : public QObject

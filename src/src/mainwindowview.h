@@ -29,7 +29,7 @@ class MainWindowView : public QWidget
     Q_SLOT void generateOutput(Process::Task task, const QString& line);
 public:
     explicit MainWindowView(QWidget* parent = nullptr);
-    ~MainWindowView() = default;
+    virtual ~MainWindowView() = default;
     void setProcess(QSharedPointer<Process> new_process);
     void setActionsAccessChecker(QSharedPointer<ActionsAccessChecker> new_actions_access_checker);
     void init();
@@ -39,9 +39,9 @@ public:
 public Q_SLOTS:
     void refresh();
     void generatePreview(Process::Task task);
-    void showStatisticsWindow();
-    void downloadPackage();
-    void searchPackage();
+    virtual void showStatisticsWindow();
+    virtual void downloadPackage();
+    virtual void searchPackage();
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
     virtual void checkUpdates();
     void updateWidgets();
