@@ -1,27 +1,40 @@
 #include "gui/packagescolumnfixtures.h"
+
+#include <QWidget>
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <gtest/gtest.h>
-#include <QWidget>
+#include <gmock/gmock.h>
 
-/*class MockMainWindowViewGtest : public MainWindowView
+
+class MockMainWindowViewGtest : public MainWindowView
 {
     Q_OBJECT
 
 public:
+    MockMainWindowViewGtest(QWidget* new_widget) :
+        MainWindowView(new_widget)
+    {
+        // ...
+    }
+
     MOCK_METHOD(void, run, (), (override));
-
-public Q_SLOTS:
     MOCK_METHOD(void, showStatisticsWindow, (), (override));
-};*/
+    MOCK_METHOD(void, downloadPackage, (), (override));
+    MOCK_METHOD(void, searchPackage, (), (override));
+    MOCK_METHOD(void, checkUpdates, (), (override));
+    MOCK_METHOD(void, showFinishInformation, (), (override));
+};
 
 
-class MainWindowViewGuiTest : public ::testing::Test {
+class MainWindowViewGuiTest : public ::testing::Test
+{
 protected:
     void SetUp() override {
         main_window = new MockMainWindow();
-        main_window_view = new MockMainWindowView(new QWidget);
-        main_window->prepareProcess(QSharedPointer<MockProcess>(new MockProcess(main_window->actions_access_checker, main_window)));
+        main_window_view = new MockMainWindowViewGtest(new QWidget);
+        main_window->prepareProcess(QSharedPointer<MockProcess>(new MockProcess(main_window->actions_access_checker,
+                                                                                main_window)));
         main_window->prepareMainWindowView(main_window_view);
         main_window->setCentralWidget(main_window_view);
         main_window->run();
@@ -32,25 +45,29 @@ protected:
         delete main_window;
     }
 
-private:
     MockMainWindow* main_window;
-    MockMainWindowView* main_window_view;
-
+    MockMainWindowViewGtest* main_window_view;
 };
 
-// Demonstrate some basic assertions.
-TEST_F(MainWindowViewGuiTest, showPreviewForInstalledPackages) {
-  // Expect two strings not to be equal.
-  EXPECT_STRNE("hello", "world");
-  // Expect equality.
-  EXPECT_EQ(7 * 6, 42);
+
+TEST_F(MainWindowViewGuiTest, triggeredDownloadPackageAction)
+{
+    EXPECT_CALL(*main_window_view, downloadPackage());
+    main_window->triggerDownloadPackageAction();
 }
 
-
-// Demonstrate some basic assertions.
-TEST(HelloTest, BasicAssertions) {
-  // Expect two strings not to be equal.
-  EXPECT_STRNE("hello", "world");
-  // Expect equality.
-  EXPECT_EQ(7 * 6, 42);
+TEST_F(MainWindowViewGuiTest, triggeredSearchPackageAction)
+{
+    EXPECT_CALL(*main_window_view, searchPackage());
+    main_window->triggerSearchPackageAction();
+    qApp->closeAllWindows();
 }
+
+TEST_F(MainWindowViewGuiTest, triggeredShowStatisticsAction)
+{
+    EXPECT_CALL(*main_window_view, showStatisticsWindow());
+    main_window->triggerShowStatisticsWindow();
+    qApp->closeAllWindows();
+}
+
+#include "tests.moc"

@@ -91,6 +91,8 @@ add_test(NAME mainwindow-gui COMMAND mainwindow-gui)
 target_link_libraries(pak-tests
     GTest::gtest
     GTest::gtest_main
+    GTest::gmock
+    GTest::gmock_main
     KF5::CoreAddons
     Qt5::Test
     Qt5::Core

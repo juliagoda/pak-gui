@@ -2,6 +2,7 @@
 
 #include "mainwindow.h"
 #include "mainwindowview.h"
+#include "qaction.h"
 
 #include <QString>
 #include <QWidget>
@@ -167,6 +168,21 @@ public:
         initSignals();
         setupGUI(Default, "pak-gui.rc");
         setXMLFile("pak-gui.rc");
+    }
+
+    void triggerDownloadPackageAction()
+    {
+        download_action.data()->trigger();
+    }
+
+    void triggerSearchPackageAction()
+    {
+        search_action.data()->trigger();
+    }
+
+    void triggerShowStatisticsWindow()
+    {
+        print_statistics_action.data()->trigger();
     }
 
     friend class TestMainWindow;
