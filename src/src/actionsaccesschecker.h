@@ -9,7 +9,7 @@ class ActionsAccessChecker : public QObject
 
 public:
     static ActionsAccessChecker* actionsAccessChecker(QWidget* new_parent);
-    virtual ~ActionsAccessChecker();
+    ~ActionsAccessChecker() override;
     ActionsAccessChecker(ActionsAccessChecker& instance) = delete;
     void operator=(const ActionsAccessChecker& instance) = delete;
 
@@ -39,12 +39,12 @@ private:
     bool findPackage(const QString& package_name);
     void emitSignals();
 
-    QStringList required_packages;
-    bool is_asp_installed;
-    bool is_auracle_installed;
-    bool is_reflector_installed;
-    bool is_git_installed;
-    bool is_online;
+    QStringList required_packages = QStringList();
+    bool is_asp_installed = false;
+    bool is_auracle_installed = false;
+    bool is_reflector_installed = false;
+    bool is_git_installed = false;
+    bool is_online = true;
     QWidget* parent;
 
     static ActionsAccessChecker* instance;

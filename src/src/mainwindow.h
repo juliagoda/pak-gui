@@ -20,7 +20,7 @@ class MainWindow : public KXmlGuiWindow
 
 public:
     MainWindow();
-    virtual ~MainWindow() = default;
+    ~MainWindow() override;
     virtual void run();
 
 public Q_SLOTS:
@@ -56,7 +56,7 @@ protected:
     QPointer<QAction> update_all_action;
     QPointer<QAction> update_mirrors_action;
     QPointer<QAction> clean_action;
-    QScopedPointer<SystemTray> system_tray_icon;
+    QScopedPointer<SystemTray> system_tray_icon = QScopedPointer<SystemTray>(nullptr);
 
 private:
     void startTimerOnOperation(const QDateTime& time,

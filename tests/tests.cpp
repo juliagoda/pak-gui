@@ -18,11 +18,11 @@ public:
         // ...
     }
 
-    MOCK_METHOD(void, run, (), (override));
+    //MOCK_METHOD(void, run, (), (override));
     MOCK_METHOD(void, showStatisticsWindow, (), (override));
     MOCK_METHOD(void, downloadPackage, (), (override));
     MOCK_METHOD(void, searchPackage, (), (override));
-    MOCK_METHOD(void, checkUpdates, (), (override));
+    //MOCK_METHOD(void, checkUpdates, (), (override));
     MOCK_METHOD(void, showFinishInformation, (), (override));
 };
 
@@ -31,8 +31,8 @@ class MainWindowViewGuiTest : public ::testing::Test
 {
 protected:
     void SetUp() override {
-        main_window = new MockMainWindow();
-        main_window_view = new MockMainWindowViewGtest(new QWidget);
+        main_window = new MockMainWindow;
+        main_window_view = new MockMainWindowViewGtest(main_window);
         main_window->prepareProcess(QSharedPointer<MockProcess>(new MockProcess(main_window->actions_access_checker,
                                                                                 main_window)));
         main_window->prepareMainWindowView(main_window_view);
@@ -49,6 +49,17 @@ protected:
     MockMainWindowViewGtest* main_window_view;
 };
 
+TEST_F(MainWindowViewGuiTest, triggeredSearchPackageAction)
+{
+    EXPECT_CALL(*main_window_view, searchPackage());
+    main_window->triggerSearchPackageAction();
+}
+
+TEST_F(MainWindowViewGuiTest, triggeredShowStatisticsAction)
+{
+    EXPECT_CALL(*main_window_view, showStatisticsWindow());
+    main_window->triggerShowStatisticsWindow();
+}
 
 TEST_F(MainWindowViewGuiTest, triggeredDownloadPackageAction)
 {
@@ -56,18 +67,5 @@ TEST_F(MainWindowViewGuiTest, triggeredDownloadPackageAction)
     main_window->triggerDownloadPackageAction();
 }
 
-TEST_F(MainWindowViewGuiTest, triggeredSearchPackageAction)
-{
-    EXPECT_CALL(*main_window_view, searchPackage());
-    main_window->triggerSearchPackageAction();
-    qApp->closeAllWindows();
-}
-
-TEST_F(MainWindowViewGuiTest, triggeredShowStatisticsAction)
-{
-    EXPECT_CALL(*main_window_view, showStatisticsWindow());
-    main_window->triggerShowStatisticsWindow();
-    qApp->closeAllWindows();
-}
 
 #include "tests.moc"

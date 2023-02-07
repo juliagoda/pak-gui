@@ -14,12 +14,6 @@ QMutex ActionsAccessChecker::mutex;
 
 
 ActionsAccessChecker::ActionsAccessChecker(QWidget* new_parent) :
-    required_packages(),
-    is_asp_installed(false),
-    is_auracle_installed(false),
-    is_reflector_installed(false),
-    is_git_installed(false),
-    is_online(true),
     parent(new_parent)
 {
     required_packages << PAK_EXEC_FILE << PACMAN_EXEC_FILE << PACMAN_CONTRIB_EXEC_FILE << KDESU_EXEC_FILE << KSSHASKPASS_EXEC_FILE;
@@ -29,6 +23,8 @@ ActionsAccessChecker::ActionsAccessChecker(QWidget* new_parent) :
 
 ActionsAccessChecker::~ActionsAccessChecker()
 {
+   parent = nullptr;
+   instance = nullptr;
    mutex.unlock();
 }
 

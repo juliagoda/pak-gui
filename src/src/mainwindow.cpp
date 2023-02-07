@@ -19,10 +19,23 @@
 
 MainWindow::MainWindow()
     : KXmlGuiWindow(),
-      actions_access_checker(ActionsAccessChecker::actionsAccessChecker(this)),
-      system_tray_icon(nullptr)
+      actions_access_checker(ActionsAccessChecker::actionsAccessChecker(this))
 {
 
+}
+
+MainWindow::~MainWindow()
+{
+    delete update_action;
+    delete refresh_action;
+    delete download_action;
+    delete search_action;
+    delete print_statistics_action;
+    delete update_all_action;
+    delete update_mirrors_action;
+    delete clean_action;
+
+   actions_access_checker.reset(nullptr);
 }
 
 
