@@ -97,38 +97,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>logs_to_file_checkbox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>logs_filename_lineedit</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>76</x>
-     <y>31</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>155</x>
-     <y>36</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>logs_to_file_checkbox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>logs_path_lineedit</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>90</x>
-     <y>35</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>165</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

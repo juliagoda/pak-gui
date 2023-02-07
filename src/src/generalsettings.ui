@@ -43,14 +43,14 @@
             <widget class="QSpinBox" name="kcfg_history_store_time_in_days"/>
            </item>
            <item row="3" column="2">
-            <widget class="QLabel" name="label_11">
+            <widget class="QLabel" name="check_packages_for_updates_days_label">
              <property name="text">
               <string>day(s)</string>
              </property>
             </widget>
            </item>
            <item row="3" column="0">
-            <widget class="QLabel" name="label_10">
+            <widget class="QLabel" name="check_packages_for_update_label">
              <property name="text">
               <string>Check packages ready to update every </string>
              </property>
@@ -60,7 +60,7 @@
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="label_8">
+            <widget class="QLabel" name="internet_reconnection_label">
              <property name="text">
               <string>Try to reconnect to the internet every </string>
              </property>
@@ -70,16 +70,16 @@
             </widget>
            </item>
            <item row="0" column="2">
-            <widget class="QLabel" name="label_2">
+            <widget class="QLabel" name="store_operations_history_days_label">
              <property name="text">
-              <string>days</string>
+              <string>day(s)</string>
              </property>
             </widget>
            </item>
            <item row="2" column="2">
-            <widget class="QLabel" name="label_9">
+            <widget class="QLabel" name="internet_reconnection_minutes_label">
              <property name="text">
-              <string>minutes</string>
+              <string>minute(s)</string>
              </property>
             </widget>
            </item>
@@ -87,21 +87,21 @@
             <widget class="QSpinBox" name="kcfg_history_file_size_limit_in_Mb"/>
            </item>
            <item row="3" column="6">
-            <widget class="QLabel" name="label_13">
+            <widget class="QLabel" name="check_packages_for_updates_minutes_label">
              <property name="text">
-              <string>minutes</string>
+              <string>minute(s)</string>
              </property>
             </widget>
            </item>
            <item row="3" column="4">
-            <widget class="QLabel" name="label_12">
+            <widget class="QLabel" name="check_packages_for_updates_hours_label">
              <property name="text">
-              <string>hours</string>
+              <string>hour(s)</string>
              </property>
             </widget>
            </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="store_operations_history_label">
              <property name="text">
               <string>Store operations history for </string>
              </property>
@@ -111,7 +111,7 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="label_3">
+            <widget class="QLabel" name="set_single_operations_history_limit_label">
              <property name="text">
               <string>Set limit of single operations history size to  </string>
              </property>
@@ -124,7 +124,7 @@
             <widget class="QSpinBox" name="kcfg_update_check_time_in_minutes"/>
            </item>
            <item row="1" column="2">
-            <widget class="QLabel" name="label_4">
+            <widget class="QLabel" name="set_single_operations_history_limit_mb_label">
              <property name="text">
               <string>MB</string>
              </property>

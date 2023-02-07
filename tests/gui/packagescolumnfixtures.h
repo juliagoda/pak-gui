@@ -131,6 +131,7 @@ public:
     friend class TestUpdatedPackagesColumn;
     friend class TestMainWindow;
     friend class MainWindowViewGuiTest;
+    friend class TestSettingsWindow;
 };
 
 
@@ -187,4 +188,6 @@ public:
 
     friend class TestMainWindow;
     friend class MainWindowViewGuiTest;
+    friend class TestSettingsWindow;
 };
+

@@ -14,8 +14,8 @@ class SettingsRecords : public QObject
     Q_OBJECT
 
 public:
-    SettingsRecords();
-    virtual ~SettingsRecords() = default;
+    SettingsRecords() = default;
+    ~SettingsRecords() override = default;
 
     QColor backgroundPreviewColor();
     QColor previewFontColor();

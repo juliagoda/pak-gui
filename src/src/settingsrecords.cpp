@@ -6,12 +6,6 @@
 
 QSettings SettingsRecords::settings(QSettings::NativeFormat, QSettings::UserScope, QString("CachyOS"), QString("pak-gui"));
 
-SettingsRecords::SettingsRecords()
-{
-
-}
-
-
 QColor SettingsRecords::backgroundPreviewColor()
 {
     return pakGuiSettings::background_preview_color();

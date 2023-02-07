@@ -18,27 +18,29 @@ class Settings : public KConfigDialog
 
 public:
     explicit Settings(MainWindow* main_window);
-    virtual ~Settings() = default;
+    ~Settings() override = default;
     static void saveInitDateTimesWhenEmpty();
     static QSharedPointer<SettingsRecords> records();
     static void saveInitDateTime(const QString& operation_name);
 
-private Q_SLOTS:
+protected Q_SLOTS:
     void updateWidgetsDefault() override;
     void updateSettings() override;
 
-private:
-    void init(MainWindow* main_window);
-    void loadPackagesInfoSettings();
-    void connectSignals(MainWindow* main_window);
+protected:
+    virtual void loadPackagesInfoSettings();
     void enableDefaultButton();
-    void enableButtons();
-    void updateAvailableInfoList();
-    void updateSelectedInfoList();
 
     Ui::GeneralSettings general_settings;
     Ui::PreviewsAppearanceSettings previews_appearance_settings;
     Ui::PackagesInfoSettings packages_info_settings;
     Ui::LogsSettings logs_settings;
     static QSharedPointer<SettingsRecords> settings_records;
+
+private:
+    void init(MainWindow* main_window);
+    void connectSignals(MainWindow* main_window);
+    void enableButtons();
+    void updateAvailableInfoList();
+    void updateSelectedInfoList();
 };
