@@ -1,6 +1,7 @@
 #include "packagescolumnfixtures.h"
 
 #include "settings.h"
+
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <gtest/gtest.h>
@@ -35,6 +36,10 @@ private slots:
     void availablePackagesInfoDefaultSettingsAreCorrectlyIntroduced();
     void selectedPackagesInfoDefaultSettingsAreCorrectlyIntroduced();
     void logsDefaultSettingsAreCorrectlyIntroduced();
+    void applyButtonIsEnabledAfterAnyGeneralSettingChange();
+    void applyButtonIsEnabledAfterAnyPreviewsAppearanceSettingChange();
+    void applyButtonIsEnabledAfterAnyPackagesOrderSettingChange();
+    void applyButtonIsEnabledAfterAnyLogsSettingChange();
 
     void cleanup();
 
@@ -90,7 +95,6 @@ void TestSettingsWindow::availablePackagesInfoDefaultSettingsAreCorrectlyIntrodu
     settings.enableDefaultButton();
     QTest::mouseClick(&*settings.button(QDialogButtonBox::StandardButton::RestoreDefaults), Qt::LeftButton);
     settings.updateWidgetsDefault();
-    settings.packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard);
     QStringList list_packages;
     for(const auto& available_item : settings.packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard))
         list_packages.append(available_item->text());
@@ -105,7 +109,6 @@ void TestSettingsWindow::selectedPackagesInfoDefaultSettingsAreCorrectlyIntroduc
     settings.enableDefaultButton();
     QTest::mouseClick(&*settings.button(QDialogButtonBox::StandardButton::RestoreDefaults), Qt::LeftButton);
     settings.updateWidgetsDefault();
-    settings.packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard);
     QStringList list_packages;
     for(const auto& available_item : settings.packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard))
         list_packages.append(available_item->text());
@@ -126,9 +129,127 @@ void TestSettingsWindow::logsDefaultSettingsAreCorrectlyIntroduced()
 }
 
 
+void TestSettingsWindow::applyButtonIsEnabledAfterAnyGeneralSettingChange()
+{
+    int new_history_store_time_in_days = settings.general_settings.kcfg_history_store_time_in_days->value() + 1;
+    settings.general_settings.kcfg_history_store_time_in_days->setValue(new_history_store_time_in_days);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    int new_history_file_size_limit_in_Mb = settings.general_settings.kcfg_history_file_size_limit_in_Mb->value() + 1;
+    settings.general_settings.kcfg_history_file_size_limit_in_Mb->setValue(new_history_file_size_limit_in_Mb);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    int new_internet_reconnection_time_in_minutes = settings.general_settings.kcfg_internet_reconnection_time_in_minutes->value() + 1;
+    settings.general_settings.kcfg_internet_reconnection_time_in_minutes->setValue(new_internet_reconnection_time_in_minutes);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    int new_update_check_time_in_days = settings.general_settings.kcfg_update_check_time_in_days->value() + 1;
+    settings.general_settings.kcfg_update_check_time_in_days->setValue(new_update_check_time_in_days);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    int new_update_check_time_in_hours = settings.general_settings.kcfg_update_check_time_in_hours->value() + 1;
+    settings.general_settings.kcfg_update_check_time_in_hours->setValue(new_update_check_time_in_hours);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    int new_update_check_time_in_minutes = settings.general_settings.kcfg_update_check_time_in_minutes->value() + 1;
+    settings.general_settings.kcfg_update_check_time_in_minutes->setValue(new_update_check_time_in_minutes);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    QTest::mouseClick(&*settings.general_settings.kcfg_overwrite_full_history_file, Qt::LeftButton);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    QTest::mouseClick(&*settings.general_settings.kcfg_use_system_tray_icon, Qt::LeftButton);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+}
+
+
+void TestSettingsWindow::applyButtonIsEnabledAfterAnyPreviewsAppearanceSettingChange()
+{
+    auto current_color = settings.previews_appearance_settings.kcfg_background_preview_color->color();
+    settings.previews_appearance_settings.kcfg_background_preview_color->setColor(Qt::black == current_color ? Qt::red : Qt::black);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    auto current_color_preview = settings.previews_appearance_settings.kcfg_preview_font_color->color();
+    settings.previews_appearance_settings.kcfg_preview_font_color->setColor(Qt::black == current_color_preview ? Qt::red : Qt::black);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    auto current_font_family = settings.previews_appearance_settings.kcfg_preview_font_family->font();
+    settings.previews_appearance_settings.kcfg_preview_font_family->setFont(QFont("Noto Sans") == current_font_family ? QFont("Lucida Console"): QFont("Noto Sans"));
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    int current_font_size = settings.previews_appearance_settings.kcfg_preview_font_size->value() + 1;
+    settings.previews_appearance_settings.kcfg_preview_font_size->setValue(current_font_size);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+}
+
+
+void TestSettingsWindow::applyButtonIsEnabledAfterAnyPackagesOrderSettingChange()
+{
+   auto available_packages = settings.packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard);
+   emit settings.packages_info_settings.packages_info_selector->movedDown(available_packages.last() - 1);
+   QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+   settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+   auto selected_packages = settings.packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard);
+   emit settings.packages_info_settings.packages_info_selector->movedDown(selected_packages.last() - 1);
+   QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+}
+
+
+void TestSettingsWindow::applyButtonIsEnabledAfterAnyLogsSettingChange()
+{
+    QTest::mouseClick(&*settings.logs_settings.kcfg_save_logs_into_file, Qt::LeftButton);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    auto new_logs_filename = QString("new_") + settings.logs_settings.kcfg_logs_filename->text();
+    settings.logs_settings.kcfg_logs_filename->setText(new_logs_filename);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    auto new_logs_filepath = QString("sth/") + settings.logs_settings.kcfg_logs_filepath->text();
+    settings.logs_settings.kcfg_logs_filepath->setText(new_logs_filepath);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    QTest::mouseClick(&*settings.logs_settings.kcfg_show_debug, Qt::LeftButton);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
+
+    QTest::mouseClick(&*settings.logs_settings.kcfg_hide_info_logs, Qt::LeftButton);
+    QVERIFY(settings.button(QDialogButtonBox::StandardButton::Apply)->isEnabled());
+}
+
+
 void TestSettingsWindow::cleanup()
 {
-
+    settings.button(QDialogButtonBox::StandardButton::RestoreDefaults)->setEnabled(false);
+    settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
 }
 
 QTEST_MAIN(TestSettingsWindow)

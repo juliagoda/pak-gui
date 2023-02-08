@@ -44,7 +44,7 @@ public Q_SLOTS:
     virtual void searchPackage();
     void finishProcess(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
     virtual void checkUpdates();
-    void updateWidgets();
+    virtual void updateWidgets();
     void checkRunningThreadsBeforeQuit();
 
 private Q_SLOTS:
@@ -53,7 +53,6 @@ private Q_SLOTS:
     void connectSignalsForInstalledPackages();
     void connectSignalsForUpdatedPackages();
     void toggleWidgetsAccess(bool is_online);
-    void startInternetCheckTimer();
 
 signals:
     void operationsAmountIncreased();
@@ -76,6 +75,8 @@ protected:
     QSharedPointer<ProgressView> progress_view;
 
     virtual void showFinishInformation();
+    virtual void updatePreviewsDesign();
+    virtual void startInternetCheckTimer();
 
 private:
     void stopRunningThread(QSharedPointer<QThread> &thread);
@@ -88,7 +89,7 @@ private:
     void startPackagesCheckTimer();
     void initSignals();
     void initColumns();
-    void updatePreviewsDesign();
+
 
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;

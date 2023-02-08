@@ -24,7 +24,7 @@ public:
     virtual void run();
 
 public Q_SLOTS:
-    void startSystemTray();
+    virtual void startSystemTray();
     void setTimersOnChecks();
 
 private Q_SLOTS:
@@ -42,6 +42,8 @@ protected:
     void prepareMainWindowView(MainWindowView* new_main_window_view);
     void prepareProcess(QSharedPointer<Process> new_process);
     void initSignals();
+    virtual void connectSignalForUpdateCheck();
+    virtual void connectSignalForHistoryStore();
 
     QPointer<MainWindowView> main_window_view;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
@@ -67,6 +69,5 @@ private:
                    QString text,
                    QString icon,
                    QKeySequence key_sequence);
-    void connectSignalForUpdateCheck();
-    void connectSignalForHistoryStore();
+
 };

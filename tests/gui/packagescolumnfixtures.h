@@ -132,6 +132,7 @@ public:
     friend class TestMainWindow;
     friend class MainWindowViewGuiTest;
     friend class TestSettingsWindow;
+    friend class SettingsTest;
 };
 
 
@@ -189,5 +190,6 @@ public:
     friend class TestMainWindow;
     friend class MainWindowViewGuiTest;
     friend class TestSettingsWindow;
+    friend class SettingsTest;
 };
 
