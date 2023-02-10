@@ -46,9 +46,10 @@ public Q_SLOTS:
     void clearLogsFile();
     void reopenFile();
 
-private:
+protected:
     explicit Logger();
 
+private:
     void appendSection(WriteOperations section);
     void appendSeparator();
     void appendNewLine();

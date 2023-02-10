@@ -31,9 +31,10 @@ signals:
     void internetAccessChanged(bool is_online);
     void requiredPackagesNotFound();
 
-private:
+protected:
     explicit ActionsAccessChecker(QWidget* new_parent);
 
+private:
     QStringList getNotInstalledPackagesList();
     void findRequiredPackages();
     bool findPackage(const QString& package_name);

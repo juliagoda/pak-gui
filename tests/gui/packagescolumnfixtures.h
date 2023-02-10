@@ -2,8 +2,9 @@
 
 #include "mainwindow.h"
 #include "mainwindowview.h"
-#include "qaction.h"
 
+
+#include <QAction>
 #include <QString>
 #include <QWidget>
 

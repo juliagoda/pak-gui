@@ -1,32 +1,11 @@
-#include "availablepackagescolumn.h"
-
-#include "packagescolumnfixtures.h"
-#include "sipackage.h"
-#include "qnamespace.h"
-#include "qtestcase.h"
-
-#include <QApplication>
-#include <QtTest/QtTest>
-#include <QWidget>
+#include "availablepackagescolumntest.h"
 
 
-class MockAvailablePackagesColumn : public AvailablePackagesColumn
-{
-    Q_OBJECT
-
-public:
-    explicit MockAvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
-    friend class TestAvailablePackagesColumn;
-
-protected:
-    QStringList getPackagesList() override;
-
-public Q_SLOTS:
-    void sort(bool is_sorted) override;
-};
 
 
-MockAvailablePackagesColumn::MockAvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent) :
+MockAvailablePackagesColumn::MockAvailablePackagesColumn(QListWidget* new_list_widget,
+                                                         QLineEdit* new_search_lineedit,
+                                                         QWidget* new_parent) :
     AvailablePackagesColumn(new_list_widget, new_search_lineedit, new_parent)
 {
 
@@ -49,12 +28,6 @@ QStringList MockAvailablePackagesColumn::getPackagesList()
 }
 
 
-class MockSiPackage : public SiPackage
-{
-public:
-    explicit MockSiPackage(QString& package_content);
-    friend class TestAvailablePackagesColumn;
-};
 
 
 MockSiPackage::MockSiPackage(QString& package_content) :
@@ -64,46 +37,6 @@ MockSiPackage::MockSiPackage(QString& package_content) :
 }
 
 
-class TestAvailablePackagesColumn : public QObject
-{
-    Q_OBJECT
-
-public:
-    TestAvailablePackagesColumn(QObject* parent = nullptr);
-
-private slots:
-    void availableColumnLabelHasProperContent();
-    void showAvailableColumnPreview();
-    void hideAvailableColumnPreview();
-    void availableColumnPreviewHasDefaultStyle();
-    void availableColumnPreviewReadOnly();
-    void searchCheckboxDisabledWithoutPackages();
-    void searchCheckboxEnabledWithPackages();
-    void searchInputOptionVisibleAfterButtonCheck();
-    void reversedSortOptionVisibleAfterButtonCheck();
-    void searchInputOptionHiddenAfterButtonUncheck();
-    void reversedSortOptionHiddenAfterButtonUncheck();
-    void installButtonDisabledOnStart();
-    void installButtonEnabledAfterPackageCheck();
-    void installButtonDisabledAfterPackageUncheck();
-    void installButtonDisabledAfterPackagesRemove();
-    void packagesOrderIsReversedAfterButtonCheck();
-    void packageOrderIsAlphabeticallByDefault();
-    void checkedPackageIsStillCheckedAfterTextInputClear();
-    void textInputSortBya52IsEqualToOne();
-    void textInputSortByaaIsEqualToZero();
-    void animationsRunOnStart();
-    void animationWidgetIsVisible();
-    void packagesListIsHiddenOnStart();
-    void animationIsHiddenAfterSignalSend();
-    void notEmptyPackagesListIsVisibleAfterSignalSend();
-    void titleIsVisibleWhenPackagesListIsEmptyAfterSignalSend();
-
-    void cleanup();
-
-private:
-    MockMainWindowView main_window_view;
-};
 
 
 TestAvailablePackagesColumn::TestAvailablePackagesColumn(QObject* parent) :
@@ -355,6 +288,3 @@ void TestAvailablePackagesColumn::cleanup()
             delete main_window_view.m_ui.available_packages_list->takeItem(0);
     }
 }
-
-QTEST_MAIN(TestAvailablePackagesColumn)
-#include "availablepackagescolumn.moc"

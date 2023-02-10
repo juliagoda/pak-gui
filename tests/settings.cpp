@@ -40,7 +40,7 @@ public:
         // ...
     }
 
-    MOCK_METHOD(void, updateWidgets, (), (override));;
+    MOCK_METHOD(void, updateWidgets, (), (override));
 
     friend class SettingsTest;
 };
@@ -108,13 +108,7 @@ TEST_F(SettingsTest, initializedSignalForHistoryStoreConnectionAfterSettingsUpda
     emit settings->settingsChanged("");
 }
 
-TEST_F(SettingsTest, initializedUpdatePreviewsDesignAfterSettingsUpdate)
-{
-    EXPECT_CALL(*main_window_view, updateWidgets());
-    emit settings->settingsChanged("");
-}
-
-TEST_F(SettingsTest, initializedInternetCheckTimerStartAfterSettingsUpdate)
+TEST_F(SettingsTest, initializedWidgetsUpdateAfterSettingsUpdate)
 {
     EXPECT_CALL(*main_window_view, updateWidgets());
     emit settings->settingsChanged("");

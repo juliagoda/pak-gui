@@ -1,65 +1,11 @@
-#include "packagescolumnfixtures.h"
-
-#include "settings.h"
-
-#include <QApplication>
-#include <QtTest/QtTest>
-#include <gtest/gtest.h>
-#include <QWidget>
-
-
-class MockSettings : public Settings
-{
-    Q_OBJECT
-
-public:
-    MockSettings(MainWindow* main_window) :
-        Settings(main_window)
-    {
-        // ...
-    }
-
-     friend class TestSettingsWindow;
-};
-
-
-class TestSettingsWindow : public QObject
-{
-    Q_OBJECT
-
-public:
-    TestSettingsWindow(QObject* parent = nullptr);
-
-private slots:
-    void generalDefaultSettingsAreCorrectlyIntroduced();
-    void previewsAppearanceDefaultSettingsAreCorrectlyIntroduced();
-    void availablePackagesInfoDefaultSettingsAreCorrectlyIntroduced();
-    void selectedPackagesInfoDefaultSettingsAreCorrectlyIntroduced();
-    void logsDefaultSettingsAreCorrectlyIntroduced();
-    void applyButtonIsEnabledAfterAnyGeneralSettingChange();
-    void applyButtonIsEnabledAfterAnyPreviewsAppearanceSettingChange();
-    void applyButtonIsEnabledAfterAnyPackagesOrderSettingChange();
-    void applyButtonIsEnabledAfterAnyLogsSettingChange();
-
-    void cleanup();
-
-private:
-    MockMainWindow main_window;
-    //MockMainWindowView main_window_view;
-    MockSettings settings;
-};
+#include "settingstest.h"
 
 
 TestSettingsWindow::TestSettingsWindow(QObject* parent) :
     QObject(parent),
     main_window(),
-    //main_window_view(new QWidget),
     settings(&main_window)
 {
-    //main_window.prepareProcess(QSharedPointer<MockProcess>(new MockProcess(main_window.actions_access_checker, &main_window)));
-    //main_window.prepareMainWindowView(&main_window_view);
-    //main_window.setCentralWidget(&main_window_view);
-    //main_window.run();
     QTestEventLoop::instance().enterLoop(1);
 }
 
@@ -251,6 +197,3 @@ void TestSettingsWindow::cleanup()
     settings.button(QDialogButtonBox::StandardButton::RestoreDefaults)->setEnabled(false);
     settings.button(QDialogButtonBox::StandardButton::Apply)->setEnabled(false);
 }
-
-QTEST_MAIN(TestSettingsWindow)
-#include "settings.moc"

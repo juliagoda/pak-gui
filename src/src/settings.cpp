@@ -77,7 +77,6 @@ void Settings::init(MainWindow* main_window)
     addPage(logs_page, i18nc("@title:tab", "Logs"), QStringLiteral(":/icons/logs-settings.png"));
     connect(this, &Settings::settingsChanged, main_window, &MainWindow::startSystemTray);
     connect(this, &Settings::settingsChanged, main_window, &MainWindow::setTimersOnChecks);
-    connect(this, &Settings::settingsChanged, [main_window](){ emit main_window->widgetsChanged(); });
     setAttribute(Qt::WA_DeleteOnClose);
 }
 

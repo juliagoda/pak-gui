@@ -1,51 +1,5 @@
-#include "packagescolumnfixtures.h"
-#include "qaction.h"
-#include <QApplication>
-#include <QtTest/QtTest>
-#include <gtest/gtest.h>
-#include <QWidget>
+#include "mainwindowtest.h"
 
-
-class TestMainWindow : public QObject
-{
-    Q_OBJECT
-
-public:
-    TestMainWindow(QObject* parent = nullptr);
-
-private slots:
-    void ledLabelsContainCorrectTexts();
-    void ledLabelsContainCorrectTooltips();
-    void ledAreOffByDefault();
-    void repositoriesLedIsOnWhenOnline();
-    void aurLedIsOnWhenAuracleGitInstalledAndIsOnline();
-    void polaurLedIsOnWhenGitInstalledAndIsOnline();
-    void noInternetConnectionTextIsVisibleWhenInternetConnectionIsOff();
-    void onlineActionsAreDisabledWhenInternetConnectionIsOff();
-    void offlineActionsAreEnabledWhenInternetConnectionIsOff();
-    void searchAndPreviewsWidgetsAreHiddenWhenInternetConnectionIsOff();
-    void actionsAreDisabledAfterInitializationStart();
-    void actionsAreEnabledAfterInitializationEnd();
-    void updateMirrorsActionIsDisabledWhenReflectorPackageIsNotDetected();
-    void updateMirrorsActionIsEnabledWhenReflectorPackageIsDetected();
-    void viewProgressCheckboxIsHiddenByDefault();
-    void viewProgressCheckboxIsVisibleDuringClean();
-    void viewProgressCheckboxIsVisibleDuringMirrorsUpdate();
-    void viewProgressCheckboxIsVisibleDuringVcsPackagesPrint();
-    void viewProgressCheckboxIsVisibleDuringInstalledPackagesUpdate();
-    void spinningAnimationForSideTaskIsVisibleDuringClean();
-    void spinningAnimationForSideTaskIsVisibleDuringMirrorsUpdate();
-    void spinningAnimationForSideTaskIsVisibleDuringVcsPackagesPrint();
-    void spinningAnimationForSideTaskIsVisibleDuringInstalledPackagesUpdate();
-    void viewProgressCheckboxIsHiddenAfterEndOfTasks();
-    void spinningAnimationForSideTaskIsStoppedAfterEndOfTasks();
-
-    void cleanup();
-
-private:
-    MockMainWindow main_window;
-    MockMainWindowView main_window_view;
-};
 
 
 TestMainWindow::TestMainWindow(QObject* parent) :
@@ -314,6 +268,3 @@ void TestMainWindow::cleanup()
    emit main_window.actions_access_checker->reflectorAccessChanged(false);
    main_window_view.generated_previews_map.clear();
 }
-
-QTEST_MAIN(TestMainWindow)
-#include "mainwindow.moc"

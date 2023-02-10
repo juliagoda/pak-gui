@@ -195,7 +195,6 @@ void MainWindow::initSignals()
     connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
     connect(main_window_view, &MainWindowView::initEnded, this, &MainWindow::enableActions);
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
-    connect(this, &MainWindow::widgetsChanged, main_window_view, &MainWindowView::updateWidgets);
     connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
     connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed) {
         update_mirrors_action->setEnabled(is_installed); });
@@ -241,5 +240,6 @@ void MainWindow::enableActions()
 void MainWindow::settingsConfigure()
 {
     QPointer<Settings> settings = new Settings(this);
+    connect(settings, &Settings::settingsChanged, main_window_view, &MainWindowView::updateWidgets);
     settings->show();
 }
