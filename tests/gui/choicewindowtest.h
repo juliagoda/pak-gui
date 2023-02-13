@@ -1,4 +1,6 @@
- #include "choicewindow.h"
+#pragma once
+
+#include "choicewindow.h"
 
 #include "packagescolumnfixtures.h"
 

@@ -21,6 +21,7 @@ set(CMAKE_AUTOMOC ON)
 # to always look for includes there:
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+
 find_package(GTest REQUIRED)
 find_package(Qt5Test REQUIRED)
 find_package(pak REQUIRED)
@@ -87,12 +88,14 @@ add_executable(pak-gtests
     ${CMAKE_SOURCE_DIR}/tests/tests.cpp
     ${CMAKE_SOURCE_DIR}/tests/settings.cpp
     ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h
-    ${MY_APP_SRC} ${MY_APP_HEADERS}
+    ${MY_APP_SRC}
+    ${MY_APP_HEADERS}
     ${MY_APP_UI}
     ${RESOURCES})
 
 add_executable(pak-qtests
     ${CMAKE_SOURCE_DIR}/tests/gui/main.cpp
+    ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h
     ${CMAKE_SOURCE_DIR}/tests/gui/installedpackagescolumntest.cpp
     ${CMAKE_SOURCE_DIR}/tests/gui/installedpackagescolumntest.h
     ${CMAKE_SOURCE_DIR}/tests/gui/availablepackagescolumntest.cpp
@@ -163,8 +166,8 @@ add_executable(pak-qtests
     ${CMAKE_SOURCE_DIR}/tests/gui/systemtraytest.h
     ${CMAKE_SOURCE_DIR}/tests/gui/timeconvertertest.cpp
     ${CMAKE_SOURCE_DIR}/tests/gui/timeconvertertest.h
-    ${CMAKE_SOURCE_DIR}/tests/gui/timeconvertertest.h
     ${CMAKE_SOURCE_DIR}/tests/gui/defstest.h
+    ${CMAKE_SOURCE_DIR}/tests/gui/defstest.cpp
     ${MY_APP_SRC}
     ${MY_APP_HEADERS}
     ${MY_APP_UI}
@@ -192,4 +195,7 @@ target_link_libraries(pak-qtests
     Qt5::Widgets
     pak-gui-src
 )
+
+add_test(NAME pak-qtests COMMAND $<TARGET_FILE:pak-qtests>)
+add_test(NAME pak-gtests COMMAND $<TARGET_FILE:pak-gtests>)
 

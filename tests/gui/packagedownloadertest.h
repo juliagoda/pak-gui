@@ -1,4 +1,6 @@
- #include "packagedownloader.h"
+#pragma once
+
+#include "packagedownloader.h"
 
 #include "packagescolumnfixtures.h"
 
@@ -85,4 +87,5 @@ private:
     MockPackageInput package_input;
     MockPathsChoiceInput paths_choice_input;
     MockReposChoiceInput repos_choice_input;
+    QSharedPointer<DownloadCommandParser> download_command_parser = QSharedPointer<DownloadCommandParser>(nullptr);
 };

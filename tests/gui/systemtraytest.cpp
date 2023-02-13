@@ -11,7 +11,7 @@ MockSystemTray::MockSystemTray(MainWindow* parent) :
 
 TestSystemTray::TestSystemTray(QObject* parent) :
     QObject(parent),
-    system_tray(new QMainWindow)
+    system_tray(new MainWindow)
 {
     QTestEventLoop::instance().enterLoop(1);
 }

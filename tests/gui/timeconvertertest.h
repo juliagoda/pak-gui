@@ -1,3 +1,5 @@
+#pragma once
+
 #include "timeconverter.h"
 
 #include "packagescolumnfixtures.h"

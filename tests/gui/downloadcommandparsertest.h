@@ -1,4 +1,6 @@
- #include "downloadcommandparser.h"
+#pragma once
+
+#include "downloadcommandparser.h"
 
 #include "packagescolumnfixtures.h"
 

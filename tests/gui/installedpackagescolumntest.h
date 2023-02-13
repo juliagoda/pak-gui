@@ -4,7 +4,6 @@
 #include "installedpackagescolumn.h"
 
 #include "packagescolumnfixtures.h"
-#include "qipackage.h"
 
 #include <QApplication>
 #include <QtTest/QtTest>
@@ -17,7 +16,9 @@ class MockInstalledPackagesColumn : public InstalledPackagesColumn
     Q_OBJECT
 
 public:
-    explicit MockInstalledPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
+    explicit MockInstalledPackagesColumn(QListWidget* new_list_widget,
+                                         QLineEdit* new_search_lineedit,
+                                         QWidget* new_parent);
     friend class TestInstalledPackagesColumn;
 
 protected:
@@ -25,15 +26,6 @@ protected:
 
 public Q_SLOTS:
     void sort(bool is_sorted) override;
-};
-
-
-
-class MockQiPackage : public QiPackage
-{
-public:
-    explicit MockQiPackage(QString& package_content);
-    friend class TestInstalledPackagesColumn;
 };
 
 

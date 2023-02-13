@@ -1,21 +1,10 @@
-#include "sipackage.h"
+#pragma once
 
 #include "packagescolumnfixtures.h"
 
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
-
-
-class MockSiPackage : public SiPackage
-{
-    Q_OBJECT
-
-public:
-    explicit MockSiPackage(QString& package_content);
-    friend class TestSiPackage;
-};
-
 
 
 class TestSiPackage : public QObject

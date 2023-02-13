@@ -30,15 +30,6 @@ QStringList MockAvailablePackagesColumn::getPackagesList()
 
 
 
-MockSiPackage::MockSiPackage(QString& package_content) :
-    SiPackage(package_content)
-{
-
-}
-
-
-
-
 TestAvailablePackagesColumn::TestAvailablePackagesColumn(QObject* parent) :
     QObject(parent),
     main_window_view(new QWidget)

@@ -1,4 +1,6 @@
- #include "logger.h"
+#pragma once
+
+#include "logger.h"
 
 #include "packagescolumnfixtures.h"
 

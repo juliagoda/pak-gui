@@ -1,18 +1,9 @@
- #include "checkpackagetest.h"
-
-
-MockCheckPackage::MockCheckPackage(const QString& package_content,
-                                   Package::Source new_source) :
-    CheckPackage(package_content, new_source)
-{
-
-}
-
+#include "checkpackagetest.h"
 
 
 TestCheckPackage::TestCheckPackage(QObject* parent) :
     QObject(parent),
-    check_package(QString(""),
+    check_package(package_content,
                   Package::Source::Unknown)
 {
     QTestEventLoop::instance().enterLoop(1);

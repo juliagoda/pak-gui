@@ -1,3 +1,5 @@
+#pragma once
+
 #include "statisticscommandparser.h"
 
 #include "packagescolumnfixtures.h"

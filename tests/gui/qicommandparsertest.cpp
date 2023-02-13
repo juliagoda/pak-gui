@@ -1,13 +1,11 @@
 #include "qicommandparsertest.h"
 
 
-
-MockQiCommandParser::MockQiCommandParser(QWidget* new_parent) :
-    QiCommandParser(new_parent)
+MockQiCommandParser::MockQiCommandParser() :
+    QiCommandParser()
 {
   // ...
 }
-
 
 
 TestQiCommandParser::TestQiCommandParser(QObject* parent) :
@@ -22,3 +20,5 @@ void TestQiCommandParser::cleanup()
 {
   // ...
 }
+
+

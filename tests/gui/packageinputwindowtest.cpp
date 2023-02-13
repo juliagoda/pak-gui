@@ -1,34 +1,23 @@
-#include "packageinputwindow.h"
-
-#include "packagescolumnfixtures.h"
-
-#include <QApplication>
-#include <QtTest/QtTest>
-#include <QWidget>
+#include "packageinputwindowtest.h"
 
 
-class MockPackageInputWindow : public PackageInputWindow
+MockPackageInputWindow::MockPackageInputWindow(QWidget* new_parent) :
+    PackageInputWindow(new_parent)
 {
-    Q_OBJECT
 
-public:
-    explicit MockPackageInputWindow(QWidget* parent = nullptr);
-    friend class TestPackageInputWindow;
-};
+}
 
 
 
-
-class TestPackageInputWindow : public QObject
+TestPackageInputWindow::TestPackageInputWindow(QObject* parent) :
+    QObject(parent),
+    package_input_window(new QWidget)
 {
-    Q_OBJECT
+    QTestEventLoop::instance().enterLoop(1);
+}
 
-public:
-    TestPackageInputWindow(QObject* parent = nullptr);
 
-private slots:
-    void cleanup();
+void TestPackageInputWindow::cleanup()
+{
 
-private:
-    MockPackageInputWindow package_input_window;
-};
+}

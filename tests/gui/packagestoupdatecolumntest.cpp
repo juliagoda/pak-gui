@@ -33,16 +33,6 @@ QHash<QString, Package::Source> MockUpdatedPackagesColumn::getPackagesList()
 
 
 
-MockCheckPackage::MockCheckPackage(QString& package_content,
-                                   Package::Source new_source) :
-    CheckPackage(package_content, new_source)
-{
-
-}
-
-
-
-
 TestUpdatedPackagesColumn::TestUpdatedPackagesColumn(QObject* parent) :
     QObject(parent),
     main_window_view(new QWidget)

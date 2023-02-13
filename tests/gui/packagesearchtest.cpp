@@ -31,9 +31,9 @@ MockSearchResultsList::MockSearchResultsList(QSharedPointer<InstallCommandParser
 TestPackageSearch::TestPackageSearch(QObject* parent) :
     QObject(parent),
     package_search(),
-    package_search_input(QSharedPointer<InstallCommandParser>(nullptr)),
-    search_results_list(QSharedPointer<InstallCommandParser>(nullptr),
-                        QSharedPointer<Process>(nullptr))
+    package_search_input(install_command_parser),
+    search_results_list(install_command_parser,
+                        process)
 {
     QTestEventLoop::instance().enterLoop(1);
 }

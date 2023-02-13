@@ -1,3 +1,5 @@
+#pragma once
+
 #include "pathconverter.h"
 
 #include "packagescolumnfixtures.h"

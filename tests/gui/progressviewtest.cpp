@@ -11,7 +11,7 @@ MockProgressView::MockProgressView(QDialog* parent) :
 
 TestProgressView::TestProgressView(QObject* parent) :
     QObject(parent),
-    progress_view(new QWidget)
+    progress_view(new QDialog)
 {
     QTestEventLoop::instance().enterLoop(1);
 }

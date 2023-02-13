@@ -2,7 +2,7 @@
 
 
 MockChoiceWindow::MockChoiceWindow(const QString& new_title,
-                                   QDialog* new_parent = nullptr) :
+                                   QDialog* new_parent) :
     ChoiceWindow(new_title, new_parent)
 {
    // ...

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "statistics.h"
 
 #include "packagescolumnfixtures.h"

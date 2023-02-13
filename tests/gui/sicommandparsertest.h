@@ -1,3 +1,5 @@
+#pragma once
+
 #include "sicommandparser.h"
 
 #include "packagescolumnfixtures.h"

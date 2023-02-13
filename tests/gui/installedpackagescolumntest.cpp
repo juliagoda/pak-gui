@@ -2,7 +2,9 @@
 
 
 
-MockInstalledPackagesColumn::MockInstalledPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent) :
+MockInstalledPackagesColumn::MockInstalledPackagesColumn(QListWidget* new_list_widget,
+                                                         QLineEdit* new_search_lineedit,
+                                                         QWidget* new_parent) :
     InstalledPackagesColumn(new_list_widget, new_search_lineedit, new_parent)
 {
 
@@ -22,16 +24,6 @@ QStringList MockInstalledPackagesColumn::getPackagesList()
     QString package_content1 = package_content_a52dec;
     QString package_content2 = package_content_alsa_utils;
     return QStringList() << package_content1 << package_content2;
-}
-
-
-
-
-
-MockQiPackage::MockQiPackage(QString& package_content) :
-    QiPackage(package_content)
-{
-
 }
 
 

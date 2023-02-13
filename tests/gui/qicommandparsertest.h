@@ -1,6 +1,6 @@
- #include "qicommandparser.h"
+#pragma once
 
-#include "packagescolumnfixtures.h"
+#include "qicommandparser.h"
 
 #include <QApplication>
 #include <QtTest/QtTest>
@@ -9,10 +9,8 @@
 
 class MockQiCommandParser : public QiCommandParser
 {
-    Q_OBJECT
-
 public:
-    explicit MockQiCommandParser();
+    MockQiCommandParser();
     friend class TestQiCommandParser;
 };
 

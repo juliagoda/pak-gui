@@ -44,12 +44,12 @@ MockReposChoiceInput::MockReposChoiceInput(QSharedPointer<DownloadCommandParser>
 
 TestPackageDownloader::TestPackageDownloader(QObject* parent) :
     QObject(parent),
-    package_downloader(new QWidget),
-    automatic_installation(QSharedPointer<DownloadCommandParser>(nullptr),
+    package_downloader(),
+    automatic_installation(download_command_parser,
                            new QWidget),
-    package_input(QSharedPointer<DownloadCommandParser>(nullptr)),
-    paths_choice_input(QSharedPointer<DownloadCommandParser>(nullptr)),
-    repos_choice_input(QSharedPointer<DownloadCommandParser>(nullptr))
+    package_input(download_command_parser),
+    paths_choice_input(download_command_parser),
+    repos_choice_input(download_command_parser)
 
 {
     QTestEventLoop::instance().enterLoop(1);

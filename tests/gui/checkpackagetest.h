@@ -1,22 +1,10 @@
- #include "checkpackage.h"
+#pragma once
 
 #include "packagescolumnfixtures.h"
 
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
-
-
-class MockCheckPackage : public CheckPackage
-{
-    Q_OBJECT
-
-public:
-    explicit MockCheckPackage(const QString& package_content,
-                              Package::Source new_source);
-    friend class TestCheckPackage;
-};
-
 
 
 
@@ -32,4 +20,5 @@ private slots:
 
 private:
     MockCheckPackage check_package;
+    QString package_content = "";
 };

@@ -3,7 +3,6 @@
 #include "availablepackagescolumn.h"
 
 #include "packagescolumnfixtures.h"
-#include "sipackage.h"
 
 #include <QApplication>
 #include <QtTest/QtTest>
@@ -26,16 +25,6 @@ protected:
 public Q_SLOTS:
     void sort(bool is_sorted) override;
 };
-
-
-
-class MockSiPackage : public SiPackage
-{
-public:
-    explicit MockSiPackage(QString& package_content);
-    friend class TestAvailablePackagesColumn;
-};
-
 
 
 

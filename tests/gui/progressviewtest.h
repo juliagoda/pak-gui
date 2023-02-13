@@ -1,3 +1,5 @@
+#pragma once
+
 #include "progressview.h"
 
 #include "packagescolumnfixtures.h"

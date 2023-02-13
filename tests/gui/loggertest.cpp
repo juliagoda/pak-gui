@@ -1,4 +1,4 @@
- #include "loggertest.h"
+#include "loggertest.h"
 
 
 MockLogger::MockLogger() :
@@ -6,14 +6,6 @@ MockLogger::MockLogger() :
 {
   // ...
 }
-
-
-MockActionsAccessChecker::MockActionsAccessChecker(QWidget* new_parent) :
-    ActionsAccessChecker(new_parent)
-{
-
-}
-
 
 
 

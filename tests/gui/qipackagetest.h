@@ -1,21 +1,10 @@
- #include "qipackage.h"
+#pragma once
 
 #include "packagescolumnfixtures.h"
 
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
-
-
-class MockQiPackage : public QiPackage
-{
-    Q_OBJECT
-
-public:
-    explicit MockQiPackage(QString& package_content);
-    friend class TestQiPackage;
-};
-
 
 
 class TestQiPackage : public QObject

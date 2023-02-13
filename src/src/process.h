@@ -32,7 +32,7 @@ public:
     Q_ENUM(Task)
 
     Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent);
-    ~Process() override = default;
+    virtual ~Process() override = default;
     void run(Task new_task, QStringList new_checked_packages = QStringList());
 
 protected:

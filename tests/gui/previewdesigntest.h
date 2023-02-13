@@ -1,4 +1,6 @@
- #include "previewdesign.h"
+#pragma once
+
+#include "previewdesign.h"
 
 #include "packagescolumnfixtures.h"
 

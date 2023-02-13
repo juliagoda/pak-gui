@@ -1,3 +1,5 @@
+#pragma once
+
 #include "systemtray.h"
 
 #include "packagescolumnfixtures.h"

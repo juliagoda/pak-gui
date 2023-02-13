@@ -3,7 +3,6 @@
 #include "updatedpackagescolumn.h"
 
 #include "packagescolumnfixtures.h"
-#include "checkpackage.h"
 
 #include <QApplication>
 #include <QtTest/QtTest>
@@ -25,16 +24,6 @@ protected:
 
 public Q_SLOTS:
     void sort(bool is_sorted) override;
-};
-
-
-
-class MockCheckPackage : public CheckPackage
-{
-public:
-    explicit MockCheckPackage(QString& package_content,
-                              Package::Source new_source);
-    friend class TestUpdatedPackagesColumn;
 };
 
 

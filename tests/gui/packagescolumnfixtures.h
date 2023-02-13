@@ -2,6 +2,9 @@
 
 #include "mainwindow.h"
 #include "mainwindowview.h"
+#include "checkpackage.h"
+#include "qipackage.h"
+#include "sipackage.h"
 
 
 #include <QAction>
@@ -103,8 +106,6 @@ const QString defaultStylesheet = "color: white;\nbackground-color: black;\nfont
 
 class MockMainWindowView : public MainWindowView
 {
-    Q_OBJECT
-
 public:
     MockMainWindowView(QWidget* new_widget) :
         MainWindowView(new_widget)
@@ -139,14 +140,14 @@ public:
 
 class MockProcess : public Process
 {
-    Q_OBJECT
-
 public:
     MockProcess(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
         Process(new_actions_access_checker, new_parent)
     {
         // ...
     }
+
+    ~MockProcess() override = default;
 
     void startProcess(Task new_task) override
     {
@@ -156,8 +157,6 @@ public:
 
 class MockMainWindow : public MainWindow
 {
-    Q_OBJECT
-
 public:
     MockMainWindow() :
         MainWindow()
@@ -194,3 +193,37 @@ public:
     friend class SettingsTest;
 };
 
+
+class MockCheckPackage : public CheckPackage
+{
+public:
+    explicit MockCheckPackage(QString& package_content,
+                              Package::Source new_source) :
+        CheckPackage(package_content, new_source)
+    {}
+
+    friend class TestCheckPackage;
+};
+
+
+
+class MockQiPackage : public QiPackage
+{
+public:
+    explicit MockQiPackage(QString& package_content) :
+        QiPackage(package_content)
+    {}
+
+    friend class TestQiPackage;
+};
+
+
+class MockSiPackage : public SiPackage
+{
+public:
+    explicit MockSiPackage(QString& package_content) :
+        SiPackage(package_content)
+    {}
+
+    friend class TestSiPackage;
+};
