@@ -35,6 +35,8 @@
 
 int main(int argc, char* argv[])
 {
+    QApplication a(argc, argv);
+
     int status = 0;
     QTest::setMainSourcePath(__FILE__, QT_TESTCASE_BUILDDIR);
     auto ASSERT_TEST = [&status, argc, argv](QObject* obj) {
@@ -42,7 +44,7 @@ int main(int argc, char* argv[])
       delete obj;
     };
 
-   /* ASSERT_TEST(new TestActionsAccessChecker());
+    ASSERT_TEST(new TestActionsAccessChecker());
     ASSERT_TEST(new TestAvailablePackagesColumn());
     ASSERT_TEST(new TestInstalledPackagesColumn());
 
@@ -81,9 +83,9 @@ int main(int argc, char* argv[])
     ASSERT_TEST(new TestStatisticsWindow());
     ASSERT_TEST(new TestSystemTray());
     ASSERT_TEST(new TestTimeConverter());
-*/
+
     ASSERT_TEST(new TestDefs());
 
-    return status;
+    return a.exec();
 }
 
