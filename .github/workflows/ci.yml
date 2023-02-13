@@ -17,7 +17,7 @@ jobs:
           sudo apt-get update -y
           sudo apt-get upgrade -fy
       - name: dependencies
-        run: sudo apt install -f -y extra-cmake-modules gettext qtbase5-dev qtbase5-dev-tools libqt5test5 gcovr libgtest-dev libkf5coreaddons-dev libkf5widgetsaddons-dev libkf5doctools-dev libkf5configwidgets-dev libkf5crash-dev libkf5dbusaddons-dev libkf5xmlgui-dev libkf5i18n-dev libqt5charts5-dev libkf5notifications-dev google-mock
+        run: sudo apt install -f -y extra-cmake-modules gettext qtbase5-dev qtbase5-dev-tools libqt5test5 gcovr libgtest-dev libkf5coreaddons-dev libkf5widgetsaddons-dev libkf5doctools-dev libkf5configwidgets-dev libkf5crash-dev libkf5dbusaddons-dev libkf5xmlgui-dev libkf5i18n-dev libqt5charts5-dev libkf5notifications-dev libgmock-dev
       - name: build and test
         run: |
           mkdir build
