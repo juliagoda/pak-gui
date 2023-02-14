@@ -20,5 +20,5 @@ private slots:
 
 private:
     MockCheckPackage check_package;
-    QString package_content = "";
+    QString package_content = "binutils 2.40-1.1 => 2.40-2.1";
 };

@@ -39,10 +39,8 @@ void CheckPackage::updateData(QString& packageContent, int name_line, int versio
     int first_number_index = packageContent.indexOf(QRegularExpression("[0-9]"), 0);
 
     QString name_part = packageContent.left(first_whitespace_index);
-    qDebug() << "check name part: " << name_part;
     setName(name_part);
 
     QString version_part = packageContent.mid(first_number_index);
-    qDebug() << "check version part: " << version_part;
     setVersion(version_part);
 }

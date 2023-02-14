@@ -38,7 +38,7 @@ public:
         no = package.no;
     }
 
-    ~Package() override = default;
+    virtual ~Package() override = default;
 
     virtual int getNo() const { return no; };
     virtual const QString& getName() const { return name; };
