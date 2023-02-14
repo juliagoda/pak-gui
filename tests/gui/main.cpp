@@ -86,6 +86,6 @@ int main(int argc, char* argv[])
 
     ASSERT_TEST(new TestDefs());
 
-    return a.exec();
+    return status; //a.exec();
 }
 
