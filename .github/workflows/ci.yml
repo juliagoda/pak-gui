@@ -26,6 +26,6 @@ jobs:
           cd build
           cmake -DRUN_TESTS=ON ..
           make
-          xvfb-run --auto-servernum pak-qtests
-          xvfb-run --auto-servernum pak-gtests
+          xvfb-run --auto-servernum bin/pak-qtests
+          xvfb-run --auto-servernum bin/pak-gtests
           gcovr -r ..
