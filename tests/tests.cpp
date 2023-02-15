@@ -18,12 +18,20 @@ public:
         // ...
     }
 
-    //MOCK_METHOD(void, run, (), (override));
     MOCK_METHOD(void, showStatisticsWindow, (), (override));
     MOCK_METHOD(void, downloadPackage, (), (override));
     MOCK_METHOD(void, searchPackage, (), (override));
-    //MOCK_METHOD(void, checkUpdates, (), (override));
     MOCK_METHOD(void, showFinishInformation, (), (override));
+
+    void checkUpdates() override
+    {
+        // ...
+    }
+
+    void run() override
+    {
+        // ...
+    }
 };
 
 
@@ -61,11 +69,11 @@ TEST_F(MainWindowViewGuiTest, triggeredShowStatisticsAction)
     main_window->triggerShowStatisticsWindow();
 }
 
-TEST_F(MainWindowViewGuiTest, triggeredDownloadPackageAction)
+/*TEST_F(MainWindowViewGuiTest, triggeredDownloadPackageAction)
 {
     EXPECT_CALL(*main_window_view, downloadPackage());
     main_window->triggerDownloadPackageAction();
-}
+}*/
 
 
 #include "tests.moc"

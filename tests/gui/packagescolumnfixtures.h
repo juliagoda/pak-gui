@@ -166,7 +166,6 @@ public:
 
     void run() override
     {
-        startSystemTray();
         initSignals();
         setupGUI(Default, "pak-gui.rc");
         setXMLFile("pak-gui.rc");
