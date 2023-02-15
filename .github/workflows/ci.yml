@@ -8,6 +8,8 @@ on:
 
 jobs:
   build-ubuntu-qt5:
+    env:
+      DISPLAY: ':99.0'
     runs-on: ubuntu-latest
     steps:
       - name: initialize
@@ -23,7 +25,7 @@ jobs:
           mkdir build
           cd build
           cmake -DRUN_TESTS=ON ..
-          make
+          make -j 3
           nohup Xvfb :99 > /dev/null 2>&1 &
           bin/pak-qtests
           bin/pak-gtests
