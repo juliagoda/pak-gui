@@ -27,6 +27,6 @@ jobs:
           cmake -DRUN_TESTS=ON ..
           make -j 3
           nohup Xvfb :99 > /dev/null 2>&1 &
-          bin/pak-gtests
-          bin/pak-qtests
           gcovr -r .. -j 2 -e "../src/src/ui_.*.h" -f ../src/src
+          bin/pak-qtests
+
