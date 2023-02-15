@@ -68,6 +68,13 @@ void UpdatedPackagesColumn::toggleAllPackages(bool is_all_checked)
 void UpdatedPackagesColumn::prepareBeforeProcessRun()
 {
     int result = 3;
+
+    if (getCheckedPackagesList().size() == 0)
+    {
+        Logger::logger()->logFatal(QString("Size of checked packages list is equal to 0. Abort prepareBeforeProcessRun()."));
+        return;
+    }
+
     auto first_package_source = getCheckedPackagesList().at(0)->getSource();
     bool containsSideSource = first_package_source == Package::Source::AUR || first_package_source == Package::Source::POLAUR;
     if (getCheckedPackagesList().count() != list_widget->count() && containsSideSource)

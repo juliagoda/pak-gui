@@ -1,6 +1,7 @@
 #pragma once
 
 #include "settings.h"
+#include "logger.h"
 
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -57,9 +58,11 @@ protected:
 
         setToolTipOnPackage(packageContent);
 
+        validate(lines, name_line + 1, QString("updateData()"));
         int name_separator_index = lines.at(name_line).indexOf(": ") + 1;
         setName(lines.at(name_line).mid(name_separator_index));
 
+        validate(lines, version_line + 1, QString("updateData()"));
         int version_separator_index = lines.at(version_line).indexOf(": ") + 1;
         setVersion(lines.at(version_line).mid(version_separator_index));
     }
@@ -77,6 +80,17 @@ protected:
         }
 
         setToolTip(selected_infos.join(QString("\n")));
+    }
+
+    bool validate(const QStringList& lines, int expected_size, const QString& funtion_name)
+    {
+        if (lines.size() < expected_size)
+        {
+            Logger::logger()->logFatal(QString("There is not enough lines in list. Abort %1").arg(funtion_name));
+            return false;
+        }
+
+        return true;
     }
 
     virtual void setName(const QString& new_name) { name = new_name; };
