@@ -37,15 +37,21 @@ void SiPackage::updateData(QString& packageContent, int name_line, int version_l
     if (lines.count() == 0)
         return;
 
-    validate(lines, PACKAGE_SI_REPO_NAME + 1, QString("updateData()"));
+    if (!validate(lines, PACKAGE_SI_REPO_NAME + 1, QString("updateData()")))
+        return;
+
     int repo_separator_index = lines.at(PACKAGE_SI_REPO_NAME).indexOf(": ") + 1;
     setRepo(lines.at(PACKAGE_SI_REPO_NAME).mid(repo_separator_index));
 
-    validate(lines, PACKAGE_SI_NAME_LINE + 1, QString("updateData()"));
+    if (!validate(lines, PACKAGE_SI_NAME_LINE + 1, QString("updateData()")))
+        return;
+
     int name_separator_index = lines.at(PACKAGE_SI_NAME_LINE).indexOf(": ") + 1;
     setName(lines.at(PACKAGE_SI_NAME_LINE).mid(name_separator_index));
 
-    validate(lines, PACKAGE_SI_VERSION_LINE + 1, QString("updateData()"));
+    if (!validate(lines, PACKAGE_SI_VERSION_LINE + 1, QString("updateData()")))
+        return;
+
     int version_separator_index = lines.at(PACKAGE_SI_VERSION_LINE).indexOf(": ") + 1;
     setVersion(lines.at(PACKAGE_SI_VERSION_LINE).mid(version_separator_index));
 }

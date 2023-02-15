@@ -58,11 +58,15 @@ protected:
 
         setToolTipOnPackage(packageContent);
 
-        validate(lines, name_line + 1, QString("updateData()"));
+        if (!validate(lines, name_line + 1, QString("updateData()")))
+            return;
+
         int name_separator_index = lines.at(name_line).indexOf(": ") + 1;
         setName(lines.at(name_line).mid(name_separator_index));
 
-        validate(lines, version_line + 1, QString("updateData()"));
+        if (!validate(lines, version_line + 1, QString("updateData()")))
+            return;
+
         int version_separator_index = lines.at(version_line).indexOf(": ") + 1;
         setVersion(lines.at(version_line).mid(version_separator_index));
     }
