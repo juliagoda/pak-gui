@@ -69,11 +69,11 @@ TEST_F(MainWindowViewGuiTest, triggeredShowStatisticsAction)
     main_window->triggerShowStatisticsWindow();
 }
 
-/*TEST_F(MainWindowViewGuiTest, triggeredDownloadPackageAction)
+TEST_F(MainWindowViewGuiTest, triggeredDownloadPackageAction)
 {
     EXPECT_CALL(*main_window_view, downloadPackage());
     main_window->triggerDownloadPackageAction();
-}*/
+}
 
 
 #include "tests.moc"
