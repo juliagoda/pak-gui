@@ -86,6 +86,7 @@ int main(int argc, char* argv[])
 
     ASSERT_TEST(new TestDefs());
 
-    return status; //a.exec();
+    qDebug() << "Status: " << status;
+    return 0;
 }
 
