@@ -29,5 +29,5 @@ jobs:
           nohup Xvfb :99 > /dev/null 2>&1 &
           bin/pak-qtests
           bin/pak-gtests
-          gcovr -r .. -j 2 -e "../src/src/*.h" -f ../src/src
+          gcovr -r .. -j 2 -e "../src/src/.*.h" -f ../src/src
 
