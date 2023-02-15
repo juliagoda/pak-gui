@@ -13,7 +13,7 @@ class PackageInputWindow : public QWidget
 
 public:
     explicit PackageInputWindow(QWidget* parent = nullptr);
-    virtual ~PackageInputWindow() = default;
+    ~PackageInputWindow() override = default;
 
 private Q_SLOTS:
     void toggleOkButton(const QString& new_package_name);

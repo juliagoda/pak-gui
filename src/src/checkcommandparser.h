@@ -12,6 +12,8 @@ class CheckCommandParser : public CommandParser
 
 public:
     CheckCommandParser();
+    ~CheckCommandParser() override = default;
+
     QStringList retrieveInfo() override { return QStringList(); };
     QHash<QString, Package::Source> retrieveInfoMap();
 

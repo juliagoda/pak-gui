@@ -13,6 +13,8 @@ class AvailablePackagesColumn : public PackagesColumn
 
 public:
     AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
+    ~AvailablePackagesColumn() override = default;
+
     void fill() override;
 
 signals:

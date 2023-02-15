@@ -10,7 +10,7 @@ class ProgressView : public QDialog
 
 public:
     explicit ProgressView(QDialog* parent = nullptr);
-    virtual ~ProgressView() = default;
+    ~ProgressView() override = default;
 
     void addProgressView(QWidget* progress_view);
     void removeProgressView(QWidget* progress_view);

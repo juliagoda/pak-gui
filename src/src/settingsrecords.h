@@ -10,7 +10,6 @@
 
 class SettingsRecords : public QObject
 {
-
     Q_OBJECT
 
 public:

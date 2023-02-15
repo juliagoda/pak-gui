@@ -1,7 +1,5 @@
 #pragma once
 
-#include "packageinputwindow.h"
-#include "choicewindow.h"
 #include "downloadcommandparser.h"
 
 #include <QString>
@@ -29,21 +27,10 @@ private:
     QPointer<DownloaderWindow> next_window;
 
 public:
-    PackageDownloader() :
-        next_window(nullptr)
-    {}
+    PackageDownloader();
 
-    QPointer<DownloaderWindow>& setNext(QPointer<DownloaderWindow>& new_window) override
-    {
-        this->next_window = new_window;
-        return this->next_window;
-    }
-
-    void handle() override
-    {
-        if (this->next_window)
-            this->next_window->handle();
-    }
+    QPointer<DownloaderWindow>& setNext(QPointer<DownloaderWindow>& new_window) override;
+    void handle() override;
 };
 
 
@@ -53,25 +40,9 @@ class AutomaticInstallation : public PackageDownloader
 
 public:
     AutomaticInstallation(QSharedPointer<DownloadCommandParser>& new_download_command_parser,
-                          QWidget* new_parent) :
-        PackageDownloader(),
-        download_command_parser(new_download_command_parser),
-        parent(new_parent)
-    {}
+                          QWidget* new_parent);
 
-    void handle() override
-    {
-        bool answer = true;
-        int answer_gui = QMessageBox::information(parent, tr("Downloader's option"),
-                                                  tr("Do you want to install chosen package automatically after download?"),
-                                                  QMessageBox::Yes | QMessageBox::No);
-
-        if (static_cast<QMessageBox::StandardButton>(answer_gui) == QMessageBox::No)
-            answer = false;
-
-        download_command_parser->updateParameter(answer ? QString("pak -GB") : QString("pak -G"));
-        PackageDownloader::handle();
-    }
+    void handle() override;
 
 private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
@@ -84,22 +55,9 @@ class PackageInput : public PackageDownloader
     Q_OBJECT
 
 public:
-    PackageInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
-        PackageDownloader(),
-        download_command_parser(new_download_command_parser)
-    {}
+    PackageInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
-    void handle() override
-    {
-        QPointer<PackageInputWindow> package_input_window = new PackageInputWindow();
-        connect(package_input_window.data(), &PackageInputWindow::packageNameInserted, [this](const QString& new_package_name)
-        {
-            download_command_parser->updatePackageName(new_package_name);
-            PackageDownloader::handle();
-        });
-
-        package_input_window->show();
-    }
+    void handle() override;
 
 private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
@@ -111,24 +69,9 @@ class PathsChoiceInput : public PackageDownloader
     Q_OBJECT
 
 public:
-    PathsChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
-        PackageDownloader(),
-        download_command_parser(new_download_command_parser)
-    {}
+    PathsChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
-    void handle() override
-    {
-        QPointer<ChoiceWindow> choice_window = new ChoiceWindow(tr("Choose path for package save"));
-        connect(download_command_parser.get(), &DownloadCommandParser::continuePathsRetrieve, choice_window, QOverload<QString&>::of(&ChoiceWindow::fillComboBox));
-        download_command_parser->start();
-        connect(choice_window.data(), QOverload<int>::of(&ChoiceWindow::choiceDefined), [this](int new_index)
-        {
-            download_command_parser->inputAnswer(QString::number(new_index));
-            PackageDownloader::handle();
-        });
-
-        choice_window->show();
-    }
+    void handle() override;
 
 private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
@@ -140,22 +83,9 @@ class ReposChoiceInput : public PackageDownloader
     Q_OBJECT
 
 public:
-    ReposChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
-        PackageDownloader(),
-        download_command_parser(new_download_command_parser)
-    {}
+    ReposChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
-    void handle() override
-    {
-        QPointer<ChoiceWindow> choice_window = new ChoiceWindow(tr("Choose repo for package download"));
-        connect(download_command_parser.get(), &DownloadCommandParser::continueReposRetrieve, choice_window, QOverload<QString&>::of(&ChoiceWindow::fillComboBox));
-        connect(choice_window.data(), QOverload<int>::of(&ChoiceWindow::choiceDefined), [this](int new_index)
-        {
-            download_command_parser->inputAnswer(QString::number(new_index));
-        });
-
-        choice_window->show();
-    }
+    void handle() override;
 
 private:
     QSharedPointer<DownloadCommandParser> download_command_parser;

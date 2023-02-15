@@ -10,6 +10,7 @@ class SpinningAnimation
 public:
     explicit SpinningAnimation();
     virtual ~SpinningAnimation() = default;
+
     void startOnWidget(QPointer<QLabel> label);
     void stopOnWidget(QPointer<QLabel> label);
     void startOnMainWidgets(QPointer<QLabel> first_label,

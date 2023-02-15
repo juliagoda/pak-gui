@@ -12,6 +12,7 @@ class DownloadCommandParser : public CommandParser
     Q_OBJECT
 public:
     DownloadCommandParser(const QString& new_package_name, QWidget* new_parent);
+    ~DownloadCommandParser() override = default;
 
     void updatePackageName(const QString& new_package_name);
     void updateParameter(const QString& new_parameter);

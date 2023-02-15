@@ -9,7 +9,7 @@ class CommandParser : public QObject
     Q_OBJECT
 
 public:
-    virtual ~CommandParser() = default;
+    virtual ~CommandParser() override = default;
     virtual QStringList retrieveInfo() = 0;
 };
 

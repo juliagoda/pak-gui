@@ -6,7 +6,8 @@
 class QiCommandParser : public CommandParser
 {
 public:
-    virtual ~QiCommandParser() override = default;
+    ~QiCommandParser() override = default;
+
     QStringList retrieveInfo() override;
 };
 

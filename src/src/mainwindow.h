@@ -20,7 +20,8 @@ class MainWindow : public KXmlGuiWindow
 
 public:
     MainWindow();
-    virtual ~MainWindow() override;
+    ~MainWindow() override;
+
     virtual void run();
 
 public Q_SLOTS:

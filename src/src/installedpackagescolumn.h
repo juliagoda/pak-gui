@@ -11,6 +11,8 @@ class InstalledPackagesColumn : public PackagesColumn
 
 public:
     InstalledPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
+    ~InstalledPackagesColumn() override = default;
+
     void fill() override;
 
 protected:

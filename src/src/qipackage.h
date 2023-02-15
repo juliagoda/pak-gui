@@ -10,5 +10,7 @@ class QiPackage : public Package
 public:
     QiPackage(QString& package_content);
     QiPackage(QiPackage& check_package);
+
+    ~QiPackage() override = default;
 };
 

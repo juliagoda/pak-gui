@@ -31,6 +31,12 @@ void InstallCommandParser::updateTask(const QString& source_name)
 }
 
 
+QString InstallCommandParser::getPackageName()
+{
+    return package_name;
+}
+
+
 QStringList InstallCommandParser::retrieveInfo()
 {
     return QStringList();

@@ -8,8 +8,9 @@
 class OutputFilter
 {
 public:
-    explicit OutputFilter() {};
-    virtual ~OutputFilter() {};
+    explicit OutputFilter() = default;
+    virtual ~OutputFilter() = default;
+
     static QString filteredOutput(QString& text_output);
     static QString getSourceFromDoubleColon(QString& output_line);
     static QString getSourceFromSearchLine(QString& output_line);

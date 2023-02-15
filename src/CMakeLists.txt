@@ -15,6 +15,7 @@ target_sources(pak-gui PRIVATE
     src/installedpackagescolumn.cpp
     src/installedpackagescolumn.h
     src/packagescolumn.h
+    src/packagescolumn.cpp
     src/qipackage.cpp
     src/qipackage.h
     src/sipackage.cpp
@@ -23,6 +24,7 @@ target_sources(pak-gui PRIVATE
     src/checkpackage.h
     src/defs.h
     src/package.h
+    src/package.cpp
     src/commandparser.h
     src/sicommandparser.cpp
     src/sicommandparser.h

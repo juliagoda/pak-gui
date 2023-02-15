@@ -7,13 +7,15 @@
 #include <QMap>
 #include <QString>
 
+
 class Statistics : public KMainWindow
 {
     Q_OBJECT
 public:
     explicit Statistics(const QMap<QString, uint>& new_statistics_map,
                         QWidget* parent = nullptr);
-    virtual ~Statistics() = default;
+    ~Statistics() override = default;
+
     void init();
 
 private Q_SLOTS:

@@ -10,6 +10,8 @@ class SiPackage : public Package
 public:
     SiPackage(QString& package_content);
     SiPackage(SiPackage& check_package);
+    ~SiPackage() override = default;
+
     const QString& getRepo() const { return repo; };
 
 private:

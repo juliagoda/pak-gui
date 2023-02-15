@@ -19,6 +19,7 @@ class Settings : public KConfigDialog
 public:
     explicit Settings(MainWindow* main_window);
     ~Settings() override = default;
+
     static void saveInitDateTimesWhenEmpty();
     static QSharedPointer<SettingsRecords> records();
     static void saveInitDateTime(const QString& operation_name);

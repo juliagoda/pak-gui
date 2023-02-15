@@ -7,9 +7,12 @@
 #include <QPointer>
 #include <QMessageBox>
 #include <QtConcurrent/QtConcurrent>
+#include <KLocalizedString>
 
 
-UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent) :
+UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
+                                             QLineEdit* new_search_lineedit,
+                                             QWidget* new_parent) :
     PackagesColumn(new_list_widget, new_search_lineedit, new_parent),
     current_packages_count(0),
     parent(new_parent)
@@ -36,7 +39,7 @@ void UpdatedPackagesColumn::fill()
     decltype(pak_packages)::iterator it = pak_packages.begin();
     int i = 0;
 
-    for(;it != pak_packages.end(); it++)
+    for (;it != pak_packages.end(); it++)
     {
         CheckPackage* package_item = new CheckPackage(it.key(), it.value());
         package_item->setNo(i + 1);
@@ -54,7 +57,7 @@ void UpdatedPackagesColumn::fill()
 
 void UpdatedPackagesColumn::toggleAllPackages(bool is_all_checked)
 {
-    for(int i = 0; i < list_widget->count(); ++i)
+    for (int i = 0; i < list_widget->count(); ++i)
     {
         QListWidgetItem* item = list_widget->item(i);
         if (is_all_checked)

@@ -16,7 +16,7 @@ public:
     ChoiceWindow(const QString& new_title,
                  QDialog* new_parent = nullptr);
 
-    virtual ~ChoiceWindow() = default;
+    ~ChoiceWindow() override = default;
 
 public Q_SLOTS:
     void toggleOkButton(int new_index);

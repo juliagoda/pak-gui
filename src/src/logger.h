@@ -31,8 +31,9 @@ public:
     Q_ENUM(WriteOperations)
 
     static Logger* logger();
-    virtual ~Logger();
+    ~Logger() override;
     Logger(Logger& instance) = delete;
+
     void operator=(const Logger& instance) = delete;
     void writeToFile(QString& text, WriteOperations section);
     void writeSectionToFile(WriteOperations section);

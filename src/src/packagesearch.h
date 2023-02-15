@@ -1,10 +1,7 @@
 #pragma once
 
-#include "outputfilter.h"
-#include "packageinputwindow.h"
-#include "choicewindow.h"
 #include "installcommandparser.h"
-#include "searchallcommandparser.h"
+
 #include "process.h"
 
 #include <QString>
@@ -20,7 +17,7 @@ class SearchWindow : public QObject
 
 public:
     virtual QPointer<SearchWindow>& setNext(QPointer<SearchWindow>& new_window) = 0;
-    virtual ~SearchWindow() = default;
+    virtual ~SearchWindow() override = default;
     virtual void handle() = 0;
 };
 
@@ -33,21 +30,10 @@ private:
     QPointer<SearchWindow> next_window;
 
 public:
-    PackageSearch() :
-        next_window(nullptr)
-    {}
+    PackageSearch();
 
-    QPointer<SearchWindow>& setNext(QPointer<SearchWindow>& new_window) override
-    {
-        this->next_window = new_window;
-        return this->next_window;
-    }
-
-    void handle() override
-    {
-        if (this->next_window)
-            this->next_window->handle();
-    }
+    QPointer<SearchWindow>& setNext(QPointer<SearchWindow>& new_window) override;
+    void handle() override;
 };
 
 
@@ -56,22 +42,9 @@ class PackageSearchInput : public PackageSearch
     Q_OBJECT
 
 public:
-    PackageSearchInput(QSharedPointer<InstallCommandParser>& new_install_command_parser) :
-        PackageSearch(),
-        install_command_parser(new_install_command_parser)
-    {}
+    PackageSearchInput(QSharedPointer<InstallCommandParser>& new_install_command_parser);
 
-    void handle() override
-    {
-        QPointer<PackageInputWindow> package_input_window = new PackageInputWindow();
-        connect(package_input_window.data(), &PackageInputWindow::packageNameInserted, [this](const QString& new_package_name)
-        {
-            install_command_parser->updatePackageName(new_package_name);
-            PackageSearch::handle();
-        });
-
-        package_input_window->show();
-    }
+    void handle() override;
 
 private:
     QSharedPointer<InstallCommandParser> install_command_parser;
@@ -83,28 +56,10 @@ class SearchResultsList : public PackageSearch
     Q_OBJECT
 
 public:
-    SearchResultsList(QSharedPointer<InstallCommandParser>& new_install_command_parser, QSharedPointer<Process>& new_process) :
-        PackageSearch(),
-        install_command_parser(new_install_command_parser),
-        process(new_process)
-    {}
+    SearchResultsList(QSharedPointer<InstallCommandParser>& new_install_command_parser,
+                      QSharedPointer<Process>& new_process);
 
-    void handle() override
-    {
-        QPointer<SearchAllCommandParser> search_all_command_parser(new SearchAllCommandParser(install_command_parser->getPackageName()));
-
-        QPointer<ChoiceWindow> choice_window = new ChoiceWindow(tr("Choose package"));
-        connect(search_all_command_parser, &SearchAllCommandParser::searchEnded, choice_window, QOverload<QStringList>::of(&ChoiceWindow::fillComboBox));
-        search_all_command_parser->retrieveInfo();
-        connect(choice_window, QOverload<QString>::of(&ChoiceWindow::choiceDefined), [this](QString chosen_package)
-        {
-            install_command_parser->updateTask(OutputFilter::getSourceFromSearchLine(chosen_package));
-            install_command_parser->updatePackageName(OutputFilter::getPackageFromSearchLine(chosen_package));
-            install_command_parser->start(process);
-        });
-
-        choice_window->show();
-    }
+    void handle() override;
 
 private:
     QSharedPointer<InstallCommandParser> install_command_parser;

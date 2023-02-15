@@ -13,6 +13,7 @@
 #include "previewdesign.h"
 #include "logger.h"
 #include "timeconverter.h"
+#include "settings.h"
 
 #include <KLocalizedString>
 #include <KLed>

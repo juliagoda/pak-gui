@@ -12,7 +12,7 @@ class SystemTray : public KStatusNotifierItem
 
 public:
     explicit SystemTray(MainWindow* parent);
-    virtual ~SystemTray() = default;
+    ~SystemTray() override = default;
 
 public Q_SLOTS:
     void update(int packages_count);

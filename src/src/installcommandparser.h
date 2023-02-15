@@ -13,10 +13,11 @@ class InstallCommandParser : public CommandParser
 
 public:
     InstallCommandParser();
+    ~InstallCommandParser() override = default;
 
     void updatePackageName(const QString &new_package_name);
     void updateTask(const QString& source_name);
-    QString getPackageName() { return package_name; };
+    QString getPackageName();
     QStringList retrieveInfo() override;
     void start(QSharedPointer<Process>& process);
 

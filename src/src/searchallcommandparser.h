@@ -15,6 +15,8 @@ class SearchAllCommandParser : public CommandParser
 
 public:
     SearchAllCommandParser(const QString& new_package_name);
+    ~SearchAllCommandParser() override = default;
+
     QStringList retrieveInfo() override;
 
 signals:
