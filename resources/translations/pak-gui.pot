@@ -3,12 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: src/src/installcommandparser.cpp:6 src/src/downloadcommandparser.cpp:126
+#: src/src/downloadcommandparser.cpp:127
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-14 20:05+0200\n"
+"POT-Creation-Date: 2023-02-21 21:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,98 +19,1421 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: rc.cpp:3
-msgid "hello, world"
-msgstr "ehello, world"
+#: src/src/mainwindowview.cpp:47 src/src/rc.cpp:60
+msgid "Internet connection state and auracle-git package presence"
+msgstr "eInternet connection state and auracle-git package presence"
 
-#: rc.cpp:6
-msgid "color of the background"
-msgstr "ecolor of the background"
+#: src/src/mainwindowview.cpp:48 src/src/rc.cpp:66
+msgid "Internet connection state and git package presence"
+msgstr "eInternet connection state and git package presence"
 
-#: rc.cpp:9
-msgid "color of the foreground"
-msgstr "ecolor of the foreground"
+#: src/src/mainwindowview.cpp:49 src/src/rc.cpp:54
+msgid "Internet connection state"
+msgstr "eInternet connection state"
 
-#: rc.cpp:12
-msgid "age of the project"
-msgstr "eage of the project"
+#: src/src/mainwindowview.cpp:133
+msgid "Internet connection checker started with interval %2"
+msgstr "eInternet connection checker started with interval %2"
 
-#: rc.cpp:15
+#: src/src/mainwindowview.cpp:139
+msgid "All processes ended"
+msgstr "eAll processes ended"
+
+#: src/src/mainwindowview.cpp:139
+msgid "All processes have been completed."
+msgstr "eAll processes have been completed."
+
+#: src/src/mainwindowview.cpp:148
+msgid "Required packages checker started with interval %2"
+msgstr "eRequired packages checker started with interval %2"
+
+#: src/src/mainwindowview.cpp:163
+msgid "Initialization started"
+msgstr "eInitialization started"
+
+#: src/src/mainwindowview.cpp:245 src/src/rc.cpp:21
+msgid "TO UPDATE"
+msgstr "eTO UPDATE"
+
+#: src/src/mainwindowview.cpp:246 src/src/rc.cpp:39
+msgid "AVAILABLE TO INSTALL"
+msgstr "eAVAILABLE TO INSTALL"
+
+#: src/src/mainwindowview.cpp:251
+msgid "Disabling widgets accordingly to offline state"
+msgstr "eDisabling widgets accordingly to offline state"
+
+#: src/src/mainwindowview.cpp:253 src/src/mainwindowview.cpp:255
+#: src/src/mainwindowview.cpp:271 src/src/mainwindowview.cpp:287
+#: src/src/mainwindowview.cpp:304 src/src/mainwindowview.cpp:310
+msgid "color: black; font-size: 15px;"
+msgstr "ecolor: black; font-size: 15px;"
+
+#: src/src/mainwindowview.cpp:254 src/src/mainwindowview.cpp:256
+msgid "No internet connection"
+msgstr "eNo internet connection"
+
+#: src/src/mainwindowview.cpp:272 src/src/mainwindowview.cpp:288
+msgid "Something went wrong. Try to refresh"
+msgstr "eSomething went wrong. Try to refresh"
+
+#: src/src/mainwindowview.cpp:305
+msgid "Cannot be updated - try to refresh"
+msgstr "eCannot be updated - try to refresh"
+
+#: src/src/mainwindowview.cpp:311
+msgid "There aren't packages to update"
+msgstr "eThere aren't packages to update"
+
+#: src/src/mainwindowview.cpp:331
+msgid "Refresh/initialization ended"
+msgstr "eRefresh/initialization ended"
+
+#: src/src/mainwindowview.cpp:348 src/src/mainwindowview.cpp:414
+msgid "text_browser_tab_%1"
+msgstr "etext_browser_tab_%1"
+
+#: src/src/mainwindowview.cpp:451
+msgid "Start check updates - %1"
+msgstr "eStart check updates - %1"
+
+#: src/src/mainwindowview.cpp:472
+msgid "Update widgets and data after settings change"
+msgstr "eUpdate widgets and data after settings change"
+
+#: src/src/mainwindowview.cpp:483
+msgid "Quit"
+msgstr "eQuit"
+
+#: src/src/mainwindowview.cpp:483
+msgid ""
+"Application cannot be closed immediately. Try again after end of running "
+"operations."
+msgstr ""
+"eApplication cannot be closed immediately. Try again after end of running "
+"operations."
+
+#: src/src/packageinputwindow.cpp:24
+msgid "Package name is empty"
+msgstr "ePackage name is empty"
+
+#: src/src/packageinputwindow.cpp:24
+msgid "Package name is not empty"
+msgstr "ePackage name is not empty"
+
+#: src/src/packageinputwindow.cpp:25
+msgid "OK button is now enabled"
+msgstr "eOK button is now enabled"
+
+#: src/src/packageinputwindow.cpp:25
+msgid "OK button is now disabled"
+msgstr "eOK button is now disabled"
+
+#: src/src/installcommandparser.cpp:16 src/src/rc.cpp:63
+#: src/src/checkcommandparser.cpp:17
+msgid "AUR"
+msgstr "eAUR"
+
+#: src/src/installcommandparser.cpp:17 src/src/rc.cpp:69
+#: src/src/checkcommandparser.cpp:18
+msgid "POLAUR"
+msgstr "ePOLAUR"
+
+#: src/src/installcommandparser.cpp:18 src/src/rc.cpp:57
+msgid "Repositories"
+msgstr "eRepositories"
+
+#: src/src/availablepackagescolumn.cpp:51
+msgid "Filled column with %1 available packages"
+msgstr "eFilled column with %1 available packages"
+
+#: src/src/progressview.cpp:16
+msgid "Generated operation tab in preview window titled \"%1\""
+msgstr "eGenerated operation tab in preview window titled \"%1\""
+
+#: src/src/progressview.cpp:27
+msgid ""
+"progress view titled \"%1\" couldn't be removed from tabwidget window - "
+"couldn't be found"
+msgstr ""
+"eprogress view titled \"%1\" couldn't be removed from tabwidget window - "
+"couldn't be found"
+
+#: src/src/progressview.cpp:31
+msgid "Removing tab widget titled \"%1\""
+msgstr "eRemoving tab widget titled \"%1\""
+
+#: src/src/actionsaccesschecker.cpp:20
+msgid "Environment variable PATH: %1"
+msgstr "eEnvironment variable PATH: %1"
+
+#: src/src/actionsaccesschecker.cpp:20 src/src/actionsaccesschecker.cpp:47
+msgid "PATH"
+msgstr "ePATH"
+
+#: src/src/actionsaccesschecker.cpp:46 src/src/checkpackage.cpp:12
+#: src/src/checkpackage.cpp:24 src/src/qipackage.cpp:12
+#: src/src/qipackage.cpp:23 src/src/sipackage.cpp:11 src/src/sipackage.cpp:25
+msgid "-"
+msgstr "e-"
+
+#: src/src/actionsaccesschecker.cpp:47 src/src/actionsaccesschecker.cpp:48
+#: src/src/statisticscommandparser.cpp:39
+msgid ":"
+msgstr "e:"
+
+#: src/src/actionsaccesschecker.cpp:113
+msgid "Missing packages"
+msgstr "eMissing packages"
+
+#: src/src/actionsaccesschecker.cpp:113
+msgid ""
+"Required packages are missing:\n"
+"\n"
+msgstr ""
+"eRequired packages are missing:\n"
+"\n"
+
+#: src/src/actionsaccesschecker.cpp:114 src/src/actionsaccesschecker.cpp:115
+#: src/src/process.cpp:160 src/src/downloadcommandparser.cpp:121
+#: src/src/downloadcommandparser.cpp:122 src/src/searchallcommandparser.cpp:36
+#: src/src/package.cpp:93 src/src/choicewindow.cpp:39
+msgid "\n"
+msgstr "e\n"
+
+#: src/src/actionsaccesschecker.cpp:115
+msgid ""
+"Required packages are missing:\n"
+"\n"
+" %1"
+msgstr ""
+"eRequired packages are missing:\n"
+"\n"
+" %1"
+
+#: src/src/actionsaccesschecker.cpp:138
+msgid "Application has been turned into %1 state"
+msgstr "eApplication has been turned into %1 state"
+
+#: src/src/actionsaccesschecker.cpp:138
+msgid "online"
+msgstr "eonline"
+
+#: src/src/actionsaccesschecker.cpp:138
+msgid "offline"
+msgstr "eoffline"
+
+#: src/src/qicommandparser.cpp:14 src/src/process.cpp:90
+#: src/src/sicommandparser.cpp:14 src/src/downloadcommandparser.cpp:75
+#: src/src/searchallcommandparser.cpp:23 src/src/statisticscommandparser.cpp:14
+#: src/src/checkcommandparser.cpp:26
+msgid "/bin/bash"
+msgstr "e/bin/bash"
+
+#: src/src/qicommandparser.cpp:14 src/src/process.cpp:32 src/src/process.cpp:33
+#: src/src/process.cpp:34 src/src/process.cpp:35 src/src/process.cpp:36
+#: src/src/process.cpp:60 src/src/process.cpp:62 src/src/process.cpp:123
+#: src/src/process.cpp:124 src/src/process.cpp:125 src/src/process.cpp:126
+#: src/src/process.cpp:127 src/src/process.cpp:128
+#: src/src/sicommandparser.cpp:14 src/src/downloadcommandparser.cpp:75
+#: src/src/searchallcommandparser.cpp:23 src/src/statisticscommandparser.cpp:14
+#: src/src/checkcommandparser.cpp:26
+msgid "-c"
+msgstr "e-c"
+
+#: src/src/qicommandparser.cpp:14
+msgid "pak -Qi"
+msgstr "epak -Qi"
+
+#: src/src/qicommandparser.cpp:19 src/src/sicommandparser.cpp:19
+msgid ""
+"Validated By[^\n"
+"]*\n"
+"\n"
+msgstr ""
+"eValidated By[^\n"
+"]*\n"
+"\n"
+
+#: src/src/rc.cpp:3
+msgid "View progress"
+msgstr "eView progress"
+
+#: src/src/rc.cpp:6
+msgid "INSTALLED"
+msgstr "eINSTALLED"
+
+#: src/src/rc.cpp:9 src/src/rc.cpp:24 src/src/rc.cpp:42
+msgid "Reverse sorting"
+msgstr "eReverse sorting"
+
+#: src/src/rc.cpp:12
+msgid "Uninstall"
+msgstr "eUninstall"
+
+#: src/src/rc.cpp:15 src/src/rc.cpp:30 src/src/rc.cpp:48
+msgid "Preview"
+msgstr "ePreview"
+
+#: src/src/rc.cpp:18 src/src/rc.cpp:33 src/src/rc.cpp:51
+msgid "Search"
+msgstr "eSearch"
+
+#: src/src/rc.cpp:27 src/src/process.cpp:30 src/src/systemtray.cpp:30
+msgid "Update"
+msgstr "eUpdate"
+
+#: src/src/rc.cpp:36
+msgid "Check all"
+msgstr "eCheck all"
+
+#: src/src/rc.cpp:45
+msgid "Install"
+msgstr "eInstall"
+
+#: src/src/rc.cpp:72 src/src/rc.cpp:165
+msgid "Dialog"
+msgstr "eDialog"
+
+#: src/src/rc.cpp:75
+msgid "Tab 1"
+msgstr "eTab 1"
+
+#: src/src/rc.cpp:78
+msgid "Tab 2"
+msgstr "eTab 2"
+
+#: src/src/rc.cpp:81 src/src/rc.cpp:96 src/src/rc.cpp:111 src/src/rc.cpp:126
+msgid "Form"
+msgstr "eForm"
+
+#: src/src/rc.cpp:84
+msgid "background color "
+msgstr "ebackground color "
+
+#: src/src/rc.cpp:87
+msgid "font color"
+msgstr "efont color"
+
+#: src/src/rc.cpp:90
+msgid "font family"
+msgstr "efont family"
+
+#: src/src/rc.cpp:93
+msgid "font size "
+msgstr "efont size "
+
+#: src/src/rc.cpp:99
+msgid "Save logs into file"
+msgstr "eSave logs into file"
+
+#: src/src/rc.cpp:102
+msgid "in path"
+msgstr "ein path"
+
+#: src/src/rc.cpp:105
+msgid "show debug"
+msgstr "eshow debug"
+
+#: src/src/rc.cpp:108
+msgid "hide information logs"
+msgstr "ehide information logs"
+
+#: src/src/rc.cpp:114
+msgid "Enter the package name"
+msgstr "eEnter the package name"
+
+#: src/src/rc.cpp:117
+msgid "A&ctions"
+msgstr "eA&ctions"
+
+#: src/src/rc.cpp:120
+msgid "P&rint"
+msgstr "eP&rint"
+
+#: src/src/rc.cpp:123
 msgid "Main Toolbar"
 msgstr "eMain Toolbar"
 
-#: rc.cpp:18
-msgid "Background color:"
-msgstr "eBackground color:"
+#: src/src/rc.cpp:129 src/src/rc.cpp:138
+msgid "day(s)"
+msgstr "eday(s)"
 
-#: rc.cpp:21
-msgid "Choose a new background color"
-msgstr "eChoose a new background color"
+#: src/src/rc.cpp:132
+msgid "Check packages ready to update every "
+msgstr "eCheck packages ready to update every "
 
-#: rc.cpp:24
+#: src/src/rc.cpp:135
+msgid "Try to reconnect to the internet every "
+msgstr "eTry to reconnect to the internet every "
+
+#: src/src/rc.cpp:141 src/src/rc.cpp:144
+msgid "minute(s)"
+msgstr "eminute(s)"
+
+#: src/src/rc.cpp:147
+msgid "hour(s)"
+msgstr "ehour(s)"
+
+#: src/src/rc.cpp:150
+msgid "Store operations history for "
+msgstr "eStore operations history for "
+
+#: src/src/rc.cpp:153
+msgid "Set limit of single operations history size to  "
+msgstr "eSet limit of single operations history size to  "
+
+#: src/src/rc.cpp:156
+msgid "MB"
+msgstr "eMB"
+
+#: src/src/rc.cpp:159
+msgid "Overwrite operations history file (when full size)"
+msgstr "eOverwrite operations history file (when full size)"
+
+#: src/src/rc.cpp:162
+msgid "Use system tray icon"
+msgstr "eUse system tray icon"
+
+#: src/src/rc.cpp:168 src/src/packagedownloader.cpp:90
+msgid "Choose path for package save"
+msgstr "eChoose path for package save"
+
+#: src/src/packagescolumn.cpp:63
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-"css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Serif'; font-size:9pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Change the <span style=\" "
-"font-weight:600;\">background</span> color by clicking here and choose the "
-"new <span style=\" color:#ff0000;\">color</span> in the <span style=\" font-"
-"style:italic;\">color dialog</span>.</p></body></html>"
+"Packages couln't be %1\n"
+"Do you want to see logs?"
 msgstr ""
-"e<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-"css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Serif'; font-size:9pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Change the <span style=\" "
-"font-weight:600;\">background</span> color by clicking here and choose the "
-"new <span style=\" color:#ff0000;\">color</span> in the <span style=\" font-"
-"style:italic;\">color dialog</span>.</p></body></html>"
+"ePackages couln't be %1\n"
+"Do you want to see logs?"
 
-#: rc.cpp:30
-msgid "Foreground color:"
-msgstr "eForeground color:"
+#: src/src/packagescolumn.cpp:101
+msgid "Added at the beginning of list package: %1"
+msgstr "eAdded at the beginning of list package: %1"
 
-#: rc.cpp:33
-msgid "Choose a new foreground color"
-msgstr "eChoose a new foreground color"
+#: src/src/packagescolumn.cpp:106
+msgid "Added at the end of list package: %1"
+msgstr "eAdded at the end of list package: %1"
 
-#: rc.cpp:36
+#: src/src/packagescolumn.cpp:115
+msgid "Removed package name from list: %1 - index: %2"
+msgstr "eRemoved package name from list: %1 - index: %2"
+
+#: src/src/checkpackage.cpp:38 src/src/process.cpp:46 src/src/process.cpp:88
+#: src/src/process.cpp:123 src/src/process.cpp:124 src/src/process.cpp:125
+#: src/src/process.cpp:126 src/src/process.cpp:127 src/src/process.cpp:128
+#: src/src/downloadcommandparser.cpp:75
+msgid " "
+msgstr "e "
+
+#: src/src/checkpackage.cpp:39
+msgid "[0-9]"
+msgstr "e[0-9]"
+
+#: src/src/process.cpp:23
+msgid "Clean"
+msgstr "eClean"
+
+#: src/src/process.cpp:23
+msgid "clean packages after installation?"
+msgstr "eclean packages after installation?"
+
+#: src/src/process.cpp:24
+msgid "Update mirrors"
+msgstr "eUpdate mirrors"
+
+#: src/src/process.cpp:24
+msgid "update mirrors?"
+msgstr "eupdate mirrors?"
+
+#: src/src/process.cpp:25 src/src/updatedpackagescolumn.cpp:86
+msgid "Update all"
+msgstr "eUpdate all"
+
+#: src/src/process.cpp:25
+msgid "update all packages?"
+msgstr "eupdate all packages?"
+
+#: src/src/process.cpp:26
+msgid "Print vcs packages"
+msgstr "ePrint vcs packages"
+
+#: src/src/process.cpp:26
+msgid "print all vcs packages?"
+msgstr "eprint all vcs packages?"
+
+#: src/src/process.cpp:27
+msgid "Installed packages update"
+msgstr "eInstalled packages update"
+
+#: src/src/process.cpp:27
+msgid "update installed packages?"
+msgstr "eupdate installed packages?"
+
+#: src/src/process.cpp:28
+msgid "Uninstallation"
+msgstr "eUninstallation"
+
+#: src/src/process.cpp:28
+msgid "remove packages?"
+msgstr "eremove packages?"
+
+#: src/src/process.cpp:29
+msgid "Installation"
+msgstr "eInstallation"
+
+#: src/src/process.cpp:29
+msgid "install packages?"
+msgstr "einstall packages?"
+
+#: src/src/process.cpp:30
+msgid "update package(s)?"
+msgstr "eupdate package(s)?"
+
+#: src/src/process.cpp:32 src/src/process.cpp:56
+msgid " && echo -e \"y\" | pak -Sc"
+msgstr "e && echo -e \"y\" | pak -Sc"
+
+#: src/src/process.cpp:33
+msgid " && pak -m"
+msgstr "e && pak -m"
+
+#: src/src/process.cpp:34
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-"css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Serif'; font-size:9pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Change the <span style=\" "
-"font-weight:600;\">foreground</span> color by clicking here and choose the "
-"new <span style=\" color:#ff0000;\">color</span> in the <span style=\" font-"
-"style:italic;\">color dialog</span>.</p></body></html>"
+" && echo -e \"y\n"
+"y\" | pak -Su"
 msgstr ""
-"e<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-"css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Serif'; font-size:9pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Change the <span style=\" "
-"font-weight:600;\">foreground</span> color by clicking here and choose the "
-"new <span style=\" color:#ff0000;\">color</span> in the <span style=\" font-"
-"style:italic;\">color dialog</span>.</p></body></html>"
+"e && echo -e \"y\n"
+"y\" | pak -Su"
 
-#: rc.cpp:42
-msgid "Project age:"
-msgstr "eProject age:"
+#: src/src/process.cpp:35
+msgid " && pak --vcs"
+msgstr "e && pak --vcs"
 
-#: rc.cpp:45
-msgid "Set the project age (in days)"
-msgstr "eSet the project age (in days)"
+#: src/src/process.cpp:36
+msgid " && pak -Sy"
+msgstr "e && pak -Sy"
 
-#: rc.cpp:48
-msgid "Change the project age (in days) by choosing a new number of days."
-msgstr "eChange the project age (in days) by choosing a new number of days."
+#: src/src/process.cpp:46
+msgid "Packages in current task: %1"
+msgstr "ePackages in current task: %1"
+
+#: src/src/process.cpp:60
+msgid " && echo -e \"y\" | pak -ScA"
+msgstr "e && echo -e \"y\" | pak -ScA"
+
+#: src/src/process.cpp:75
+msgid "Question related to task \"%1\" has been cancelled"
+msgstr "eQuestion related to task \"%1\" has been cancelled"
+
+#: src/src/process.cpp:85
+msgid "Started task \"%1\""
+msgstr "eStarted task \"%1\""
+
+#: src/src/process.cpp:88
+msgid "pacman"
+msgstr "epacman"
+
+#: src/src/process.cpp:90
+msgid "/usr/bin/kdesu"
+msgstr "e/usr/bin/kdesu"
+
+#: src/src/process.cpp:108
+msgid "%1 wasn't possible: %2"
+msgstr "e%1 wasn't possible: %2"
+
+#: src/src/process.cpp:109
+msgid "Error occured during task \"%1\" execution: %2"
+msgstr "eError occured during task \"%1\" execution: %2"
+
+#: src/src/process.cpp:116
+msgid "Task \"%1\" finished successfully"
+msgstr "eTask \"%1\" finished successfully"
+
+#: src/src/process.cpp:123 src/src/process.cpp:124 src/src/process.cpp:125
+msgid "-t"
+msgstr "e-t"
+
+#: src/src/process.cpp:123 src/src/process.cpp:124 src/src/process.cpp:125
+msgid "-n"
+msgstr "e-n"
+
+#: src/src/process.cpp:123
+msgid "/bin/bash -c \"pacman -Sy --noconfirm "
+msgstr "e/bin/bash -c \"pacman -Sy --noconfirm "
+
+#: src/src/process.cpp:123 src/src/process.cpp:124 src/src/process.cpp:125
+msgid "\""
+msgstr "e\""
+
+#: src/src/process.cpp:124
+msgid "/bin/bash -c \"pacman -R --noconfirm "
+msgstr "e/bin/bash -c \"pacman -R --noconfirm "
+
+#: src/src/process.cpp:125
+msgid "/bin/bash -c \"pacman -S --noconfirm "
+msgstr "e/bin/bash -c \"pacman -S --noconfirm "
+
+#: src/src/process.cpp:126
+msgid " && pak -S "
+msgstr "e && pak -S "
+
+#: src/src/process.cpp:127
+msgid " && pak -SA "
+msgstr "e && pak -SA "
+
+#: src/src/process.cpp:128
+msgid " && pak -SP "
+msgstr "e && pak -SP "
+
+#: src/src/process.cpp:157
+msgid "Are you sure you want to %1"
+msgstr "eAre you sure you want to %1"
+
+#: src/src/process.cpp:160
+msgid ""
+":\n"
+"\n"
+msgstr ""
+"e:\n"
+"\n"
+
+#: src/src/logger.cpp:85
+msgid "INFO"
+msgstr "eINFO"
+
+#: src/src/logger.cpp:86
+msgid "[INFO] "
+msgstr "e[INFO] "
+
+#: src/src/logger.cpp:92
+msgid "WARNING"
+msgstr "eWARNING"
+
+#: src/src/logger.cpp:93
+msgid "[WARNING] "
+msgstr "e[WARNING] "
+
+#: src/src/logger.cpp:99
+msgid "FATAL"
+msgstr "eFATAL"
+
+#: src/src/logger.cpp:100
+msgid "[FATAL] "
+msgstr "e[FATAL] "
+
+#: src/src/logger.cpp:109
+msgid "DEBUG"
+msgstr "eDEBUG"
+
+#: src/src/logger.cpp:110
+msgid "[DEBUG] "
+msgstr "e[DEBUG] "
+
+#: src/src/logger.cpp:116
+msgid "Clear logs file - %1"
+msgstr "eClear logs file - %1"
+
+#: src/src/logger.cpp:119
+msgid "Logs file couldn't be removed: %1"
+msgstr "eLogs file couldn't be removed: %1"
+
+#: src/src/logger.cpp:127
+msgid ""
+"\n"
+"\n"
+"\n"
+"---------------["
+msgstr ""
+"e\n"
+"\n"
+"\n"
+"---------------["
+
+#: src/src/logger.cpp:127
+msgid "]---------------"
+msgstr "e]---------------"
+
+#: src/src/logger.cpp:135
+msgid "////////////////////////////////////////////////////////////"
+msgstr "e////////////////////////////////////////////////////////////"
+
+#: src/src/logger.cpp:141
+msgid ""
+"\n"
+"\n"
+msgstr ""
+"e\n"
+"\n"
+
+#: src/src/logger.cpp:158 src/src/searchallcommandparser.cpp:44
+#: src/src/sipackage.cpp:11 src/src/sipackage.cpp:25
+msgid " ["
+msgstr "e ["
+
+#: src/src/logger.cpp:158
+msgid "]  "
+msgstr "e]  "
+
+#: src/src/logger.cpp:158
+msgid "  ("
+msgstr "e  ("
+
+#: src/src/logger.cpp:158
+msgid ")\n"
+msgstr "e)\n"
+
+#: src/src/logger.cpp:169
+msgid ""
+"Cannot write to file \"%1\" - file is not opened or you don't have "
+"permissions to write into or even doesn't exist"
+msgstr ""
+"eCannot write to file \"%1\" - file is not opened or you don't have "
+"permissions to write into or even doesn't exist"
+
+#: src/src/logger.cpp:180
+msgid "Logs file \"%1\" couldn't be properly closed!"
+msgstr "eLogs file \"%1\" couldn't be properly closed!"
+
+#: src/src/logger.cpp:197
+msgid "Logs file \"%1\" successfully opened\n"
+msgstr "eLogs file \"%1\" successfully opened\n"
+
+#: src/src/installedpackagescolumn.cpp:47
+msgid "Filled column with %1 installed packages"
+msgstr "eFilled column with %1 installed packages"
+
+#: src/src/sorter.cpp:27 src/src/sorter.cpp:41 src/src/sorter.cpp:112
+#: src/src/settings.cpp:120 src/src/settings.cpp:129
+msgid "*"
+msgstr "e*"
+
+#: src/src/sorter.cpp:44
+msgid "Reverse sorting - now first package is \"%1\" and last one \"%2\""
+msgstr "eReverse sorting - now first package is \"%1\" and last one \"%2\""
+
+#: src/src/sorter.cpp:113
+msgid "Count of sorted packages: %1"
+msgstr "eCount of sorted packages: %1"
+
+#: src/src/spinninganimation.cpp:6
+msgid ":/waiting.gif"
+msgstr "e:/waiting.gif"
+
+#: src/src/spinninganimation.cpp:7
+msgid ":/waiting-small.gif"
+msgstr "e:/waiting-small.gif"
+
+#: src/src/spinninganimation.cpp:27
+msgid "Main animation started!"
+msgstr "eMain animation started!"
+
+#: src/src/spinninganimation.cpp:42
+msgid "Main animations stopped!"
+msgstr "eMain animations stopped!"
+
+#: src/src/spinninganimation.cpp:66
+msgid "Animation started!"
+msgstr "eAnimation started!"
+
+#: src/src/spinninganimation.cpp:77
+msgid "Animation stopped!"
+msgstr "eAnimation stopped!"
+
+#: src/src/spinninganimation.cpp:89
+msgid "Small animation started!"
+msgstr "eSmall animation started!"
+
+#: src/src/spinninganimation.cpp:100
+msgid "Small animation stopped!"
+msgstr "eSmall animation stopped!"
+
+#: src/src/spinninganimation.cpp:108
+msgid "Cannot toggle animation - animation instance doesn't exist"
+msgstr "eCannot toggle animation - animation instance doesn't exist"
+
+#: src/src/sicommandparser.cpp:14
+msgid "pak -Si"
+msgstr "epak -Si"
+
+#: src/src/timeconverter.cpp:51
+msgid "%1 days %2 hours %3 minutes"
+msgstr "e%1 days %2 hours %3 minutes"
+
+#: src/src/downloadcommandparser.cpp:22 src/src/packagedownloader.cpp:49
+msgid "pak -G"
+msgstr "epak -G"
+
+#: src/src/downloadcommandparser.cpp:29
+msgid "Error during download: %1"
+msgstr "eError during download: %1"
+
+#: src/src/downloadcommandparser.cpp:39
+msgid "error:"
+msgstr "eerror:"
+
+#: src/src/downloadcommandparser.cpp:42
+msgid "Current directory:"
+msgstr "eCurrent directory:"
+
+#: src/src/downloadcommandparser.cpp:48
+msgid "\\s+\\d+\\.\\s+"
+msgstr "e\\s+\\d+\\.\\s+"
+
+#: src/src/downloadcommandparser.cpp:71
+msgid "retrieving paths from download command parser is not possible"
+msgstr "eretrieving paths from download command parser is not possible"
+
+#: src/src/downloadcommandparser.cpp:73
+msgid "Trying download package: %1 with command %2"
+msgstr "eTrying download package: %1 with command %2"
+
+#: src/src/downloadcommandparser.cpp:85
+msgid ""
+"Download command parser process is not running. Answer input is not possible"
+msgstr ""
+"eDownload command parser process is not running. Answer input is not possible"
+
+#: src/src/downloadcommandparser.cpp:89
+msgid "Chosen option: %1"
+msgstr "eChosen option: %1"
+
+#: src/src/downloadcommandparser.cpp:99
+msgid "Package Name"
+msgstr "ePackage Name"
+
+#: src/src/downloadcommandparser.cpp:100
+msgid "Package name cannot be empty"
+msgstr "ePackage name cannot be empty"
+
+#: src/src/downloadcommandparser.cpp:102
+msgid "Given package name for download is empty!"
+msgstr "eGiven package name for download is empty!"
+
+#: src/src/downloadcommandparser.cpp:119
+msgid "PKGBUILD has been downloaded to"
+msgstr "ePKGBUILD has been downloaded to"
+
+#: src/src/downloadcommandparser.cpp:121
+msgid "Package download failure"
+msgstr "ePackage download failure"
+
+#: src/src/downloadcommandparser.cpp:121
+msgid ""
+"Package couldn't be downloaded:\n"
+"\n"
+"Error lines:\n"
+"%1"
+msgstr ""
+"ePackage couldn't be downloaded:\n"
+"\n"
+"Error lines:\n"
+"%1"
+
+#: src/src/downloadcommandparser.cpp:122
+msgid ""
+"Package couldn't be downloaded:\n"
+"\n"
+"Error lines:\n"
+" %1"
+msgstr ""
+"ePackage couldn't be downloaded:\n"
+"\n"
+"Error lines:\n"
+" %1"
+
+#: src/src/downloadcommandparser.cpp:126
+msgid "Package download"
+msgstr "ePackage download"
+
+#: src/src/downloadcommandparser.cpp:126 src/src/downloadcommandparser.cpp:127
+msgid "Package %1 has been downloaded %2"
+msgstr "ePackage %1 has been downloaded %2"
+
+#: src/src/downloadcommandparser.cpp:126 src/src/downloadcommandparser.cpp:127
+#: src/src/packagedownloader.cpp:49
+msgid "pak -GB"
+msgstr "epak -GB"
+
+#: src/src/downloadcommandparser.cpp:126 src/src/downloadcommandparser.cpp:127
+msgid "and installed"
+msgstr "eand installed"
+
+#: src/src/outputfilter.cpp:23
+msgid "::"
+msgstr "e::"
+
+#: src/src/outputfilter.cpp:29
+msgid ".*\\[(.*)\\].*"
+msgstr "e.*\\[(.*)\\].*"
+
+#: src/src/outputfilter.cpp:36
+msgid "^(\\S*)\\s*\\S*"
+msgstr "e^(\\S*)\\s*\\S*"
+
+#: src/src/outputfilter.cpp:57 src/src/outputfilter.cpp:61
+msgid ""
+msgstr "e"
+
+#: src/src/outputfilter.cpp:58
+msgid "\\[[0-9]{2}m"
+msgstr "e\\[[0-9]{2}m"
+
+#: src/src/outputfilter.cpp:59
+msgid "\\[0m"
+msgstr "e\\[0m"
+
+#: src/src/outputfilter.cpp:60
+msgid "\\[1;[0-9]{2}m"
+msgstr "e\\[1;[0-9]{2}m"
+
+#: src/src/outputfilter.cpp:62
+msgid "\\[?25l"
+msgstr "e\\[?25l"
+
+#: src/src/outputfilter.cpp:63
+msgid "\\[\\?"
+msgstr "e\\[\\?"
+
+#: src/src/outputfilter.cpp:64
+msgid "\\[[0-9]{1}F "
+msgstr "e\\[[0-9]{1}F "
+
+#: src/src/outputfilter.cpp:65
+msgid "\\[1E"
+msgstr "e\\[1E"
+
+#: src/src/outputfilter.cpp:73
+msgid "^\\s*[0-9]+\\.?\\s+"
+msgstr "e^\\s*[0-9]+\\.?\\s+"
+
+#: src/src/outputfilter.cpp:79
+msgid ":: "
+msgstr "e:: "
+
+#: src/src/outputfilter.cpp:85
+msgid "^.*/\\S+\\s+\\S+"
+msgstr "e^.*/\\S+\\s+\\S+"
+
+#: src/src/previewdesign.cpp:20
+msgid "; "
+msgstr "e; "
+
+#: src/src/previewdesign.cpp:27
+msgid "background-color: %1"
+msgstr "ebackground-color: %1"
+
+#: src/src/previewdesign.cpp:33
+msgid "color: %1"
+msgstr "ecolor: %1"
+
+#: src/src/previewdesign.cpp:39
+msgid "font-size: %1"
+msgstr "efont-size: %1"
+
+#: src/src/previewdesign.cpp:45
+msgid "font-family: %1"
+msgstr "efont-family: %1"
+
+#: src/src/packagesearch.cpp:68
+msgid "Choose package"
+msgstr "eChoose package"
+
+#: src/src/settingsrecords.cpp:7
+msgid "CachyOS"
+msgstr "eCachyOS"
+
+#: src/src/settingsrecords.cpp:7 src/src/systemtray.cpp:19
+msgid "pak-gui"
+msgstr "epak-gui"
+
+#: src/src/settingsrecords.cpp:29 src/src/settingsrecords.cpp:158
+#: src/src/settingsrecords.cpp:159 src/src/settingsrecords.cpp:172
+msgid "start_datetime_for_updates_check"
+msgstr "estart_datetime_for_updates_check"
+
+#: src/src/settingsrecords.cpp:29 src/src/settingsrecords.cpp:35
+msgid "yyyy-M-dThh:mm:ss"
+msgstr "eyyyy-M-dThh:mm:ss"
+
+#: src/src/settingsrecords.cpp:35 src/src/settingsrecords.cpp:165
+#: src/src/settingsrecords.cpp:166 src/src/settingsrecords.cpp:178
+msgid "start_datetime_for_history_store"
+msgstr "estart_datetime_for_history_store"
+
+#: src/src/settingsrecords.cpp:41 src/src/settingsrecords.cpp:42
+#: src/src/settingsrecords.cpp:143 src/src/pakGuiSettings.cpp:98
+#: src/src/pakGuiSettings.cpp:99
+msgid "packages_info_available"
+msgstr "epackages_info_available"
+
+#: src/src/settingsrecords.cpp:50 src/src/settingsrecords.cpp:51
+#: src/src/settingsrecords.cpp:149 src/src/settingsrecords.cpp:152
+#: src/src/pakGuiSettings.cpp:107 src/src/pakGuiSettings.cpp:108
+msgid "packages_info_selected"
+msgstr "epackages_info_selected"
+
+#: src/src/statistics.cpp:26
+msgid "Statistics - current month"
+msgstr "eStatistics - current month"
+
+#: src/src/statistics.cpp:39
+msgid "Changed current pie slice - Hide \"%1\""
+msgstr "eChanged current pie slice - Hide \"%1\""
+
+#: src/src/statistics.cpp:43
+msgid "Changed current pie slice - Show \"%1\""
+msgstr "eChanged current pie slice - Show \"%1\""
+
+#: src/src/statistics.cpp:55
+msgid " ("
+msgstr "e ("
+
+#: src/src/statistics.cpp:55
+msgid ")"
+msgstr "e)"
+
+#: src/src/statistics.cpp:56
+msgid "Statistics pie serie - added label \"%1\" and value \"%2\""
+msgstr "eStatistics pie serie - added label \"%1\" and value \"%2\""
+
+#: src/src/pathconverter.cpp:9
+msgid "~/"
+msgstr "e~/"
+
+#: src/src/pathconverter.cpp:19
+msgid "/"
+msgstr "e/"
+
+#: src/src/mainwindow.cpp:49 src/src/mainwindow.cpp:50
+#: src/src/pakGuiSettings.cpp:30
+msgid "pak-gui.rc"
+msgstr "epak-gui.rc"
+
+#: src/src/mainwindow.cpp:129
+msgid "Restart timer for %1"
+msgstr "eRestart timer for %1"
+
+#: src/src/mainwindow.cpp:135
+msgid "Time passed for %1: %2"
+msgstr "eTime passed for %1: %2"
+
+#: src/src/mainwindow.cpp:165 src/src/mainwindow.cpp:190
+#: src/src/settings.cpp:31
+msgid "update"
+msgstr "eupdate"
+
+#: src/src/mainwindow.cpp:178 src/src/settings.cpp:34
+msgid "logs remove"
+msgstr "elogs remove"
+
+#: src/src/mainwindow.cpp:190
+msgid "&Update"
+msgstr "e&Update"
+
+#: src/src/mainwindow.cpp:193
+msgid "&Refresh"
+msgstr "e&Refresh"
+
+#: src/src/mainwindow.cpp:193
+msgid "refresh"
+msgstr "erefresh"
+
+#: src/src/mainwindow.cpp:202
+msgid "&Download"
+msgstr "e&Download"
+
+#: src/src/mainwindow.cpp:202
+msgid "download"
+msgstr "edownload"
+
+#: src/src/mainwindow.cpp:205
+msgid "&Search"
+msgstr "e&Search"
+
+#: src/src/mainwindow.cpp:205
+msgid "search"
+msgstr "esearch"
+
+#: src/src/mainwindow.cpp:208
+msgid "&Update all packages"
+msgstr "e&Update all packages"
+
+#: src/src/mainwindow.cpp:208
+msgid "updateAllPackages"
+msgstr "eupdateAllPackages"
+
+#: src/src/mainwindow.cpp:211
+msgid "&Update mirrors"
+msgstr "e&Update mirrors"
+
+#: src/src/mainwindow.cpp:211
+msgid "updateMirrors"
+msgstr "eupdateMirrors"
+
+#: src/src/mainwindow.cpp:214
+msgid "&Clean"
+msgstr "e&Clean"
+
+#: src/src/mainwindow.cpp:214
+msgid "clean"
+msgstr "eclean"
+
+#: src/src/mainwindow.cpp:217
+msgid "&Statistics"
+msgstr "e&Statistics"
+
+#: src/src/mainwindow.cpp:217
+msgid "statistics"
+msgstr "estatistics"
+
+#: src/src/searchallcommandparser.cpp:23
+msgid "pak -SS "
+msgstr "epak -SS "
+
+#: src/src/searchallcommandparser.cpp:26
+msgid "Trying search package: %1 everywhere"
+msgstr "eTrying search package: %1 everywhere"
+
+#: src/src/searchallcommandparser.cpp:29
+msgid "Error during search: %1"
+msgstr "eError during search: %1"
+
+#: src/src/searchallcommandparser.cpp:44
+msgid "]\n"
+msgstr "e]\n"
+
+#: src/src/updatedpackagescolumn.cpp:53
+msgid "Filled column with %1 packages to update"
+msgstr "eFilled column with %1 packages to update"
+
+#: src/src/updatedpackagescolumn.cpp:77
+msgid ""
+"Size of checked packages list is equal to 0. Abort prepareBeforeProcessRun()."
+msgstr ""
+"eSize of checked packages list is equal to 0. Abort "
+"prepareBeforeProcessRun()."
+
+#: src/src/updatedpackagescolumn.cpp:85
+msgid "Single AUR/POLAUR packages"
+msgstr "eSingle AUR/POLAUR packages"
+
+#: src/src/updatedpackagescolumn.cpp:85
+msgid "It's not possible to update single AUR/POLAUR packages"
+msgstr "eIt's not possible to update single AUR/POLAUR packages"
+
+#: src/src/updatedpackagescolumn.cpp:86
+msgid "Uncheck these packages"
+msgstr "eUncheck these packages"
+
+#: src/src/updatedpackagescolumn.cpp:86
+msgid "Cancel"
+msgstr "eCancel"
+
+#: src/src/packagedownloader.cpp:42
+msgid "Downloader's option"
+msgstr "eDownloader's option"
+
+#: src/src/packagedownloader.cpp:43
+msgid "Do you want to install chosen package automatically after download?"
+msgstr "eDo you want to install chosen package automatically after download?"
+
+#: src/src/packagedownloader.cpp:116
+msgid "Choose repo for package download"
+msgstr "eChoose repo for package download"
+
+#: src/src/settings.cpp:15
+msgid "settings"
+msgstr "esettings"
+
+#: src/src/settings.cpp:48
+msgid "changed settings to default ones"
+msgstr "echanged settings to default ones"
+
+#: src/src/settings.cpp:58
+msgid "settings have been saved"
+msgstr "esettings have been saved"
+
+#: src/src/settings.cpp:74 src/src/settings.cpp:75 src/src/settings.cpp:76
+#: src/src/settings.cpp:77
+msgid "@title:tab"
+msgstr "e@title:tab"
+
+#: src/src/settings.cpp:74 src/src/pakGuiSettings.cpp:34
+msgid "General"
+msgstr "eGeneral"
+
+#: src/src/settings.cpp:74 src/src/settings.cpp:75
+msgid ":/icons/general-settings.png"
+msgstr "e:/icons/general-settings.png"
+
+#: src/src/settings.cpp:75
+msgid "Previews appearance"
+msgstr "ePreviews appearance"
+
+#: src/src/settings.cpp:76
+msgid "Packages informations"
+msgstr "ePackages informations"
+
+#: src/src/settings.cpp:76
+msgid ":/icons/package-info-settings.png"
+msgstr "e:/icons/package-info-settings.png"
+
+#: src/src/settings.cpp:77 src/src/pakGuiSettings.cpp:110
+msgid "Logs"
+msgstr "eLogs"
+
+#: src/src/settings.cpp:77
+msgid ":/icons/logs-settings.png"
+msgstr "e:/icons/logs-settings.png"
+
+#: src/src/settings.cpp:111
+msgid "enabled buttons in settings after packages info change"
+msgstr "eenabled buttons in settings after packages info change"
+
+#: src/src/settings.cpp:132
+msgid "selected packages info saved: %1"
+msgstr "eselected packages info saved: %1"
+
+#: src/src/settings.cpp:132
+msgid ", "
+msgstr "e, "
+
+#: src/src/pakGuiSettings.cpp:37 src/src/pakGuiSettings.cpp:38
+msgid "history_store_time_in_days"
+msgstr "ehistory_store_time_in_days"
+
+#: src/src/pakGuiSettings.cpp:40 src/src/pakGuiSettings.cpp:41
+msgid "history_file_size_limit_in_Mb"
+msgstr "ehistory_file_size_limit_in_Mb"
+
+#: src/src/pakGuiSettings.cpp:43 src/src/pakGuiSettings.cpp:44
+msgid "internet_reconnection_time_in_minutes"
+msgstr "einternet_reconnection_time_in_minutes"
+
+#: src/src/pakGuiSettings.cpp:46 src/src/pakGuiSettings.cpp:47
+msgid "update_check_time_in_days"
+msgstr "eupdate_check_time_in_days"
+
+#: src/src/pakGuiSettings.cpp:49 src/src/pakGuiSettings.cpp:50
+msgid "update_check_time_in_hours"
+msgstr "eupdate_check_time_in_hours"
+
+#: src/src/pakGuiSettings.cpp:52 src/src/pakGuiSettings.cpp:53
+msgid "update_check_time_in_minutes"
+msgstr "eupdate_check_time_in_minutes"
+
+#: src/src/pakGuiSettings.cpp:55 src/src/pakGuiSettings.cpp:56
+msgid "overwrite_full_history_file"
+msgstr "eoverwrite_full_history_file"
+
+#: src/src/pakGuiSettings.cpp:58 src/src/pakGuiSettings.cpp:59
+msgid "use_system_tray_icon"
+msgstr "euse_system_tray_icon"
+
+#: src/src/pakGuiSettings.cpp:61
+msgid "ConsolesPreview"
+msgstr "eConsolesPreview"
+
+#: src/src/pakGuiSettings.cpp:64 src/src/pakGuiSettings.cpp:65
+msgid "background_preview_color"
+msgstr "ebackground_preview_color"
+
+#: src/src/pakGuiSettings.cpp:64
+msgid "black"
+msgstr "eblack"
+
+#: src/src/pakGuiSettings.cpp:67 src/src/pakGuiSettings.cpp:68
+msgid "preview_font_color"
+msgstr "epreview_font_color"
+
+#: src/src/pakGuiSettings.cpp:67
+msgid "white"
+msgstr "ewhite"
+
+#: src/src/pakGuiSettings.cpp:70 src/src/pakGuiSettings.cpp:71
+msgid "preview_font_family"
+msgstr "epreview_font_family"
+
+#: src/src/pakGuiSettings.cpp:70
+msgid "Lucida Console"
+msgstr "eLucida Console"
+
+#: src/src/pakGuiSettings.cpp:73 src/src/pakGuiSettings.cpp:74
+msgid "preview_font_size"
+msgstr "epreview_font_size"
+
+#: src/src/pakGuiSettings.cpp:76
+msgid "PackageInfo"
+msgstr "ePackageInfo"
+
+#: src/src/pakGuiSettings.cpp:79
+msgid "Architecture"
+msgstr "eArchitecture"
+
+#: src/src/pakGuiSettings.cpp:80
+msgid "URL"
+msgstr "eURL"
+
+#: src/src/pakGuiSettings.cpp:81
+msgid "Licenses"
+msgstr "eLicenses"
+
+#: src/src/pakGuiSettings.cpp:82
+msgid "Groups"
+msgstr "eGroups"
+
+#: src/src/pakGuiSettings.cpp:83
+msgid "Provides"
+msgstr "eProvides"
+
+#: src/src/pakGuiSettings.cpp:84
+msgid "Optional Deps"
+msgstr "eOptional Deps"
+
+#: src/src/pakGuiSettings.cpp:85
+msgid "RequiredBy"
+msgstr "eRequiredBy"
+
+#: src/src/pakGuiSettings.cpp:86
+msgid "Optional For"
+msgstr "eOptional For"
+
+#: src/src/pakGuiSettings.cpp:87
+msgid "Conflicts With"
+msgstr "eConflicts With"
+
+#: src/src/pakGuiSettings.cpp:88
+msgid "Replaces"
+msgstr "eReplaces"
+
+#: src/src/pakGuiSettings.cpp:89
+msgid "Installed Size"
+msgstr "eInstalled Size"
+
+#: src/src/pakGuiSettings.cpp:90
+msgid "Packager"
+msgstr "ePackager"
+
+#: src/src/pakGuiSettings.cpp:91
+msgid "Build Date"
+msgstr "eBuild Date"
+
+#: src/src/pakGuiSettings.cpp:92
+msgid "Install Date"
+msgstr "eInstall Date"
+
+#: src/src/pakGuiSettings.cpp:93
+msgid "Install Reason"
+msgstr "eInstall Reason"
+
+#: src/src/pakGuiSettings.cpp:94
+msgid "Install Script"
+msgstr "eInstall Script"
+
+#: src/src/pakGuiSettings.cpp:95
+msgid "Validated By"
+msgstr "eValidated By"
+
+#: src/src/pakGuiSettings.cpp:101
+msgid "Name"
+msgstr "eName"
+
+#: src/src/pakGuiSettings.cpp:102
+msgid "Value"
+msgstr "eValue"
+
+#: src/src/pakGuiSettings.cpp:103
+msgid "Description"
+msgstr "eDescription"
+
+#: src/src/pakGuiSettings.cpp:104
+msgid "Depends On"
+msgstr "eDepends On"
+
+#: src/src/pakGuiSettings.cpp:113 src/src/pakGuiSettings.cpp:114
+msgid "save_logs_into_file"
+msgstr "esave_logs_into_file"
+
+#: src/src/pakGuiSettings.cpp:116 src/src/pakGuiSettings.cpp:117
+msgid "logs_filename"
+msgstr "elogs_filename"
+
+#: src/src/pakGuiSettings.cpp:116
+msgid "logs.txt"
+msgstr "elogs.txt"
+
+#: src/src/pakGuiSettings.cpp:119 src/src/pakGuiSettings.cpp:120
+msgid "logs_filepath"
+msgstr "elogs_filepath"
+
+#: src/src/pakGuiSettings.cpp:119
+msgid "~/.config/pak-gui"
+msgstr "e~/.config/pak-gui"
+
+#: src/src/pakGuiSettings.cpp:122 src/src/pakGuiSettings.cpp:123
+msgid "show_debug"
+msgstr "eshow_debug"
+
+#: src/src/pakGuiSettings.cpp:125 src/src/pakGuiSettings.cpp:126
+msgid "hide_info_logs"
+msgstr "ehide_info_logs"
+
+#: src/src/sipackage.cpp:11 src/src/sipackage.cpp:25
+msgid "]"
+msgstr "e]"
+
+#: src/src/sipackage.cpp:35 src/src/statisticscommandparser.cpp:19
+#: src/src/package.cpp:60 src/src/checkcommandparser.cpp:34
+msgid ""
+"[\r\n"
+"]"
+msgstr ""
+"e[\r\n"
+"]"
+
+#: src/src/sipackage.cpp:40 src/src/sipackage.cpp:46 src/src/sipackage.cpp:52
+#: src/src/package.cpp:67 src/src/package.cpp:73
+msgid "updateData()"
+msgstr "eupdateData()"
+
+#: src/src/sipackage.cpp:43 src/src/sipackage.cpp:49 src/src/sipackage.cpp:55
+#: src/src/package.cpp:70 src/src/package.cpp:76
+msgid ": "
+msgstr "e: "
+
+#: src/src/statisticscommandparser.cpp:14
+msgid "pak -L"
+msgstr "epak -L"
+
+#: src/src/statisticscommandparser.cpp:26
+msgid "actions:"
+msgstr "eactions:"
+
+#: src/src/package.cpp:89
+msgid "(%1.*)\\n"
+msgstr "e(%1.*)\\n"
+
+#: src/src/package.cpp:101
+msgid "There is not enough lines in list. Abort %1"
+msgstr "eThere is not enough lines in list. Abort %1"
+
+#: src/src/systemtray.cpp:31
+msgid "%1 packages to update"
+msgstr "e%1 packages to update"
+
+#: src/src/checkcommandparser.cpp:16
+msgid "System"
+msgstr "eSystem"
+
+#: src/src/checkcommandparser.cpp:26
+msgid "pak -C --noconfirm"
+msgstr "epak -C --noconfirm"
+
+#: src/src/checkcommandparser.cpp:47
+msgid "Unmerged pacnew/pacsave files"
+msgstr "eUnmerged pacnew/pacsave files"
+
+#: src/src/checkcommandparser.cpp:53
+msgid "=>"
+msgstr "e=>"

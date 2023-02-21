@@ -1,4 +1,5 @@
 #!/bin/bash
-extractrc `find src -name \*.ui -o -name \*.rc -o -name \*.kcfg` >> rc.cpp
-xgettext -name rc.cpp -o resources/translations/pak-gui.pot
+extractrc `find src/src -name \*.ui -o -name \*.rc` >> rc.cpp
+mv rc.cpp src/src
+xgettext -name `find src/src -name \*.cpp` -o resources/translations/pak-gui.pot
 rm -f rc.cpp
