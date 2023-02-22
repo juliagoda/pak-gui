@@ -3,7 +3,7 @@
 #include "defs.h"
 
 
-SiPackage::SiPackage(QString& package_content) :
+SiPackage::SiPackage(const QString& package_content) :
     Package(package_content, Package::Source::Unknown),
     repo()
 {
@@ -29,7 +29,7 @@ SiPackage::SiPackage(SiPackage& si_package) :
 }
 
 
-void SiPackage::updateData(QString& packageContent, int name_line, int version_line)
+void SiPackage::updateData(const QString& packageContent, int name_line, int version_line)
 {
     Package::updateData(packageContent, name_line, version_line);
     QStringList lines = packageContent.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);

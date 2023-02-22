@@ -21,12 +21,7 @@ CheckCommandParser::CheckCommandParser() :
 
 QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
 {
-    QScopedPointer<QProcess> pacman_qi(new QProcess);
-    pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
-    pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -C --noconfirm");
-    pacman_qi->waitForStarted();
-    pacman_qi->waitForFinished(100000);
-    QString output(pacman_qi->readAllStandardOutput());
+    QString output = generatePakCheckResults();
 
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
 
@@ -39,20 +34,40 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
     {
         QString line = it.next();
         QString filtered_line = OutputFilter::filteredOutput(line).simplified();
-        bool startsFromDoubleColon = OutputFilter::startsFromDoubleColon(filtered_line);
+        bool starts_from_double_colon = OutputFilter::startsFromDoubleColon(filtered_line);
 
-        if (startsFromDoubleColon)
+        if (starts_from_double_colon)
             current_source_line = OutputFilter::getSourceFromDoubleColon(filtered_line);
 
-        if (startsFromDoubleColon && QString::compare(current_source_line, "Unmerged pacnew/pacsave files") == 0)
-        {
-            emit pacman_qi.data()->finished(0, QProcess::ExitStatus::NormalExit);
+        if (finishProcessBeforeEnd(starts_from_double_colon, current_source_line))
             break;
-        }
 
         if (line.contains("=>"))
            system_packages.insert(filtered_line, line_to_source_map.value(current_source_line));
     }
 
     return system_packages;
+}
+
+
+QString CheckCommandParser::generatePakCheckResults()
+{
+    pacman_qi.reset(new QProcess);
+    pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
+    pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -C --noconfirm");
+    pacman_qi->waitForStarted();
+    pacman_qi->waitForFinished(100000);
+    return pacman_qi->readAllStandardOutput();
+}
+
+
+bool CheckCommandParser::finishProcessBeforeEnd(bool starts_from_double_colon, const QString& current_source_line)
+{
+    if (starts_from_double_colon && QString::compare(current_source_line, "Unmerged pacnew/pacsave files") == 0)
+    {
+        emit pacman_qi.data()->finished(0, QProcess::ExitStatus::NormalExit);
+        return true;
+    }
+
+    return false;
 }

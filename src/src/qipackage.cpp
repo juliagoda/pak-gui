@@ -5,7 +5,7 @@
 #include <QTextStream>
 #include <QDebug>
 
-QiPackage::QiPackage(QString& package_content) :
+QiPackage::QiPackage(const QString& package_content) :
     Package(package_content, Package::Source::Unknown)
 {
     updateData(package_content, PACKAGE_QI_NAME_LINE, PACKAGE_QI_VERSION_LINE);

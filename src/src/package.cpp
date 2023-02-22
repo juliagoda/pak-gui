@@ -6,10 +6,7 @@
 
 Package::Package(const QString& package_content, Source new_source) :
     QListWidgetItem(),
-    name(),
-    version(),
-    source(new_source),
-    no(0)
+    source(new_source)
 {
     Q_UNUSED(package_content)
 }
@@ -55,7 +52,7 @@ void Package::setNo(const int new_no)
 }
 
 
-void Package::updateData(QString& packageContent, int name_line, int version_line)
+void Package::updateData(const QString& packageContent, int name_line, int version_line)
 {
     QStringList lines = packageContent.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
 
@@ -98,7 +95,7 @@ bool Package::validate(const QStringList &lines, int expected_size, const QStrin
 {
     if (lines.size() < expected_size)
     {
-        Logger::logger()->logFatal(QString("There is not enough lines in list. Abort %1").arg(funtion_name));
+        Logger::logger()->logFatal(QString("There are not enough lines in list. Abort %1").arg(funtion_name));
         return false;
     }
 

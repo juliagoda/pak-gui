@@ -2,6 +2,7 @@
 
 #include "package.h"
 
+
 class CheckPackage : public Package
 {
 public:
@@ -10,5 +11,5 @@ public:
     ~CheckPackage() override = default;
 
 private:
-    virtual void updateData(QString& packageContent, int name_line, int version_line) override;
+    virtual void updateData(const QString& packageContent, int name_line, int version_line) override;
 };

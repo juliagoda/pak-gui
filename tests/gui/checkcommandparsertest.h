@@ -16,6 +16,9 @@ class MockCheckCommandParser : public CheckCommandParser
 public:
     explicit MockCheckCommandParser();
     friend class TestCheckCommandParser;
+
+    QString generatePakCheckResults() override;
+    bool finishProcessBeforeEnd(bool starts_from_double_colon, const QString& current_source_line) override;
 };
 
 

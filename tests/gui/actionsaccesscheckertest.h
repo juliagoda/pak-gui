@@ -16,6 +16,8 @@ class MockActionsAccessChecker : public ActionsAccessChecker
 public:
     explicit MockActionsAccessChecker(QWidget* new_parent);
     friend class TestActionsAccessChecker;
+    void showRequiredPackagesNotFoundWindow(const QStringList& not_installed_packages) override;
+    bool checkNetworkInterfaces() override;
 };
 
 
