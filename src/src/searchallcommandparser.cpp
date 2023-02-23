@@ -10,7 +10,7 @@ SearchAllCommandParser::SearchAllCommandParser(const QString& new_package_name) 
     package_name(new_package_name),
     packages_lines()
 {
-
+   // ...
 }
 
 
@@ -25,26 +25,32 @@ QStringList SearchAllCommandParser::retrieveInfo()
 
     Logger::logger()->logInfo(QStringLiteral("Trying search package: %1 everywhere").arg(package_name));
     Logger::logger()->writeSectionToFile(Logger::WriteOperations::SearchAll);
-    QObject::connect(pacman_qi, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [this](int exit_code, QProcess::ExitStatus exit_status){ emit searchEnded(packages_lines); });
-    QObject::connect(pacman_qi, &QProcess::errorOccurred, [&pacman_qi](QProcess::ProcessError error) { Logger::logger()->logWarning(QStringLiteral("Error during search: %1").arg(pacman_qi->errorString())); });
+    QObject::connect(pacman_qi, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [this](int /*exit_code*/, QProcess::ExitStatus /*exit_status*/){ emit searchEnded(packages_lines); });
+    QObject::connect(pacman_qi, &QProcess::errorOccurred, [&pacman_qi](QProcess::ProcessError /*error*/) { Logger::logger()->logWarning(QStringLiteral("Error during search: %1").arg(pacman_qi->errorString())); });
 
-    QObject::connect(pacman_qi, &QProcess::readyReadStandardOutput, [=]() mutable
+    QObject::connect(pacman_qi, &QProcess::readyReadStandardOutput, [pacman_qi, current_source_line, this]() mutable
     {
         while (pacman_qi.data()->canReadLine())
         {
             QString line = pacman_qi.data()->readLine();
-            auto filtered_line = OutputFilter::filteredOutput(line).remove("\n");
-            Logger::logger()->writeLineToFile(filtered_line);
-
-            if (OutputFilter::startsFromDoubleColon(filtered_line))
-                current_source_line = OutputFilter::getSourceFromDoubleColon(filtered_line);
-
-            if (OutputFilter::isPackageLine(filtered_line))
-            {
-                QString appendedSourceToLine(" [" + current_source_line + "]\n");
-                packages_lines.append(filtered_line.append(appendedSourceToLine));
-            }
+            processReadLine(line, current_source_line);
         }});
 
     return QStringList();
+}
+
+
+void SearchAllCommandParser::processReadLine(QString& line, QString& current_source_line)
+{
+    auto filtered_line = OutputFilter::filteredOutput(line).remove("\n");
+    Logger::logger()->writeLineToFile(filtered_line);
+
+    if (OutputFilter::startsFromDoubleColon(filtered_line))
+        current_source_line = OutputFilter::getSourceFromDoubleColon(filtered_line);
+
+    if (OutputFilter::isPackageLine(filtered_line))
+    {
+        QString appendedSourceToLine(" [" + current_source_line + "]\n");
+        packages_lines.append(filtered_line.append(appendedSourceToLine));
+    }
 }

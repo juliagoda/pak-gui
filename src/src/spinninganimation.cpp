@@ -6,7 +6,7 @@ SpinningAnimation::SpinningAnimation() :
     animation(new QMovie(":/waiting.gif"), &QObject::deleteLater),
     small_animation(new QMovie(":/waiting-small.gif"), &QObject::deleteLater)
 {
-
+   // ...
 }
 
 

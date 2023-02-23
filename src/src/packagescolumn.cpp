@@ -14,6 +14,9 @@ PackagesColumn::PackagesColumn(QListWidget* new_list_widget,
     parent(new_parent),
     checked_packages_list()
 {
+    if (!list_widget)
+        return;
+
     QObject::connect(list_widget, &QListWidget::itemChanged, this, &PackagesColumn::countCheckedPackages);
     QObject::connect(list_widget, &QListWidget::itemChanged, packages_sorter.get(), &Sorter::setCheckStateForUnsortedList);
 }
@@ -21,7 +24,7 @@ PackagesColumn::PackagesColumn(QListWidget* new_list_widget,
 
 void PackagesColumn::fill()
 {
-
+   // ...
 }
 
 
@@ -95,16 +98,15 @@ void PackagesColumn::countCheckedPackages(QListWidgetItem* item)
 void PackagesColumn::addCheckedPackage(Package* package)
 {
     if (package->getSource() == Package::Source::AUR ||
-            package->getSource() == Package::Source::POLAUR)
+        package->getSource() == Package::Source::POLAUR)
     {
         checked_packages_list.prepend(package);
         Logger::logger()->logDebug(QStringLiteral("Added at the beginning of list package: %1").arg(package->getName()));
+        return;
     }
-    else
-    {
-        checked_packages_list.append(package);
-        Logger::logger()->logDebug(QStringLiteral("Added at the end of list package: %1").arg(package->getName()));
-    }
+
+    checked_packages_list.append(package);
+    Logger::logger()->logDebug(QStringLiteral("Added at the end of list package: %1").arg(package->getName()));
 }
 
 

@@ -17,10 +17,13 @@ public:
     SearchAllCommandParser(const QString& new_package_name);
     ~SearchAllCommandParser() override = default;
 
-    QStringList retrieveInfo() override;
+    virtual QStringList retrieveInfo() override;
 
 signals:
     void searchEnded(QStringList results);
+
+protected:
+    void processReadLine(QString& line, QString& current_source_line);
 
 private:
     QString package_name;

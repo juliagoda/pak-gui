@@ -16,25 +16,31 @@ public:
 
     void updatePackageName(const QString& new_package_name);
     void updateParameter(const QString& new_parameter);
-    void start();
+    virtual void start();
     QStringList retrieveInfo() override;
-    void inputAnswer(const QString& new_answer);
+    virtual void inputAnswer(const QString& new_answer);
+
+protected:
+    virtual void showWarningWhenNameEmpty();
+    virtual void connectSignals();
+    void processReadLine(QString& line);
+    bool isPackageAlreadyDownloaded();
 
 Q_SIGNALS:
     void continuePathsRetrieve(QString& output);
     void continueReposRetrieve(QString& output);
 
-private Q_SLOTS:
-    void validateFinishedOutput(int exit_code);
+protected Q_SLOTS:
+    virtual bool validateFinishedOutput(int exit_code);
 
 private:
     bool validate();
 
-    QScopedPointer<QProcess> pak_download;
+    QScopedPointer<QProcess> pak_download = QScopedPointer<QProcess>(nullptr);
     QString package_name;
-    QString command;
+    QString command = QString("pak -G");
     QString result_output;
     QStringList error_lines;
-    QWidget* parent;
+    QWidget* parent = nullptr;
 };
 

@@ -38,18 +38,17 @@ AutomaticInstallation::AutomaticInstallation(QSharedPointer<DownloadCommandParse
 
 void AutomaticInstallation::handle()
 {
-    bool answer = true;
-    int answer_gui = QMessageBox::information(parent, tr("Downloader's option"),
-                                              tr("Do you want to install chosen package automatically after download?"),
-                                              QMessageBox::Yes | QMessageBox::No);
-
-    if (static_cast<QMessageBox::StandardButton>(answer_gui) == QMessageBox::No)
-        answer = false;
-
-    download_command_parser->updateParameter(answer ? QString("pak -GB") : QString("pak -G"));
+    download_command_parser->updateParameter(chooseDownloadOption() == QMessageBox::Yes ? QString("pak -GB") : QString("pak -G"));
     PackageDownloader::handle();
 }
 
+
+QMessageBox::StandardButton AutomaticInstallation::chooseDownloadOption()
+{
+    return static_cast<QMessageBox::StandardButton>(QMessageBox::information(parent, tr("Downloader's option"),
+                                                                             tr("Do you want to install chosen package automatically after download?"),
+                                                                             QMessageBox::Yes | QMessageBox::No));
+}
 
 
 

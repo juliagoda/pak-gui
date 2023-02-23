@@ -41,6 +41,10 @@ Logger* Logger::logger()
 
 void Logger::writeToFile(QString& text, WriteOperations section)
 {
+#ifdef RUN_TESTS
+    return;
+#endif
+
     if (!validate())
         return;
 
@@ -58,6 +62,10 @@ void Logger::writeToFile(QString& text, WriteOperations section)
 
 void Logger::writeSectionToFile(WriteOperations section)
 {
+#ifdef RUN_TESTS
+    return;
+#endif
+
     if (!validate())
         return;
 
@@ -70,6 +78,10 @@ void Logger::writeSectionToFile(WriteOperations section)
 
 void Logger::writeLineToFile(QString &line)
 {
+#ifdef RUN_TESTS
+    return;
+#endif
+
     write_mutex.lock();
     output_stream << OutputFilter::filteredOutput(line);
     appendNewLine();
@@ -113,6 +125,10 @@ void Logger::logDebug(const QString &text)
 
 void Logger::clearLogsFile()
 {
+#ifdef RUN_TESTS
+    return;
+#endif
+
     Logger::logger()->logInfo(QStringLiteral("Clear logs file - %1").arg(QDateTime::currentDateTime().toString()));
 
     if (!logs_file.resize(0))
@@ -144,6 +160,10 @@ void Logger::appendNewLine()
 
 void Logger::logIntoFile(const QString& section, const QString& text)
 {
+#ifdef RUN_TESTS
+    return;
+#endif
+
     if (!Settings::records()->saveLogsIntoFile())
         return;
 
@@ -185,6 +205,10 @@ void Logger::closeOnQuit()
 
 void Logger::reopenFile()
 {
+#ifdef RUN_TESTS
+    return;
+#endif
+
     if (logs_file.isOpen())
         logs_file.close();
 

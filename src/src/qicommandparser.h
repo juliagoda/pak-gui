@@ -9,5 +9,8 @@ public:
     ~QiCommandParser() override = default;
 
     QStringList retrieveInfo() override;
+
+protected:
+    virtual QString generateResult();
 };
 

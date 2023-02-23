@@ -13,7 +13,13 @@ MockAutomaticInstallation::MockAutomaticInstallation(QSharedPointer<DownloadComm
                                                      QWidget* new_parent) :
     AutomaticInstallation(new_download_command_parser, new_parent)
 {
-  // ...
+    // ...
+}
+
+
+QMessageBox::StandardButton MockAutomaticInstallation::chooseDownloadOption()
+{
+    return QMessageBox::Yes;
 }
 
 

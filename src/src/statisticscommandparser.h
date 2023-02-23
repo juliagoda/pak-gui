@@ -8,6 +8,9 @@ public:
     ~StatisticsCommandParser() override = default;
 
     QStringList retrieveInfo() override;
-    QMap<QString, uint> convertToMap(QStringList &retrievedInfos);
+    QMap<QString, uint> convertToMap(QStringList& retrievedInfos);
+
+protected:
+    virtual QString generateResult();
 };
 

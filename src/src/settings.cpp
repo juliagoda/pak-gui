@@ -92,11 +92,16 @@ void Settings::loadPackagesInfoSettings()
 
 void Settings::connectSignals(MainWindow* main_window)
 {
-    connect(packages_info_settings.packages_info_selector, &KActionSelector::added, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
-    connect(packages_info_settings.packages_info_selector, &KActionSelector::removed, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
-    connect(packages_info_settings.packages_info_selector, &KActionSelector::movedUp, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
-    connect(packages_info_settings.packages_info_selector, &KActionSelector::movedDown, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
-    connect(settings_records.get(), &SettingsRecords::selectedPackageInfoListChanged, [main_window]() { emit main_window->updatedPackageInfoList(); });
+    connect(settings_records.get(), &SettingsRecords::selectedPackageInfoListChanged, this, [main_window]() { emit main_window->updatedPackageInfoList(); });
+
+    if (!packages_info_settings.packages_info_selector)
+        return;
+
+    connect(packages_info_settings.packages_info_selector, &KActionSelector::added, this, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
+    connect(packages_info_settings.packages_info_selector, &KActionSelector::removed, this, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
+    connect(packages_info_settings.packages_info_selector, &KActionSelector::movedUp, this, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
+    connect(packages_info_settings.packages_info_selector, &KActionSelector::movedDown, this, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
+
 }
 
 

@@ -38,6 +38,8 @@ public:
 
 protected:
     virtual void startProcess(Task new_task);
+    virtual bool askQuestion(Task new_task, QStringList new_checked_packages);
+    void processReadLine(QString& line, Process::Task new_task);
 
 private Q_SLOTS:
     void updateCleanCommand(bool is_auracle_installed);
@@ -52,7 +54,6 @@ private:
     void prepareMapForNextTask();
     void emitSideTask(Process::Task task);
     QString questionForm(QStringList& new_checked_packages, Task new_task);
-    bool askQuestion(Task new_task, QStringList new_checked_packages);
     void connectSignals(QSharedPointer<QProcess> &process, Task new_task);
 
     QMap<Task, QPair<QString, QString>> messages_map;

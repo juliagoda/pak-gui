@@ -44,6 +44,9 @@ public:
 
     void handle() override;
 
+protected:
+    virtual QMessageBox::StandardButton chooseDownloadOption();
+
 private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
     QWidget* parent;

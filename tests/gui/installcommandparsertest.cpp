@@ -7,6 +7,11 @@ MockInstallCommandParser::MockInstallCommandParser() :
     // ...
 }
 
+void MockInstallCommandParser::start(QSharedPointer<Process> &process)
+{
+   // ...
+}
+
 
 
 

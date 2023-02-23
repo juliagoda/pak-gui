@@ -96,7 +96,9 @@ void MainWindow::prepareProcess(QSharedPointer<Process> new_process)
 
 void MainWindow::setTimersOnChecks()
 {
-    QObject::disconnect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
+    if (main_window_view.isNull())
+        QObject::disconnect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
+
     QObject::disconnect(&timer_on_logs, &QTimer::timeout, Logger::logger(), &Logger::clearLogsFile);
     connectSignalForUpdateCheck();
     connectSignalForHistoryStore();
@@ -107,7 +109,9 @@ void MainWindow::startSystemTray()
 {
     if (!main_window_view.isNull() && !system_tray_icon.isNull())
         disconnect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
+
     system_tray_icon.reset(nullptr);
+
     if (Settings::records()->useSystemTray())
     {
         system_tray_icon.reset(new SystemTray(this));
@@ -124,6 +128,7 @@ void MainWindow::startTimerOnOperation(const QDateTime& time, QTimer& timer,
 
     qint64 time_passed_in_milliseconds = time.msecsTo(QDateTime::currentDateTime());
     qint64 rest_time = time_limit_in_milliseconds - time_passed_in_milliseconds;
+
     if (time_passed_in_milliseconds > time_limit_in_milliseconds)
     {
         Logger::logger()->logDebug(QStringLiteral("Restart timer for %1").arg(operation));

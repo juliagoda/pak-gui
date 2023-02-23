@@ -16,6 +16,8 @@ class MockInstallCommandParser : public InstallCommandParser
 public:
     explicit MockInstallCommandParser();
     friend class TestInstallCommandParser;
+
+    virtual void start(QSharedPointer<Process>& process);
 };
 
 

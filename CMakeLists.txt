@@ -44,6 +44,7 @@ find_package(downgrade)
 find_package(libnotify)
 
 if(RUN_TESTS)
+    add_definitions(-DRUN_TESTS)
     message("Tests enabled")
 endif(RUN_TESTS)
 

@@ -2,6 +2,8 @@
 
 #include "qicommandparser.h"
 
+#include "packagescolumnfixtures.h"
+
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
@@ -12,6 +14,8 @@ class MockQiCommandParser : public QiCommandParser
 public:
     MockQiCommandParser();
     friend class TestQiCommandParser;
+
+    QString generateResult() override;
 };
 
 

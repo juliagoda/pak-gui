@@ -16,6 +16,8 @@ class MockSearchAllCommandParser : public SearchAllCommandParser
 public:
     explicit MockSearchAllCommandParser(const QString& new_package_name);
     friend class TestSearchAllCommandParser;
+
+    QStringList retrieveInfo() override;
 };
 
 

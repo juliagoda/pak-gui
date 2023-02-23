@@ -29,6 +29,8 @@ public:
     explicit MockAutomaticInstallation(QSharedPointer<DownloadCommandParser>& new_download_command_parser,
                                        QWidget* new_parent);
     friend class TestPackageDownloader;
+
+    QMessageBox::StandardButton chooseDownloadOption() override;
 };
 
 

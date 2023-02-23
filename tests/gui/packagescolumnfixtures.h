@@ -31,7 +31,36 @@ const QString package_content_a52dec = "Name            : a52dec\n"
                                        "Build Date      : wto, 27 gru 2022, 01:30:08\n"
                                        "Install Date    : pon, 2 sty 2023, 13:19:58\n"
                                        "Install Reason  : Installed as a dependency for another package\n"
-                                       "Install Script  : No\n";
+                                       "Install Script  : No\n"
+                                       "Validated By    : Signature\n";
+
+const QString package_content_gimp = "Name            : gimp\n"
+                                     "Version         : 2.10.32-3.1\n"
+                                     "Description     : GNU Image Manipulation Program\n"
+                                     "Architecture    : x86_64\n"
+                                     "URL             : https://www.gimp.org/\n"
+                                     "Licenses        : GPL  LGPL\n"
+                                     "Groups          : None\n"
+                                     "Provides        : None\n"
+                                     "Depends On      : babl  dbus-glib  desktop-file-utils  gegl  glib-networking  hicolor-icon-theme  openjpeg2  lcms2  libheif  libexif  libgudev  libmng  libmypaint  librsvg  libwebp  libwmf  libxmu  libxpm  mypaint-brushes1  openexr\n"
+                                                       "poppler-data  gtk2  graphviz\n"
+                                     "Optional Deps   : gutenprint: for sophisticated printing only as gimp has built-in cups print support\n"
+                                                       "poppler-glib: for pdf support [installed]\n"
+                                                       "alsa-lib: for MIDI event controller module [installed]\n"
+                                                       "curl: for URI support [installed]\n"
+                                                       "ghostscript: for postscript support [installed]\n"
+                                                       "gvfs: for HTTP/S support (and many other schemes) [installed]\n"
+                                     "Required By     : None\n"
+                                     "Optional For    : None\n"
+                                     "Conflicts With  : gimp-plugin-wavelet-decompose\n"
+                                     "Replaces        : gimp-plugin-wavelet-decompose\n"
+                                     "Installed Size  : 116,73 MiB\n"
+                                     "Packager        : ALHP x86-64-v3 <alhp@harting.dev>\n"
+                                     "Build Date      : czw, 5 sty 2023, 05:24:56\n"
+                                     "Install Date    : śro, 11 sty 2023, 22:43:53\n"
+                                     "Install Reason  : Explicitly installed\n"
+                                     "Install Script  : Yes\n"
+                                     "Validated By    : Signature\n";
 
 const QString package_content_a52dec_si = "Repository      : cachyos-v3\n"
                                           "Name            : a52dec\n"
@@ -151,7 +180,15 @@ public:
 
     void startProcess(Task new_task) override
     {
+        QString line = "Cache directory: /var/cache/pacman/pkg/\n";
+        processReadLine(line, new_task);
+    }
+
+    bool askQuestion(Task new_task, QStringList new_checked_packages) override
+    {
         Q_UNUSED(new_task)
+        Q_UNUSED(new_checked_packages)
+        return true;
     }
 };
 

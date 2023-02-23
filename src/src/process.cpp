@@ -18,7 +18,8 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
     commands_map(),
     parent(new_parent)
 {
-    connect(new_actions_access_checker.get(), &ActionsAccessChecker::auracleAccessChanged, this, &Process::updateCleanCommand);
+    if (!new_actions_access_checker.isNull())
+        connect(new_actions_access_checker.get(), &ActionsAccessChecker::auracleAccessChanged, this, &Process::updateCleanCommand);
 
     messages_map.insert(Task::Clean, {i18n("Clean"), i18n("clean packages after installation?")});
     messages_map.insert(Task::MirrorsUpdate, {i18n("Update mirrors"), i18n("update mirrors?")});
@@ -89,28 +90,34 @@ void Process::startProcess(Process::Task new_task)
     connectSignals(pak_s, new_task);
     pak_s.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
     Logger::logger()->writeSectionToFile(task_to_write_operation_map.value(new_task));
-    QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [=]() {
+    QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, this, [pak_s, new_task, this]() {
         while (pak_s.data()->canReadLine())
         {
             QString line = pak_s.data()->readLine();
-            QString filtered_line = OutputFilter::filteredOutput(line);
-            emit generatedOutput(new_task, filtered_line);
-            Logger::logger()->writeLineToFile(filtered_line);
+            processReadLine(line, new_task);
         }});
+}
+
+
+void Process::processReadLine(QString& line, Process::Task new_task)
+{
+    QString filtered_line = OutputFilter::filteredOutput(line);
+    emit generatedOutput(new_task, filtered_line);
+    Logger::logger()->writeLineToFile(filtered_line);
 }
 
 
 void Process::connectSignals(QSharedPointer<QProcess>& process, Process::Task new_task)
 {
-    QObject::connect(process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
-        [=](QProcess::ProcessError process_error)
+    QObject::connect(process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred), this,
+        [this, new_task, process](QProcess::ProcessError process_error)
     {
         QMessageBox::warning(parent, messages_map.value(new_task).first, tr("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(process.data()->error()), QMessageBox::Ok);
-        Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString()).arg(QVariant::fromValue(process_error).toString()));
+        Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString(), QVariant::fromValue(process_error).toString()));
     });
 
-    QObject::connect(process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-        [=](int exit_code, QProcess::ExitStatus exit_status)
+    QObject::connect(process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+        [this, new_task](int exit_code, QProcess::ExitStatus exit_status)
     {
         emit finished(new_task, exit_code, exit_status);
         Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));

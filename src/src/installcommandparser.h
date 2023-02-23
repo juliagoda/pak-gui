@@ -19,7 +19,7 @@ public:
     void updateTask(const QString& source_name);
     QString getPackageName();
     QStringList retrieveInfo() override;
-    void start(QSharedPointer<Process>& process);
+    virtual void start(QSharedPointer<Process>& process);
 
 private:
     void init();

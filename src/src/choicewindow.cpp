@@ -18,7 +18,7 @@ ChoiceWindow::ChoiceWindow(const QString& new_title,
     init();
 
     m_ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
-    connect(this, &ChoiceWindow::filledOptionsBox, [this](){ spinning_animation->stopSmallOnWidget(m_ui.spinning_animation_label); });
+    connect(this, &ChoiceWindow::filledOptionsBox, this, [this](){ spinning_animation->stopSmallOnWidget(m_ui.spinning_animation_label); });
     connect(m_ui.choice_combo_box, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ChoiceWindow::toggleOkButton);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentIndex()); }, Qt::AutoConnection);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentText()); }, Qt::AutoConnection);

@@ -40,6 +40,7 @@ void Statistics::updateSlice(QtCharts::QPieSlice* pie_slice)
         last_pie_slice->setLabelVisible(false);
         last_pie_slice->setExploded(false);
     }
+
     Logger::logger()->logDebug(QStringLiteral("Changed current pie slice - Show \"%1\"").arg(pie_slice->label()));
     pie_slice->setLabelVisible(true);
     pie_slice->setExploded(true);

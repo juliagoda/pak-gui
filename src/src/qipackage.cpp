@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QDebug>
 
+
 QiPackage::QiPackage(const QString& package_content) :
     Package(package_content, Package::Source::Unknown)
 {
@@ -13,6 +14,7 @@ QiPackage::QiPackage(const QString& package_content) :
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
 }
+
 
 QiPackage::QiPackage(QiPackage& qi_package) :
     Package(qi_package)

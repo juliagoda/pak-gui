@@ -16,6 +16,14 @@ class MockDownloadCommandParser : public DownloadCommandParser
 public:
     explicit MockDownloadCommandParser(const QString& new_package_name, QWidget* new_parent);
     friend class TestDownloadCommandParser;
+
+    void start() override;
+    void inputAnswer(const QString& new_answer) override;
+    void showWarningWhenNameEmpty() override;
+    void connectSignals() override;
+
+protected Q_SLOTS:
+    bool validateFinishedOutput(int exit_code) override;
 };
 
 

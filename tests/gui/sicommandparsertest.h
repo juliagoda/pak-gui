@@ -16,6 +16,8 @@ class MockSiCommandParser : public SiCommandParser
 public:
     explicit MockSiCommandParser();
     friend class TestAvailablePackagesColumn;
+
+    QString generateResult() override;
 };
 
 

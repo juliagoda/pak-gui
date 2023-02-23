@@ -57,7 +57,7 @@ SearchResultsList::SearchResultsList(QSharedPointer<InstallCommandParser>& new_i
     install_command_parser(new_install_command_parser),
     process(new_process)
 {
-
+   // ...
 }
 
 

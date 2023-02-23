@@ -17,6 +17,9 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
     current_packages_count(0),
     parent(new_parent)
 {
+    if (!search_lineedit)
+        return;
+
     QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
                      &Sorter::sortPackagesToUpdateByText);
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
@@ -86,7 +89,7 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
                                       i18n("Update all"), i18n("Uncheck these packages"), i18n("Cancel"));
     }
 
-    QList<Package*>::iterator it;
+    QList<Package*>::const_iterator it;
 
     if (result == 2)
         return;
@@ -96,7 +99,7 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
 
     if (result == 1)
     {
-        for(it = getCheckedPackagesList().begin(); it != getCheckedPackagesList().end(); it++)
+        for (it = getCheckedPackagesList().cbegin(); it != getCheckedPackagesList().cend(); it++)
         {
             if ((*it)->getSource() == Package::Source::AUR || (*it)->getSource() == Package::Source::POLAUR)
                 (*it)->setCheckState(Qt::Unchecked);
