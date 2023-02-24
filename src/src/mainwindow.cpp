@@ -96,7 +96,7 @@ void MainWindow::prepareProcess(QSharedPointer<Process> new_process)
 
 void MainWindow::setTimersOnChecks()
 {
-    if (main_window_view.isNull())
+    if (!main_window_view.isNull())
         QObject::disconnect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
 
     QObject::disconnect(&timer_on_logs, &QTimer::timeout, Logger::logger(), &Logger::clearLogsFile);

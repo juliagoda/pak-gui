@@ -32,9 +32,9 @@ void DownloadCommandParser::connectSignals()
         return;
 
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
-    QObject::connect(pak_download.get(), &QProcess::errorOccurred, this, [this]() { Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString())); });
+    QObject::connect(pak_download.get(), &QProcess::errorOccurred, [this]() { Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString())); });
 
-    QObject::connect(pak_download.get(), &QProcess::readyReadStandardOutput, this, [this]() mutable
+    QObject::connect(pak_download.get(), &QProcess::readyReadStandardOutput, [this]() mutable
     {
         while (pak_download.data()->canReadLine())
         {
