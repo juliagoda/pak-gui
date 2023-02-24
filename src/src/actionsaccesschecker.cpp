@@ -129,8 +129,9 @@ void ActionsAccessChecker::findRequiredPackages()
 
 void ActionsAccessChecker::showRequiredPackagesNotFoundWindow(const QStringList& not_installed_packages)
 {
-    QMessageBox::critical(parent, i18n("Missing packages"), i18n("Required packages are missing:\n\n") +
-                                                                      not_installed_packages.join("\n"));
+    QMessageBox::critical(parent, i18np("Missing package", "Missing packages", not_installed_packages.join("\n").size()),
+                          i18np("Required package is missing:\n\n%2", "Required packages are missing:\n\n%2",
+                                not_installed_packages.join("\n").count(), not_installed_packages.join("\n")));
     Logger::logger()->logFatal(QStringLiteral("Required packages are missing:\n\n %1").arg(not_installed_packages.join("\n")));
 }
 

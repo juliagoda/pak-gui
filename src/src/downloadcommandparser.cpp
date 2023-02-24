@@ -51,9 +51,11 @@ void DownloadCommandParser::processReadLine(QString& line)
     Logger::logger()->writeLineToFile(filtered_line);
     result_output += filtered_line;
 
+    //błąd:
     if (line.contains("error:"))
         error_lines.append(filtered_line);
 
+    // Aktualny katalog:
     if (result_output.contains("Current directory:"))
     {
         emit continuePathsRetrieve(result_output);
@@ -68,6 +70,7 @@ void DownloadCommandParser::processReadLine(QString& line)
 
 bool DownloadCommandParser::isPackageAlreadyDownloaded()
 {
+    // PKGBUILD został pobrany do
     return result_output.contains("PKGBUILD has been downloaded to");
 }
 

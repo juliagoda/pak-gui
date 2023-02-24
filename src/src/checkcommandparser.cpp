@@ -63,6 +63,7 @@ QString CheckCommandParser::generatePakCheckResults()
 
 bool CheckCommandParser::finishProcessBeforeEnd(bool starts_from_double_colon, const QString& current_source_line)
 {
+    // :: Niezscalone pliki pacnew/pacsave
     if (starts_from_double_colon && QString::compare(current_source_line, "Unmerged pacnew/pacsave files") == 0)
     {
         emit pacman_qi.data()->finished(0, QProcess::ExitStatus::NormalExit);

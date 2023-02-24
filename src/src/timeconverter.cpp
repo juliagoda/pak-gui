@@ -48,5 +48,5 @@ QString TimeConverter::timeToString(int milliseconds)
     int days = millisecondsToDays(milliseconds);
     int hours = millisecondsToHours(milliseconds - daysToMilliseconds(days));
     int minutes = millisecondsToMinutes(milliseconds - daysToMilliseconds(days) - hoursToMilliseconds(hours));
-    return QString("%1 days %2 hours %3 minutes").arg(days).arg(hours).arg(minutes);
+    return QString("%1 days %2 hours %3 minutes").arg(days, hours, minutes);
 }

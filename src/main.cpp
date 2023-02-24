@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     KCrash::initialize();
 
     KAboutData aboutData( QStringLiteral("pak-gui"),
-                          i18n("pak-gui"),
+                          QStringLiteral("pak-gui"),
                           QStringLiteral("1.0"),
                           i18n("Pacman wrapper, AUR and POLAUR helper with Gui"),
                           KAboutLicense::GPL_V3,

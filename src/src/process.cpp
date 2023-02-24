@@ -26,9 +26,7 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
     messages_map.insert(Task::UpdateAll, {i18n("Update all"), i18n("update all packages?")});
     messages_map.insert(Task::PrintVCSPackages, {i18n("Print vcs packages"), i18n("print all vcs packages?")});
     messages_map.insert(Task::UpdateInstalledPackages, {i18n("Installed packages update"), i18n("update installed packages?")});
-    messages_map.insert(Task::Uninstall, {i18n("Uninstallation"), i18n("remove packages?")});
-    messages_map.insert(Task::Install, {i18n("Installation"), i18n("install packages?")});
-    messages_map.insert(Task::Update, {i18n("Update"), i18n("update package(s)?")});
+
 
     commands_map.insert(Task::Clean, QStringList() << "-c" << ASKPASS_COMMAND + " && echo -e \"y\" | pak -Sc");
     commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -m");
@@ -48,7 +46,7 @@ void Process::run(Process::Task new_task,
     updateMap(new_checked_packages);
     emitSideTask(new_task);
     startProcess(new_task);
-    prepareMapForNextTask();
+    prepareMapsForNextTask();
 }
 
 
@@ -67,6 +65,10 @@ void Process::updateCleanCommand(bool is_auracle_installed)
 bool Process::askQuestion(Process::Task new_task,
                           QStringList new_checked_packages)
 {
+    messages_map.insert(Task::Uninstall, {i18n("Uninstallation"), i18np("remove package?", "remove packages?", new_checked_packages.count())});
+    messages_map.insert(Task::Install, {i18n("Installation"), i18np("install package?", "install packages?", new_checked_packages.count())});
+    messages_map.insert(Task::Update, {i18n("Update"), i18np("update package?", "update packages?", new_checked_packages.count())});
+
     int answer = QMessageBox::information(parent, messages_map.value(new_task).first,
                                           questionForm(new_checked_packages, new_task),
                                           QMessageBox::Yes | QMessageBox::No);
@@ -136,7 +138,7 @@ void Process::updateMap(QStringList& checked_packages)
 }
 
 
-void Process::prepareMapForNextTask()
+void Process::prepareMapsForNextTask()
 {
     commands_map.remove(Task::Update);
     commands_map.remove(Task::Uninstall);
@@ -144,6 +146,10 @@ void Process::prepareMapForNextTask()
     commands_map.remove(Task::InstallAfterSearchRepo);
     commands_map.remove(Task::InstallAfterSearchAUR);
     commands_map.remove(Task::InstallAfterSearchPOLAUR);
+
+    messages_map.remove(Task::Uninstall);
+    messages_map.remove(Task::Install);
+    messages_map.remove(Task::Update);
 }
 
 

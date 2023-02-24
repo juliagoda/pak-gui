@@ -28,6 +28,6 @@ void SystemTray::update(int packages_count)
     {
         setStatus(KStatusNotifierItem::NeedsAttention);
         setToolTipTitle(i18n("Update"));
-        setToolTipSubTitle(i18n("%1 packages to update", QString::number(packages_count)));
+        setToolTipSubTitle(i18np("1 package to update", "%2 packages to update", packages_count, QString::number(packages_count)));
     }
 }

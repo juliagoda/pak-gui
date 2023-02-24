@@ -16,6 +16,13 @@ QStringList StatisticsCommandParser::retrieveInfo()
     QStringListIterator it(output_list);
     QStringList result = QStringList();
 
+    /*:: Statystyki z miesiąca: 2023-02
+    Transakcje instalowania: 0
+    Transakcje deaktualizowania: 0
+    Transakcje usuwania: 0
+    Transakcje aktualizowania: 0*/
+
+
     while (it.hasNext())
     {
         QString line = it.next().toUtf8();

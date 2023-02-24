@@ -11,6 +11,7 @@ QStringList QiCommandParser::retrieveInfo()
 {
     QString output = generateResult();
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckInstalled);
+    //Potwierdzone przez
     return output.split(QRegularExpression("Validated By[^\n]*\n\n"));
 }
 

@@ -31,11 +31,21 @@
 #include "defstest.h"
 
 #include <QApplication>
+#include <KCrash>
+#include <KDBusService>
 
 
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
+    KLocalizedString::setApplicationDomain("pak-gui");
+    KCrash::initialize();
+
+    KDBusService appDBusService(KDBusService::Multiple | KDBusService::NoExitOnFailure);
+
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, false);
+    QLoggingCategory::defaultCategory()->setEnabled(QtInfoMsg, false);
 
     int status = 0;
     QTest::setMainSourcePath(__FILE__, QT_TESTCASE_BUILDDIR);

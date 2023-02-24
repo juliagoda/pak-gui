@@ -51,7 +51,7 @@ signals:
 
 private:
     void updateMap(QStringList& checked_packages);
-    void prepareMapForNextTask();
+    void prepareMapsForNextTask();
     void emitSideTask(Process::Task task);
     QString questionForm(QStringList& new_checked_packages, Task new_task);
     void connectSignals(QSharedPointer<QProcess> &process, Task new_task);

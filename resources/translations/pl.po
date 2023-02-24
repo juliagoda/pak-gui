@@ -1,97 +1,110 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
+"(n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 3.2.2\n"
+
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #: src/src/installcommandparser.cpp:6 src/src/downloadcommandparser.cpp:151
-#: src/src/downloadcommandparser.cpp:152
-
-#: src/src/mainwindowview.cpp:47 src/src/rc.cpp:60
+#: src/src/downloadcommandparser.cpp:152 src/src/mainwindowview.cpp:47
+#: src/src/rc.cpp:60
 msgid "Internet connection state and auracle-git package presence"
-msgstr "eInternet connection state and auracle-git package presence"
+msgstr "Stan połączenia internetowego i obecność pakietu auracle-git"
 
 #: src/src/mainwindowview.cpp:48 src/src/rc.cpp:66
 msgid "Internet connection state and git package presence"
-msgstr "eInternet connection state and git package presence"
+msgstr "Stan połączenia internetowego i obecność pakietu git"
 
 #: src/src/mainwindowview.cpp:49 src/src/rc.cpp:54
 msgid "Internet connection state"
-msgstr "eInternet connection state"
+msgstr "Stan połączenia internetowego"
 
 #: src/src/mainwindowview.cpp:142
 msgid "All processes ended"
-msgstr "eAll processes ended"
+msgstr "Wszystkie procesy zostały zakończone"
 
 #: src/src/mainwindowview.cpp:142
 msgid "All processes have been completed."
-msgstr "eAll processes have been completed."
-
+msgstr "Wszystkie procesy zostały zakończone."
 
 #: src/src/mainwindowview.cpp:262 src/src/rc.cpp:21
 msgid "TO UPDATE"
-msgstr "eTO UPDATE"
+msgstr "DO ZAKTUALIZOWANIA"
 
 #: src/src/mainwindowview.cpp:263 src/src/rc.cpp:39
 msgid "AVAILABLE TO INSTALL"
-msgstr "eAVAILABLE TO INSTALL"
+msgstr "DOSTĘPNE DO ZAINSTALOWANIA"
 
 #: src/src/mainwindowview.cpp:271 src/src/mainwindowview.cpp:273
 msgid "No internet connection"
-msgstr "eNo internet connection"
+msgstr "Brak połączenia internetowego"
 
 #: src/src/mainwindowview.cpp:289 src/src/mainwindowview.cpp:305
 msgid "Something went wrong. Try to refresh"
-msgstr "eSomething went wrong. Try to refresh"
+msgstr "Coś poszło nie tak. Spróbuj odświeżyć"
 
 #: src/src/mainwindowview.cpp:322
 msgid "Cannot be updated - try to refresh"
-msgstr "eCannot be updated - try to refresh"
+msgstr "Nie można zaktualizować kolumny - spróbuj odświeżyć"
 
 #: src/src/mainwindowview.cpp:328
 msgid "There aren't packages to update"
-msgstr "eThere aren't packages to update"
+msgstr "Brak pakietów do zaktualizowania"
 
 #: src/src/mainwindowview.cpp:500
 msgid "Quit"
-msgstr "eQuit"
+msgstr "Zakończ"
 
 #: src/src/mainwindowview.cpp:500
 msgid ""
 "Application cannot be closed immediately. Try again after end of running "
 "operations."
 msgstr ""
-"eApplication cannot be closed immediately. Try again after end of running "
-"operations."
+"Aplikacja nie może być zamknięta natychmiast. Spróbuj ponownie po "
+"zakończeniu pracy."
 
 #: src/src/packageinputwindow.cpp:24
 msgid "Package name is empty"
-msgstr "ePackage name is empty"
+msgstr "Nazwa paczki jest pusta"
 
 #: src/src/packageinputwindow.cpp:24
 msgid "Package name is not empty"
-msgstr "ePackage name is not empty"
+msgstr "Nazwa paczki nie jest pusta"
 
 #: src/src/installcommandparser.cpp:16 src/src/rc.cpp:63
 #: src/src/checkcommandparser.cpp:17
 msgid "AUR"
-msgstr "eAUR"
+msgstr "AUR"
 
 #: src/src/installcommandparser.cpp:17 src/src/rc.cpp:69
 #: src/src/checkcommandparser.cpp:18
 msgid "POLAUR"
-msgstr "ePOLAUR"
+msgstr "POLAUR"
 
 #: src/src/installcommandparser.cpp:18 src/src/rc.cpp:57
 msgid "Repositories"
-msgstr "eRepositories"
+msgstr "Repozytoria"
 
 #: src/src/actionsaccesschecker.cpp:132
 msgid "Missing package"
-msgstr "eMissing package"
+msgstr "Brakująca paczka"
 
 #: src/src/actionsaccesschecker.cpp:132
 msgid "Missing packages"
-msgstr "eMissing packages"
+msgstr "Brakujące paczki"
 
 #: src/src/actionsaccesschecker.cpp:133
 msgid ""
@@ -99,7 +112,7 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
-"eRequired package is missing:\n"
+"Brakuje następującej paczki w systemie:\n"
 "\n"
 "%2"
 
@@ -109,257 +122,257 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
-"eRequired packages are missing:\n"
+"Brakuje następujących paczek w systemie:\n"
 "\n"
 "%2"
 
 #: src/src/rc.cpp:3
 msgid "View progress"
-msgstr "eView progress"
+msgstr "Sprawdź postęp"
 
 #: src/src/rc.cpp:6
 msgid "INSTALLED"
-msgstr "eINSTALLED"
+msgstr "ZAINSTALOWANE"
 
 #: src/src/rc.cpp:9 src/src/rc.cpp:24 src/src/rc.cpp:42
 msgid "Reverse sorting"
-msgstr "eReverse sorting"
+msgstr "Odwróc sortowanie"
 
 #: src/src/rc.cpp:12
 msgid "Uninstall"
-msgstr "eUninstall"
+msgstr "Odinstaluj"
 
 #: src/src/rc.cpp:15 src/src/rc.cpp:30 src/src/rc.cpp:48
 msgid "Preview"
-msgstr "ePreview"
+msgstr "Podgląd"
 
 #: src/src/rc.cpp:18 src/src/rc.cpp:33 src/src/rc.cpp:51
 msgid "Search"
-msgstr "eSearch"
+msgstr "Wyszukiwanie"
 
 #: src/src/rc.cpp:27 src/src/process.cpp:70 src/src/systemtray.cpp:30
 msgid "Update"
-msgstr "eUpdate"
+msgstr "Aktualizuj"
 
 #: src/src/rc.cpp:36
 msgid "Check all"
-msgstr "eCheck all"
+msgstr "Zaznacz wszystko"
 
 #: src/src/rc.cpp:45
 msgid "Install"
-msgstr "eInstall"
+msgstr "Instaluj"
 
 #: src/src/rc.cpp:72 src/src/rc.cpp:165
 msgid "Dialog"
-msgstr "eDialog"
+msgstr "Postęp"
 
 #: src/src/rc.cpp:75
 msgid "Tab 1"
-msgstr "eTab 1"
+msgstr "Zakładka 1"
 
 #: src/src/rc.cpp:78
 msgid "Tab 2"
-msgstr "eTab 2"
+msgstr "Zakładka 2"
 
 #: src/src/rc.cpp:81 src/src/rc.cpp:96 src/src/rc.cpp:111 src/src/rc.cpp:126
 msgid "Form"
-msgstr "eForm"
+msgstr "Podstęp"
 
 #: src/src/rc.cpp:84
 msgid "background color "
-msgstr "ebackground color "
+msgstr "kolor tła "
 
 #: src/src/rc.cpp:87
 msgid "font color"
-msgstr "efont color"
+msgstr "kolor czcionki"
 
 #: src/src/rc.cpp:90
 msgid "font family"
-msgstr "efont family"
+msgstr "rodzaj czcionki"
 
 #: src/src/rc.cpp:93
 msgid "font size "
-msgstr "efont size "
+msgstr "wielkość czionki "
 
 #: src/src/rc.cpp:99
 msgid "Save logs into file"
-msgstr "eSave logs into file"
+msgstr "Zapisz logi do pliku"
 
 #: src/src/rc.cpp:102
 msgid "in path"
-msgstr "ein path"
+msgstr "w ścieżce"
 
 #: src/src/rc.cpp:105
 msgid "show debug"
-msgstr "eshow debug"
+msgstr "pokazuj logi debug"
 
 #: src/src/rc.cpp:108
 msgid "hide information logs"
-msgstr "ehide information logs"
+msgstr "schowaj logi informacyjne"
 
 #: src/src/rc.cpp:114
 msgid "Enter the package name"
-msgstr "eEnter the package name"
+msgstr "Wprowadź nazwę paczki"
 
 #: src/src/rc.cpp:117
 msgid "A&ctions"
-msgstr "eA&ctions"
+msgstr "A&kcje"
 
 #: src/src/rc.cpp:120
 msgid "P&rint"
-msgstr "eP&rint"
+msgstr "W&yświetl"
 
 #: src/src/rc.cpp:123
 msgid "Main Toolbar"
-msgstr "eMain Toolbar"
+msgstr "Główny pasek narzędzi"
 
 #: src/src/rc.cpp:129 src/src/rc.cpp:138
 msgid "day(s)"
-msgstr "eday(s)"
+msgstr "dni"
 
 #: src/src/rc.cpp:132
 msgid "Check packages ready to update every "
-msgstr "eCheck packages ready to update every "
+msgstr "Sprawdzaj pakiety gotowe do aktualizacji co "
 
 #: src/src/rc.cpp:135
 msgid "Try to reconnect to the internet every "
-msgstr "eTry to reconnect to the internet every "
+msgstr "Próbuj ponownie połączyć się z internetem co "
 
 #: src/src/rc.cpp:141 src/src/rc.cpp:144
 msgid "minute(s)"
-msgstr "eminute(s)"
+msgstr "minuty"
 
 #: src/src/rc.cpp:147
 msgid "hour(s)"
-msgstr "ehour(s)"
+msgstr "godziny"
 
 #: src/src/rc.cpp:150
 msgid "Store operations history for "
-msgstr "eStore operations history for "
+msgstr "Przechowuj historię operacji przez "
 
 #: src/src/rc.cpp:153
 msgid "Set limit of single operations history size to  "
-msgstr "eSet limit of single operations history size to  "
+msgstr "Ustaw limit wielkości historii pojedynczych operacji do "
 
 #: src/src/rc.cpp:156
 msgid "MB"
-msgstr "eMB"
+msgstr "MB"
 
 #: src/src/rc.cpp:159
 msgid "Overwrite operations history file (when full size)"
-msgstr "eOverwrite operations history file (when full size)"
+msgstr "Nadpisuj plik z historią operacji (przy przepełnieniu)"
 
 #: src/src/rc.cpp:162
 msgid "Use system tray icon"
-msgstr "eUse system tray icon"
+msgstr "Użyj ikony w pasku systemowym"
 
 #: src/src/rc.cpp:168 src/src/packagedownloader.cpp:89
 msgid "Choose path for package save"
-msgstr "eChoose path for package save"
+msgstr "Wybierz ścieżkę zapisu pakietu"
 
 #: src/src/packagescolumn.cpp:66
 msgid ""
 "Packages couln't be %1\n"
 "Do you want to see logs?"
 msgstr ""
-"ePackages couln't be %1\n"
-"Do you want to see logs?"
+"Pakiety nie mogą być %1\n"
+"Czy chcesz zobaczyć logi?"
 
 #: src/src/process.cpp:24
 msgid "Clean"
-msgstr "eClean"
+msgstr "Sprzątanie"
 
 #: src/src/process.cpp:24
 msgid "clean packages after installation?"
-msgstr "eclean packages after installation?"
+msgstr "wyczyścić pamięć po instalacji paczek?"
 
 #: src/src/process.cpp:25
 msgid "Update mirrors"
-msgstr "eUpdate mirrors"
+msgstr "AKtualizowanie mirrorów"
 
 #: src/src/process.cpp:25
 msgid "update mirrors?"
-msgstr "eupdate mirrors?"
+msgstr "zaktualizować mirrory?"
 
 #: src/src/process.cpp:26 src/src/updatedpackagescolumn.cpp:89
 msgid "Update all"
-msgstr "eUpdate all"
+msgstr "Aktualizowanie wszystkiego"
 
 #: src/src/process.cpp:26
 msgid "update all packages?"
-msgstr "eupdate all packages?"
+msgstr "zaktualizować wszystkie paczki?"
 
 #: src/src/process.cpp:27
 msgid "Print vcs packages"
-msgstr "ePrint vcs packages"
+msgstr "Wyświetlenie paczek vcs"
 
 #: src/src/process.cpp:27
 msgid "print all vcs packages?"
-msgstr "eprint all vcs packages?"
+msgstr "wyświetlić wszystkie paczki vcs?"
 
 #: src/src/process.cpp:28
 msgid "Installed packages update"
-msgstr "eInstalled packages update"
+msgstr "Aktualizowanie zainstalowanych paczek"
 
 #: src/src/process.cpp:28
 msgid "update installed packages?"
-msgstr "eupdate installed packages?"
+msgstr "zaktualizować zainstalowane paczki?"
 
 #: src/src/process.cpp:68
 msgid "Uninstallation"
-msgstr "eUninstallation"
+msgstr "Odinstalowanie"
 
 #: src/src/process.cpp:68
 msgid "remove package?"
-msgstr "eremove package?"
+msgstr "usunąć paczkę?"
 
 #: src/src/process.cpp:68
 msgid "remove packages?"
-msgstr "eremove packages?"
+msgstr "usunąć paczki?"
 
 #: src/src/process.cpp:69
 msgid "Installation"
-msgstr "eInstallation"
+msgstr "Instalowanie"
 
 #: src/src/process.cpp:69
 msgid "install package?"
-msgstr "einstall package?"
+msgstr "zainstalować paczkę?"
 
 #: src/src/process.cpp:69
 msgid "install packages?"
-msgstr "einstall packages?"
+msgstr "zainstalować paczki?"
 
 #: src/src/process.cpp:70
 msgid "update package?"
-msgstr "eupdate package?"
+msgstr "zaktualizować paczkę?"
 
 #: src/src/process.cpp:70
 msgid "update packages?"
-msgstr "eupdate packages?"
+msgstr "zaktualizować paczki?"
 
 #: src/src/process.cpp:117
 msgid "%1 wasn't possible: %2"
-msgstr "e%1 wasn't possible: %2"
+msgstr "e%1 było niemożliwe: %2"
 
 #: src/src/process.cpp:170
 msgid "Are you sure you want to %1"
-msgstr "eAre you sure you want to %1"
+msgstr "Czy naprawdę chcesz %1"
 
 #: src/src/downloadcommandparser.cpp:128
 msgid "Package Name"
-msgstr "ePackage Name"
+msgstr "Nazwa paczki"
 
 #: src/src/downloadcommandparser.cpp:129
 msgid "Package name cannot be empty"
-msgstr "ePackage name cannot be empty"
+msgstr "Nazwa paczki nie może być pusta"
 
 #: src/src/downloadcommandparser.cpp:131
 msgid "Given package name for download is empty!"
-msgstr "eGiven package name for download is empty!"
+msgstr "Podana nazwa paczki do pobrania jest pusta!"
 
 #: src/src/downloadcommandparser.cpp:146
 msgid "Package download failure"
-msgstr "ePackage download failure"
+msgstr "Błąd podczas pobierania paczki"
 
 #: src/src/downloadcommandparser.cpp:146
 msgid ""
@@ -368,235 +381,236 @@ msgid ""
 "Error lines:\n"
 "%1"
 msgstr ""
-"ePackage couldn't be downloaded:\n"
+"Paczka nie mogła zostać pobrana:\n"
 "\n"
-"Error lines:\n"
+"Linie z błędami:\n"
 "%1"
 
 #: src/src/downloadcommandparser.cpp:151
 msgid "Package download"
-msgstr "ePackage download"
+msgstr "Pobranie paczki"
 
 #: src/src/downloadcommandparser.cpp:151
 msgid "Package %1 has been downloaded %2"
-msgstr "ePackage %1 has been downloaded %2"
+msgstr "Paczka %1 została pobrana %2"
 
 #: src/src/downloadcommandparser.cpp:151
 msgid "and installed"
-msgstr "eand installed"
+msgstr "i zainstalowane"
 
 #: src/src/packagesearch.cpp:68
 msgid "Choose package"
-msgstr "eChoose package"
+msgstr "Wybierz paczkę"
 
 #: src/src/statistics.cpp:26
 msgid "Statistics - current month"
-msgstr "eStatistics - current month"
+msgstr "Statystyki - aktualny miesiąc"
 
 #: src/src/mainwindow.cpp:195
 msgid "&Update"
-msgstr "e&Update"
+msgstr "&Aktualizacja"
 
 #: src/src/mainwindow.cpp:198
 msgid "&Refresh"
-msgstr "e&Refresh"
+msgstr "&Odśwież"
 
 #: src/src/mainwindow.cpp:198
 msgid "refresh"
-msgstr "erefresh"
+msgstr "refresh"
 
 #: src/src/mainwindow.cpp:207
 msgid "&Download"
-msgstr "e&Download"
+msgstr "&Pobieranie"
 
 #: src/src/mainwindow.cpp:207
 msgid "download"
-msgstr "edownload"
+msgstr "download"
 
 #: src/src/mainwindow.cpp:210
 msgid "&Search"
-msgstr "e&Search"
+msgstr "&Wyszukiwanie"
 
 #: src/src/mainwindow.cpp:210
 msgid "search"
-msgstr "esearch"
+msgstr "search"
 
 #: src/src/mainwindow.cpp:213
 msgid "&Update all packages"
-msgstr "e&Update all packages"
+msgstr "&Aktualizacja wszystkich paczek"
 
 #: src/src/mainwindow.cpp:213
 msgid "updateAllPackages"
-msgstr "eupdateAllPackages"
+msgstr "updateAllPackages"
 
 #: src/src/mainwindow.cpp:216
 msgid "&Update mirrors"
-msgstr "e&Update mirrors"
+msgstr "&Aktualizacja mirrorów"
 
 #: src/src/mainwindow.cpp:216
 msgid "updateMirrors"
-msgstr "eupdateMirrors"
+msgstr "updateMirrors"
 
 #: src/src/mainwindow.cpp:219
 msgid "&Clean"
-msgstr "e&Clean"
+msgstr "&Sprzątanie"
 
 #: src/src/mainwindow.cpp:219
 msgid "clean"
-msgstr "eclean"
+msgstr "clean"
 
 #: src/src/mainwindow.cpp:222
 msgid "&Statistics"
-msgstr "e&Statistics"
+msgstr "&Statystyki"
 
 #: src/src/mainwindow.cpp:222
 msgid "statistics"
-msgstr "estatistics"
+msgstr "statistics"
 
 #: src/src/updatedpackagescolumn.cpp:88
 msgid "Single AUR/POLAUR packages"
-msgstr "eSingle AUR/POLAUR packages"
+msgstr "Pojedyncze paczki AUR/POLAUR"
 
 #: src/src/updatedpackagescolumn.cpp:88
 msgid "It's not possible to update single AUR/POLAUR packages"
-msgstr "eIt's not possible to update single AUR/POLAUR packages"
+msgstr "Nie ma możliwości aktualizowania pojedynczych paczek AUR/POLAUR"
 
 #: src/src/updatedpackagescolumn.cpp:89
 msgid "Uncheck these packages"
-msgstr "eUncheck these packages"
+msgstr "Odznacz te paczki"
 
 #: src/src/updatedpackagescolumn.cpp:89
 msgid "Cancel"
-msgstr "eCancel"
+msgstr "Anuluj"
 
 #: src/src/packagedownloader.cpp:48
 msgid "Downloader's option"
-msgstr "eDownloader's option"
+msgstr "Opcje pobrania"
 
 #: src/src/packagedownloader.cpp:49
 msgid "Do you want to install chosen package automatically after download?"
-msgstr "eDo you want to install chosen package automatically after download?"
+msgstr ""
+"Czy chcesz zainstalować wybraną paczkę automatycznie po jej pobraniu?"
 
 #: src/src/packagedownloader.cpp:115
 msgid "Choose repo for package download"
-msgstr "eChoose repo for package download"
+msgstr "Wybierz repo do pobrania paczki"
 
 #: src/src/settings.cpp:15
 msgid "settings"
-msgstr "esettings"
+msgstr "settings"
 
 #: src/src/settings.cpp:74 src/src/pakGuiSettings.cpp:34
 msgid "General"
-msgstr "eGeneral"
+msgstr "Ogólne"
 
 #: src/src/settings.cpp:75
 msgid "Previews appearance"
-msgstr "ePreviews appearance"
+msgstr "Podgląd"
 
 #: src/src/settings.cpp:76
 msgid "Packages informations"
-msgstr "ePackages informations"
+msgstr "Informacje o paczkach"
 
 #: src/src/settings.cpp:77 src/src/pakGuiSettings.cpp:110
 msgid "Logs"
-msgstr "eLogs"
+msgstr "Logi"
 
 #: src/src/pakGuiSettings.cpp:76
 msgid "PackageInfo"
-msgstr "ePackageInfo"
+msgstr "PackageInfo"
 
 #: src/src/pakGuiSettings.cpp:79
 msgid "Architecture"
-msgstr "eArchitecture"
+msgstr "Architektura"
 
 #: src/src/pakGuiSettings.cpp:80
 msgid "URL"
-msgstr "eURL"
+msgstr "URL"
 
 #: src/src/pakGuiSettings.cpp:81
 msgid "Licenses"
-msgstr "eLicenses"
+msgstr "Licencje"
 
 #: src/src/pakGuiSettings.cpp:82
 msgid "Groups"
-msgstr "eGroups"
+msgstr "Grupy"
 
 #: src/src/pakGuiSettings.cpp:83
 msgid "Provides"
-msgstr "eProvides"
+msgstr "Dostarcza"
 
 #: src/src/pakGuiSettings.cpp:84
 msgid "Optional Deps"
-msgstr "eOptional Deps"
+msgstr "Opcjonalne zależności"
 
 #: src/src/pakGuiSettings.cpp:85
 msgid "RequiredBy"
-msgstr "eRequiredBy"
+msgstr "Wymagany przez"
 
 #: src/src/pakGuiSettings.cpp:86
 msgid "Optional For"
-msgstr "eOptional For"
+msgstr "Opcjonalny dla"
 
 #: src/src/pakGuiSettings.cpp:87
 msgid "Conflicts With"
-msgstr "eConflicts With"
+msgstr "Konfliktuje z"
 
 #: src/src/pakGuiSettings.cpp:88
 msgid "Replaces"
-msgstr "eReplaces"
+msgstr "Zastępuje"
 
 #: src/src/pakGuiSettings.cpp:89
 msgid "Installed Size"
-msgstr "eInstalled Size"
+msgstr "Architektura"
 
 #: src/src/pakGuiSettings.cpp:90
 msgid "Packager"
-msgstr "ePackager"
+msgstr "Autor pakietu"
 
 #: src/src/pakGuiSettings.cpp:91
 msgid "Build Date"
-msgstr "eBuild Date"
+msgstr "Data zbudowania"
 
 #: src/src/pakGuiSettings.cpp:92
 msgid "Install Date"
-msgstr "eInstall Date"
+msgstr "Data zainstalowania"
 
 #: src/src/pakGuiSettings.cpp:93
 msgid "Install Reason"
-msgstr "eInstall Reason"
+msgstr "Powód zainstalowania"
 
 #: src/src/pakGuiSettings.cpp:94
 msgid "Install Script"
-msgstr "eInstall Script"
+msgstr "Skrypt instalacyjny"
 
 #: src/src/pakGuiSettings.cpp:95
 msgid "Validated By"
-msgstr "eValidated By"
+msgstr "Potwierdzone przez"
 
 #: src/src/pakGuiSettings.cpp:101
 msgid "Name"
-msgstr "eName"
+msgstr "Nazwa"
 
 #: src/src/pakGuiSettings.cpp:102
 msgid "Value"
-msgstr "eValue"
+msgstr "Wersja"
 
 #: src/src/pakGuiSettings.cpp:103
 msgid "Description"
-msgstr "eDescription"
+msgstr "Opis"
 
 #: src/src/pakGuiSettings.cpp:104
 msgid "Depends On"
-msgstr "eDepends On"
+msgstr "Zależy od"
 
 #: src/src/statisticscommandparser.cpp:22
 msgid "actions:"
-msgstr "eactions:"
+msgstr "actions:"
 
 #: src/src/systemtray.cpp:31
 msgid "1 package to update"
-msgstr "e1 package to update"
+msgstr "1 paczka do aktualizacji"
 
 #: src/src/systemtray.cpp:31
 msgid "%2 packages to update"
-msgstr "e%2 packages to update"
+msgstr "%2 paczki do aktualizacji"

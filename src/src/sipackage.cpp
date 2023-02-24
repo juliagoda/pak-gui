@@ -1,6 +1,7 @@
 #include "sipackage.h"
 
 #include "defs.h"
+#include "qnamespace.h"
 
 
 SiPackage::SiPackage(const QString& package_content) :
