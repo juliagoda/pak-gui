@@ -16,10 +16,7 @@ jobs:
         uses: actions/checkout@v2
       - name: update
         run: |
-          sudo apt-get purge grub\*
-          sudo apt-get install grub-efi
-          sudo apt-get autoremove
-          sudo update-grub
+          sudo apt --only-upgrade install grub-efi-amd64-signed
           sudo apt-get update -y
           sudo apt-get upgrade -fy
       - name: dependencies
