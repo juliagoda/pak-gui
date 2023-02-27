@@ -2,8 +2,6 @@
 
 #include "checkcommandparser.h"
 
-#include "packagescolumnfixtures.h"
-
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
@@ -14,7 +12,8 @@ class MockCheckCommandParser : public CheckCommandParser
     Q_OBJECT
 
 public:
-    explicit MockCheckCommandParser();
+    explicit MockCheckCommandParser() = default;
+    ~MockCheckCommandParser() override = default;
     friend class TestCheckCommandParser;
 
     QString generatePakCheckResults() override;
@@ -31,7 +30,10 @@ public:
     TestCheckCommandParser(QObject* parent = nullptr);
 
 private slots:
-    void cleanup();
+    void retrievedPackagesMapCountIsEqualToThree();
+    void retrievedPackagesMapContainsAclPackagesFromRepo();
+    void retrievedPackagesMapContainsKonsolePackageFromPolaur();
+    void unmergedPacsaveFilesLineTriggersProcessExit();
 
 private:
     MockCheckCommandParser check_command_parser;

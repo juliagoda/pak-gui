@@ -10,8 +10,7 @@
 #include <QTextStream>
 
 
-CheckCommandParser::CheckCommandParser() :
-    line_to_source_map()
+CheckCommandParser::CheckCommandParser()
 {
      line_to_source_map.insert(QString("System"), Package::Source::Repo);
      line_to_source_map.insert(QString("AUR"), Package::Source::AUR);
@@ -26,15 +25,15 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
 
     QHash<QString, Package::Source> system_packages{};
-    QStringList output_list = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
-    QString current_source_line = QString();
-    QStringListIterator it(output_list);
+    QStringList output_list{output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts)};
+    QString current_source_line{};
+    QStringListIterator it{output_list};
 
     while (it.hasNext())
     {
-        QString line = it.next();
-        QString filtered_line = OutputFilter::filteredOutput(line).simplified();
-        bool starts_from_double_colon = OutputFilter::startsFromDoubleColon(filtered_line);
+        QString line{it.next()};
+        QString filtered_line{OutputFilter::filteredOutput(line).simplified()};
+        bool starts_from_double_colon{OutputFilter::startsFromDoubleColon(filtered_line)};
 
         if (starts_from_double_colon)
             current_source_line = OutputFilter::getSourceFromDoubleColon(filtered_line);

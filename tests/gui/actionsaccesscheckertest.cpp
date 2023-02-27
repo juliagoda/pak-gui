@@ -25,7 +25,7 @@ bool MockActionsAccessChecker::checkNetworkInterfaces() const
 
 TestActionsAccessChecker::TestActionsAccessChecker(QObject* parent) :
     QObject(parent),
-    actions_access_checker(new QWidget)
+    actions_access_checker(nullptr)
 {
     QTestEventLoop::instance().enterLoop(1);
 }
@@ -89,9 +89,5 @@ void TestActionsAccessChecker::emitSignalFunctionContainsEmitsForFourPackages()
 void TestActionsAccessChecker::cleanup()
 {
    actions_access_checker.updateIsOnline(true);
-
-   auto actionsAccessCheckerSingleton = actions_access_checker.actionsAccessChecker(nullptr);
-   if (actionsAccessCheckerSingleton)
-       delete actionsAccessCheckerSingleton;
 }
 
