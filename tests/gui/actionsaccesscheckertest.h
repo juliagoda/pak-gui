@@ -16,8 +16,8 @@ class MockActionsAccessChecker : public ActionsAccessChecker
 public:
     explicit MockActionsAccessChecker(QWidget* new_parent);
     friend class TestActionsAccessChecker;
-    void showRequiredPackagesNotFoundWindow(const QStringList& not_installed_packages) override;
-    bool checkNetworkInterfaces() override;
+    void showRequiredPackagesNotFoundWindow(const QStringList& not_installed_packages) const override;
+    bool checkNetworkInterfaces() const override;
 };
 
 
@@ -31,6 +31,12 @@ public:
     TestActionsAccessChecker(QObject* parent = nullptr);
 
 private slots:
+    void internetConnectionStateSignalEmittedAfterChange();
+    void stopApplicationSendSignalAfterNotFindingRequiredPackages();
+    void initiallyPackagesAreNotFound();
+    void initiallyInternetConnectionIsOn();
+    void properlyFindsExecutableFileWithExampleOfPakQtests();
+    void emitSignalFunctionContainsEmitsForFourPackages();
     void cleanup();
 
 private:
