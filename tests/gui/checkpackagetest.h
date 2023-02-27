@@ -16,9 +16,12 @@ public:
     TestCheckPackage(QObject* parent = nullptr);
 
 private slots:
-    void cleanup();
+    void isItemCheckable();
+    void isItemNotCheckedByDefault();
+    void isItemNameEqualToBinutils();
+    void isItemVersionCorrectlyVisible();
+    void isSourceEqualToRepo();
 
 private:
     MockCheckPackage check_package;
-    QString package_content = "binutils 2.40-1.1 => 2.40-2.1";
 };

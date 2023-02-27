@@ -20,11 +20,11 @@ CheckCommandParser::CheckCommandParser()
 
 QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
 {
-    QString output = generatePakCheckResults();
+    QString output{generatePakCheckResults()};
 
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
 
-    QHash<QString, Package::Source> system_packages{};
+    QHash<QString, Package::Source> system_packages;
     QStringList output_list{output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts)};
     QString current_source_line{};
     QStringListIterator it{output_list};

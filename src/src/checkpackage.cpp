@@ -3,8 +3,8 @@
 #include <QRegularExpression>
 
 
-CheckPackage::CheckPackage(const QString& new_package_content, Package::Source new_source) :
-    Package(new_package_content, new_source)
+CheckPackage::CheckPackage(QString new_package_content, Package::Source new_source) :
+    Package{new_package_content, new_source}
 {
     if (new_package_content.isEmpty())
         return;
@@ -17,7 +17,7 @@ CheckPackage::CheckPackage(const QString& new_package_content, Package::Source n
 
 
 CheckPackage::CheckPackage(CheckPackage& check_package) :
-    Package(check_package)
+    Package{check_package}
 {
    setName(check_package.getName());
    setNo(check_package.getNo());
@@ -28,17 +28,17 @@ CheckPackage::CheckPackage(CheckPackage& check_package) :
 }
 
 
-void CheckPackage::updateData(const QString& packageContent, int name_line, int version_line)
+void CheckPackage::updateData(const QString& package_content, int name_line, int version_line)
 {
     Q_UNUSED(name_line)
     Q_UNUSED(version_line)
 
-    int first_whitespace_index = packageContent.indexOf(QRegularExpression(" "), 0);
-    int first_number_index = packageContent.indexOf(QRegularExpression("[0-9]"), 0);
+    int first_whitespace_index = package_content.indexOf(QRegularExpression(" "), 0);
+    int first_number_index = package_content.indexOf(QRegularExpression("[0-9]"), 0);
 
-    QString name_part = packageContent.left(first_whitespace_index);
+    QString name_part = package_content.left(first_whitespace_index);
     setName(name_part);
 
-    QString version_part = packageContent.mid(first_number_index);
+    QString version_part = package_content.mid(first_number_index);
     setVersion(version_part);
 }

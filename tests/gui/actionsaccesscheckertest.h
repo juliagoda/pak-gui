@@ -2,8 +2,6 @@
 
 #include "actionsaccesschecker.h"
 
-#include "packagescolumnfixtures.h"
-
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
@@ -15,6 +13,7 @@ class MockActionsAccessChecker : public ActionsAccessChecker
 
 public:
     explicit MockActionsAccessChecker(QWidget* new_parent);
+    ~MockActionsAccessChecker() override = default;
     friend class TestActionsAccessChecker;
     void showRequiredPackagesNotFoundWindow(const QStringList& not_installed_packages) const override;
     bool checkNetworkInterfaces() const override;

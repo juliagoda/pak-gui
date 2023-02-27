@@ -30,10 +30,10 @@ SiPackage::SiPackage(SiPackage& si_package) :
 }
 
 
-void SiPackage::updateData(const QString& packageContent, int name_line, int version_line)
+void SiPackage::updateData(const QString& package_content, int name_line, int version_line)
 {
-    Package::updateData(packageContent, name_line, version_line);
-    QStringList lines = packageContent.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+    Package::updateData(package_content, name_line, version_line);
+    QStringList lines = package_content.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
 
     if (lines.count() == 0)
         return;

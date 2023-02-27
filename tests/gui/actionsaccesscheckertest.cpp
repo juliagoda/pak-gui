@@ -3,9 +3,9 @@
 
 
 MockActionsAccessChecker::MockActionsAccessChecker(QWidget* new_parent) :
-    ActionsAccessChecker(new_parent)
+    ActionsAccessChecker{new_parent}
 {
-    QStringList unknown_packages = QStringList() << "example_of_required_package" << "pak";
+    QStringList unknown_packages{QStringList() << "example_of_required_package" << "pak"};
     fillRequiredPackagesList(unknown_packages);
 }
 
@@ -24,8 +24,8 @@ bool MockActionsAccessChecker::checkNetworkInterfaces() const
 
 
 TestActionsAccessChecker::TestActionsAccessChecker(QObject* parent) :
-    QObject(parent),
-    actions_access_checker(nullptr)
+    QObject{parent},
+    actions_access_checker{nullptr}
 {
     QTestEventLoop::instance().enterLoop(1);
 }

@@ -6,7 +6,7 @@
 
 Package::Package(const QString& package_content, Source new_source) :
     QListWidgetItem(),
-    source(new_source)
+    source{new_source}
 {
     Q_UNUSED(package_content)
 }
@@ -52,14 +52,14 @@ void Package::setNo(const int new_no)
 }
 
 
-void Package::updateData(const QString& packageContent, int name_line, int version_line)
+void Package::updateData(const QString& package_content, int name_line, int version_line)
 {
-    QStringList lines = packageContent.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+    QStringList lines = package_content.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
 
     if (lines.count() == 0)
         return;
 
-    setToolTipOnPackage(packageContent);
+    setToolTipOnPackage(package_content);
 
     if (!validate(lines, name_line + 1, QString("updateData()")))
         return;
@@ -79,11 +79,11 @@ void Package::setToolTipOnPackage(const QString& text)
 {
     auto selected_info_list = Settings::records()->packagesInfoSelected();
     decltype(selected_info_list)::iterator selected_info_it;
-    QStringList selected_infos = QStringList();
+    QStringList selected_infos{};
 
     for(selected_info_it = selected_info_list.begin(); selected_info_it != selected_info_list.end(); selected_info_it++)
     {
-        QRegularExpression regex(QStringLiteral("(%1.*)\\n").arg(*selected_info_it));
+        QRegularExpression regex{QStringLiteral("(%1.*)\\n").arg(*selected_info_it)};
         selected_infos.append(regex.match(text).captured(1));
     }
 

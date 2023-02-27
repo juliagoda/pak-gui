@@ -10,7 +10,7 @@ class ActionsAccessChecker : public QObject
 
 public:
     static ActionsAccessChecker* actionsAccessChecker(QWidget* new_parent);
-    ~ActionsAccessChecker() override;
+    virtual ~ActionsAccessChecker() override;
     ActionsAccessChecker(ActionsAccessChecker& instance) = delete;
     void operator=(const ActionsAccessChecker& instance) = delete;
 

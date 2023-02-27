@@ -31,7 +31,7 @@ public:
     virtual void setNo(const int new_no);
 
 protected:
-    virtual void updateData(const QString& packageContent, int name_line, int version_line);
+    virtual void updateData(const QString& package_content, int name_line, int version_line);
 
     void setToolTipOnPackage(const QString& text);
 
@@ -41,8 +41,8 @@ protected:
     virtual void setVersion(const QString& new_version);
     virtual void setSource(Source new_source);
 
-    QString name = QString();
-    QString version = QString();
-    Package::Source source = Package::Source::Repo;
-    int no = 0;
+    QString name{};
+    QString version{};
+    Package::Source source{Package::Source::Repo};
+    int no{0};
 };

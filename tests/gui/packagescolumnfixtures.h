@@ -233,10 +233,12 @@ public:
 class MockCheckPackage : public CheckPackage
 {
 public:
-    explicit MockCheckPackage(QString& package_content,
+    explicit MockCheckPackage(QString package_content,
                               Package::Source new_source) :
         CheckPackage(package_content, new_source)
     {}
+
+    ~MockCheckPackage() override = default;
 
     friend class TestCheckPackage;
 };

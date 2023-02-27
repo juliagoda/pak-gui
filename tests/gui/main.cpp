@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     ASSERT_TEST(new TestSettingsWindow());
 
     ASSERT_TEST(new TestCheckCommandParser());
-    //ASSERT_TEST(new TestCheckPackage()); //C
+    ASSERT_TEST(new TestCheckPackage());
     ASSERT_TEST(new TestChoiceWindow());
 
     ASSERT_TEST(new TestDownloadCommandParser());

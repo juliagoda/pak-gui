@@ -6,7 +6,7 @@
 
 QString MockCheckCommandParser::generatePakCheckResults()
 {
-    return QString(":: System\n"
+    return QString{":: System\n"
                    "Checking...\n"
                    "\n"
                    "Packages to update:\n"
@@ -23,7 +23,7 @@ QString MockCheckCommandParser::generatePakCheckResults()
                    "\n"
                    ":: Unmerged pacnew/pacsave files\n"
                    "\n"
-                   "...\n");
+                   "...\n"};
 }
 
 

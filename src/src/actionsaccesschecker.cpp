@@ -73,7 +73,7 @@ void ActionsAccessChecker::checkRequiredPackages()
 
 void ActionsAccessChecker::checkInternetConnection()
 {
-    static bool connection_state_changed{is_online};
+    static bool connection_state_changed = is_online;
     updateIsOnline(checkNetworkInterfaces());
 
     if (connection_state_changed != is_online)
