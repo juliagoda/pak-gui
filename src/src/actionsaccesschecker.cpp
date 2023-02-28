@@ -63,10 +63,10 @@ bool ActionsAccessChecker::isOnline() const
 void ActionsAccessChecker::checkRequiredPackages()
 {
     findRequiredPackages();
-    is_asp_installed = findPackage(ASP_EXEC_FILE);
-    is_auracle_installed = findPackage(AURACLE_EXEC_FILE);
-    is_reflector_installed = findPackage(REFLECTOR_EXEC_FILE);
-    is_git_installed = findPackage(GIT_EXEC_FILE);
+    is_asp_installed = findPackage(Constants::aspExecFile());
+    is_auracle_installed = findPackage(Constants::auracleGitExecFile());
+    is_reflector_installed = findPackage(Constants::reflectorExecFile());
+    is_git_installed = findPackage(Constants::gitExecFile());
     emitSignals();
 }
 
@@ -91,9 +91,9 @@ ActionsAccessChecker* ActionsAccessChecker::actionsAccessChecker(QWidget* new_pa
     if (instance == nullptr)
     {
         instance = new ActionsAccessChecker{new_parent};
-        QStringList required_packages_list{QStringList() << PAK_EXEC_FILE << PACMAN_EXEC_FILE <<
-                                                            PACMAN_CONTRIB_EXEC_FILE << KDESU_EXEC_FILE <<
-                                                            KSSHASKPASS_EXEC_FILE};
+        QStringList required_packages_list{QStringList() << Constants::pakExecFile() << Constants::pacmanExecFile() <<
+                                                            Constants::pacmanContribExecFile() << Constants::kdesuExecFile() <<
+                                                            Constants::ksshAskPassExecFile()};
         fillRequiredPackagesList(required_packages_list);
     }
 

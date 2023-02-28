@@ -66,6 +66,8 @@ int main(int argc, char* argv[])
     ASSERT_TEST(new TestCheckPackage());
     ASSERT_TEST(new TestChoiceWindow());
 
+    ASSERT_TEST(new TestDefs());
+
     ASSERT_TEST(new TestDownloadCommandParser());
     ASSERT_TEST(new TestInstallCommandParser());
     ASSERT_TEST(new TestLogger());
@@ -94,7 +96,7 @@ int main(int argc, char* argv[])
     ASSERT_TEST(new TestSystemTray());
     ASSERT_TEST(new TestTimeConverter());
 
-    ASSERT_TEST(new TestDefs());
+
 
     qDebug() << "Status: " << status;
     return 0;

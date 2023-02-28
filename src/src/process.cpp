@@ -28,11 +28,11 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
     messages_map.insert(Task::UpdateInstalledPackages, {i18n("Installed packages update"), i18n("update installed packages?")});
 
 
-    commands_map.insert(Task::Clean, QStringList() << "-c" << ASKPASS_COMMAND + " && echo -e \"y\" | pak -Sc");
-    commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -m");
-    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << ASKPASS_COMMAND + " && echo -e \"y\ny\" | pak -Su");
-    commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << ASKPASS_COMMAND + " && pak --vcs");
-    commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -Sy");
+    commands_map.insert(Task::Clean, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -Sc");
+    commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << Constants::askPassCommand() + " && pak -m");
+    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\ny\" | pak -Su");
+    commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << Constants::askPassCommand() + " && pak --vcs");
+    commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << Constants::askPassCommand() + " && pak -Sy");
 }
 
 
@@ -52,7 +52,7 @@ void Process::run(Process::Task new_task,
 
 void Process::updateCleanCommand(bool is_auracle_installed)
 {
-    QString basic_command = ASKPASS_COMMAND + " && echo -e \"y\" | pak -Sc";
+    QString basic_command = Constants::askPassCommand() + " && echo -e \"y\" | pak -Sc";
     commands_map.remove(Task::Clean);
 
     if (is_auracle_installed)
@@ -91,7 +91,7 @@ void Process::startProcess(Process::Task new_task)
     bool contains_pacman = commands_map.value(new_task).join(" ").contains("pacman");
     connectSignals(pak_s, new_task);
     pak_s.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
-    Logger::logger()->writeSectionToFile(task_to_write_operation_map.value(new_task));
+    Logger::logger()->writeSectionToFile(Constants::taskToWriteOperationMap().value(new_task));
     QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [pak_s, new_task, this]() {
         while (pak_s.data()->canReadLine())
         {
@@ -132,9 +132,9 @@ void Process::updateMap(QStringList& checked_packages)
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Uninstall, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -R --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Install, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -S --noconfirm " + checked_packages.join(" ") + "\"");
-    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -S " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -SA " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << ASKPASS_COMMAND + " && pak -SP " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && pak -S " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SA " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SP " + checked_packages.join(" "));
 }
 
 

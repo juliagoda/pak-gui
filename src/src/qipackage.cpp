@@ -3,13 +3,12 @@
 #include "defs.h"
 
 #include <QTextStream>
-#include <QDebug>
 
 
 QiPackage::QiPackage(const QString& package_content) :
     Package(package_content, Package::Source::Unknown)
 {
-    updateData(package_content, PACKAGE_QI_NAME_LINE, PACKAGE_QI_VERSION_LINE);
+    updateData(package_content, Constants::packageQiNameLine(), Constants::packageQiVersionLine());
     setText(getName().trimmed() + "-" + getVersion().trimmed());
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);

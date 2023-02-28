@@ -23,6 +23,7 @@ target_sources(pak-gui PRIVATE
     src/checkpackage.cpp
     src/checkpackage.h
     src/defs.h
+    src/defs.cpp
     src/package.h
     src/package.cpp
     src/commandparser.h

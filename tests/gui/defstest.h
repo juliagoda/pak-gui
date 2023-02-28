@@ -1,7 +1,5 @@
 #pragma once
 
-#include "defs.h"
-
 #include <QtTest/QtTest>
 #include <QWidget>
 
@@ -15,5 +13,11 @@ public:
 
 private slots:
     void packageQiNameLineIsEqualToZero();
-    void cleanup();
+    void packageQiVersionLineIsEqualToOne();
+    void packageSiRepoNameIsEqualToZero();
+    void packageSiNameLineIsEqualToOne();
+    void packageSiVersionLineIsEqualToTwo();
+    void execFilesHaveCorrectNames();
+    void ksshAskPassCommandIsCorrect();
+    void taskToWriteOperationMapHasCorrectValues();
 };

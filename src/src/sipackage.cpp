@@ -8,7 +8,7 @@ SiPackage::SiPackage(const QString& package_content) :
     Package(package_content, Package::Source::Unknown),
     repo()
 {
-    updateData(package_content, PACKAGE_SI_NAME_LINE, PACKAGE_SI_VERSION_LINE);
+    updateData(package_content, Constants::packageSiNameLine(), Constants::packageSiVersionLine());
     setText(getName().trimmed() + "-" + getVersion().trimmed() + " [" + getRepo().trimmed() + "]");
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
@@ -38,21 +38,21 @@ void SiPackage::updateData(const QString& package_content, int name_line, int ve
     if (lines.count() == 0)
         return;
 
-    if (!validate(lines, PACKAGE_SI_REPO_NAME + 1, QString("updateData()")))
+    if (!validate(lines, Constants::packageSiRepoName() + 1, QString("updateData()")))
         return;
 
-    int repo_separator_index = lines.at(PACKAGE_SI_REPO_NAME).indexOf(": ") + 1;
-    setRepo(lines.at(PACKAGE_SI_REPO_NAME).mid(repo_separator_index));
+    int repo_separator_index = lines.at(Constants::packageSiRepoName()).indexOf(": ") + 1;
+    setRepo(lines.at(Constants::packageSiRepoName()).mid(repo_separator_index));
 
-    if (!validate(lines, PACKAGE_SI_NAME_LINE + 1, QString("updateData()")))
+    if (!validate(lines, Constants::packageSiNameLine() + 1, QString("updateData()")))
         return;
 
-    int name_separator_index = lines.at(PACKAGE_SI_NAME_LINE).indexOf(": ") + 1;
-    setName(lines.at(PACKAGE_SI_NAME_LINE).mid(name_separator_index));
+    int name_separator_index = lines.at(Constants::packageSiNameLine()).indexOf(": ") + 1;
+    setName(lines.at(Constants::packageSiNameLine()).mid(name_separator_index));
 
-    if (!validate(lines, PACKAGE_SI_VERSION_LINE + 1, QString("updateData()")))
+    if (!validate(lines, Constants::packageSiVersionLine() + 1, QString("updateData()")))
         return;
 
-    int version_separator_index = lines.at(PACKAGE_SI_VERSION_LINE).indexOf(": ") + 1;
-    setVersion(lines.at(PACKAGE_SI_VERSION_LINE).mid(version_separator_index));
+    int version_separator_index = lines.at(Constants::packageSiVersionLine()).indexOf(": ") + 1;
+    setVersion(lines.at(Constants::packageSiVersionLine()).mid(version_separator_index));
 }
