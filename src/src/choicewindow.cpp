@@ -8,13 +8,12 @@
 
 
 ChoiceWindow::ChoiceWindow(const QString& new_title,
-                           QDialog* new_parent)
-    : QDialog(new_parent),
-      title(new_title),
-      spinning_animation(new SpinningAnimation)
+                           QDialog* new_parent) :
+    QDialog{new_parent},
+    title{new_title}
 {
     m_ui.setupUi(this);
-    spinning_animation->startSmallOnWidget(m_ui.spinning_animation_label);
+
     init();
 
     m_ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
@@ -22,6 +21,13 @@ ChoiceWindow::ChoiceWindow(const QString& new_title,
     connect(m_ui.choice_combo_box, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ChoiceWindow::toggleOkButton);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentIndex()); }, Qt::AutoConnection);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentText()); }, Qt::AutoConnection);
+}
+
+
+ChoiceWindow::~ChoiceWindow()
+{
+   clearComboBox();
+   toggleOkButton(0);
 }
 
 
@@ -34,12 +40,13 @@ void ChoiceWindow::toggleOkButton(int new_index)
 
 void ChoiceWindow::fillComboBox(QString& output)
 {
-    QString result_output(output);
+    QString result_output{output};
     result_output = OutputFilter::filteredOutput(result_output);
-    QStringList splitted_list = result_output.split(QRegularExpression("\n"));
+    QStringList splitted_list{result_output.split(QRegularExpression("\n"))};
     m_ui.choice_combo_box->clear();
     m_ui.choice_combo_box->addItems(OutputFilter::filteredLines(splitted_list, OutputFilter::startsFromNumber));
     m_ui.choice_combo_box->update();
+
     if (m_ui.choice_combo_box->count() > 0)
         emit filledOptionsBox();
 }
@@ -54,7 +61,26 @@ void ChoiceWindow::fillComboBox(QStringList output_list)
 }
 
 
+QWeakPointer<SpinningAnimation> ChoiceWindow::retrieveSpinningAnimation()
+{
+    return spinning_animation.toWeakRef();
+}
+
+
 void ChoiceWindow::init()
 {
-   m_ui.choice_label->setText(title);
+    spinning_animation->startSmallOnWidget(m_ui.spinning_animation_label);
+    m_ui.choice_label->setText(title);
+}
+
+
+Ui::ChoiceWindow* ChoiceWindow::retrieveUi()
+{
+   return &m_ui;
+}
+
+
+void ChoiceWindow::clearComboBox()
+{
+    m_ui.choice_combo_box->clear();
 }
