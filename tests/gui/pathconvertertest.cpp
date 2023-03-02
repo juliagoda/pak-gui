@@ -19,6 +19,14 @@ void TestPathConverter::isRelativePathConvertedToAbsolutePath()
 }
 
 
+void TestPathConverter::isAbsolutePathTheSameAfterConversion()
+{
+    const QString path{"/home/someone/path/example"};
+
+    QCOMPARE(PathConverter::toAbsolutePath(path), QString("/home/someone/path/example"));
+}
+
+
 void TestPathConverter::hasFullConfigPathCorrectForm()
 {
    QCOMPARE(PathConverter::fullConfigPath(), QString("~/.config/pak-gui/logs.txt"));

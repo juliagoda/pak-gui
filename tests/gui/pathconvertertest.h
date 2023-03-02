@@ -15,5 +15,6 @@ public:
 
 private slots:
     void isRelativePathConvertedToAbsolutePath();
+    void isAbsolutePathTheSameAfterConversion();
     void hasFullConfigPathCorrectForm();
 };

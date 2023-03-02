@@ -17,17 +17,24 @@ void SystemTray::setup(QWidget* parent)
     setStandardActionsEnabled(true);
     setAssociatedWidget(parent);
     setIconByName(QStringLiteral("pak-gui"));
-    setStatus(KStatusNotifierItem::Passive);
+    changeStatusToDefault();
 }
 
 
 void SystemTray::update(int packages_count)
 {
-    setStatus(KStatusNotifierItem::Passive);
+    changeStatusToDefault();
+
     if (packages_count > 0)
     {
         setStatus(KStatusNotifierItem::NeedsAttention);
         setToolTipTitle(i18n("Update"));
         setToolTipSubTitle(i18np("1 package to update", "%2 packages to update", packages_count, QString::number(packages_count)));
     }
+}
+
+
+void SystemTray::changeStatusToDefault()
+{
+    setStatus(KStatusNotifierItem::Passive);
 }

@@ -17,6 +17,9 @@ public:
 public Q_SLOTS:
     void update(int packages_count);
 
+protected:
+    void changeStatusToDefault();
+
 private:
     void setup(QWidget* parent);
 };

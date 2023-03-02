@@ -28,6 +28,9 @@ public:
     TestSystemTray(QObject* parent = nullptr);
 
 private slots:
+    void isSystemTrayStatusPassiveByDefault();
+    void isSystemTrayStatusNeedsAttentionWhenPackagesCountIsGreaterThanZero();
+    void isSystemTrayStatusPassiveAfterWhenPackagesCountIsEqualToZeroAgain();
     void cleanup();
 
 private:
