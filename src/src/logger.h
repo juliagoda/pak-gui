@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pathconverter.h"
+
 #include <QObject>
 #include <QFile>
 #include <QTextStream>
@@ -49,21 +51,24 @@ public Q_SLOTS:
 
 protected:
     explicit Logger();
+    void clearStreamText();
+    const QString& streamTextResult() const;
+    void logIntoFile(const QString& section, const QString& text);
 
 private:
     void appendSection(WriteOperations section);
     void appendSeparator();
     void appendNewLine();
-    void logIntoFile(const QString& section, const QString& text);
     bool isWritePossible();
     void closeOnQuit();
     void resizeFileSizeNotWithinRange();
     bool validate();
+    void writeToStream();
 
-    QFile logs_file;
+    QFile logs_file = QFile(PathConverter::fullConfigPath());
+    QString stream_text;
     QTextStream output_stream;
     static Logger* instance;
-    static QMutex instance_mutex;
     static QMutex write_mutex;
 };
 

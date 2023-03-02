@@ -2,19 +2,17 @@
 
 #include "logger.h"
 
-#include "packagescolumnfixtures.h"
-
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
 
 
-class MockLogger : public Logger
+class  MockLogger : public Logger
 {
     Q_OBJECT
 
 public:
-    explicit MockLogger();
+    explicit MockLogger() = default;
     friend class TestLogger;
 };
 
@@ -28,8 +26,15 @@ public:
     TestLogger(QObject* parent = nullptr);
 
 private slots:
+    void writeSectionToFileMethodHasCorrectTextFormat();
+    void writeLineToFileMethodHasCorrectTextFormat();
+    void writeToFileMethodHasCorrectTextFormat();
+    void logIntoFileMethodHasCorrectTextFormat();
     void cleanup();
 
 private:
     MockLogger logger;
+    QString text{"text"};
+    const Logger::WriteOperations write_operation{Logger::WriteOperations::Install};
+
 };

@@ -2,7 +2,6 @@
 
 #include "outputfilter.h"
 #include "sizeconverter.h"
-#include "pathconverter.h"
 #include "settings.h"
 
 #include <QDebug>
@@ -10,15 +9,24 @@
 
 
 Logger* Logger::instance{nullptr};
-QMutex Logger::instance_mutex;
 QMutex Logger::write_mutex;
 
 
-Logger::Logger() :
-    logs_file(PathConverter::fullConfigPath()),
-    output_stream()
+Logger::Logger()
 {
     reopenFile();
+}
+
+
+void Logger::clearStreamText()
+{
+    stream_text.clear();
+}
+
+
+const QString& Logger::streamTextResult() const
+{
+    return stream_text;
 }
 
 
@@ -30,17 +38,23 @@ Logger::~Logger()
 
 Logger* Logger::logger()
 {
-    instance_mutex.lock();
     if (instance == nullptr)
         instance = new Logger();
 
-    instance_mutex.unlock();
     return instance;
 }
 
 
 void Logger::writeToFile(QString& text, WriteOperations section)
 {
+    appendSection(section);
+    appendNewLine();
+    stream_text += OutputFilter::filteredOutput(text);
+    appendNewLine();
+    appendSeparator();
+    appendNewLine();
+    appendNewLine();
+
 #ifdef RUN_TESTS
     return;
 #endif
@@ -48,20 +62,15 @@ void Logger::writeToFile(QString& text, WriteOperations section)
     if (!validate())
         return;
 
-    write_mutex.lock();
-    appendSection(section);
-    appendNewLine();
-    output_stream << OutputFilter::filteredOutput(text);
-    appendNewLine();
-    appendSeparator();
-    appendNewLine();
-    appendNewLine();
-    write_mutex.unlock();
+    writeToStream();
 }
 
 
 void Logger::writeSectionToFile(WriteOperations section)
 {
+    appendSection(section);
+    appendNewLine();
+
 #ifdef RUN_TESTS
     return;
 #endif
@@ -69,23 +78,20 @@ void Logger::writeSectionToFile(WriteOperations section)
     if (!validate())
         return;
 
-    write_mutex.lock();
-    appendSection(section);
-    appendNewLine();
-    write_mutex.unlock();
+    writeToStream();
 }
 
 
-void Logger::writeLineToFile(QString &line)
+void Logger::writeLineToFile(QString& line)
 {
+    stream_text += OutputFilter::filteredOutput(line);
+    appendNewLine();
+
 #ifdef RUN_TESTS
     return;
 #endif
 
-    write_mutex.lock();
-    output_stream << OutputFilter::filteredOutput(line);
-    appendNewLine();
-    write_mutex.unlock();
+    writeToStream();
 }
 
 
@@ -138,28 +144,32 @@ void Logger::clearLogsFile()
 
 void Logger::appendSection(WriteOperations section)
 {
-    QString section_text = QVariant::fromValue(section).toString();
-    QString local_time = QDateTime::currentDateTime().toLocalTime().toString();
-    QString line = QString("\n\n\n---------------[").append(section_text.toUpper()).append(QString("]---------------"));
-    output_stream << local_time;
-    output_stream << line;
+    QString section_text{QVariant::fromValue(section).toString()};
+    QString local_time{QDateTime::currentDateTime().toLocalTime().toString()};
+    QString line{QString("\n\n\n---------------[").append(section_text.toUpper()).append(QString("]---------------"))};
+    stream_text += local_time;
+    stream_text += line;
 }
 
 
 void Logger::appendSeparator()
 {
-    output_stream << QString("////////////////////////////////////////////////////////////");
+    stream_text += QString("////////////////////////////////////////////////////////////");
 }
 
 
 void Logger::appendNewLine()
 {
-    output_stream << QString("\n\n");
+    stream_text += QString("\n\n");
 }
 
 
 void Logger::logIntoFile(const QString& section, const QString& text)
 {
+    QString local_time{QDateTime::currentDateTime().toLocalTime().toString()};
+    QString local_text{text};
+    stream_text += " [" + section + "]  " + OutputFilter::filteredOutput(local_text) + "  (" + local_time + ")\n";
+
 #ifdef RUN_TESTS
     return;
 #endif
@@ -172,11 +182,8 @@ void Logger::logIntoFile(const QString& section, const QString& text)
 
     write_mutex.lock();
     resizeFileSizeNotWithinRange();
-
-    QString local_time = QDateTime::currentDateTime().toLocalTime().toString();
-    QString local_text = text;
-    output_stream << " [" << section << "]  " << OutputFilter::filteredOutput(local_text) << "  (" << local_time << ")\n";
-
+    output_stream << streamTextResult();
+    clearStreamText();
     write_mutex.unlock();
 }
 
@@ -198,8 +205,6 @@ void Logger::closeOnQuit()
 
     if (logs_file.isOpen())
         logWarning(QStringLiteral("Logs file \"%1\" couldn't be properly closed!").arg(logs_file.fileName()));
-
-    instance_mutex.unlock();
 }
 
 
@@ -224,17 +229,16 @@ void Logger::reopenFile()
 
 void Logger::resizeFileSizeNotWithinRange()
 {
-    int size_limit = Settings::records()->historyFileSizeLimitMb();
+    int size_limit{Settings::records()->historyFileSizeLimitMb()};
     if (size_limit == 0)
         return;
 
-    int preferredBytes = SizeConverter::megabytesToBytes(size_limit);
-    bool is_file_too_big = SizeConverter::bytesToMegabytes(logs_file.size()) > size_limit;
+    int preferredBytes{SizeConverter::megabytesToBytes(size_limit)};
+    bool is_file_too_big{SizeConverter::bytesToMegabytes(logs_file.size()) > size_limit};
     if (is_file_too_big && !Settings::records()->overwriteFullHistoryFile())
     {
         logs_file.seek(logs_file.size() - preferredBytes);
-        QByteArray last_bytes = logs_file.read(preferredBytes);
-        QString last_lines = QString::fromStdString(last_bytes.toStdString());
+        QByteArray last_bytes{logs_file.read(preferredBytes)};
         logs_file.resize(0);
         output_stream << last_bytes;
     }
@@ -258,4 +262,13 @@ bool Logger::validate()
         return false;
 
     return true;
+}
+
+
+void Logger::writeToStream()
+{
+    write_mutex.lock();
+    output_stream << streamTextResult();
+    clearStreamText();
+    write_mutex.unlock();
 }

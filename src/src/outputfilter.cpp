@@ -11,7 +11,7 @@ QList<QRegExp> OutputFilter::filtersList = initializeList();
 QString OutputFilter::filteredOutput(QString& text_output)
 {
     QList<QRegExp>::iterator filters_it;
-    for(filters_it = filtersList.begin(); filters_it != filtersList.end(); filters_it++)
+    for (filters_it = filtersList.begin(); filters_it != filtersList.end(); filters_it++)
         text_output.remove(*filters_it);
 
     return text_output;

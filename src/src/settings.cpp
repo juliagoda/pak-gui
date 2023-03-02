@@ -45,6 +45,11 @@ void Settings::saveInitDateTimesWhenEmpty()
 
 void Settings::updateWidgetsDefault()
 {
+
+#ifdef RUN_TESTS
+    return;
+#endif
+
     Logger::logger()->logInfo(QStringLiteral("changed settings to default ones"));
     packages_info_settings.packages_info_selector->availableListWidget()->clear();
     packages_info_settings.packages_info_selector->selectedListWidget()->clear();
@@ -55,6 +60,11 @@ void Settings::updateWidgetsDefault()
 
 void Settings::updateSettings()
 {
+
+#ifdef RUN_TESTS
+    return;
+#endif
+
     Logger::logger()->logInfo(QStringLiteral("settings have been saved"));
     updateAvailableInfoList();
     updateSelectedInfoList();

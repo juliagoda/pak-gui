@@ -8,36 +8,67 @@ QSettings SettingsRecords::settings(QSettings::NativeFormat, QSettings::UserScop
 
 QColor SettingsRecords::backgroundPreviewColor()
 {
+
+#ifdef RUN_TESTS
+    return QColor(Qt::black);
+#endif
+
     return pakGuiSettings::background_preview_color();
 }
 
 
 QColor SettingsRecords::previewFontColor()
 {
+
+#ifdef RUN_TESTS
+    return QColor(Qt::white);
+#endif
+
     return pakGuiSettings::preview_font_color();
 }
 
 
 QString SettingsRecords::previewFontFamily()
 {
+
+#ifdef RUN_TESTS
+    return QString("Noto Sans");
+#endif
+
     return pakGuiSettings::preview_font_family();
 }
 
 
 QDateTime SettingsRecords::startDateTimeForUpdatesCheck()
 {
+
+#ifdef RUN_TESTS
+
+#endif
+
     return QDateTime::fromString(settings.value("start_datetime_for_updates_check").value<QString>(), "yyyy-M-dThh:mm:ss");
 }
 
 
 QDateTime SettingsRecords::startDateTimeForHistoryStore()
 {
+
+#ifdef RUN_TESTS
+
+#endif
+
     return QDateTime::fromString(settings.value("start_datetime_for_history_store").value<QString>(), "yyyy-M-dThh:mm:ss");
 }
 
 
 QStringList SettingsRecords::packagesInfoAvailable()
 {
+
+#ifdef RUN_TESTS
+    return QString("Architecture,URL,Licenses,Groups,Provides,Optional Deps,RequiredBy,Optional For,Conflicts With,"
+                   "Replaces,Installed Size,Packager,Build Date,Install Date,Install Reason,Install Script,Validated By").split(',');
+#endif
+
     if (!settings.value("packages_info_available").value<QStringList>().isEmpty())
         return settings.value("packages_info_available").value<QStringList>();
 
@@ -47,6 +78,11 @@ QStringList SettingsRecords::packagesInfoAvailable()
 
 QStringList SettingsRecords::packagesInfoSelected()
 {
+
+#ifdef RUN_TESTS
+    return QString("Name,Value,Description,Depends On").split(',');
+#endif
+
     if (!settings.value("packages_info_selected").value<QStringList>().isEmpty())
         return settings.value("packages_info_selected").value<QStringList>();
 
@@ -56,96 +92,176 @@ QStringList SettingsRecords::packagesInfoSelected()
 
 QString SettingsRecords::logsFileName()
 {
+
+#ifdef RUN_TESTS
+    return QString("logs.txt");
+#endif
+
     return pakGuiSettings::logs_filename();
 }
 
 
 QString SettingsRecords::logsFilePath()
 {
+
+#ifdef RUN_TESTS
+    return QString("~/.config/pak-gui");
+#endif
+
     return PathConverter::toAbsolutePath(pakGuiSettings::logs_filepath());
 }
 
 
 int SettingsRecords::previewFontSize()
 {
+
+#ifdef RUN_TESTS
+    return 15;
+#endif
+
     return pakGuiSettings::preview_font_size();
 }
 
 
 int SettingsRecords::historyFileSizeLimitMb()
 {
+
+#ifdef RUN_TESTS
+    return 5;
+#endif
+
     return pakGuiSettings::history_file_size_limit_in_Mb();
 }
 
 
 int SettingsRecords::historyStoreTimeDays()
 {
+
+#ifdef RUN_TESTS
+    return 0;
+#endif
+
     return pakGuiSettings::history_store_time_in_days();
 }
 
 
 int SettingsRecords::updateCheckTimeDays()
 {
+
+#ifdef RUN_TESTS
+    return 0;
+#endif
+
     return pakGuiSettings::update_check_time_in_days();
 }
 
 
 int SettingsRecords::updateCheckTimeHours()
 {
+
+#ifdef RUN_TESTS
+    return 6;
+#endif
+
     return pakGuiSettings::update_check_time_in_hours();
 }
 
 
 int SettingsRecords::updateCheckTimeMinutes()
 {
+
+#ifdef RUN_TESTS
+    return 0;
+#endif
+
     return pakGuiSettings::update_check_time_in_minutes();
 }
 
 
 int SettingsRecords::internetReconnectionTimeMinutes()
 {
+
+#ifdef RUN_TESTS
+    return 1;
+#endif
+
     return pakGuiSettings::internet_reconnection_time_in_minutes();
 }
 
 
 bool SettingsRecords::hideInfoLogs()
 {
+
+#ifdef RUN_TESTS
+    return false;
+#endif
+
     return pakGuiSettings::hide_info_logs();
 }
 
 
 bool SettingsRecords::overwriteFullHistoryFile()
 {
+
+#ifdef RUN_TESTS
+    return false;
+#endif
+
     return pakGuiSettings::overwrite_full_history_file();
 }
 
 
 bool SettingsRecords::saveLogsIntoFile()
 {
+
+#ifdef RUN_TESTS
+    return true;
+#endif
+
     return pakGuiSettings::save_logs_into_file();
 }
 
 
 bool SettingsRecords::showDebug()
 {
+
+#ifdef RUN_TESTS
+    return false;
+#endif
+
     return pakGuiSettings::show_debug();
 }
 
 
 bool SettingsRecords::useSystemTray()
 {
-   return pakGuiSettings::use_system_tray_icon();
+
+#ifdef RUN_TESTS
+    return true;
+#endif
+
+    return pakGuiSettings::use_system_tray_icon();
 }
 
 
 void SettingsRecords::setAvailablePackageInfo(const QStringList& info)
 {
+
+#ifdef RUN_TESTS
+    return;
+#endif
+
     settings.setValue("packages_info_available", info);
 }
 
 
 void SettingsRecords::setSelectedPackageInfo(const QStringList& info)
 {
+
+#ifdef RUN_TESTS
+    return;
+#endif
+
     if (settings.value("packages_info_selected").value<QStringList>() != info)
         emit selectedPackageInfoListChanged();
 
@@ -155,6 +271,11 @@ void SettingsRecords::setSelectedPackageInfo(const QStringList& info)
 
 void SettingsRecords::setStartDateTimeForUpdatesCheck()
 {
+
+#ifdef RUN_TESTS
+    return;
+#endif
+
     if (settings.value("start_datetime_for_updates_check").value<QString>().isEmpty())
         settings.setValue("start_datetime_for_updates_check", QDateTime::currentDateTime().toString(Qt::ISODate));
 }
@@ -162,6 +283,11 @@ void SettingsRecords::setStartDateTimeForUpdatesCheck()
 
 void SettingsRecords::setStartDateTimeForHistoryStore()
 {
+
+#ifdef RUN_TESTS
+    return;
+#endif
+
     if (settings.value("start_datetime_for_history_store").value<QString>().isEmpty())
         settings.setValue("start_datetime_for_history_store", QDateTime::currentDateTime().toString(Qt::ISODate));
 }
@@ -169,11 +295,21 @@ void SettingsRecords::setStartDateTimeForHistoryStore()
 
 void SettingsRecords::resetStartDateTimeForUpdatesCheck()
 {
+
+#ifdef RUN_TESTS
+    return;
+#endif
+
     settings.setValue("start_datetime_for_updates_check", QDateTime::currentDateTime().toString(Qt::ISODate));
 }
 
 
 void SettingsRecords::resetStartDateTimeForHistoryStore()
 {
+
+#ifdef RUN_TESTS
+    return;
+#endif
+
     settings.setValue("start_datetime_for_history_store", QDateTime::currentDateTime().toString(Qt::ISODate));
 }

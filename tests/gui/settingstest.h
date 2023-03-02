@@ -41,6 +41,10 @@ private slots:
     void applyButtonIsEnabledAfterAnyPreviewsAppearanceSettingChange();
     void applyButtonIsEnabledAfterAnyPackagesOrderSettingChange();
     void applyButtonIsEnabledAfterAnyLogsSettingChange();
+    //void initializedStartSystemTrayAfterSettingsUpdate();
+    //void initializedSignalForUpdateCheckConnectionAfterSettingsUpdate();
+    //void initializedSignalForHistoryStoreConnectionAfterSettingsUpdate();
+    //void initializedWidgetsUpdateAfterSettingsUpdate();
 
     void cleanup();
 
