@@ -57,6 +57,14 @@ void TestLogger::logIntoFileMethodHasCorrectTextFormat()
 }
 
 
+void TestLogger::loggerPublicInstanceIsAlwaysTheSame()
+{
+    auto instance = logger.logger();
+
+    QCOMPARE(instance, logger.logger());
+}
+
+
 void TestLogger::cleanup()
 {
     logger.clearStreamText();

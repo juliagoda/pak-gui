@@ -222,6 +222,7 @@ void Logger::reopenFile()
 
     logs_file.open(QIODevice::ReadWrite | QIODevice::Append);
     output_stream.setDevice(&logs_file);
+
     if (logs_file.isOpen())
         logInfo(QStringLiteral("Logs file \"%1\" successfully opened\n").arg(logs_file.fileName()));
 }
@@ -235,6 +236,7 @@ void Logger::resizeFileSizeNotWithinRange()
 
     int preferredBytes{SizeConverter::megabytesToBytes(size_limit)};
     bool is_file_too_big{SizeConverter::bytesToMegabytes(logs_file.size()) > size_limit};
+
     if (is_file_too_big && !Settings::records()->overwriteFullHistoryFile())
     {
         logs_file.seek(logs_file.size() - preferredBytes);

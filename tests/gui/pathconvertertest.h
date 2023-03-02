@@ -1,9 +1,5 @@
 #pragma once
 
-#include "pathconverter.h"
-
-#include "packagescolumnfixtures.h"
-
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
@@ -18,8 +14,6 @@ public:
     TestPathConverter(QObject* parent = nullptr);
 
 private slots:
-    void cleanup();
-
-private:
-    PathConverter path_converter;
+    void isRelativePathConvertedToAbsolutePath();
+    void hasFullConfigPathCorrectForm();
 };

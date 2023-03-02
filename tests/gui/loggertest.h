@@ -30,6 +30,7 @@ private slots:
     void writeLineToFileMethodHasCorrectTextFormat();
     void writeToFileMethodHasCorrectTextFormat();
     void logIntoFileMethodHasCorrectTextFormat();
+    void loggerPublicInstanceIsAlwaysTheSame();
     void cleanup();
 
 private:

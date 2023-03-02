@@ -1,9 +1,5 @@
 #pragma once
 
-#include "sizeconverter.h"
-
-#include "packagescolumnfixtures.h"
-
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
@@ -18,8 +14,6 @@ public:
     TestSizeConverter(QObject* parent = nullptr);
 
 private slots:
-    void cleanup();
-
-private:
-    SizeConverter size_converter;
+    void is2000000BytesEqualTo2Megabytes();
+    void is2MegabytesEqualTo2000000Bytes();
 };
