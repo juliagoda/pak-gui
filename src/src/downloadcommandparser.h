@@ -23,7 +23,7 @@ public:
 protected:
     virtual void showWarningWhenNameEmpty();
     virtual void connectSignals();
-    void processReadLine(QString& line);
+    void processReadLine(QString& line, int& directories_line_count);
     bool isPackageAlreadyDownloaded();
 
 Q_SIGNALS:

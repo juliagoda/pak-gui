@@ -20,10 +20,10 @@ public:
 
 protected:
     virtual QString generatePakCheckResults();
-    virtual bool finishProcessBeforeEnd(bool starts_from_double_colon, const QString& current_source_line);
+    virtual bool finishProcessBeforeEnd(bool starts_from_double_colon, int double_colon_line_count);
 
 private:
-    QHash<QString, Package::Source> line_to_source_map;
+    QHash<uint, Package::Source> line_to_source_map;
     QScopedPointer<QProcess> pacman_qi = QScopedPointer<QProcess>(nullptr);
 };
 

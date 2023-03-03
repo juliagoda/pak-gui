@@ -27,6 +27,12 @@ void InstallCommandParser::updatePackageName(const QString& new_package_name)
 
 void InstallCommandParser::updateTask(const QString& source_name)
 {
+    if (!sourceToTaskMap.contains(source_name))
+    {
+        current_task = Process::Task::InstallAfterSearchRepo;
+        return;
+    }
+
     current_task = sourceToTaskMap.value(source_name);
 }
 

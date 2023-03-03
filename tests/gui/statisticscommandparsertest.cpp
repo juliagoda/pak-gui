@@ -2,13 +2,6 @@
 
 
 
-MockStatisticsCommandParser::MockStatisticsCommandParser() :
-    StatisticsCommandParser()
-{
-    // ...
-}
-
-
 QString MockStatisticsCommandParser::generateResult()
 {
     return QString(":: Statistics by month: 2023-02\n"
@@ -32,7 +25,21 @@ TestStatisticsCommandParser::TestStatisticsCommandParser(QObject* parent) :
 }
 
 
-void TestStatisticsCommandParser::cleanup()
+void TestStatisticsCommandParser::statisticsActionsAreCorrectlyAddedToList()
 {
-  // ...
+    auto list = statistics_command_parser.retrieveInfo();
+
+    QCOMPARE(list.join("\n"), QString("Install actions: 34\nDowngrade actions: 20\nRemove actions: 23\nUpdate actions: 12"));
+}
+
+
+void TestStatisticsCommandParser::statisticActionsListIsCorrectlyConvertedToMap()
+{
+    auto list = statistics_command_parser.retrieveInfo();
+    auto map = statistics_command_parser.convertToMap(list);
+
+    QCOMPARE(map.value("Install actions"), 34);
+    QCOMPARE(map.value("Downgrade actions"), 20);
+    QCOMPARE(map.value("Remove actions"), 23);
+    QCOMPARE(map.value("Update actions"), 12);
 }

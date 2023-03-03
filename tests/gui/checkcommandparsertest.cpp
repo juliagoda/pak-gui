@@ -6,7 +6,9 @@
 
 QString MockCheckCommandParser::generatePakCheckResults()
 {
-    return QString{":: System\n"
+    return QString{":: Latest Arch Linux news: 2\n"
+                   "...\n"
+                   ":: System\n"
                    "Checking...\n"
                    "\n"
                    "Packages to update:\n"
@@ -27,9 +29,9 @@ QString MockCheckCommandParser::generatePakCheckResults()
 }
 
 
-bool MockCheckCommandParser::finishProcessBeforeEnd(bool starts_from_double_colon, const QString& current_source_line)
+bool MockCheckCommandParser::finishProcessBeforeEnd(bool starts_from_double_colon, int double_colon_line_count)
 {
-    return starts_from_double_colon && QString::compare(current_source_line, "Unmerged pacnew/pacsave files") == 0;
+    return starts_from_double_colon && double_colon_line_count == 5;
 }
 
 
@@ -66,5 +68,6 @@ void TestCheckCommandParser::retrievedPackagesMapContainsKonsolePackageFromPolau
 void TestCheckCommandParser::unmergedPacsaveFilesLineTriggersProcessExit()
 {
    const bool starts_from_double_colon = true;
-   QVERIFY(check_command_parser.finishProcessBeforeEnd(starts_from_double_colon, QString("Unmerged pacnew/pacsave files")));
+   constexpr int unmerged_pacnew_double_colon_line_count = 5;
+   QVERIFY(check_command_parser.finishProcessBeforeEnd(starts_from_double_colon, unmerged_pacnew_double_colon_line_count));
 }

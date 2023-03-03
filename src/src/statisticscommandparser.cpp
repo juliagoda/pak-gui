@@ -16,18 +16,13 @@ QStringList StatisticsCommandParser::retrieveInfo()
     QStringListIterator it(output_list);
     QStringList result = QStringList();
 
-    /*:: Statystyki z miesiąca: 2023-02
-    Transakcje instalowania: 0
-    Transakcje deaktualizowania: 0
-    Transakcje usuwania: 0
-    Transakcje aktualizowania: 0*/
-
-
     while (it.hasNext())
     {
-        QString line = it.next().toUtf8();
-        if (line.contains("actions:"))
-           result.append(OutputFilter::filteredOutput(line));
+        QString line{it.next().toUtf8()};
+        QString filtered_line = OutputFilter::filteredOutput(line);
+        QRegExp action_regex{"^[\\w+\\s+]+:\\s+\\d+"};
+        if (action_regex.exactMatch(filtered_line))
+           result.append(filtered_line);
     }
 
     return result;

@@ -43,7 +43,7 @@ QDateTime SettingsRecords::startDateTimeForUpdatesCheck()
 {
 
 #ifdef RUN_TESTS
-
+    return QDateTime::currentDateTime();
 #endif
 
     return QDateTime::fromString(settings.value("start_datetime_for_updates_check").value<QString>(), "yyyy-M-dThh:mm:ss");
@@ -54,7 +54,7 @@ QDateTime SettingsRecords::startDateTimeForHistoryStore()
 {
 
 #ifdef RUN_TESTS
-
+    return QDateTime::currentDateTime();
 #endif
 
     return QDateTime::fromString(settings.value("start_datetime_for_history_store").value<QString>(), "yyyy-M-dThh:mm:ss");

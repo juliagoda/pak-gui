@@ -25,6 +25,7 @@ DownloadCommandParser::DownloadCommandParser(const QString& new_package_name,
 
 void DownloadCommandParser::connectSignals()
 {
+    int directories_line_count = 0;
     pak_download.reset(new QProcess);
     pak_download->setProcessChannelMode(QProcess::MergedChannels);
 
@@ -34,29 +35,33 @@ void DownloadCommandParser::connectSignals()
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
     QObject::connect(pak_download.get(), &QProcess::errorOccurred, [this]() { Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString())); });
 
-    QObject::connect(pak_download.get(), &QProcess::readyReadStandardOutput, [this]() mutable
+    QObject::connect(pak_download.get(), &QProcess::readyReadStandardOutput, [this, directories_line_count]() mutable
     {
         while (pak_download.data()->canReadLine())
         {
             QString line = pak_download.data()->readLine();
-            processReadLine(line);
+            processReadLine(line, directories_line_count);
         }
     });
 }
 
 
-void DownloadCommandParser::processReadLine(QString& line)
+void DownloadCommandParser::processReadLine(QString& line, int& directories_line_count)
 {
     auto filtered_line = OutputFilter::filteredOutput(line);
     Logger::logger()->writeLineToFile(filtered_line);
     result_output += filtered_line;
 
-    //błąd:
-    if (line.contains("error:"))
+    QRegExp errors_regex{"^(?:grep)\\d+:"};
+    if (errors_regex.exactMatch(filtered_line))
         error_lines.append(filtered_line);
 
-    // Aktualny katalog:
-    if (result_output.contains("Current directory:"))
+    QRegExp directories_regex{"\\d+\\s+\\D+:\\s+/.*"};
+
+    if (directories_regex.exactMatch(filtered_line))
+        directories_line_count++;
+
+    if (directories_line_count >= 2)
     {
         emit continuePathsRetrieve(result_output);
         result_output.clear();
@@ -70,8 +75,7 @@ void DownloadCommandParser::processReadLine(QString& line)
 
 bool DownloadCommandParser::isPackageAlreadyDownloaded()
 {
-    // PKGBUILD został pobrany do
-    return result_output.contains("PKGBUILD has been downloaded to");
+    return result_output.contains("PKGBUILD");
 }
 
 
