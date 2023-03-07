@@ -43,8 +43,6 @@ target_sources(pak-gui PRIVATE
     src/downloadcommandparser.h
     src/installcommandparser.cpp
     src/installcommandparser.h
-    src/translator.cpp
-    src/translator.h
     src/statistics.cpp
     src/statistics.h
     src/process.cpp

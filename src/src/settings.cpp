@@ -95,8 +95,8 @@ void Settings::loadPackagesInfoSettings()
 {
     packages_info_settings.packages_info_selector->availableListWidget()->clear();
     packages_info_settings.packages_info_selector->selectedListWidget()->clear();
-    packages_info_settings.packages_info_selector->availableListWidget()->addItems(settings_records->packagesInfoAvailable());
-    packages_info_settings.packages_info_selector->selectedListWidget()->addItems(settings_records->packagesInfoSelected());
+    packages_info_settings.packages_info_selector->availableListWidget()->addItems(settings_records->packagesInfoAvailableStringList());
+    packages_info_settings.packages_info_selector->selectedListWidget()->addItems(settings_records->packagesInfoSelectedStringList());
 }
 
 

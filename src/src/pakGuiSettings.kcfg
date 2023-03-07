@@ -59,11 +59,11 @@
   <group name="PackageInfo">
     <entry name="packages_info_available" type="StringList">
 	    <label></label>
-	    <default>Architecture,URL,Licenses,Groups,Provides,Optional Deps,RequiredBy,Optional For,Conflicts With,Replaces,Installed Size,Packager,Build Date,Install Date,Install Reason,Install Script,Validated By</default>
+	    <default>Architecture,URL,Licenses,Groups,Provides,Optional Deps,RequiredBy,Optional For,Conflicts With,Replaces,Installed Size,Packager,Build Date,Install Date,Install Reason,Install Script,Validated By,Download Size</default>
     </entry>
     <entry name="packages_info_selected" type="StringList">
 	    <label></label>
-	    <default>Name,Value,Description,Depends On</default>
+	    <default>Name,Version,Description,Depends On</default>
     </entry>
   </group>
   <group name="Logs">

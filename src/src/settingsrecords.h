@@ -7,13 +7,15 @@
 #include <QStringList>
 #include <QSettings>
 
+#include "package.h"
+
 
 class SettingsRecords : public QObject
 {
     Q_OBJECT
 
 public:
-    SettingsRecords() = default;
+    SettingsRecords();
     ~SettingsRecords() override = default;
 
     QColor backgroundPreviewColor();
@@ -23,8 +25,10 @@ public:
     QDateTime startDateTimeForUpdatesCheck();
     QDateTime startDateTimeForHistoryStore();
 
-    QStringList packagesInfoAvailable();
-    QStringList packagesInfoSelected();
+    const QList<Package::TooltipLine>& packagesInfoAvailable();
+    const QList<Package::TooltipLine>& packagesInfoSelected();
+    QStringList packagesInfoAvailableStringList();
+    QStringList packagesInfoSelectedStringList();
     QString logsFileName();
     QString logsFilePath();
 
@@ -52,6 +56,9 @@ signals:
     void selectedPackageInfoListChanged();
 
 private:
+    QMap<QString, Package::TooltipLine> text_to_tooltip_line_map;
+    QList<Package::TooltipLine> available_info_list;
+    QList<Package::TooltipLine> selected_info_list;
     static QSettings settings;
 };
 

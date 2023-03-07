@@ -11,7 +11,6 @@ QStringList SiCommandParser::retrieveInfo()
 {
     QString output = generateResult();
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckAvailable);
-    //Potwierdzone przez
     return output.split(QRegularExpression("\n\n"));
 }
 

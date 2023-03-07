@@ -78,20 +78,52 @@ void Package::updateData(const QString& package_content, int name_line, int vers
 void Package::setToolTipOnPackage(const QString& text)
 {
     auto selected_info_list = Settings::records()->packagesInfoSelected();
-    decltype(selected_info_list)::iterator selected_info_it;
     QStringList selected_infos{};
+    int selected_info_size = selected_info_list.count();
 
-    for(selected_info_it = selected_info_list.begin(); selected_info_it != selected_info_list.end(); selected_info_it++)
+    while (selected_info_size > 0)
     {
-        QRegularExpression regex{QStringLiteral("(%1.*)\\n").arg(*selected_info_it)};
-        selected_infos.append(regex.match(text).captured(1));
+        selected_infos.append("");
+        --selected_info_size;
+    }
+
+    auto lines_list = text.split('\n');
+    int i = 0;
+    int last_index = -1;
+    int index_of_double_colon = 0;
+
+    for (auto line_it = lines_list.begin(); line_it != lines_list.end(); line_it++)
+    {
+        if ((*line_it).contains(" : "))
+        {
+            i++;
+            index_of_double_colon = (*line_it).indexOf(" : ") + 3;
+            auto tooltip_part = numberToTooltipLine.value(i, Package::TooltipLine::Unknown);
+            if (selected_info_list.contains(tooltip_part))
+            {
+                selected_infos[selected_info_list.indexOf(tooltip_part)] = *line_it;
+                last_index = selected_info_list.indexOf(tooltip_part);
+            }
+            else
+            {
+                last_index = -1;
+            }
+
+            continue;
+        }
+
+        if (last_index < 0)
+            continue;
+
+        QString leading_whitespaces{};
+        selected_infos[last_index] += "\n" + leading_whitespaces.fill(' ', index_of_double_colon) + *line_it;
     }
 
     setToolTip(selected_infos.join(QString("\n")));
 }
 
 
-bool Package::validate(const QStringList &lines, int expected_size, const QString &funtion_name)
+bool Package::validate(const QStringList& lines, int expected_size, const QString&  funtion_name)
 {
     if (lines.size() < expected_size)
     {
@@ -118,4 +150,13 @@ void Package::setVersion(const QString &new_version)
 void Package::setSource(Source new_source)
 {
     source = new_source;
+}
+
+
+void Package::buildTooltipsLinesMap()
+{
+    numberToTooltipLine.insert(1, Package::TooltipLine::Name);
+    numberToTooltipLine.insert(2, Package::TooltipLine::Version);
+    numberToTooltipLine.insert(3, Package::TooltipLine::Description);
+    numberToTooltipLine.insert(9, Package::TooltipLine::DependsOn);
 }

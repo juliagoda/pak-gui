@@ -64,6 +64,7 @@ private slots:
     void animationIsHiddenAfterSignalSend();
     void notEmptyPackagesListIsVisibleAfterSignalSend();
     void titleIsVisibleWhenPackagesListIsEmptyAfterSignalSend();
+    void hasPackageTooltipAllSelectedInfo();
 
     void cleanup();
 

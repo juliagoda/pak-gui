@@ -2,9 +2,8 @@
 
 
 TestSettingsWindow::TestSettingsWindow(QObject* parent) :
-    QObject(parent),
-    main_window(),
-    settings(&main_window)
+    QObject{parent},
+    settings{&main_window}
 {
     QTestEventLoop::instance().enterLoop(1);
 }
@@ -41,12 +40,13 @@ void TestSettingsWindow::availablePackagesInfoDefaultSettingsAreCorrectlyIntrodu
     settings.enableDefaultButton();
     QTest::mouseClick(&*settings.button(QDialogButtonBox::StandardButton::RestoreDefaults), Qt::LeftButton);
     settings.updateWidgetsDefault();
-    QStringList list_packages;
-    for(const auto& available_item : settings.packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard))
+    QStringList list_packages{};
+
+    for (const auto& available_item : settings.packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard))
         list_packages.append(available_item->text());
 
     QCOMPARE(list_packages.join(','), QString("Architecture,URL,Licenses,Groups,Provides,Optional Deps,RequiredBy,Optional For,Conflicts With,"
-                                              "Replaces,Installed Size,Packager,Build Date,Install Date,Install Reason,Install Script,Validated By"));
+                                              "Replaces,Download Size,Installed Size,Packager,Build Date,Install Date,Install Reason,Install Script,Validated By"));
 }
 
 
@@ -55,11 +55,12 @@ void TestSettingsWindow::selectedPackagesInfoDefaultSettingsAreCorrectlyIntroduc
     settings.enableDefaultButton();
     QTest::mouseClick(&*settings.button(QDialogButtonBox::StandardButton::RestoreDefaults), Qt::LeftButton);
     settings.updateWidgetsDefault();
-    QStringList list_packages;
-    for(const auto& available_item : settings.packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard))
+    QStringList list_packages{};
+
+    for (const auto& available_item : settings.packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard))
         list_packages.append(available_item->text());
 
-    QCOMPARE(list_packages.join(','), QString("Name,Value,Description,Depends On"));
+    QCOMPARE(list_packages.join(','), QString("Name,Version,Description,Depends On"));
 }
 
 

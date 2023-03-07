@@ -3,8 +3,40 @@
 #include "pakGuiSettings.h"
 #include "pathconverter.h"
 
+#include <KLocalizedString>
+
 
 QSettings SettingsRecords::settings(QSettings::NativeFormat, QSettings::UserScope, QString("CachyOS"), QString("pak-gui"));
+
+SettingsRecords::SettingsRecords()
+{
+    if (!text_to_tooltip_line_map.isEmpty())
+        return;
+
+    text_to_tooltip_line_map.insert(i18n("Name"), Package::TooltipLine::Name);
+    text_to_tooltip_line_map.insert(i18n("Version"), Package::TooltipLine::Version);
+    text_to_tooltip_line_map.insert(i18n("Description"), Package::TooltipLine::Description);
+    text_to_tooltip_line_map.insert(i18n("Architecture"), Package::TooltipLine::Architecture);
+    text_to_tooltip_line_map.insert(i18n("Provides"), Package::TooltipLine::Provides);
+    text_to_tooltip_line_map.insert(i18n("URL"), Package::TooltipLine::URL);
+    text_to_tooltip_line_map.insert(i18n("Licenses"), Package::TooltipLine::Licenses);
+    text_to_tooltip_line_map.insert(i18n("Groups"), Package::TooltipLine::Groups);
+    text_to_tooltip_line_map.insert(i18n("Depends On"), Package::TooltipLine::DependsOn);
+    text_to_tooltip_line_map.insert(i18n("Optional Deps"), Package::TooltipLine::OptionalDeps);
+    text_to_tooltip_line_map.insert(i18n("Required By"), Package::TooltipLine::RequiredBy);
+    text_to_tooltip_line_map.insert(i18n("Optional For"), Package::TooltipLine::OptionalFor);
+    text_to_tooltip_line_map.insert(i18n("Conflicts With"), Package::TooltipLine::ConflictsWith);
+    text_to_tooltip_line_map.insert(i18n("Replaces"), Package::TooltipLine::Replaces);
+    text_to_tooltip_line_map.insert(i18n("Installed Size"), Package::TooltipLine::InstalledSize);
+    text_to_tooltip_line_map.insert(i18n("Packager"), Package::TooltipLine::Packager);
+    text_to_tooltip_line_map.insert(i18n("Build Date"), Package::TooltipLine::BuildDate);
+    text_to_tooltip_line_map.insert(i18n("Install Date"), Package::TooltipLine::InstallDate);
+    text_to_tooltip_line_map.insert(i18n("Install Reason"), Package::TooltipLine::InstallReason);
+    text_to_tooltip_line_map.insert(i18n("Install Script"), Package::TooltipLine::InstallScript);
+    text_to_tooltip_line_map.insert(i18n("Validated By"), Package::TooltipLine::ValidatedBy);
+    text_to_tooltip_line_map.insert(i18n("Download Size"), Package::TooltipLine::DownloadSize);
+}
+
 
 QColor SettingsRecords::backgroundPreviewColor()
 {
@@ -61,12 +93,36 @@ QDateTime SettingsRecords::startDateTimeForHistoryStore()
 }
 
 
-QStringList SettingsRecords::packagesInfoAvailable()
+const QList<Package::TooltipLine>& SettingsRecords::packagesInfoAvailable()
+{
+    if (available_info_list.isEmpty())
+    {
+        for (const auto& info_item : packagesInfoAvailableStringList())
+            available_info_list.append(text_to_tooltip_line_map.value(info_item));
+    }
+
+   return available_info_list;
+}
+
+
+const QList<Package::TooltipLine>& SettingsRecords::packagesInfoSelected()
+{
+    if (selected_info_list.isEmpty())
+    {
+        for (const auto& info_item : packagesInfoSelectedStringList())
+            selected_info_list.append(text_to_tooltip_line_map.value(info_item));
+    }
+
+   return selected_info_list;
+}
+
+
+QStringList SettingsRecords::packagesInfoAvailableStringList()
 {
 
 #ifdef RUN_TESTS
     return QString("Architecture,URL,Licenses,Groups,Provides,Optional Deps,RequiredBy,Optional For,Conflicts With,"
-                   "Replaces,Installed Size,Packager,Build Date,Install Date,Install Reason,Install Script,Validated By").split(',');
+                   "Replaces,Download Size,Installed Size,Packager,Build Date,Install Date,Install Reason,Install Script,Validated By").split(',');
 #endif
 
     if (!settings.value("packages_info_available").value<QStringList>().isEmpty())
@@ -76,11 +132,11 @@ QStringList SettingsRecords::packagesInfoAvailable()
 }
 
 
-QStringList SettingsRecords::packagesInfoSelected()
+QStringList SettingsRecords::packagesInfoSelectedStringList()
 {
 
 #ifdef RUN_TESTS
-    return QString("Name,Value,Description,Depends On").split(',');
+    return QString("Name,Version,Description,Depends On").split(',');
 #endif
 
     if (!settings.value("packages_info_selected").value<QStringList>().isEmpty())
@@ -251,6 +307,10 @@ void SettingsRecords::setAvailablePackageInfo(const QStringList& info)
     return;
 #endif
 
+    available_info_list.clear();
+    for (const auto& info_item : info)
+        available_info_list.append(text_to_tooltip_line_map.value(info_item));
+
     settings.setValue("packages_info_available", info);
 }
 
@@ -261,6 +321,10 @@ void SettingsRecords::setSelectedPackageInfo(const QStringList& info)
 #ifdef RUN_TESTS
     return;
 #endif
+
+    selected_info_list.clear();
+    for (const auto& info_item : info)
+        selected_info_list.append(text_to_tooltip_line_map.value(info_item));
 
     if (settings.value("packages_info_selected").value<QStringList>() != info)
         emit selectedPackageInfoListChanged();

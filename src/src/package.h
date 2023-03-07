@@ -17,6 +17,33 @@ public:
         Unknown
     };
 
+    enum class TooltipLine
+    {
+        Name = 0,
+        Version,
+        Description,
+        Architecture,
+        URL,
+        Licenses,
+        Groups,
+        Provides,
+        DependsOn,
+        OptionalDeps,
+        ConflictsWith,
+        Replaces,
+        DownloadSize,
+        RequiredBy,
+        OptionalFor,
+        InstalledSize,
+        Packager,
+        BuildDate,
+        InstallDate,
+        InstallReason,
+        InstallScript,
+        ValidatedBy,
+        Unknown
+    };
+
     Package(const QString& package_content, Source new_source);
 
     Package(Package& package);
@@ -40,9 +67,11 @@ protected:
     virtual void setName(const QString& new_name);
     virtual void setVersion(const QString& new_version);
     virtual void setSource(Source new_source);
+    virtual void buildTooltipsLinesMap();
 
     QString name{};
     QString version{};
     Package::Source source{Package::Source::Repo};
+    QMap<int, TooltipLine> numberToTooltipLine{};
     int no{0};
 };

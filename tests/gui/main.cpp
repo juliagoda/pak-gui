@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, false);
-    QLoggingCategory::defaultCategory()->setEnabled(QtInfoMsg, false);
+    QLoggingCategory::defaultCategory()->setEnabled(QtInfoMsg, true);
 
     int status = 0;
     QTest::setMainSourcePath(__FILE__, QT_TESTCASE_BUILDDIR);

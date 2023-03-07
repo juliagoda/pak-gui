@@ -262,6 +262,20 @@ void TestInstalledPackagesColumn::titleIsVisibleWhenPackagesListIsEmptyAfterSign
 }
 
 
+void TestInstalledPackagesColumn::hasPackageTooltipAllSelectedInfo()
+{
+    QString package_content1 = package_content_gimp;
+    QScopedPointer<MockQiPackage> package1(new MockQiPackage(package_content1));
+    const QString selected_info = "Name            : gimp\n"
+                                  "Version         : 2.10.32-3.1\n"
+                                  "Description     : GNU Image Manipulation Program\n"
+                                  "Depends On      : babl  dbus-glib  desktop-file-utils  gegl  glib-networking  hicolor-icon-theme  openjpeg2  lcms2  libheif  libexif  libgudev  libmng  libmypaint  librsvg  libwebp  libwmf  libxmu  libxpm  mypaint-brushes1  openexr\n"
+                                  "                  poppler-data  gtk2  graphviz";
+
+    QCOMPARE(package1->toolTip(), selected_info);
+}
+
+
 void TestInstalledPackagesColumn::cleanup()
 {
     connect(main_window_view.m_ui.sort_installed_packages, &QCheckBox::toggled, main_window_view.installed_packages_column.data(), &InstalledPackagesColumn::sort);
@@ -273,7 +287,7 @@ void TestInstalledPackagesColumn::cleanup()
     main_window_view.m_ui.uninstall_packages_button->setEnabled(false);
     main_window_view.m_ui.sort_installed_packages->setCheckState(Qt::Unchecked);
 
-    while(main_window_view.m_ui.installed_packages_list->count() > 0)
+    while (main_window_view.m_ui.installed_packages_list->count() > 0)
     {
         if (main_window_view.m_ui.installed_packages_list->item(0))
             delete main_window_view.m_ui.installed_packages_list->takeItem(0);
