@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
-"(n%100<12 || n%100>14) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 "
+"|| n%100>14) ? 1 : 2);\n"
 "X-Generator: Poedit 3.2.2\n"
 
 # SOME DESCRIPTIVE TITLE.
@@ -18,9 +18,7 @@ msgstr ""
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: src/src/installcommandparser.cpp:6 src/src/downloadcommandparser.cpp:151
-#: src/src/downloadcommandparser.cpp:152 src/src/mainwindowview.cpp:47
-#: src/src/rc.cpp:60
+#: src/src/mainwindowview.cpp:47 src/src/rc.cpp:60
 msgid "Internet connection state and auracle-git package presence"
 msgstr "Stan połączenia internetowego i obecność pakietu auracle-git"
 
@@ -488,8 +486,7 @@ msgstr "Opcje pobrania"
 
 #: src/src/packagedownloader.cpp:49
 msgid "Do you want to install chosen package automatically after download?"
-msgstr ""
-"Czy chcesz zainstalować wybraną paczkę automatycznie po jej pobraniu?"
+msgstr "Czy chcesz zainstalować wybraną paczkę automatycznie po jej pobraniu?"
 
 #: src/src/packagedownloader.cpp:115
 msgid "Choose repo for package download"
@@ -515,94 +512,6 @@ msgstr "Informacje o paczkach"
 msgid "Logs"
 msgstr "Logi"
 
-#: src/src/pakGuiSettings.cpp:76
-msgid "PackageInfo"
-msgstr "PackageInfo"
-
-#: src/src/pakGuiSettings.cpp:79
-msgid "Architecture"
-msgstr "Architektura"
-
-#: src/src/pakGuiSettings.cpp:80
-msgid "URL"
-msgstr "URL"
-
-#: src/src/pakGuiSettings.cpp:81
-msgid "Licenses"
-msgstr "Licencje"
-
-#: src/src/pakGuiSettings.cpp:82
-msgid "Groups"
-msgstr "Grupy"
-
-#: src/src/pakGuiSettings.cpp:83
-msgid "Provides"
-msgstr "Dostarcza"
-
-#: src/src/pakGuiSettings.cpp:84
-msgid "Optional Deps"
-msgstr "Opcjonalne zależności"
-
-#: src/src/pakGuiSettings.cpp:85
-msgid "RequiredBy"
-msgstr "Wymagany przez"
-
-#: src/src/pakGuiSettings.cpp:86
-msgid "Optional For"
-msgstr "Opcjonalny dla"
-
-#: src/src/pakGuiSettings.cpp:87
-msgid "Conflicts With"
-msgstr "Konfliktuje z"
-
-#: src/src/pakGuiSettings.cpp:88
-msgid "Replaces"
-msgstr "Zastępuje"
-
-#: src/src/pakGuiSettings.cpp:89
-msgid "Installed Size"
-msgstr "Architektura"
-
-#: src/src/pakGuiSettings.cpp:90
-msgid "Packager"
-msgstr "Autor pakietu"
-
-#: src/src/pakGuiSettings.cpp:91
-msgid "Build Date"
-msgstr "Data zbudowania"
-
-#: src/src/pakGuiSettings.cpp:92
-msgid "Install Date"
-msgstr "Data zainstalowania"
-
-#: src/src/pakGuiSettings.cpp:93
-msgid "Install Reason"
-msgstr "Powód zainstalowania"
-
-#: src/src/pakGuiSettings.cpp:94
-msgid "Install Script"
-msgstr "Skrypt instalacyjny"
-
-#: src/src/pakGuiSettings.cpp:95
-msgid "Validated By"
-msgstr "Potwierdzone przez"
-
-#: src/src/pakGuiSettings.cpp:101
-msgid "Name"
-msgstr "Nazwa"
-
-#: src/src/pakGuiSettings.cpp:102
-msgid "Value"
-msgstr "Wersja"
-
-#: src/src/pakGuiSettings.cpp:103
-msgid "Description"
-msgstr "Opis"
-
-#: src/src/pakGuiSettings.cpp:104
-msgid "Depends On"
-msgstr "Zależy od"
-
 #: src/src/statisticscommandparser.cpp:22
 msgid "actions:"
 msgstr "actions:"
@@ -614,3 +523,97 @@ msgstr "1 paczka do aktualizacji"
 #: src/src/systemtray.cpp:31
 msgid "%2 packages to update"
 msgstr "%2 paczki do aktualizacji"
+
+#: src/src/settingsrecords.cpp:16
+msgid "Name"
+msgstr "Nazwa"
+
+#: src/src/settingsrecords.cpp:17
+msgid "Version"
+msgstr "Wersja"
+
+#: src/src/settingsrecords.cpp:18
+msgid "Description"
+msgstr "Opis"
+
+#: src/src/settingsrecords.cpp:19
+msgid "Architecture"
+msgstr "Architektura"
+
+#: src/src/settingsrecords.cpp:20
+msgid "Provides"
+msgstr "Dostarcza"
+
+#: src/src/settingsrecords.cpp:21
+msgid "URL"
+msgstr "Adres url"
+
+#: src/src/settingsrecords.cpp:22
+msgid "Licenses"
+msgstr "Licencje"
+
+#: src/src/settingsrecords.cpp:23
+msgid "Groups"
+msgstr "Grupy"
+
+#: src/src/settingsrecords.cpp:24
+msgid "Depends On"
+msgstr "Zależy od"
+
+#: src/src/settingsrecords.cpp:25
+msgid "Optional Deps"
+msgstr "Opcjonalne zależności"
+
+#: src/src/settingsrecords.cpp:26
+msgid "Required By"
+msgstr "Wymagany przez"
+
+#: src/src/settingsrecords.cpp:27
+msgid "Optional For"
+msgstr "Opcjonalny dla"
+
+#: src/src/settingsrecords.cpp:28
+msgid "Conflicts With"
+msgstr "Konfliktuje z"
+
+#: src/src/settingsrecords.cpp:29
+msgid "Replaces"
+msgstr "Zastępuje"
+
+#: src/src/settingsrecords.cpp:30
+msgid "Installed Size"
+msgstr "Rozmiar po instalacji"
+
+#: src/src/settingsrecords.cpp:31
+msgid "Packager"
+msgstr "Autor pakietu"
+
+#: src/src/settingsrecords.cpp:32
+msgid "Build Date"
+msgstr "Data zbudowania"
+
+#: src/src/settingsrecords.cpp:33
+msgid "Install Date"
+msgstr "Data zainstalowania"
+
+#: src/src/settingsrecords.cpp:34
+msgid "Install Reason"
+msgstr "Powód zainstalowania"
+
+#: src/src/settingsrecords.cpp:35
+msgid "Install Script"
+msgstr "Skrypt instalacyjny"
+
+#: src/src/settingsrecords.cpp:36
+msgid "Validated By"
+msgstr "Potwierdzone przez"
+
+#: src/src/settingsrecords.cpp:37
+msgid "Download Size"
+msgstr "Do pobrania"
+
+#~ msgid "PackageInfo"
+#~ msgstr "PackageInfo"
+
+#~ msgid "Value"
+#~ msgstr "Wersja"

@@ -1,10 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#: src/src/installcommandparser.cpp:6 src/src/downloadcommandparser.cpp:151
-#: src/src/downloadcommandparser.cpp:152
+# Copyright (C) 2023
+# This file is distributed under the same license as the pak-gui package.
+# Jagoda "juliagoda" Górska".
+# <juliagoda.pl@protonmail.com>
+# CachyOS.github.com
 
 #: src/src/mainwindowview.cpp:47 src/src/rc.cpp:60
 msgid "Internet connection state and auracle-git package presence"
@@ -25,7 +23,6 @@ msgstr "eAll processes ended"
 #: src/src/mainwindowview.cpp:142
 msgid "All processes have been completed."
 msgstr "eAll processes have been completed."
-
 
 #: src/src/mainwindowview.cpp:262 src/src/rc.cpp:21
 msgid "TO UPDATE"
@@ -501,94 +498,6 @@ msgstr "ePackages informations"
 msgid "Logs"
 msgstr "eLogs"
 
-#: src/src/pakGuiSettings.cpp:76
-msgid "PackageInfo"
-msgstr "ePackageInfo"
-
-#: src/src/pakGuiSettings.cpp:79
-msgid "Architecture"
-msgstr "eArchitecture"
-
-#: src/src/pakGuiSettings.cpp:80
-msgid "URL"
-msgstr "eURL"
-
-#: src/src/pakGuiSettings.cpp:81
-msgid "Licenses"
-msgstr "eLicenses"
-
-#: src/src/pakGuiSettings.cpp:82
-msgid "Groups"
-msgstr "eGroups"
-
-#: src/src/pakGuiSettings.cpp:83
-msgid "Provides"
-msgstr "eProvides"
-
-#: src/src/pakGuiSettings.cpp:84
-msgid "Optional Deps"
-msgstr "eOptional Deps"
-
-#: src/src/pakGuiSettings.cpp:85
-msgid "RequiredBy"
-msgstr "eRequiredBy"
-
-#: src/src/pakGuiSettings.cpp:86
-msgid "Optional For"
-msgstr "eOptional For"
-
-#: src/src/pakGuiSettings.cpp:87
-msgid "Conflicts With"
-msgstr "eConflicts With"
-
-#: src/src/pakGuiSettings.cpp:88
-msgid "Replaces"
-msgstr "eReplaces"
-
-#: src/src/pakGuiSettings.cpp:89
-msgid "Installed Size"
-msgstr "eInstalled Size"
-
-#: src/src/pakGuiSettings.cpp:90
-msgid "Packager"
-msgstr "ePackager"
-
-#: src/src/pakGuiSettings.cpp:91
-msgid "Build Date"
-msgstr "eBuild Date"
-
-#: src/src/pakGuiSettings.cpp:92
-msgid "Install Date"
-msgstr "eInstall Date"
-
-#: src/src/pakGuiSettings.cpp:93
-msgid "Install Reason"
-msgstr "eInstall Reason"
-
-#: src/src/pakGuiSettings.cpp:94
-msgid "Install Script"
-msgstr "eInstall Script"
-
-#: src/src/pakGuiSettings.cpp:95
-msgid "Validated By"
-msgstr "eValidated By"
-
-#: src/src/pakGuiSettings.cpp:101
-msgid "Name"
-msgstr "eName"
-
-#: src/src/pakGuiSettings.cpp:102
-msgid "Value"
-msgstr "eValue"
-
-#: src/src/pakGuiSettings.cpp:103
-msgid "Description"
-msgstr "eDescription"
-
-#: src/src/pakGuiSettings.cpp:104
-msgid "Depends On"
-msgstr "eDepends On"
-
 #: src/src/statisticscommandparser.cpp:22
 msgid "actions:"
 msgstr "eactions:"
@@ -600,3 +509,91 @@ msgstr "e1 package to update"
 #: src/src/systemtray.cpp:31
 msgid "%2 packages to update"
 msgstr "e%2 packages to update"
+
+#: src/src/settingsrecords.cpp:16
+msgid "Name"
+msgstr "eName"
+
+#: src/src/settingsrecords.cpp:17
+msgid "Version"
+msgstr "eVersion"
+
+#: src/src/settingsrecords.cpp:18
+msgid "Description"
+msgstr "eDescription"
+
+#: src/src/settingsrecords.cpp:19
+msgid "Architecture"
+msgstr "eArchitecture"
+
+#: src/src/settingsrecords.cpp:20
+msgid "Provides"
+msgstr "eProvides"
+
+#: src/src/settingsrecords.cpp:21
+msgid "URL"
+msgstr "eURL"
+
+#: src/src/settingsrecords.cpp:22
+msgid "Licenses"
+msgstr "eLicenses"
+
+#: src/src/settingsrecords.cpp:23
+msgid "Groups"
+msgstr "eGroups"
+
+#: src/src/settingsrecords.cpp:24
+msgid "Depends On"
+msgstr "eDepends On"
+
+#: src/src/settingsrecords.cpp:25
+msgid "Optional Deps"
+msgstr "eOptional Deps"
+
+#: src/src/settingsrecords.cpp:26
+msgid "Required By"
+msgstr "eRequired By"
+
+#: src/src/settingsrecords.cpp:27
+msgid "Optional For"
+msgstr "eOptional For"
+
+#: src/src/settingsrecords.cpp:28
+msgid "Conflicts With"
+msgstr "eConflicts With"
+
+#: src/src/settingsrecords.cpp:29
+msgid "Replaces"
+msgstr "eReplaces"
+
+#: src/src/settingsrecords.cpp:30
+msgid "Installed Size"
+msgstr "eInstalled Size"
+
+#: src/src/settingsrecords.cpp:31
+msgid "Packager"
+msgstr "ePackager"
+
+#: src/src/settingsrecords.cpp:32
+msgid "Build Date"
+msgstr "eBuild Date"
+
+#: src/src/settingsrecords.cpp:33
+msgid "Install Date"
+msgstr "eInstall Date"
+
+#: src/src/settingsrecords.cpp:34
+msgid "Install Reason"
+msgstr "eInstall Reason"
+
+#: src/src/settingsrecords.cpp:35
+msgid "Install Script"
+msgstr "eInstall Script"
+
+#: src/src/settingsrecords.cpp:36
+msgid "Validated By"
+msgstr "eValidated By"
+
+#: src/src/settingsrecords.cpp:37
+msgid "Download Size"
+msgstr "eDownload Size"

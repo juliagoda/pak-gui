@@ -34,7 +34,7 @@ int main(int argc, char **argv)
                           QStringLiteral("1.0"),
                           i18n("Pacman wrapper, AUR and POLAUR helper with Gui"),
                           KAboutLicense::GPL_V3,
-                          i18n("Copyright 2022, Jagoda \"juliagoda\" Górska"),
+                          i18n("Copyright 2023, Jagoda \"juliagoda\" Górska"),
                           QLatin1String(),
                           QStringLiteral("https://github.com/CachyOS/pak-gui"),
                           QStringLiteral("https://github.com/CachyOS/pak-gui/issues"));

@@ -17,9 +17,7 @@ msgstr ""
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: src/src/installcommandparser.cpp:6 src/src/downloadcommandparser.cpp:151
-#: src/src/downloadcommandparser.cpp:152 src/src/mainwindowview.cpp:47
-#: src/src/rc.cpp:60
+#: src/src/mainwindowview.cpp:47 src/src/rc.cpp:60
 msgid "Internet connection state and auracle-git package presence"
 msgstr "Internet connection state and auracle-git package presence"
 
@@ -513,94 +511,6 @@ msgstr "Packages informations"
 msgid "Logs"
 msgstr "Logs"
 
-#: src/src/pakGuiSettings.cpp:76
-msgid "PackageInfo"
-msgstr "PackageInfo"
-
-#: src/src/pakGuiSettings.cpp:79
-msgid "Architecture"
-msgstr "Architecture"
-
-#: src/src/pakGuiSettings.cpp:80
-msgid "URL"
-msgstr "URL"
-
-#: src/src/pakGuiSettings.cpp:81
-msgid "Licenses"
-msgstr "Licenses"
-
-#: src/src/pakGuiSettings.cpp:82
-msgid "Groups"
-msgstr "Groups"
-
-#: src/src/pakGuiSettings.cpp:83
-msgid "Provides"
-msgstr "Provides"
-
-#: src/src/pakGuiSettings.cpp:84
-msgid "Optional Deps"
-msgstr "Optional Deps"
-
-#: src/src/pakGuiSettings.cpp:85
-msgid "RequiredBy"
-msgstr "RequiredBy"
-
-#: src/src/pakGuiSettings.cpp:86
-msgid "Optional For"
-msgstr "Optional For"
-
-#: src/src/pakGuiSettings.cpp:87
-msgid "Conflicts With"
-msgstr "Conflicts With"
-
-#: src/src/pakGuiSettings.cpp:88
-msgid "Replaces"
-msgstr "Replaces"
-
-#: src/src/pakGuiSettings.cpp:89
-msgid "Installed Size"
-msgstr "Installed Size"
-
-#: src/src/pakGuiSettings.cpp:90
-msgid "Packager"
-msgstr "Packager"
-
-#: src/src/pakGuiSettings.cpp:91
-msgid "Build Date"
-msgstr "Build Date"
-
-#: src/src/pakGuiSettings.cpp:92
-msgid "Install Date"
-msgstr "Install Date"
-
-#: src/src/pakGuiSettings.cpp:93
-msgid "Install Reason"
-msgstr "Install Reason"
-
-#: src/src/pakGuiSettings.cpp:94
-msgid "Install Script"
-msgstr "Install Script"
-
-#: src/src/pakGuiSettings.cpp:95
-msgid "Validated By"
-msgstr "Validated By"
-
-#: src/src/pakGuiSettings.cpp:101
-msgid "Name"
-msgstr "Name"
-
-#: src/src/pakGuiSettings.cpp:102
-msgid "Value"
-msgstr "Value"
-
-#: src/src/pakGuiSettings.cpp:103
-msgid "Description"
-msgstr "Description"
-
-#: src/src/pakGuiSettings.cpp:104
-msgid "Depends On"
-msgstr "Depends On"
-
 #: src/src/statisticscommandparser.cpp:22
 msgid "actions:"
 msgstr "actions:"
@@ -612,3 +522,97 @@ msgstr "1 package to update"
 #: src/src/systemtray.cpp:31
 msgid "%2 packages to update"
 msgstr "%2 packages to update"
+
+#: src/src/settingsrecords.cpp:16
+msgid "Name"
+msgstr "Name"
+
+#: src/src/settingsrecords.cpp:17
+msgid "Version"
+msgstr "Version"
+
+#: src/src/settingsrecords.cpp:18
+msgid "Description"
+msgstr "Description"
+
+#: src/src/settingsrecords.cpp:19
+msgid "Architecture"
+msgstr "Architecture"
+
+#: src/src/settingsrecords.cpp:20
+msgid "Provides"
+msgstr "Provides"
+
+#: src/src/settingsrecords.cpp:21
+msgid "URL"
+msgstr "URL"
+
+#: src/src/settingsrecords.cpp:22
+msgid "Licenses"
+msgstr "Licenses"
+
+#: src/src/settingsrecords.cpp:23
+msgid "Groups"
+msgstr "Groups"
+
+#: src/src/settingsrecords.cpp:24
+msgid "Depends On"
+msgstr "Depends On"
+
+#: src/src/settingsrecords.cpp:25
+msgid "Optional Deps"
+msgstr "Optional Deps"
+
+#: src/src/settingsrecords.cpp:26
+msgid "Required By"
+msgstr "Required By"
+
+#: src/src/settingsrecords.cpp:27
+msgid "Optional For"
+msgstr "Optional For"
+
+#: src/src/settingsrecords.cpp:28
+msgid "Conflicts With"
+msgstr "Conflicts With"
+
+#: src/src/settingsrecords.cpp:29
+msgid "Replaces"
+msgstr "Replaces"
+
+#: src/src/settingsrecords.cpp:30
+msgid "Installed Size"
+msgstr "Installed Size"
+
+#: src/src/settingsrecords.cpp:31
+msgid "Packager"
+msgstr "Packager"
+
+#: src/src/settingsrecords.cpp:32
+msgid "Build Date"
+msgstr "Build Date"
+
+#: src/src/settingsrecords.cpp:33
+msgid "Install Date"
+msgstr "Install Date"
+
+#: src/src/settingsrecords.cpp:34
+msgid "Install Reason"
+msgstr "Install Reason"
+
+#: src/src/settingsrecords.cpp:35
+msgid "Install Script"
+msgstr "Install Script"
+
+#: src/src/settingsrecords.cpp:36
+msgid "Validated By"
+msgstr "Validated By"
+
+#: src/src/settingsrecords.cpp:37
+msgid "Download Size"
+msgstr "Download Size"
+
+#~ msgid "PackageInfo"
+#~ msgstr "PackageInfo"
+
+#~ msgid "Value"
+#~ msgstr "Value"
