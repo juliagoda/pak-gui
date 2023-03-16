@@ -25,6 +25,7 @@ jobs:
         run: |
           mkdir build
           cd build
+          export QT_DEBUG_PLUGINS=1
           cmake -DRUN_TESTS=ON ..
           make -j 3
           nohup Xvfb :99 > /dev/null 2>&1 &
