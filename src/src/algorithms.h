@@ -7,8 +7,6 @@
 class Algorithms
 {
 public:
-    Algorithms();
-
     template<typename T>
     QStringList createSplittedList(const QString& text,
                                    const QString& splitting_text,

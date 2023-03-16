@@ -1,10 +1,6 @@
 #include "algorithms.h"
 #include "package.h"
 
-Algorithms::Algorithms()
-{
-
-}
 
 template<typename T>
 QStringList Algorithms::createSplittedList(const QString& text,
