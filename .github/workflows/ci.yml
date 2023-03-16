@@ -28,6 +28,12 @@ jobs:
           cmake -DRUN_TESTS=ON ..
           make -j 3
           nohup Xvfb :99 > /dev/null 2>&1 &
-          bin/pak-qtests
+          ulimit -c unlimited
+          sudo bin/pak-qtests
+          sudo chmod -R +rwx /var/crash/*
           gcovr -r .. -j 2 -f ../src/src/.*cpp
+      - uses: actions/upload-artifact@main
+        with:
+          name: crashes
+          path: /var/crash
 

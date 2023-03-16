@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 
     ASSERT_TEST(new TestActionsAccessChecker());
     ASSERT_TEST(new TestAvailablePackagesColumn());
-    //ASSERT_TEST(new TestInstalledPackagesColumn());
+    ASSERT_TEST(new TestInstalledPackagesColumn());
 
     ASSERT_TEST(new TestMainWindow());
     ASSERT_TEST(new TestUpdatedPackagesColumn());

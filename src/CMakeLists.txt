@@ -4,6 +4,8 @@ add_executable(pak-gui ${RESOURCES})
 
 target_sources(pak-gui PRIVATE
     main.cpp
+    src/algorithms.cpp
+    src/algorithms.h
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindowview.cpp

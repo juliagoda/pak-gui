@@ -1,6 +1,7 @@
 #include "package.h"
 
 #include "settings.h"
+#include "algorithms.h"
 #include "logger.h"
 
 
@@ -78,53 +79,13 @@ void Package::updateData(const QString& package_content, int name_line, int vers
 void Package::setToolTipOnPackage(const QString& text)
 {
     auto selected_info_list = Settings::records()->packagesInfoSelected();
-    QStringList selected_infos{};
-    int selected_info_size = selected_info_list.count();
 
-    while (selected_info_size > 0)
-    {
-        selected_infos.append("");
-        --selected_info_size;
-    }
+    QScopedPointer<Algorithms> algorithms(new Algorithms);
+    QString splitting_text{" : "};
+    auto results = algorithms->createSplittedList<Package::TooltipLine>(text, splitting_text,
+                                                                        selected_info_list, numberToTooltipLine);
 
-    Q_ASSERT(selected_infos.count() == selected_info_list.count());
-
-    if (text.isEmpty() || selected_infos.isEmpty())
-        return;
-
-    auto lines_list = text.split('\n');
-    int i = 0;
-    int last_index = -1;
-    int index_of_double_colon = 0;
-
-    for (auto line_it = lines_list.begin(); line_it != lines_list.end(); line_it++)
-    {
-        if ((*line_it).contains(" : "))
-        {
-            i++;
-            index_of_double_colon = (*line_it).indexOf(" : ") + 3;
-            auto tooltip_part = numberToTooltipLine.value(i, Package::TooltipLine::Unknown);
-            if (selected_info_list.contains(tooltip_part))
-            {
-                selected_infos[selected_info_list.indexOf(tooltip_part)] = *line_it;
-                last_index = selected_info_list.indexOf(tooltip_part);
-            }
-            else
-            {
-                last_index = -1;
-            }
-
-            continue;
-        }
-
-        if (last_index < 0)
-            continue;
-
-        QString leading_whitespaces{};
-        selected_infos[last_index] += "\n" + leading_whitespaces.fill(' ', index_of_double_colon) + *line_it;
-    }
-
-    setToolTip(selected_infos.join(QString("\n")));
+    setToolTip(results.join(QString("\n")));
 }
 
 
