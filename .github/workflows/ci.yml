@@ -9,7 +9,7 @@ on:
 jobs:
   build-ubuntu-qt5:
     env:
-      DISPLAY: ':99.0'
+      DISPLAY: ':98.0'
     runs-on: ubuntu-latest
     steps:
       - name: initialize
@@ -27,7 +27,7 @@ jobs:
           cd build
           cmake -DRUN_TESTS=ON ..
           make -j 3
-          nohup Xvfb :99 > /dev/null 2>&1 &
+          nohup Xvfb :98 > /dev/null 2>&1 &
           ulimit -c unlimited
           sudo bin/pak-qtests
           sudo chmod -R +rwx /var/crash/*
