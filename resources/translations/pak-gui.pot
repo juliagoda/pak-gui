@@ -4,15 +4,15 @@
 # <juliagoda.pl@protonmail.com>
 # CachyOS.github.com
 
-#: src/src/mainwindowview.cpp:47 src/src/rc.cpp:60
+#: src/src/mainwindowview.cpp:47 src/src/rc.cpp:60 tests/gui/mainwindowtest.cpp:29
 msgid "Internet connection state and auracle-git package presence"
 msgstr "eInternet connection state and auracle-git package presence"
 
-#: src/src/mainwindowview.cpp:48 src/src/rc.cpp:66
+#: src/src/mainwindowview.cpp:48 src/src/rc.cpp:66 tests/gui/mainwindowtest.cpp:30
 msgid "Internet connection state and git package presence"
 msgstr "eInternet connection state and git package presence"
 
-#: src/src/mainwindowview.cpp:49 src/src/rc.cpp:54
+#: src/src/mainwindowview.cpp:49 src/src/rc.cpp:54 tests/gui/mainwindowtest.cpp:28
 msgid "Internet connection state"
 msgstr "eInternet connection state"
 
@@ -24,15 +24,15 @@ msgstr "eAll processes ended"
 msgid "All processes have been completed."
 msgstr "eAll processes have been completed."
 
-#: src/src/mainwindowview.cpp:262 src/src/rc.cpp:21
+#: src/src/mainwindowview.cpp:262 src/src/rc.cpp:21 tests/gui/packagestoupdatecolumntest.cpp:47
 msgid "TO UPDATE"
 msgstr "eTO UPDATE"
 
-#: src/src/mainwindowview.cpp:263 src/src/rc.cpp:39
+#: src/src/mainwindowview.cpp:263 src/src/rc.cpp:39 tests/gui/availablepackagescolumntest.cpp:44
 msgid "AVAILABLE TO INSTALL"
 msgstr "eAVAILABLE TO INSTALL"
 
-#: src/src/mainwindowview.cpp:271 src/src/mainwindowview.cpp:273
+#: src/src/mainwindowview.cpp:271 src/src/mainwindowview.cpp:273 tests/gui/mainwindowtest.cpp:68 tests/gui/mainwindowtest.cpp:69
 msgid "No internet connection"
 msgstr "eNo internet connection"
 
@@ -40,7 +40,7 @@ msgstr "eNo internet connection"
 msgid "Something went wrong. Try to refresh"
 msgstr "eSomething went wrong. Try to refresh"
 
-#: src/src/mainwindowview.cpp:322
+#: src/src/mainwindowview.cpp:322 tests/gui/packagestoupdatecolumntest.cpp:285 tests/gui/availablepackagescolumntest.cpp:261 tests/gui/installedpackagescolumntest.cpp:261
 msgid "Cannot be updated - try to refresh"
 msgstr "eCannot be updated - try to refresh"
 
@@ -69,16 +69,16 @@ msgid "Package name is not empty"
 msgstr "ePackage name is not empty"
 
 #: src/src/installcommandparser.cpp:16 src/src/rc.cpp:63
-#: src/src/checkcommandparser.cpp:17
+#: src/src/checkcommandparser.cpp:17 tests/gui/mainwindowtest.cpp:21
 msgid "AUR"
 msgstr "eAUR"
 
 #: src/src/installcommandparser.cpp:17 src/src/rc.cpp:69
-#: src/src/checkcommandparser.cpp:18
+#: src/src/checkcommandparser.cpp:18 tests/gui/mainwindowtest.cpp:22
 msgid "POLAUR"
 msgstr "ePOLAUR"
 
-#: src/src/installcommandparser.cpp:18 src/src/rc.cpp:57
+#: src/src/installcommandparser.cpp:18 src/src/rc.cpp:57 tests/gui/mainwindowtest.cpp:20
 msgid "Repositories"
 msgstr "eRepositories"
 
@@ -114,7 +114,7 @@ msgstr ""
 msgid "View progress"
 msgstr "eView progress"
 
-#: src/src/rc.cpp:6
+#: src/src/rc.cpp:6 tests/gui/installedpackagescolumntest.cpp:43
 msgid "INSTALLED"
 msgstr "eINSTALLED"
 

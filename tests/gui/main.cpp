@@ -39,6 +39,7 @@ int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
     KLocalizedString::setApplicationDomain("pak-gui");
+
     KCrash::initialize();
 
     KDBusService appDBusService(KDBusService::Multiple | KDBusService::NoExitOnFailure);

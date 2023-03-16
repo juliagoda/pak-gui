@@ -17,17 +17,17 @@ TestMainWindow::TestMainWindow(QObject* parent) :
 
 void TestMainWindow::ledLabelsContainCorrectTexts()
 {
-   QCOMPARE(main_window_view.m_ui.repo_led_label->text(), QString("Repositories"));
-   QCOMPARE(main_window_view.m_ui.aur_led_label->text(), QString("AUR"));
-   QCOMPARE(main_window_view.m_ui.polaur_led_label->text(), QString("POLAUR"));
+   QCOMPARE(main_window_view.m_ui.repo_led_label->text(), i18n("Repositories"));
+   QCOMPARE(main_window_view.m_ui.aur_led_label->text(), i18n("AUR"));
+   QCOMPARE(main_window_view.m_ui.polaur_led_label->text(), i18n("POLAUR"));
 }
 
 
 void TestMainWindow::ledLabelsContainCorrectTooltips()
 {
-    QCOMPARE(main_window_view.m_ui.repo_led_label->toolTip(), QString("Internet connection state"));
-    QCOMPARE(main_window_view.m_ui.aur_led_label->toolTip(), QString("Internet connection state and auracle-git package presence"));
-    QCOMPARE(main_window_view.m_ui.polaur_led_label->toolTip(), QString("Internet connection state and git package presence"));
+    QCOMPARE(main_window_view.m_ui.repo_led_label->toolTip(), i18n("Internet connection state"));
+    QCOMPARE(main_window_view.m_ui.aur_led_label->toolTip(), i18n("Internet connection state and auracle-git package presence"));
+    QCOMPARE(main_window_view.m_ui.polaur_led_label->toolTip(), i18n("Internet connection state and git package presence"));
 }
 
 
@@ -65,8 +65,8 @@ void TestMainWindow::polaurLedIsOnWhenGitInstalledAndIsOnline()
 void TestMainWindow::noInternetConnectionTextIsVisibleWhenInternetConnectionIsOff()
 {
     emit main_window.actions_access_checker->internetAccessChanged(false);
-    QCOMPARE(main_window_view.m_ui.packages_to_update_label->text(), QString("No internet connection"));
-    QCOMPARE(main_window_view.m_ui.accessible_packages->text(), QString("No internet connection"));
+    QCOMPARE(main_window_view.m_ui.packages_to_update_label->text(), i18n("No internet connection"));
+    QCOMPARE(main_window_view.m_ui.accessible_packages->text(), i18n("No internet connection"));
 }
 
 

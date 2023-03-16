@@ -41,7 +41,7 @@ TestAvailablePackagesColumn::TestAvailablePackagesColumn(QObject* parent) :
 
 void TestAvailablePackagesColumn::availableColumnLabelHasProperContent()
 {
-    QCOMPARE(main_window_view.m_ui.accessible_packages->text(), QString("AVAILABLE TO INSTALL"));
+    QCOMPARE(main_window_view.m_ui.accessible_packages->text(), i18n("AVAILABLE TO INSTALL"));
 }
 
 
@@ -258,7 +258,7 @@ void TestAvailablePackagesColumn::notEmptyPackagesListIsVisibleAfterSignalSend()
 void TestAvailablePackagesColumn::titleIsVisibleWhenPackagesListIsEmptyAfterSignalSend()
 {
     emit main_window_view.availablePackagesFillEnded();
-    QCOMPARE(main_window_view.m_ui.accessible_packages->text(), QString("Something went wrong. Try to refresh"));
+    QCOMPARE(main_window_view.m_ui.accessible_packages->text(), i18n("Something went wrong. Try to refresh"));
 }
 
 

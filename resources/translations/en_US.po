@@ -18,14 +18,17 @@ msgstr ""
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #: src/src/mainwindowview.cpp:47 src/src/rc.cpp:60
+#: tests/gui/mainwindowtest.cpp:29
 msgid "Internet connection state and auracle-git package presence"
 msgstr "Internet connection state and auracle-git package presence"
 
 #: src/src/mainwindowview.cpp:48 src/src/rc.cpp:66
+#: tests/gui/mainwindowtest.cpp:30
 msgid "Internet connection state and git package presence"
 msgstr "Internet connection state and git package presence"
 
 #: src/src/mainwindowview.cpp:49 src/src/rc.cpp:54
+#: tests/gui/mainwindowtest.cpp:28
 msgid "Internet connection state"
 msgstr "Internet connection state"
 
@@ -38,14 +41,17 @@ msgid "All processes have been completed."
 msgstr "All processes have been completed."
 
 #: src/src/mainwindowview.cpp:262 src/src/rc.cpp:21
+#: tests/gui/packagestoupdatecolumntest.cpp:47
 msgid "TO UPDATE"
 msgstr "TO UPDATE"
 
 #: src/src/mainwindowview.cpp:263 src/src/rc.cpp:39
+#: tests/gui/availablepackagescolumntest.cpp:44
 msgid "AVAILABLE TO INSTALL"
 msgstr "AVAILABLE TO INSTALL"
 
 #: src/src/mainwindowview.cpp:271 src/src/mainwindowview.cpp:273
+#: tests/gui/mainwindowtest.cpp:68 tests/gui/mainwindowtest.cpp:69
 msgid "No internet connection"
 msgstr "No internet connection"
 
@@ -53,7 +59,9 @@ msgstr "No internet connection"
 msgid "Something went wrong. Try to refresh"
 msgstr "Something went wrong. Try to refresh"
 
-#: src/src/mainwindowview.cpp:322
+#: src/src/mainwindowview.cpp:322 tests/gui/packagestoupdatecolumntest.cpp:285
+#: tests/gui/availablepackagescolumntest.cpp:261
+#: tests/gui/installedpackagescolumntest.cpp:261
 msgid "Cannot be updated - try to refresh"
 msgstr "Cannot be updated - try to refresh"
 
@@ -82,16 +90,17 @@ msgid "Package name is not empty"
 msgstr "Package name is not empty"
 
 #: src/src/installcommandparser.cpp:16 src/src/rc.cpp:63
-#: src/src/checkcommandparser.cpp:17
+#: src/src/checkcommandparser.cpp:17 tests/gui/mainwindowtest.cpp:21
 msgid "AUR"
 msgstr "AUR"
 
 #: src/src/installcommandparser.cpp:17 src/src/rc.cpp:69
-#: src/src/checkcommandparser.cpp:18
+#: src/src/checkcommandparser.cpp:18 tests/gui/mainwindowtest.cpp:22
 msgid "POLAUR"
 msgstr "POLAUR"
 
 #: src/src/installcommandparser.cpp:18 src/src/rc.cpp:57
+#: tests/gui/mainwindowtest.cpp:20
 msgid "Repositories"
 msgstr "Repositories"
 
@@ -127,7 +136,7 @@ msgstr ""
 msgid "View progress"
 msgstr "View progress"
 
-#: src/src/rc.cpp:6
+#: src/src/rc.cpp:6 tests/gui/installedpackagescolumntest.cpp:43
 msgid "INSTALLED"
 msgstr "INSTALLED"
 

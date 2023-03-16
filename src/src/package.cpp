@@ -87,6 +87,11 @@ void Package::setToolTipOnPackage(const QString& text)
         --selected_info_size;
     }
 
+    Q_ASSERT(selected_infos.count() == selected_info_list.count());
+
+    if (text.isEmpty() || selected_infos.isEmpty())
+        return;
+
     auto lines_list = text.split('\n');
     int i = 0;
     int last_index = -1;

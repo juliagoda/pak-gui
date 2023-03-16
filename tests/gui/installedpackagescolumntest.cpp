@@ -40,7 +40,7 @@ TestInstalledPackagesColumn::TestInstalledPackagesColumn(QObject* parent) :
 
 void TestInstalledPackagesColumn::installationLabelHasProperContent()
 {
-    QCOMPARE(main_window_view.m_ui.installed_packages_label->text(), QString("INSTALLED"));
+    QCOMPARE(main_window_view.m_ui.installed_packages_label->text(), i18n("INSTALLED"));
 }
 
 
@@ -258,7 +258,7 @@ void TestInstalledPackagesColumn::notEmptyPackagesListIsVisibleAfterSignalSend()
 void TestInstalledPackagesColumn::titleIsVisibleWhenPackagesListIsEmptyAfterSignalSend()
 {
     emit main_window_view.installedPackagesFillEnded();
-    QCOMPARE(main_window_view.m_ui.installed_packages_label->text(), QString("Something went wrong. Try to refresh"));
+    QCOMPARE(main_window_view.m_ui.installed_packages_label->text(), i18n("Something went wrong. Try to refresh"));
 }
 
 

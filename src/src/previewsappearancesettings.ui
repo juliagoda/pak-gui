@@ -73,7 +73,20 @@
             </widget>
            </item>
            <item>
-            <widget class="QFontComboBox" name="kcfg_preview_font_family"/>
+            <widget class="QFontComboBox" name="kcfg_preview_font_family">
+             <property name="font">
+              <font>
+               <family>Noto Sans</family>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="currentFont">
+              <font>
+               <family>Noto Sans</family>
+               <pointsize>15</pointsize>
+              </font>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

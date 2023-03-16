@@ -44,7 +44,7 @@ TestUpdatedPackagesColumn::TestUpdatedPackagesColumn(QObject* parent) :
 
 void TestUpdatedPackagesColumn::updatedColumnLabelHasProperContent()
 {
-    QCOMPARE(main_window_view.m_ui.packages_to_update_label->text(), QString("TO UPDATE"));
+    QCOMPARE(main_window_view.m_ui.packages_to_update_label->text(), i18n("TO UPDATE"));
 }
 
 
@@ -282,7 +282,7 @@ void TestUpdatedPackagesColumn::notEmptyPackagesListIsVisibleAfterSignalSend()
 void TestUpdatedPackagesColumn::titleIsVisibleWhenPackagesListIsEmptyAfterSignalSend()
 {
     emit main_window_view.packagesToUpdateFillEnded();
-    QCOMPARE(main_window_view.m_ui.packages_to_update_label->text(), QString("Cannot be updated - try to refresh"));
+    QCOMPARE(main_window_view.m_ui.packages_to_update_label->text(), i18n("Cannot be updated - try to refresh"));
 }
 
 
