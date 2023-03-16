@@ -2,8 +2,6 @@
 
 #include "qicommandparser.h"
 
-#include "packagescolumnfixtures.h"
-
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
@@ -12,7 +10,7 @@
 class MockQiCommandParser : public QiCommandParser
 {
 public:
-    MockQiCommandParser();
+    MockQiCommandParser() = default;
     friend class TestQiCommandParser;
 
     QString generateResult() override;
@@ -28,7 +26,9 @@ public:
     TestQiCommandParser(QObject* parent = nullptr);
 
 private slots:
-    void cleanup();
+    void initTestCase_data();
+    void isListContainingTwoPackages();
+    void isListContainingPackagesWithCorrectContent();
 
 private:
     MockQiCommandParser qi_command_parser;

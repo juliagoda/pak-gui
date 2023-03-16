@@ -1,11 +1,6 @@
 #include "qicommandparsertest.h"
 
-
-MockQiCommandParser::MockQiCommandParser() :
-    QiCommandParser()
-{
-    // ...
-}
+#include "packagescolumnfixtures.h"
 
 
 QString MockQiCommandParser::generateResult()
@@ -23,9 +18,23 @@ TestQiCommandParser::TestQiCommandParser(QObject* parent) :
 }
 
 
-void TestQiCommandParser::cleanup()
+void TestQiCommandParser::initTestCase_data()
 {
-  // ...
+   QTest::addColumn<QStringList>("command_parser_results");
+   QTest::newRow("qi") << qi_command_parser.retrieveInfo();
 }
 
 
+void TestQiCommandParser::isListContainingTwoPackages()
+{
+   QFETCH_GLOBAL(QStringList, command_parser_results);
+   QCOMPARE(command_parser_results.count(), 2);
+}
+
+
+void TestQiCommandParser::isListContainingPackagesWithCorrectContent()
+{
+    QFETCH_GLOBAL(QStringList, command_parser_results);
+    QCOMPARE(QStringLiteral("%1\n").arg(command_parser_results.constFirst().data()), package_content_gimp);
+    QCOMPARE(command_parser_results.constLast().data(), package_content_a52dec);
+}

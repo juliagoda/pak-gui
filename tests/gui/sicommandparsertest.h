@@ -2,8 +2,6 @@
 
 #include "sicommandparser.h"
 
-#include "packagescolumnfixtures.h"
-
 #include <QApplication>
 #include <QtTest/QtTest>
 #include <QWidget>
@@ -14,7 +12,7 @@ class MockSiCommandParser : public SiCommandParser
     Q_OBJECT
 
 public:
-    explicit MockSiCommandParser();
+    explicit MockSiCommandParser() = default;
     friend class TestAvailablePackagesColumn;
 
     QString generateResult() override;
@@ -30,7 +28,9 @@ public:
     TestSiCommandParser(QObject* parent = nullptr);
 
 private slots:
-    void cleanup();
+    void initTestCase_data();
+    void isListContainingTwoPackages();
+    void isListContainingPackagesWithCorrectContent();
 
 private:
     MockSiCommandParser si_command_parser;
