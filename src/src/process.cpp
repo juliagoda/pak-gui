@@ -26,8 +26,9 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
     messages_map.insert(Task::UpdateAll, {i18n("Update all"), i18n("update all packages?")});
     messages_map.insert(Task::PrintVCSPackages, {i18n("Print vcs packages"), i18n("print all vcs packages?")});
     messages_map.insert(Task::UpdateInstalledPackages, {i18n("Installed packages update"), i18n("update installed packages?")});
+    messages_map.insert(Task::SyncPOLAUR, {i18n("Sync POLAUR"), i18n("sync POLAUR packages?")});
 
-
+    commands_map.insert(Task::SyncPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SyP");
     commands_map.insert(Task::Clean, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -Sc");
     commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << Constants::askPassCommand() + " && pak -m");
     commands_map.insert(Task::UpdateAll, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\ny\" | pak -Su");

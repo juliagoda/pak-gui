@@ -34,6 +34,7 @@ MainWindow::~MainWindow()
     delete update_all_action;
     delete update_mirrors_action;
     delete clean_action;
+    delete sync_polaur_action;
 
    actions_access_checker.reset(nullptr);
 }
@@ -61,6 +62,7 @@ void MainWindow::disableActions()
     clean_action->setDisabled(true);
     print_statistics_action->setDisabled(true);
     search_action->setDisabled(true);
+    sync_polaur_action->setDisabled(true);
 }
 
 
@@ -74,6 +76,7 @@ void MainWindow::disableOnlineActions()
     clean_action->setDisabled(false);
     print_statistics_action->setDisabled(false);
     search_action->setDisabled(true);
+    sync_polaur_action->setDisabled(true);
 }
 
 
@@ -204,6 +207,9 @@ void MainWindow::initSignals()
     connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed) {
         update_mirrors_action->setEnabled(is_installed); });
 
+    connect(actions_access_checker.get(), &ActionsAccessChecker::gitAccessChanged, [this](bool is_installed) {
+        sync_polaur_action->setEnabled(is_installed); });
+
     setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
     connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
 
@@ -218,6 +224,9 @@ void MainWindow::initSignals()
 
     setAction(clean_action, i18n("&Clean"), QString("clean"), QKeySequence(Qt::CTRL, Qt::Key_C));
     connect(clean_action, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
+
+    setAction(sync_polaur_action, i18n("&Sync POLAUR"), QString("syncPOLAUR"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_P));
+    connect(sync_polaur_action, &QAction::triggered, this, [this]() { process->run(Process::Task::SyncPOLAUR); }, Qt::AutoConnection);
 
     setAction(print_statistics_action, i18n("&Statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_T));
     connect(print_statistics_action, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
@@ -239,6 +248,7 @@ void MainWindow::enableActions()
     clean_action->setDisabled(false);
     print_statistics_action->setDisabled(false);
     search_action->setDisabled(false);
+    sync_polaur_action->setDisabled(false);
 }
 
 

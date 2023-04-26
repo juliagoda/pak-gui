@@ -27,7 +27,8 @@ public:
         InstallAfterSearchRepo,
         InstallAfterSearchAUR,
         InstallAfterSearchPOLAUR,
-        Update
+        Update,
+        SyncPOLAUR
     };
     Q_ENUM(Task)
 

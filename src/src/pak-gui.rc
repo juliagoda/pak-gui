@@ -15,6 +15,7 @@
       <Action name="refresh"/>
       <Action name="download"/>
       <Action name="search"/>
+      <Action name="syncPOLAUR"/>
     </Menu>
     <Menu name="Print">
       <text>P&amp;rint</text>

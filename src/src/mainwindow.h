@@ -59,6 +59,7 @@ protected:
     QPointer<QAction> update_all_action;
     QPointer<QAction> update_mirrors_action;
     QPointer<QAction> clean_action;
+    QPointer<QAction> sync_polaur_action;
     QScopedPointer<SystemTray> system_tray_icon = QScopedPointer<SystemTray>(nullptr);
 
 private:
