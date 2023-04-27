@@ -408,69 +408,53 @@ msgstr "and installed"
 msgid "Choose package"
 msgstr "Choose package"
 
-#: src/src/statistics.cpp:26
+#: src/src/statistics.cpp:18
+msgid "Statistics"
+msgstr "Statistics"
+
+#: src/src/statistics.cpp:30
 msgid "Statistics - current month"
 msgstr "Statistics - current month"
 
-#: src/src/mainwindow.cpp:195
+#: src/src/statistics.cpp:79
+msgid "No data for current month"
+msgstr "No data for current month"
+
+#: src/src/mainwindow.cpp:198
 msgid "&Update"
 msgstr "&Update"
 
-#: src/src/mainwindow.cpp:198
+#: src/src/mainwindow.cpp:201
 msgid "&Refresh"
 msgstr "&Refresh"
 
-#: src/src/mainwindow.cpp:198
-msgid "refresh"
-msgstr "refresh"
-
-#: src/src/mainwindow.cpp:207
+#: src/src/mainwindow.cpp:213
 msgid "&Download"
 msgstr "&Download"
 
-#: src/src/mainwindow.cpp:207
-msgid "download"
-msgstr "download"
-
-#: src/src/mainwindow.cpp:210
+#: src/src/mainwindow.cpp:216
 msgid "&Search"
 msgstr "&Search"
 
-#: src/src/mainwindow.cpp:210
-msgid "search"
-msgstr "search"
-
-#: src/src/mainwindow.cpp:213
+#: src/src/mainwindow.cpp:219
 msgid "&Update all packages"
 msgstr "&Update all packages"
 
-#: src/src/mainwindow.cpp:213
-msgid "updateAllPackages"
-msgstr "updateAllPackages"
-
-#: src/src/mainwindow.cpp:216
+#: src/src/mainwindow.cpp:222
 msgid "&Update mirrors"
 msgstr "&Update mirrors"
 
-#: src/src/mainwindow.cpp:216
-msgid "updateMirrors"
-msgstr "updateMirrors"
-
-#: src/src/mainwindow.cpp:219
+#: src/src/mainwindow.cpp:225
 msgid "&Clean"
 msgstr "&Clean"
 
-#: src/src/mainwindow.cpp:219
-msgid "clean"
-msgstr "clean"
+#: src/src/mainwindow.cpp:228
+msgid "&Sync POLAUR"
+msgstr "&Sync POLAUR"
 
-#: src/src/mainwindow.cpp:222
+#: src/src/mainwindow.cpp:231
 msgid "&Statistics"
 msgstr "&Statistics"
-
-#: src/src/mainwindow.cpp:222
-msgid "statistics"
-msgstr "statistics"
 
 #: src/src/updatedpackagescolumn.cpp:88
 msgid "Single AUR/POLAUR packages"
@@ -619,6 +603,27 @@ msgstr "Validated By"
 #: src/src/settingsrecords.cpp:37
 msgid "Download Size"
 msgstr "Download Size"
+
+#~ msgid "refresh"
+#~ msgstr "refresh"
+
+#~ msgid "download"
+#~ msgstr "download"
+
+#~ msgid "search"
+#~ msgstr "search"
+
+#~ msgid "updateAllPackages"
+#~ msgstr "updateAllPackages"
+
+#~ msgid "updateMirrors"
+#~ msgstr "updateMirrors"
+
+#~ msgid "clean"
+#~ msgstr "clean"
+
+#~ msgid "statistics"
+#~ msgstr "statistics"
 
 #~ msgid "PackageInfo"
 #~ msgstr "PackageInfo"

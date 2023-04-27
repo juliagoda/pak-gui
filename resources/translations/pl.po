@@ -409,69 +409,53 @@ msgstr "i zainstalowane"
 msgid "Choose package"
 msgstr "Wybierz paczkę"
 
-#: src/src/statistics.cpp:26
+#: src/src/statistics.cpp:18
+msgid "Statistics"
+msgstr "Statystyki"
+
+#: src/src/statistics.cpp:30
 msgid "Statistics - current month"
 msgstr "Statystyki - aktualny miesiąc"
 
-#: src/src/mainwindow.cpp:195
+#: src/src/statistics.cpp:79
+msgid "No data for current month"
+msgstr "Brak danych na ten miesiąc"
+
+#: src/src/mainwindow.cpp:198
 msgid "&Update"
 msgstr "&Aktualizacja"
 
-#: src/src/mainwindow.cpp:198
+#: src/src/mainwindow.cpp:201
 msgid "&Refresh"
 msgstr "&Odśwież"
 
-#: src/src/mainwindow.cpp:198
-msgid "refresh"
-msgstr "refresh"
-
-#: src/src/mainwindow.cpp:207
+#: src/src/mainwindow.cpp:213
 msgid "&Download"
 msgstr "&Pobieranie"
 
-#: src/src/mainwindow.cpp:207
-msgid "download"
-msgstr "download"
-
-#: src/src/mainwindow.cpp:210
+#: src/src/mainwindow.cpp:216
 msgid "&Search"
 msgstr "&Wyszukiwanie"
 
-#: src/src/mainwindow.cpp:210
-msgid "search"
-msgstr "search"
-
-#: src/src/mainwindow.cpp:213
+#: src/src/mainwindow.cpp:219
 msgid "&Update all packages"
 msgstr "&Aktualizacja wszystkich paczek"
 
-#: src/src/mainwindow.cpp:213
-msgid "updateAllPackages"
-msgstr "updateAllPackages"
-
-#: src/src/mainwindow.cpp:216
+#: src/src/mainwindow.cpp:222
 msgid "&Update mirrors"
 msgstr "&Aktualizacja mirrorów"
 
-#: src/src/mainwindow.cpp:216
-msgid "updateMirrors"
-msgstr "updateMirrors"
-
-#: src/src/mainwindow.cpp:219
+#: src/src/mainwindow.cpp:225
 msgid "&Clean"
 msgstr "&Sprzątanie"
 
-#: src/src/mainwindow.cpp:219
-msgid "clean"
-msgstr "clean"
+#: src/src/mainwindow.cpp:228
+msgid "&Sync POLAUR"
+msgstr "&Synchronizacja POLAUR"
 
-#: src/src/mainwindow.cpp:222
+#: src/src/mainwindow.cpp:231
 msgid "&Statistics"
 msgstr "&Statystyki"
-
-#: src/src/mainwindow.cpp:222
-msgid "statistics"
-msgstr "statistics"
 
 #: src/src/updatedpackagescolumn.cpp:88
 msgid "Single AUR/POLAUR packages"
@@ -620,6 +604,27 @@ msgstr "Potwierdzone przez"
 #: src/src/settingsrecords.cpp:37
 msgid "Download Size"
 msgstr "Do pobrania"
+
+#~ msgid "refresh"
+#~ msgstr "refresh"
+
+#~ msgid "download"
+#~ msgstr "download"
+
+#~ msgid "search"
+#~ msgstr "search"
+
+#~ msgid "updateAllPackages"
+#~ msgstr "updateAllPackages"
+
+#~ msgid "updateMirrors"
+#~ msgstr "updateMirrors"
+
+#~ msgid "clean"
+#~ msgstr "clean"
+
+#~ msgid "statistics"
+#~ msgstr "statistics"
 
 #~ msgid "PackageInfo"
 #~ msgstr "PackageInfo"

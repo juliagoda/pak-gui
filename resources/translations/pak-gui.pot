@@ -1,9 +1,21 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
+
 # Copyright (C) 2023
 # This file is distributed under the same license as the pak-gui package.
 # Jagoda "juliagoda" Górska".
 # <juliagoda.pl@protonmail.com>
 # CachyOS.github.com
-
 #: src/src/mainwindowview.cpp:47 src/src/rc.cpp:60 tests/gui/mainwindowtest.cpp:29
 msgid "Internet connection state and auracle-git package presence"
 msgstr "eInternet connection state and auracle-git package presence"
@@ -53,12 +65,8 @@ msgid "Quit"
 msgstr "eQuit"
 
 #: src/src/mainwindowview.cpp:500
-msgid ""
-"Application cannot be closed immediately. Try again after end of running "
-"operations."
-msgstr ""
-"eApplication cannot be closed immediately. Try again after end of running "
-"operations."
+msgid "Application cannot be closed immediately. Try again after end of running operations."
+msgstr "eApplication cannot be closed immediately. Try again after end of running operations."
 
 #: src/src/packageinputwindow.cpp:24
 msgid "Package name is empty"
@@ -68,13 +76,11 @@ msgstr "ePackage name is empty"
 msgid "Package name is not empty"
 msgstr "ePackage name is not empty"
 
-#: src/src/installcommandparser.cpp:16 src/src/rc.cpp:63
-#: src/src/checkcommandparser.cpp:17 tests/gui/mainwindowtest.cpp:21
+#: src/src/installcommandparser.cpp:16 src/src/rc.cpp:63 src/src/checkcommandparser.cpp:17 tests/gui/mainwindowtest.cpp:21
 msgid "AUR"
 msgstr "eAUR"
 
-#: src/src/installcommandparser.cpp:17 src/src/rc.cpp:69
-#: src/src/checkcommandparser.cpp:18 tests/gui/mainwindowtest.cpp:22
+#: src/src/installcommandparser.cpp:17 src/src/rc.cpp:69 src/src/checkcommandparser.cpp:18 tests/gui/mainwindowtest.cpp:22
 msgid "POLAUR"
 msgstr "ePOLAUR"
 
@@ -386,69 +392,53 @@ msgstr "eand installed"
 msgid "Choose package"
 msgstr "eChoose package"
 
-#: src/src/statistics.cpp:26
+#: src/src/statistics.cpp:18
+msgid "Statistics"
+msgstr "eStatistics"
+
+#: src/src/statistics.cpp:30
 msgid "Statistics - current month"
 msgstr "eStatistics - current month"
 
-#: src/src/mainwindow.cpp:195
+#: src/src/statistics.cpp:79
+msgid "No data for current month"
+msgstr "eNo data for current month"
+
+#: src/src/mainwindow.cpp:198
 msgid "&Update"
 msgstr "e&Update"
 
-#: src/src/mainwindow.cpp:198
+#: src/src/mainwindow.cpp:201
 msgid "&Refresh"
 msgstr "e&Refresh"
 
-#: src/src/mainwindow.cpp:198
-msgid "refresh"
-msgstr "erefresh"
-
-#: src/src/mainwindow.cpp:207
+#: src/src/mainwindow.cpp:213
 msgid "&Download"
 msgstr "e&Download"
 
-#: src/src/mainwindow.cpp:207
-msgid "download"
-msgstr "edownload"
-
-#: src/src/mainwindow.cpp:210
+#: src/src/mainwindow.cpp:216
 msgid "&Search"
 msgstr "e&Search"
 
-#: src/src/mainwindow.cpp:210
-msgid "search"
-msgstr "esearch"
-
-#: src/src/mainwindow.cpp:213
+#: src/src/mainwindow.cpp:219
 msgid "&Update all packages"
 msgstr "e&Update all packages"
 
-#: src/src/mainwindow.cpp:213
-msgid "updateAllPackages"
-msgstr "eupdateAllPackages"
-
-#: src/src/mainwindow.cpp:216
+#: src/src/mainwindow.cpp:222
 msgid "&Update mirrors"
 msgstr "e&Update mirrors"
 
-#: src/src/mainwindow.cpp:216
-msgid "updateMirrors"
-msgstr "eupdateMirrors"
-
-#: src/src/mainwindow.cpp:219
+#: src/src/mainwindow.cpp:225
 msgid "&Clean"
 msgstr "e&Clean"
 
-#: src/src/mainwindow.cpp:219
-msgid "clean"
-msgstr "eclean"
+#: src/src/mainwindow.cpp:228
+msgid "&Sync POLAUR"
+msgstr "e&Sync POLAUR"
 
-#: src/src/mainwindow.cpp:222
+#: src/src/mainwindow.cpp:231
 msgid "&Statistics"
 msgstr "e&Statistics"
-
-#: src/src/mainwindow.cpp:222
-msgid "statistics"
-msgstr "estatistics"
 
 #: src/src/updatedpackagescolumn.cpp:88
 msgid "Single AUR/POLAUR packages"

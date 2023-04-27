@@ -11,6 +11,7 @@
 class Statistics : public KMainWindow
 {
     Q_OBJECT
+
 public:
     explicit Statistics(const QMap<QString, uint>& new_statistics_map,
                         QWidget* parent = nullptr);
@@ -26,6 +27,7 @@ private:
     QPointer<QtCharts::QPieSlice> last_pie_slice;
 
     void createSeries(QPointer<QtCharts::QPieSeries>& pie_series);
+    void createAlternateLabel();
 
 };
 

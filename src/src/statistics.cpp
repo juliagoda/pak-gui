@@ -1,7 +1,10 @@
 #include "statistics.h"
 
 #include "logger.h"
+#include "qboxlayout.h"
+#include "qnamespace.h"
 
+#include <KLocalizedString>
 #include <QtCharts>
 
 
@@ -12,6 +15,7 @@ Statistics::Statistics(const QMap<QString, uint>& new_statistics_map,
       last_pie_slice{nullptr}
 {
    init();
+   setWindowTitle(i18n("Statistics"));
 }
 
 
@@ -23,12 +27,20 @@ void Statistics::init()
 
     QPointer<QtCharts::QChart> chart = new QtCharts::QChart();
     chart->addSeries(pie_series);
-    chart->setTitle(tr("Statistics - current month"));
+    chart->setTitle(i18n("Statistics - current month"));
     chart->legend()->hide();
 
     QPointer<QtCharts::QChartView> chartView = new QtCharts::QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
-    setCentralWidget(chartView);
+
+    if (pie_series->count() > 0)
+    {
+        setCentralWidget(chartView);
+        return;
+    }
+
+    createAlternateLabel();
+    delete chartView;
 }
 
 
@@ -57,5 +69,18 @@ void Statistics::createSeries(QPointer<QtCharts::QPieSeries>& pie_series)
        Logger::logger()->logDebug(QStringLiteral("Statistics pie serie - added label \"%1\" and value \"%2\"").arg(pie_label).arg(it.value()));
        pie_series->append(pie_label, it.value());
    }
+}
+
+
+void Statistics::createAlternateLabel()
+{
+   QVBoxLayout* layout = new QVBoxLayout;
+   QLabel* without_data_label = new QLabel;
+   without_data_label->setText(i18n("No data for current month"));
+   without_data_label->setStyleSheet("color: black; font-size: 30px; font-weight: bold;");
+   layout->addWidget(without_data_label, 0, Qt::AlignCenter);
+   QWidget* widget = new QWidget;
+   widget->setLayout(layout);
+   setCentralWidget(widget);
 }
 
