@@ -45,7 +45,7 @@ void Process::run(Process::Task new_task,
 
     Logger::logger()->logDebug(QStringLiteral("Packages in current task: %1").arg(new_checked_packages.join(" ")));
     updateMap(new_checked_packages);
-    emitSideTask(new_task);
+    emitTask(new_task);
     startProcess(new_task);
     prepareMapsForNextTask();
 }
@@ -154,7 +154,7 @@ void Process::prepareMapsForNextTask()
 }
 
 
-void Process::emitSideTask(Task task)
+void Process::emitTask(Task task)
 {
     if (task != Task::Install &&
         task != Task::Uninstall &&
@@ -162,7 +162,10 @@ void Process::emitSideTask(Task task)
         task != Task::UpdateAll)
     {
         emit acceptedTask(task);
+        return;
     }
+
+    emit acceptedMainTask(task);
 }
 
 

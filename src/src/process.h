@@ -49,11 +49,12 @@ signals:
     void finished(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
     void generatedOutput(Process::Task task, const QString& line);
     void acceptedTask(Process::Task);
+    void acceptedMainTask(Process::Task);
 
 private:
     void updateMap(QStringList& checked_packages);
     void prepareMapsForNextTask();
-    void emitSideTask(Process::Task task);
+    void emitTask(Process::Task task);
     QString questionForm(QStringList& new_checked_packages, Task new_task);
     void connectSignals(QSharedPointer<QProcess> &process, Task new_task);
 

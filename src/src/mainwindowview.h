@@ -39,6 +39,7 @@ public:
 public Q_SLOTS:
     void refresh();
     void generatePreview(Process::Task task);
+    void showSingleAnimation(Process::Task task);
     void generateOutput(Process::Task task, const QString& line);
     virtual void showStatisticsWindow();
     virtual void downloadPackage();

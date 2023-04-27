@@ -188,6 +188,7 @@ void MainWindowView::initSignals()
     if (process.isNull())
         return;
 
+    QObject::connect(process.data(), &Process::acceptedMainTask, this, &MainWindowView::showSingleAnimation, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::generatedOutput, this, &MainWindowView::generateOutput, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
     QObject::connect(process.data(), &Process::acceptedTask, [this](){ spinning_animation->startSmallOnWidget(m_ui.actions_spinning_animation_label);  });
@@ -346,6 +347,17 @@ void MainWindowView::checkSpinningVisibility()
                                               m_ui.remove_spinning_label,
                                               m_ui.update_spinning_label);
         Logger::logger()->logInfo(QStringLiteral("Refresh/initialization ended"));
+    }
+}
+
+
+void MainWindowView::showSingleAnimation(Process::Task task)
+{
+    if (Process::Task::UpdateAll == task)
+    {
+        m_ui.packages_to_update_label->setText(i18n("TO UPDATE"));
+        m_ui.update_spinning_widget->show();
+        spinning_animation->startOnWidget(m_ui.update_spinning_label);
     }
 }
 
@@ -522,6 +534,8 @@ void MainWindowView::refresh()
 
 void MainWindowView::startAnimations()
 {
+    m_ui.packages_to_update_label->setText(i18n("TO UPDATE"));
+
     m_ui.remove_spinning_widget->show();
     m_ui.installation_spinning_widget->show();
     m_ui.update_spinning_widget->show();
