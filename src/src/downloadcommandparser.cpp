@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QtConcurrent/QtConcurrent>
 #include <QStringLiteral>
+#include <QDesktopServices>
 
 
 DownloadCommandParser::DownloadCommandParser(const QString& new_package_name,
@@ -33,6 +34,7 @@ void DownloadCommandParser::connectSignals()
         return;
 
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
+    QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::showDirectory);
     QObject::connect(pak_download.get(), &QProcess::errorOccurred, [this]() { Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString())); });
 
     QObject::connect(pak_download.get(), &QProcess::readyReadStandardOutput, [this, directories_line_count]() mutable
@@ -56,22 +58,10 @@ void DownloadCommandParser::processReadLine(QString& line, int& directories_line
     if (errors_regex.exactMatch(filtered_line))
         error_lines.append(filtered_line);
 
-    QRegExp directories_regex{"\\d+\\s+\\D+:\\s+/.*"};
-
-    if (directories_regex.exactMatch(filtered_line))
-        directories_line_count++;
-
-    if (directories_line_count >= 2)
-    {
-        emit continuePathsRetrieve(result_output);
-        result_output.clear();
-    }
-
-    if (result_output.contains(QRegExp("\\s+\\d+\\.\\s+")))
-    {
-        emit continueReposRetrieve(result_output);
-    }
+    processForDirectories(filtered_line, directories_line_count);
+    processForRepos();
 }
+
 
 bool DownloadCommandParser::isPackageAlreadyDownloaded()
 {
@@ -82,12 +72,6 @@ bool DownloadCommandParser::isPackageAlreadyDownloaded()
 void DownloadCommandParser::updatePackageName(const QString& new_package_name)
 {
     package_name = new_package_name;
-}
-
-
-void DownloadCommandParser::updateParameter(const QString& new_command)
-{
-    command = new_command;
 }
 
 
@@ -118,6 +102,12 @@ void DownloadCommandParser::inputAnswer(const QString& new_answer)
 }
 
 
+void DownloadCommandParser::updateDirectoryChoice(int directory_no)
+{
+    directory_no_choice = directory_no;
+}
+
+
 bool DownloadCommandParser::validate()
 {
     if (package_name.isEmpty())
@@ -130,10 +120,65 @@ bool DownloadCommandParser::validate()
 }
 
 
+void DownloadCommandParser::fillDirectoriesMap(const QString& result)
+{
+    auto result_local = result;
+    result_local = OutputFilter::filteredOutput(result_local);
+    QStringList splitted_list{result_local.split(QRegularExpression("\n"))};
+    auto splitted_lines = OutputFilter::filteredLines(splitted_list, OutputFilter::startsFromNumber);
+
+    for (const auto& line : splitted_lines)
+    {
+        addLineToDirectoriesMap(line);
+    }
+}
+
+
+void DownloadCommandParser::addLineToDirectoriesMap(const QString& line)
+{
+    QRegularExpression directory_line_regex("(\\d+)(\\D+:\\s+)(/.*)");
+
+    if (!directory_line_regex.isValid())
+    {
+        Logger::logger()->logDebug("Regex of directory line during package download is invalid!");
+        return;
+    }
+
+    auto match = directory_line_regex.match(line);
+    if (match.hasMatch() && directory_line_regex.captureCount() == 3)
+    {
+        QString full_path_with_package = match.captured(3) + "/" + package_name;
+        directories_map.insert(match.captured(1).toInt(), full_path_with_package);
+    }
+}
+
+void DownloadCommandParser::processForDirectories(const QString& filtered_line, int& directories_line_count)
+{
+    QRegExp directories_regex{"\\d+\\s+\\D+:\\s+/.*"};
+
+    if (directories_regex.exactMatch(filtered_line))
+        directories_line_count++;
+
+    if (directories_line_count >= 2)
+    {
+        emit continuePathsRetrieve(result_output);
+        fillDirectoriesMap(result_output);
+        result_output.clear();
+        directories_line_count = 0;
+    }
+}
+
+void DownloadCommandParser::processForRepos()
+{
+    if (result_output.contains(QRegExp("\\s+\\d+\\.\\s+")))
+        emit continueReposRetrieve(result_output);
+}
+
+
 void DownloadCommandParser::showWarningWhenNameEmpty()
 {
-    QMessageBox::warning(parent, QObject::tr("Package Name"),
-                         QObject::tr("Package name cannot be empty"),
+    QMessageBox::warning(parent, i18n("Package Name"),
+                         i18n("Package name cannot be empty"),
                          QMessageBox::Ok);
     Logger::logger()->logWarning("Given package name for download is empty!");
 }
@@ -158,4 +203,24 @@ bool DownloadCommandParser::validateFinishedOutput(int exit_code)
    QMessageBox::information(parent, i18n("Package download"), i18n("Package %1 has been downloaded %2", package_name, QString::compare(command, "pak -GB") == 0 ? i18n("and installed") : ""));
    Logger::logger()->logWarning(QStringLiteral("Package %1 has been downloaded %2").arg(package_name, QString::compare(command, "pak -GB") == 0 ? i18n("and installed") : ""));
    return true;
+}
+
+
+void DownloadCommandParser::showDirectory(int exit_code)
+{
+   Q_UNUSED(exit_code)
+
+   if (!isPackageAlreadyDownloaded())
+       return;
+
+   const bool isCollectedDataValid = directory_no_choice >= 0 &&
+       directories_map.contains(directory_no_choice);
+
+   if (isCollectedDataValid &&
+       QMessageBox::information(parent, i18n("Directory"),
+       i18n("Do you want to open directory?"),
+       QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+   {
+       QDesktopServices::openUrl(QUrl::fromLocalFile(directories_map.value(directory_no_choice)));
+   }
 }

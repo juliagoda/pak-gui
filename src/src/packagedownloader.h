@@ -34,25 +34,6 @@ public:
 };
 
 
-class AutomaticInstallation : public PackageDownloader
-{
-    Q_OBJECT
-
-public:
-    AutomaticInstallation(QSharedPointer<DownloadCommandParser>& new_download_command_parser,
-                          QWidget* new_parent);
-
-    void handle() override;
-
-protected:
-    virtual QMessageBox::StandardButton chooseDownloadOption();
-
-private:
-    QSharedPointer<DownloadCommandParser> download_command_parser;
-    QWidget* parent;
-};
-
-
 class PackageInput : public PackageDownloader
 {
     Q_OBJECT

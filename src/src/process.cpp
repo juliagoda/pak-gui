@@ -33,7 +33,7 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
     commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << Constants::askPassCommand() + " && pak -m");
     commands_map.insert(Task::UpdateAll, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\ny\" | pak -Su");
     commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << Constants::askPassCommand() + " && pak --vcs");
-    commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << Constants::askPassCommand() + " && pak -Sy");
+    commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -Sy");
 }
 
 

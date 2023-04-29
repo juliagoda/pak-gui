@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QScopedPointer>
 #include <QString>
+#include <QMap>
 
 class DownloadCommandParser : public CommandParser
 {
@@ -15,10 +16,10 @@ public:
     ~DownloadCommandParser() override = default;
 
     void updatePackageName(const QString& new_package_name);
-    void updateParameter(const QString& new_parameter);
     virtual void start();
     QStringList retrieveInfo() override;
     virtual void inputAnswer(const QString& new_answer);
+    void updateDirectoryChoice(int directory_no);
 
 protected:
     virtual void showWarningWhenNameEmpty();
@@ -32,9 +33,17 @@ Q_SIGNALS:
 
 protected Q_SLOTS:
     virtual bool validateFinishedOutput(int exit_code);
+    virtual void showDirectory(int exit_code);
 
 private:
     bool validate();
+    void fillDirectoriesMap(const QString& result);
+    void addLineToDirectoriesMap(const QString& result);
+    void processForDirectories(const QString& filtered_line, int& directories_line_count);
+    void processForRepos();
+
+    using DirectoryNo = int;
+    using DirectoryPath = QString;
 
     QScopedPointer<QProcess> pak_download = QScopedPointer<QProcess>(nullptr);
     QString package_name;
@@ -42,5 +51,7 @@ private:
     QString result_output;
     QStringList error_lines;
     QWidget* parent = nullptr;
+    QMap<DirectoryNo, DirectoryPath> directories_map;
+    int directory_no_choice = -1;
 };
 

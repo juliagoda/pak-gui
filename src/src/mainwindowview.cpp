@@ -401,13 +401,12 @@ void MainWindowView::showStatisticsWindow()
 void MainWindowView::downloadPackage()
 {
     QSharedPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString(), this), &QObject::deleteLater);
-    QPointer<DownloaderWindow> automatic_installation(new AutomaticInstallation(download_command_parser, this));
     QPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser));
     QPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser));
     QPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser));
 
-    automatic_installation->setNext(package_input)->setNext(paths_choice_input)->setNext(repos_choice_input);
-    automatic_installation->handle();
+    package_input->setNext(paths_choice_input)->setNext(repos_choice_input);
+    package_input->handle();
 }
 
 
