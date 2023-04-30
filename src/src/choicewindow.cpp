@@ -21,6 +21,7 @@ ChoiceWindow::ChoiceWindow(const QString& new_title,
     connect(m_ui.choice_combo_box, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ChoiceWindow::toggleOkButton);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentIndex()); }, Qt::AutoConnection);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentText()); }, Qt::AutoConnection);
+    connect(m_ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, [this]() { emit cancelled(); }, Qt::AutoConnection);
 }
 
 

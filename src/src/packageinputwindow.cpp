@@ -14,6 +14,7 @@ PackageInputWindow::PackageInputWindow(QWidget* parent)
     m_ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
     connect(m_ui.package_lineedit, &QLineEdit::textEdited, this, &PackageInputWindow::toggleOkButton);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit packageNameInserted(m_ui.package_lineedit->text()); }, Qt::AutoConnection);
+    connect(m_ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, [this]() { emit cancelled(); }, Qt::AutoConnection);
 }
 
 

@@ -17,6 +17,7 @@ public:
 
     void updatePackageName(const QString& new_package_name);
     virtual void start();
+    virtual void stop();
     QStringList retrieveInfo() override;
     virtual void inputAnswer(const QString& new_answer);
     void updateDirectoryChoice(int directory_no);
@@ -53,5 +54,6 @@ private:
     QWidget* parent = nullptr;
     QMap<DirectoryNo, DirectoryPath> directories_map;
     int directory_no_choice = -1;
+    bool isTerminated = false;
 };
 

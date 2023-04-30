@@ -12,7 +12,7 @@ class DownloaderWindow : public QObject
 {
     Q_OBJECT
 
-public:
+ public:
     virtual QPointer<DownloaderWindow>& setNext(QPointer<DownloaderWindow>& new_window) = 0;
     virtual ~DownloaderWindow() = default;
     virtual void handle() = 0;
@@ -23,10 +23,10 @@ class PackageDownloader : public DownloaderWindow
 {
     Q_OBJECT
 
-private:
+ private:
     QPointer<DownloaderWindow> next_window;
 
-public:
+ public:
     PackageDownloader();
 
     QPointer<DownloaderWindow>& setNext(QPointer<DownloaderWindow>& new_window) override;
@@ -38,12 +38,12 @@ class PackageInput : public PackageDownloader
 {
     Q_OBJECT
 
-public:
+ public:
     PackageInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
     void handle() override;
 
-private:
+ private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
 };
 
@@ -52,12 +52,12 @@ class PathsChoiceInput : public PackageDownloader
 {
     Q_OBJECT
 
-public:
+ public:
     PathsChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
     void handle() override;
 
-private:
+ private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
 };
 
@@ -66,11 +66,11 @@ class ReposChoiceInput : public PackageDownloader
 {
     Q_OBJECT
 
-public:
+ public:
     ReposChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
     void handle() override;
 
-private:
+ private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
 };

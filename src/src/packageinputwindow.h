@@ -20,6 +20,7 @@ private Q_SLOTS:
 
 signals:
     void packageNameInserted(const QString& new_name);
+    void cancelled();
 
 private:
     Ui::PackageInputWindow m_ui;

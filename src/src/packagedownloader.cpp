@@ -43,6 +43,13 @@ void PackageInput::handle()
         PackageDownloader::handle();
     });
 
+    connect(package_input_window.data(), &PackageInputWindow::cancelled,
+        [this, package_input_window]()
+        {
+            download_command_parser->stop();
+            package_input_window->close();
+        });
+
     package_input_window->show();
 }
 
@@ -68,6 +75,13 @@ void PathsChoiceInput::handle()
         PackageDownloader::handle();
     });
 
+    connect(choice_window.data(), &ChoiceWindow::cancelled,
+        [this, choice_window]()
+        {
+            download_command_parser->stop();
+            choice_window->close();
+        });
+
     choice_window->show();
 }
 
@@ -89,6 +103,13 @@ void ReposChoiceInput::handle()
     {
         download_command_parser->inputAnswer(QString::number(new_index));
     });
+
+    connect(choice_window.data(), &ChoiceWindow::cancelled,
+        [this, choice_window]()
+        {
+            download_command_parser->stop();
+            choice_window->close();
+        });
 
     choice_window->show();
 }

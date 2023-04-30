@@ -35,7 +35,10 @@ void DownloadCommandParser::connectSignals()
 
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::showDirectory);
-    QObject::connect(pak_download.get(), &QProcess::errorOccurred, [this]() { Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString())); });
+    QObject::connect(pak_download.get(), &QProcess::errorOccurred, [this]() {
+        if (!isTerminated)
+        Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString()));
+    });
 
     QObject::connect(pak_download.get(), &QProcess::readyReadStandardOutput, [this, directories_line_count]() mutable
     {
@@ -54,9 +57,10 @@ void DownloadCommandParser::processReadLine(QString& line, int& directories_line
     Logger::logger()->writeLineToFile(filtered_line);
     result_output += filtered_line;
 
-    QRegExp errors_regex{"^(?:grep)\\d+:"};
-    if (errors_regex.exactMatch(filtered_line))
-        error_lines.append(filtered_line);
+    QRegularExpression errors_regex{"^([a-z]+:\\s+)(.*)"};
+    QRegularExpressionMatch match = errors_regex.match(filtered_line);
+    if (match.hasMatch())
+        error_lines.append(match.captured(2));
 
     processForDirectories(filtered_line, directories_line_count);
     processForRepos();
@@ -85,6 +89,14 @@ void DownloadCommandParser::start()
     pak_download->start("/bin/bash", QStringList() << "-c" << command + " " + package_name.trimmed());
     pak_download->waitForStarted();
     pak_download->waitForReadyRead();
+}
+
+
+void DownloadCommandParser::stop()
+{
+    Logger::logger()->logInfo(QStringLiteral("Stop of package download"));
+    isTerminated = true;
+    pak_download->terminate();
 }
 
 
@@ -193,6 +205,10 @@ QStringList DownloadCommandParser::retrieveInfo()
 bool DownloadCommandParser::validateFinishedOutput(int exit_code)
 {
    Q_UNUSED(exit_code)
+
+    if (isTerminated)
+       return false;
+
    if (!isPackageAlreadyDownloaded())
    {
        QMessageBox::warning(parent, i18n("Package download failure"), i18n("Package couldn't be downloaded:\n\nError lines:\n%1", error_lines.join("\n")));
@@ -210,7 +226,7 @@ void DownloadCommandParser::showDirectory(int exit_code)
 {
    Q_UNUSED(exit_code)
 
-   if (!isPackageAlreadyDownloaded())
+   if (isTerminated || !isPackageAlreadyDownloaded())
        return;
 
    const bool isCollectedDataValid = directory_no_choice >= 0 &&

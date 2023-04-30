@@ -27,6 +27,7 @@ signals:
     bool choiceDefined(QString choice);
     bool choiceDefined(int new_index);
     void filledOptionsBox();
+    void cancelled();
 
 protected:
     QWeakPointer<SpinningAnimation> retrieveSpinningAnimation();
