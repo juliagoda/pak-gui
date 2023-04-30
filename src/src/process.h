@@ -57,6 +57,9 @@ private:
     void emitTask(Process::Task task);
     QString questionForm(QStringList& new_checked_packages, Task new_task);
     void connectSignals(QSharedPointer<QProcess> &process, Task new_task);
+    bool isNeededAskAboutUpdate(Task new_task);
+    bool getAnswer(Process::Task new_task, QStringList new_checked_packages);
+    void updateCurrentCommandForUpdate(Process::Task new_task, QStringList new_checked_packages);
 
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;

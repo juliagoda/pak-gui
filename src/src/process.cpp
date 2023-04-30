@@ -4,6 +4,7 @@
 #include "actionsaccesschecker.h"
 #include "logger.h"
 #include "defs.h"
+#include "qdebug.h"
 
 #include <KLocalizedString>
 #include <QMessageBox>
@@ -40,11 +41,14 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
 void Process::run(Process::Task new_task,
                   QStringList new_checked_packages)
 {
+    updateMap(new_checked_packages);
     if (!askQuestion(new_task, new_checked_packages))
+    {
+        prepareMapsForNextTask();
         return;
+    }
 
     Logger::logger()->logDebug(QStringLiteral("Packages in current task: %1").arg(new_checked_packages.join(" ")));
-    updateMap(new_checked_packages);
     emitTask(new_task);
     startProcess(new_task);
     prepareMapsForNextTask();
@@ -68,17 +72,16 @@ bool Process::askQuestion(Process::Task new_task,
 {
     messages_map.insert(Task::Uninstall, {i18n("Uninstallation"), i18np("remove package?", "remove packages?", new_checked_packages.count())});
     messages_map.insert(Task::Install, {i18n("Installation"), i18np("install package?", "install packages?", new_checked_packages.count())});
+    messages_map.insert(Task::InstallAfterSearchRepo, {i18n("Installation from Repo"), i18np("install package?", "install packages?", new_checked_packages.count())});
+    messages_map.insert(Task::InstallAfterSearchAUR, {i18n("Installation from AUR"), i18np("install package?", "install packages?", new_checked_packages.count())});
+    messages_map.insert(Task::InstallAfterSearchPOLAUR, {i18n("Installation from POLAUR"), i18np("install package?", "install packages?", new_checked_packages.count())});
     messages_map.insert(Task::Update, {i18n("Update"), i18np("update package?", "update packages?", new_checked_packages.count())});
 
-    int answer = QMessageBox::information(parent, messages_map.value(new_task).first,
-                                          questionForm(new_checked_packages, new_task),
-                                          QMessageBox::Yes | QMessageBox::No);
-
-    if (static_cast<QMessageBox::StandardButton>(answer) == QMessageBox::No)
-    {
-        Logger::logger()->logDebug(QStringLiteral("Question related to task \"%1\" has been cancelled").arg(QVariant::fromValue(new_task).toString()));
+    if (!getAnswer(new_task, new_checked_packages))
         return false;
-    }
+
+    if (isNeededAskAboutUpdate(new_task))
+        updateCurrentCommandForUpdate(new_task, new_checked_packages);
 
     return true;
 }
@@ -124,7 +127,59 @@ void Process::connectSignals(QSharedPointer<QProcess>& process, Process::Task ne
     {
         emit finished(new_task, exit_code, exit_status);
         Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));
-    });
+        });
+}
+
+
+bool Process::isNeededAskAboutUpdate(Task new_task)
+{
+    if (new_task == Task::InstallAfterSearchRepo)
+        return true;
+
+    if (new_task == Task::InstallAfterSearchAUR)
+        return true;
+
+    if (new_task == Task::InstallAfterSearchPOLAUR)
+        return true;
+
+    return false;
+}
+
+
+bool Process::getAnswer(Task new_task, QStringList new_checked_packages)
+{
+    int answer = QMessageBox::information(parent, messages_map.value(new_task).first,
+        questionForm(new_checked_packages, new_task),
+        QMessageBox::Yes | QMessageBox::No);
+
+    if (static_cast<QMessageBox::StandardButton>(answer) == QMessageBox::No)
+    {
+        Logger::logger()->logDebug(QStringLiteral("Question related to task \"%1\" has been cancelled").arg(QVariant::fromValue(new_task).toString()));
+        return false;
+    }
+
+    return true;
+}
+
+
+void Process::updateCurrentCommandForUpdate(Task new_task, QStringList new_checked_packages)
+{
+    const bool accepted = getAnswer(Task::UpdateAll, QStringList());
+    auto command = commands_map.value(new_task);
+    auto last_part = command.at(1);
+    command.pop_back();
+
+    if (accepted)
+    {
+        last_part = last_part.replace(QRegExp("echo -e \"(n|y)\ny\""), "echo -e \"y\ny\"");
+        command.push_back(last_part);
+        commands_map[new_task] = command;
+        return;
+    }
+
+    last_part = last_part.replace(QRegExp("echo -e \"(n|y)\ny\""), "echo -e \"n\ny\"");
+    command.push_back(last_part);
+    commands_map[new_task] = command;
 }
 
 
@@ -133,9 +188,9 @@ void Process::updateMap(QStringList& checked_packages)
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Uninstall, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -R --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Install, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -S --noconfirm " + checked_packages.join(" ") + "\"");
-    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && pak -S " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SA " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SP " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -S " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -SA " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -SP " + checked_packages.join(" "));
 }
 
 
