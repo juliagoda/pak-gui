@@ -55,8 +55,10 @@ void ChoiceWindow::fillComboBox(QString& output)
 
 void ChoiceWindow::fillComboBox(QStringList output_list)
 {
+    for (const auto& it : OutputFilter::filteredOutputFromInstalledPackages(output_list))
+        qDebug() << "it: " << it;
     m_ui.choice_combo_box->clear();
-    m_ui.choice_combo_box->addItems(output_list);
+    m_ui.choice_combo_box->addItems(OutputFilter::filteredOutputFromInstalledPackages(output_list));
     m_ui.choice_combo_box->update();
     emit filledOptionsBox();
 }

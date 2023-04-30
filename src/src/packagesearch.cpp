@@ -52,10 +52,12 @@ void PackageSearchInput::handle()
 
 
 SearchResultsList::SearchResultsList(QSharedPointer<InstallCommandParser>& new_install_command_parser,
-                                     QSharedPointer<Process>& new_process) :
+                                     QSharedPointer<Process>& new_process,
+                                     uint packages_to_update_count) :
     PackageSearch(),
     install_command_parser(new_install_command_parser),
-    process(new_process)
+    process(new_process),
+    packages_to_update(packages_to_update_count)
 {
    // ...
 }
@@ -73,7 +75,7 @@ void SearchResultsList::handle()
     {
         install_command_parser->updateTask(OutputFilter::getSourceFromSearchLine(chosen_package));
         install_command_parser->updatePackageName(OutputFilter::getPackageFromSearchLine(chosen_package));
-        install_command_parser->start(process);
+        install_command_parser->start(process, packages_to_update);
     });
 
     choice_window->show();

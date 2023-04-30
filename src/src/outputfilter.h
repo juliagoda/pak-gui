@@ -12,6 +12,7 @@ public:
     virtual ~OutputFilter() = default;
 
     static QString filteredOutput(QString& text_output);
+    static QStringList filteredOutputFromInstalledPackages(const QStringList& text_output);
     static QString getSourceFromDoubleColon(QString& output_line);
     static QString getSourceFromSearchLine(QString& output_line);
     static QString getPackageFromSearchLine(QString& output_line);

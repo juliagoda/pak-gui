@@ -13,6 +13,7 @@ class UpdatedPackagesColumn : public PackagesColumn
 
 public:
     UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
+    uint getCurrentPackagesCount() const;
     void fill() override;
 
 public Q_SLOTS:
@@ -29,9 +30,9 @@ signals:
     void preparedList(QStringList packages, Process::Task);
 
 private:
-    void updatePackagesCount(int new_current_packages_count);
+    void updatePackagesCount(uint new_current_packages_count);
 
-    int current_packages_count;
+    uint current_packages_count;
     QWidget* parent;
 };
 

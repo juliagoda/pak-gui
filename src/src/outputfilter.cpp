@@ -18,6 +18,24 @@ QString OutputFilter::filteredOutput(QString& text_output)
 }
 
 
+QStringList OutputFilter::filteredOutputFromInstalledPackages(const QStringList& text_output)
+{
+    QStringList output_list;
+    QStringList::const_iterator list_it;
+    QRegularExpression tag{"\\[.*\\]"};
+    for (list_it = text_output.begin(); list_it != text_output.end(); list_it++)
+    {
+        QString list_el = *list_it;
+        qDebug() << "list el: " << list_el;
+        qDebug() << "count tags: " << list_el.count(tag);
+        if (list_el.count(tag) == 1)
+            output_list.append(list_el.trimmed());
+    }
+
+    return output_list;
+}
+
+
 QString OutputFilter::getSourceFromDoubleColon(QString& output_line)
 {
     return output_line.remove(QString("::")).trimmed();
@@ -82,7 +100,7 @@ bool OutputFilter::startsFromDoubleColon(const QString& output_line)
 
 bool OutputFilter::isPackageLine(const QString &output_line)
 {
-    return output_line.contains(QRegExp("^.*/\\S+\\s+\\S+"));
+    return output_line.contains(QRegExp("^.*/\\S+\\s+\\d+\\.\\d+.\\d+.*"));
 }
 
 

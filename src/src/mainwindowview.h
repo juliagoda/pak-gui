@@ -65,7 +65,7 @@ signals:
     void packagesToUpdateFillEnded();
     void hideOnlineActions();
     void startOtherThreads();
-    void packagesToUpdateCountChanged(int packages_count);
+    void packagesToUpdateCountChanged(uint packages_count);
 
 protected:
     Ui::MainWindowView m_ui;

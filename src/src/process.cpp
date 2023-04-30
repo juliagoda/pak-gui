@@ -4,7 +4,6 @@
 #include "actionsaccesschecker.h"
 #include "logger.h"
 #include "defs.h"
-#include "qdebug.h"
 
 #include <KLocalizedString>
 #include <QMessageBox>
@@ -55,6 +54,12 @@ void Process::run(Process::Task new_task,
 }
 
 
+void Process::setPackagesToUpdate(uint packages_to_update_count)
+{
+    packages_to_update = packages_to_update_count;
+}
+
+
 void Process::updateCleanCommand(bool is_auracle_installed)
 {
     QString basic_command = Constants::askPassCommand() + " && echo -e \"y\" | pak -Sc";
@@ -81,7 +86,7 @@ bool Process::askQuestion(Process::Task new_task,
         return false;
 
     if (isNeededAskAboutUpdate(new_task))
-        updateCurrentCommandForUpdate(new_task, new_checked_packages);
+        updateCurrentCommandForUpdate(new_task);
 
     return true;
 }
@@ -162,22 +167,40 @@ bool Process::getAnswer(Task new_task, QStringList new_checked_packages)
 }
 
 
-void Process::updateCurrentCommandForUpdate(Task new_task, QStringList new_checked_packages)
+void Process::updateCurrentCommandForUpdate(Task new_task)
 {
-    const bool accepted = getAnswer(Task::UpdateAll, QStringList());
     auto command = commands_map.value(new_task);
-    auto last_part = command.at(1);
-    command.pop_back();
 
-    if (accepted)
+    if (command.count() < 2)
     {
-        last_part = last_part.replace(QRegExp("echo -e \"(n|y)\ny\""), "echo -e \"y\ny\"");
-        command.push_back(last_part);
-        commands_map[new_task] = command;
+        Logger::logger()->logWarning(QStringLiteral("Command form for current task is incorrect"));
         return;
     }
 
-    last_part = last_part.replace(QRegExp("echo -e \"(n|y)\ny\""), "echo -e \"n\ny\"");
+    if (packages_to_update == 0)
+    {
+        replaceAutoAcceptationForTask(new_task, "echo -e \"y\"");
+        return;
+    }
+
+    const bool accepted = getAnswer(Task::UpdateAll, QStringList());
+
+    if (accepted)
+    {
+        replaceAutoAcceptationForTask(new_task, "echo -e \"y\ny\"");
+        return;
+    }
+
+    replaceAutoAcceptationForTask(new_task, "echo -e \"n\ny\"");
+}
+
+
+void Process::replaceAutoAcceptationForTask(Task new_task, const QString& acceptation_form)
+{
+    auto command = commands_map.value(new_task);
+    auto last_part = command.at(1);
+    last_part = last_part.replace(QRegExp("echo -e \"(n|y)\ny\""), acceptation_form);
+    command.pop_back();
     command.push_back(last_part);
     commands_map[new_task] = command;
 }

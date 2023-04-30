@@ -21,7 +21,7 @@ void SystemTray::setup(QWidget* parent)
 }
 
 
-void SystemTray::update(int packages_count)
+void SystemTray::update(uint packages_count)
 {
     changeStatusToDefault();
 

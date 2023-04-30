@@ -57,11 +57,13 @@ class SearchResultsList : public PackageSearch
 
 public:
     SearchResultsList(QSharedPointer<InstallCommandParser>& new_install_command_parser,
-                      QSharedPointer<Process>& new_process);
+                      QSharedPointer<Process>& new_process,
+                      uint packages_to_update_count);
 
     void handle() override;
 
 private:
     QSharedPointer<InstallCommandParser> install_command_parser;
     QSharedPointer<Process> process;
+    uint packages_to_update;
 };

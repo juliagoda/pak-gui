@@ -49,7 +49,9 @@ QStringList InstallCommandParser::retrieveInfo()
 }
 
 
-void InstallCommandParser::start(QSharedPointer<Process>& process)
+void InstallCommandParser::start(QSharedPointer<Process>& process,
+                                 uint packages_to_update)
 {
+    process->setPackagesToUpdate(packages_to_update);
     process->run(current_task, QStringList() << package_name);
 }

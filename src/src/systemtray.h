@@ -15,7 +15,7 @@ public:
     ~SystemTray() override = default;
 
 public Q_SLOTS:
-    void update(int packages_count);
+    void update(uint packages_count);
 
 protected:
     void changeStatusToDefault();

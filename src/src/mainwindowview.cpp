@@ -414,7 +414,7 @@ void MainWindowView::searchPackage()
 {
     QSharedPointer<InstallCommandParser> search_command_parser(new InstallCommandParser(), &QObject::deleteLater);
     QPointer<SearchWindow> package_input(new PackageSearchInput(search_command_parser));
-    QPointer<SearchWindow> search_results_list(new SearchResultsList(search_command_parser, process));
+    QPointer<SearchWindow> search_results_list(new SearchResultsList(search_command_parser, process, updated_packages_column->getCurrentPackagesCount()));
 
     package_input->setNext(search_results_list);
     package_input->handle();

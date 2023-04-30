@@ -36,6 +36,7 @@ public:
     ~Process() override = default;
 
     void run(Task new_task, QStringList new_checked_packages = QStringList());
+    void setPackagesToUpdate(uint packages_to_update_count);
 
 protected:
     virtual void startProcess(Task new_task);
@@ -59,10 +60,13 @@ private:
     void connectSignals(QSharedPointer<QProcess> &process, Task new_task);
     bool isNeededAskAboutUpdate(Task new_task);
     bool getAnswer(Process::Task new_task, QStringList new_checked_packages);
-    void updateCurrentCommandForUpdate(Process::Task new_task, QStringList new_checked_packages);
+    void updateCurrentCommandForUpdate(Process::Task new_task);
+    void replaceAutoAcceptationForTask(Task new_task,
+        const QString& acceptation_form);
 
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;
+    uint packages_to_update = 0;
     QWidget* parent;
 };
 

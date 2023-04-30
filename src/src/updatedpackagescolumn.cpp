@@ -23,7 +23,13 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
     QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
                      &Sorter::sortPackagesToUpdateByText);
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
-                     &Sorter::sortPackagesToUpdateByText);
+        &Sorter::sortPackagesToUpdateByText);
+}
+
+
+uint UpdatedPackagesColumn::getCurrentPackagesCount() const
+{
+    return current_packages_count;
 }
 
 
@@ -111,7 +117,7 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
 }
 
 
-void UpdatedPackagesColumn::updatePackagesCount(int new_current_packages_count)
+void UpdatedPackagesColumn::updatePackagesCount(uint new_current_packages_count)
 {
     if (current_packages_count != new_current_packages_count)
         emit currentPackagesCountChanged(new_current_packages_count);
