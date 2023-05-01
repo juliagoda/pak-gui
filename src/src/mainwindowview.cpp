@@ -41,7 +41,7 @@ MainWindowView::MainWindowView(QWidget *parent)
       process(nullptr),
       actions_access_checker(nullptr),
       internet_connection_timer(new QTimer(this)),
-      is_operation_running(false)
+      is_operation_running(true)
 {
     m_ui.setupUi(this);
     m_ui.aur_led_label->setToolTip(i18n("Internet connection state and auracle-git package presence"));
@@ -313,7 +313,6 @@ void MainWindowView::connectSignalsForInstalledPackages()
 
 void MainWindowView::connectSignalsForUpdatedPackages()
 {
-
     if (m_ui.packages_to_update_list->count() > 0)
         m_ui.packages_to_update_list->show();
 
@@ -477,7 +476,6 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
 
 void MainWindowView::checkUpdates()
 {
-   is_operation_running = true;
    Logger::logger()->logInfo(QStringLiteral("Start check updates - %1").arg(QDateTime::currentDateTime().toString()));
 
    updated_packages_column.data()->clear();
@@ -487,13 +485,19 @@ void MainWindowView::checkUpdates()
    m_ui.packages_to_update_list->hide();
    m_ui.search_packages_to_update_checkbox->setEnabled(false);
    m_ui.check_all_updates_checkbox->setEnabled(false);
-   QObject::connect(updated_packages_thread, &QThread::started, [this]() { updated_packages_column->fill(); emit packagesToUpdateFillEnded(); });
+   QObject::connect(updated_packages_thread, &QThread::started, [this]() {
+       updated_packages_column->fill();
+       emit packagesToUpdateFillEnded(); });
    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
 
-   QObject::connect(this, &MainWindowView::startOtherThreads, [updated_packages_thread]()
-   {
-       updated_packages_thread->start(QThread::TimeCriticalPriority);
-   });
+   QObject::connect(this, &MainWindowView::startOtherThreads, [updated_packages_thread, this]()
+    {
+        is_operation_running = true;
+        updated_packages_thread->start(QThread::TimeCriticalPriority);
+    });
+
+   if (!is_operation_running)
+        updated_packages_thread->start(QThread::TimeCriticalPriority);
 }
 
 

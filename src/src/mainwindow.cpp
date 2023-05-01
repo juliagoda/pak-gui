@@ -131,6 +131,8 @@ void MainWindow::startTimerOnOperation(const QDateTime& time, QTimer& timer,
 
     qint64 time_passed_in_milliseconds = time.msecsTo(QDateTime::currentDateTime());
     qint64 rest_time = time_limit_in_milliseconds - time_passed_in_milliseconds;
+    qDebug() << "time_passed: " << time_passed_in_milliseconds; //
+    qDebug() << "rest time: " << rest_time; //
 
     if (time_passed_in_milliseconds > time_limit_in_milliseconds)
     {
