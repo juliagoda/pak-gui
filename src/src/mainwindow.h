@@ -72,4 +72,6 @@ private:
                    QString icon,
                    QKeySequence key_sequence);
 
+    bool initEnded = false;
+
 };

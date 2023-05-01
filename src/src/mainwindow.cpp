@@ -203,13 +203,15 @@ void MainWindow::initSignals()
 
     connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
     connect(main_window_view, &MainWindowView::initEnded, this, &MainWindow::enableActions);
+    connect(main_window_view, &MainWindowView::initStarted, this, [this](){ initEnded = false; });
+    connect(main_window_view, &MainWindowView::initEnded, this, [this](){ initEnded = true; });
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
     connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
     connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed) {
-        update_mirrors_action->setEnabled(is_installed); });
+        update_mirrors_action->setEnabled(initEnded && is_installed); });
 
     connect(actions_access_checker.get(), &ActionsAccessChecker::gitAccessChanged, [this](bool is_installed) {
-        sync_polaur_action->setEnabled(is_installed); });
+        sync_polaur_action->setEnabled(initEnded && is_installed); });
 
     setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
     connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
@@ -245,11 +247,9 @@ void MainWindow::enableActions()
     refresh_action->setDisabled(false);
     download_action->setDisabled(false);
     update_all_action->setDisabled(false);
-    update_mirrors_action->setDisabled(false);
     clean_action->setDisabled(false);
     print_statistics_action->setDisabled(false);
     search_action->setDisabled(false);
-    sync_polaur_action->setDisabled(false);
 }
 
 

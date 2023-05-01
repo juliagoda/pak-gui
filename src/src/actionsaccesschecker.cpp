@@ -137,8 +137,8 @@ void ActionsAccessChecker::emitSignals()
 {
     emit aspAccessChanged(is_asp_installed);
     emit auracleAccessChanged(is_auracle_installed);
-    emit reflectorAccessChanged(is_reflector_installed);
-    emit gitAccessChanged(is_git_installed);
+    emit reflectorAccessChanged(is_online && is_reflector_installed);
+    emit gitAccessChanged(is_online && is_git_installed);
 }
 
 
