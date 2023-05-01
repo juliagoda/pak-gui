@@ -21,8 +21,9 @@ MainWindow::MainWindow()
     : KXmlGuiWindow(),
       actions_access_checker(ActionsAccessChecker::actionsAccessChecker(this))
 {
-
+    // ...
 }
+
 
 MainWindow::~MainWindow()
 {

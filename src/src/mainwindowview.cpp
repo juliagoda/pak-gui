@@ -524,6 +524,9 @@ void MainWindowView::checkRunningThreadsBeforeQuit()
 
 void MainWindowView::refresh()
 {
+    if (is_operation_running)
+        return;
+
     is_operation_running = true;
     hideWidgets();
     emit initStarted();

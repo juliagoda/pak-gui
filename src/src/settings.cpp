@@ -95,8 +95,12 @@ void Settings::loadPackagesInfoSettings()
 {
     packages_info_settings.packages_info_selector->availableListWidget()->clear();
     packages_info_settings.packages_info_selector->selectedListWidget()->clear();
-    packages_info_settings.packages_info_selector->availableListWidget()->addItems(settings_records->packagesInfoAvailableStringList());
-    packages_info_settings.packages_info_selector->selectedListWidget()->addItems(settings_records->packagesInfoSelectedStringList());
+    auto available_list = settings_records->packagesInfoAvailableStringList();
+    available_list.removeDuplicates();
+    auto selected_list = settings_records->packagesInfoSelectedStringList();
+    selected_list.removeDuplicates();
+    packages_info_settings.packages_info_selector->availableListWidget()->addItems(available_list);
+    packages_info_settings.packages_info_selector->selectedListWidget()->addItems(selected_list);
 }
 
 
@@ -132,8 +136,12 @@ void Settings::enableButtons()
 void Settings::updateAvailableInfoList()
 {
     QStringList available_info_list = QStringList();
-    for(const auto& available_item : packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard))
-        available_info_list.append(available_item->text());
+    for (const auto& available_item : packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard))
+    {
+        if (!available_info_list.contains(available_item->text()))
+            available_info_list.append(available_item->text());
+    }
+
     settings_records->setAvailablePackageInfo(available_info_list);
 }
 
@@ -141,8 +149,12 @@ void Settings::updateAvailableInfoList()
 void Settings::updateSelectedInfoList()
 {
     QStringList selected_info_list = QStringList();
-    for(const auto& selected_item : packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard))
-        selected_info_list.append(selected_item->text());
+    for (const auto& selected_item : packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard))
+    {
+        if (!selected_info_list.contains(selected_item->text()))
+            selected_info_list.append(selected_item->text());
+    }
+
     settings_records->setSelectedPackageInfo(selected_info_list);
     Logger::logger()->logDebug(QStringLiteral("selected packages info saved: %1").arg(selected_info_list.join(", ")));
 }

@@ -15,7 +15,7 @@ QMutex Sorter::mutex;
 
 Sorter::Sorter(QListWidget* list_widgets) :
     list_widget(list_widgets),
-    untouched_list_widget(new QListWidget, &QObject::deleteLater)
+    untouched_list_widget(new QListWidget)
 {
    // ...
 }
@@ -115,7 +115,7 @@ void Sorter::showInfo()
 
 void Sorter::clear()
 {
-    while(list_widget->count() > 0)
+    while (list_widget->count() > 0)
     {
         if (list_widget->item(0))
             list_widget->takeItem(0);
@@ -125,11 +125,17 @@ void Sorter::clear()
 
 void Sorter::updateOriginalList(int index, Package* package)
 {
+    if (untouched_list_widget.isNull())
+        untouched_list_widget.reset(new QListWidget);
+
     untouched_list_widget->insertItem(index, package);
 }
 
 
 void Sorter::resetOriginalList()
 {
-    untouched_list_widget->clear();
+    if (untouched_list_widget.isNull() || untouched_list_widget->count() == 0)
+        return;
+
+    untouched_list_widget.clear();
 }
