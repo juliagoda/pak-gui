@@ -64,7 +64,7 @@ void ActionsAccessChecker::checkRequiredPackages()
 {
     findRequiredPackages();
     is_asp_installed = findPackage(Constants::aspExecFile());
-    is_auracle_installed = findPackage(Constants::auracleGitExecFile());
+    is_auracle_installed = existsPackageByPromptVersion(Constants::auracleGit());
     is_reflector_installed = findPackage(Constants::reflectorExecFile());
     is_git_installed = findPackage(Constants::gitExecFile());
     emitSignals();
@@ -139,6 +139,23 @@ void ActionsAccessChecker::emitSignals()
     emit auracleAccessChanged(is_auracle_installed);
     emit reflectorAccessChanged(is_reflector_installed);
     emit gitAccessChanged(is_git_installed);
+}
+
+
+bool ActionsAccessChecker::existsPackageByPromptVersion(const QString& package_name)
+{
+    QScopedPointer<QProcess> pak_download;
+    pak_download.reset(new QProcess);
+    pak_download->setProcessChannelMode(QProcess::MergedChannels);
+
+    if (pak_download.isNull())
+        return false;
+
+    pak_download->start("/bin/bash", QStringList() << "-c" << package_name.trimmed() + " --version");
+    pak_download->waitForStarted();
+    pak_download->waitForFinished();
+    auto result = QString::fromUtf8(pak_download->readAll());
+    return result.contains(QRegExp(package_name + "\\s+\\d+.*"));
 }
 
 

@@ -40,6 +40,7 @@ protected:
     void findRequiredPackages();
     void updateIsOnline(bool new_is_online);
     void emitSignals();
+    bool existsPackageByPromptVersion(const QString& package_name);
 
     virtual bool checkNetworkInterfaces() const;
     bool findPackage(const QString& package_name);

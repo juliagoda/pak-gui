@@ -24,7 +24,7 @@ public:
     static QString aspExecFile();
     static QString gitExecFile();
     static QString reflectorExecFile();
-    static QString auracleGitExecFile();
+    static QString auracleGit();
 
     static QString askPassCommand();
     static QMap<Process::Task, Logger::WriteOperations> taskToWriteOperationMap();

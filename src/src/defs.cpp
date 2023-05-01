@@ -79,9 +79,9 @@ QString Constants::reflectorExecFile()
 }
 
 
-QString Constants::auracleGitExecFile()
+QString Constants::auracleGit()
 {
-    return "auracle-git";
+    return "auracle";
 }
 
 
