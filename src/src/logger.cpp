@@ -135,10 +135,10 @@ void Logger::clearLogsFile()
     return;
 #endif
 
-    Logger::logger()->logInfo(QStringLiteral("Clear logs file - %1").arg(QDateTime::currentDateTime().toString()));
+    qInfo() << "[INFO] " << QStringLiteral("Clear logs file - %1").arg(QDateTime::currentDateTime().toString());
 
     if (!logs_file.resize(0))
-        logWarning(QStringLiteral("Logs file couldn't be removed: %1").arg(logs_file.errorString()));
+        qWarning() << "[WARNING] " << QStringLiteral("Logs file couldn't be removed: %1").arg(logs_file.errorString());
 }
 
 
@@ -180,7 +180,7 @@ void Logger::logIntoFile(const QString& section, const QString& text)
     if (!logs_file.exists())
         reopenFile();
 
-    write_mutex.lock();
+    write_mutex.tryLock();
     resizeFileSizeNotWithinRange();
     output_stream << streamTextResult();
     clearStreamText();
@@ -234,13 +234,13 @@ void Logger::resizeFileSizeNotWithinRange()
     if (size_limit == 0)
         return;
 
-    int preferredBytes{SizeConverter::megabytesToBytes(size_limit)};
+    int preferred_bytes{SizeConverter::megabytesToBytes(size_limit)};
     bool is_file_too_big{SizeConverter::bytesToMegabytes(logs_file.size()) > size_limit};
 
     if (is_file_too_big && !Settings::records()->overwriteFullHistoryFile())
     {
-        logs_file.seek(logs_file.size() - preferredBytes);
-        QByteArray last_bytes{logs_file.read(preferredBytes)};
+        logs_file.seek(logs_file.size() - preferred_bytes);
+        QByteArray last_bytes{logs_file.read(preferred_bytes)};
         logs_file.resize(0);
         output_stream << last_bytes;
     }
@@ -269,7 +269,7 @@ bool Logger::validate()
 
 void Logger::writeToStream()
 {
-    write_mutex.lock();
+    write_mutex.tryLock();
     output_stream << streamTextResult();
     clearStreamText();
     write_mutex.unlock();
