@@ -1,6 +1,7 @@
 #include "choicewindow.h"
 
 #include "outputfilter.h"
+#include "qnamespace.h"
 
 #include <QPushButton>
 #include <QDialogButtonBox>
@@ -18,6 +19,7 @@ ChoiceWindow::ChoiceWindow(const QString& new_title,
 
     m_ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
     connect(this, &ChoiceWindow::filledOptionsBox, this, [this]() { spinning_animation->stopSmallOnWidget(m_ui.spinning_animation_label); });
+    connect(this, &ChoiceWindow::filledOptionsBox, this, &ChoiceWindow::showNoResults);
     connect(m_ui.choice_combo_box, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ChoiceWindow::toggleOkButton);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentIndex()); }, Qt::AutoConnection);
     connect(m_ui.buttonBox, &QDialogButtonBox::accepted, this, [this]() { emit choiceDefined(m_ui.choice_combo_box->currentText()); }, Qt::AutoConnection);
@@ -55,12 +57,22 @@ void ChoiceWindow::fillComboBox(QString& output)
 
 void ChoiceWindow::fillComboBox(QStringList output_list)
 {
-    for (const auto& it : OutputFilter::filteredOutputFromInstalledPackages(output_list))
-        qDebug() << "it: " << it;
     m_ui.choice_combo_box->clear();
     m_ui.choice_combo_box->addItems(OutputFilter::filteredOutputFromInstalledPackages(output_list));
     m_ui.choice_combo_box->update();
     emit filledOptionsBox();
+}
+
+
+void ChoiceWindow::showNoResults()
+{
+    if (m_ui.choice_combo_box->count() > 0)
+    {
+        m_ui.no_results_label->setHidden(true);
+        return;
+    }
+
+    m_ui.no_results_label->setHidden(false);
 }
 
 
@@ -72,6 +84,8 @@ QWeakPointer<SpinningAnimation> ChoiceWindow::retrieveSpinningAnimation()
 
 void ChoiceWindow::init()
 {
+    m_ui.no_results_label->setAlignment(Qt::AlignCenter);
+    m_ui.no_results_label->setHidden(true);
     spinning_animation->startSmallOnWidget(m_ui.spinning_animation_label);
     m_ui.choice_label->setText(title);
 }

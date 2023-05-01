@@ -11,6 +11,9 @@
 #include <QProcess>
 
 
+class PackageInputWindow;
+
+
 class SearchWindow : public QObject
 {
     Q_OBJECT
@@ -46,8 +49,12 @@ public:
 
     void handle() override;
 
+public Q_SLOTS:
+    void closeWindow();
+
 private:
     QSharedPointer<InstallCommandParser> install_command_parser;
+    QPointer<PackageInputWindow> package_input_window;
 };
 
 
@@ -61,6 +68,9 @@ public:
                       uint packages_to_update_count);
 
     void handle() override;
+
+signals:
+    void acceptedChoice();
 
 private:
     QSharedPointer<InstallCommandParser> install_command_parser;

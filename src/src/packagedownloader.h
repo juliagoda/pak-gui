@@ -8,6 +8,8 @@
 #include <QMessageBox>
 
 
+class PackageInputWindow;
+
 class DownloaderWindow : public QObject
 {
     Q_OBJECT
@@ -43,7 +45,11 @@ class PackageInput : public PackageDownloader
 
     void handle() override;
 
+ public slots:
+    void closeWindow();
+
  private:
+    QPointer<PackageInputWindow> package_input_window;
     QSharedPointer<DownloadCommandParser> download_command_parser;
 };
 
@@ -70,6 +76,9 @@ class ReposChoiceInput : public PackageDownloader
     ReposChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
     void handle() override;
+
+ signals:
+    void acceptedChoice();
 
  private:
     QSharedPointer<DownloadCommandParser> download_command_parser;

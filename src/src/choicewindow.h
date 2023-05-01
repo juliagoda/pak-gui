@@ -23,6 +23,9 @@ public Q_SLOTS:
     void fillComboBox(QString& output);
     void fillComboBox(QStringList output_list);
 
+protected Q_SLOTS:
+    void showNoResults();
+
 signals:
     bool choiceDefined(QString choice);
     bool choiceDefined(int new_index);
@@ -34,6 +37,7 @@ protected:
     void init();
     Ui::ChoiceWindow* retrieveUi();
     void clearComboBox();
+
 
 private:
     Ui::ChoiceWindow m_ui;

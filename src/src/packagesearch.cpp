@@ -9,7 +9,7 @@
 PackageSearch::PackageSearch() :
     next_window(nullptr)
 {
-
+    // ...
 }
 
 
@@ -30,15 +30,16 @@ void PackageSearch::handle()
 
 PackageSearchInput::PackageSearchInput(QSharedPointer<InstallCommandParser>& new_install_command_parser) :
     PackageSearch(),
-    install_command_parser(new_install_command_parser)
+    install_command_parser(new_install_command_parser),
+    package_input_window(nullptr)
 {
-
+    // ...
 }
 
 
 void PackageSearchInput::handle()
 {
-    QPointer<PackageInputWindow> package_input_window = new PackageInputWindow();
+    package_input_window = new PackageInputWindow();
     connect(package_input_window.data(), &PackageInputWindow::packageNameInserted,
             [this](const QString& new_package_name)
     {
@@ -49,6 +50,12 @@ void PackageSearchInput::handle()
     package_input_window->show();
 }
 
+
+void PackageSearchInput::closeWindow()
+{
+    if (!package_input_window.isNull())
+        package_input_window->close();
+}
 
 
 SearchResultsList::SearchResultsList(QSharedPointer<InstallCommandParser>& new_install_command_parser,
@@ -73,6 +80,7 @@ void SearchResultsList::handle()
     search_all_command_parser->retrieveInfo();
     connect(choice_window, QOverload<QString>::of(&ChoiceWindow::choiceDefined), [this](QString chosen_package)
     {
+        emit acceptedChoice();
         install_command_parser->updateTask(OutputFilter::getSourceFromSearchLine(chosen_package));
         install_command_parser->updatePackageName(OutputFilter::getPackageFromSearchLine(chosen_package));
         install_command_parser->start(process, packages_to_update);

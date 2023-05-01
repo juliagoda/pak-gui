@@ -19,6 +19,10 @@ public:
 
     virtual QStringList retrieveInfo() override;
 
+protected Q_SLOTS:
+    void finishProcess(int exit_code, QProcess::ExitStatus exit_status);
+    void showError(const QString& errorString);
+
 signals:
     void searchEnded(QStringList results);
 

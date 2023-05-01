@@ -27,6 +27,7 @@ void PackageDownloader::handle()
 
 PackageInput::PackageInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
     PackageDownloader(),
+    package_input_window(nullptr),
     download_command_parser(new_download_command_parser)
 {
    // ...
@@ -35,7 +36,7 @@ PackageInput::PackageInput(QSharedPointer<DownloadCommandParser>& new_download_c
 
 void PackageInput::handle()
 {
-    QPointer<PackageInputWindow> package_input_window = new PackageInputWindow();
+    package_input_window = new PackageInputWindow();
     connect(package_input_window.data(), &PackageInputWindow::packageNameInserted,
             [this](const QString& new_package_name)
     {
@@ -44,13 +45,20 @@ void PackageInput::handle()
     });
 
     connect(package_input_window.data(), &PackageInputWindow::cancelled,
-        [this, package_input_window]()
+        [this]()
         {
             download_command_parser->stop();
             package_input_window->close();
         });
 
     package_input_window->show();
+}
+
+
+void PackageInput::closeWindow()
+{
+    if (!package_input_window.isNull())
+        package_input_window->close();
 }
 
 
@@ -101,6 +109,7 @@ void ReposChoiceInput::handle()
             QOverload<QString&>::of(&ChoiceWindow::fillComboBox));
     connect(choice_window.data(), QOverload<int>::of(&ChoiceWindow::choiceDefined), [this](int new_index)
     {
+        emit acceptedChoice();
         download_command_parser->inputAnswer(QString::number(new_index));
     });
 
