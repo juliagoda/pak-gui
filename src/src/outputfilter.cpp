@@ -102,3 +102,9 @@ bool OutputFilter::isPackageLine(const QString &output_line)
 }
 
 
+bool OutputFilter::isCheckWarningLine(const QString& output_line)
+{
+    return output_line.count(':') >= 2 && output_line.contains(QRegExp("\\(.*=>.*\\)"));
+}
+
+

@@ -11,7 +11,11 @@ QStringList QiCommandParser::retrieveInfo()
 {
     QString output = generateResult();
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckInstalled);
-    return output.split(QRegularExpression("\n\n"));
+    auto list = output.split(QRegularExpression("\n\n"));
+    if (list.last().trimmed().isEmpty())
+        list.pop_back();
+
+    return list;
 }
 
 

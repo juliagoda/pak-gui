@@ -20,6 +20,7 @@ public:
     static bool startsFromNumber(const QString& output_line);
     static bool startsFromDoubleColon(const QString& output_line);
     static bool isPackageLine(const QString& output_line);
+    static bool isCheckWarningLine(const QString& output_line);
 
 private:
     static QList<QRegExp> initializeList();

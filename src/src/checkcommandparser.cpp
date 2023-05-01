@@ -41,7 +41,7 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
         if (finishProcessBeforeEnd(starts_from_double_colon, double_colon_line_count))
             break;
 
-        if (line.contains("=>"))
+        if (line.contains("=>") && !OutputFilter::isCheckWarningLine(filtered_line))
            system_packages.insert(filtered_line, line_to_source_map.value(double_colon_line_count));
     }
 
