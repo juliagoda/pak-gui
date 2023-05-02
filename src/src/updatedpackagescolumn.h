@@ -12,7 +12,10 @@ class UpdatedPackagesColumn : public PackagesColumn
     Q_OBJECT
 
 public:
-    UpdatedPackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent);
+    UpdatedPackagesColumn(QListWidget* new_list_widget,
+                          QLineEdit* new_search_lineedit,
+                          QCheckBox* new_reverse_sort_checkbox,
+                          QWidget* new_parent);
     uint getCurrentPackagesCount() const;
     void fill() override;
 

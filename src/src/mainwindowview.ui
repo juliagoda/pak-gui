@@ -109,7 +109,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
+            <y>-59</y>
             <width>260</width>
             <height>702</height>
            </rect>
@@ -1100,8 +1100,8 @@ padding: 3px;</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>476</x>
-     <y>598</y>
+     <x>468</x>
+     <y>558</y>
     </hint>
     <hint type="destinationlabel">
      <x>341</x>
@@ -1116,8 +1116,8 @@ padding: 3px;</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>491</x>
-     <y>593</y>
+     <x>468</x>
+     <y>558</y>
     </hint>
     <hint type="destinationlabel">
      <x>464</x>
@@ -1132,8 +1132,8 @@ padding: 3px;</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>595</y>
+     <x>834</x>
+     <y>558</y>
     </hint>
     <hint type="destinationlabel">
      <x>642</x>
@@ -1148,8 +1148,8 @@ padding: 3px;</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>778</x>
-     <y>589</y>
+     <x>834</x>
+     <y>558</y>
     </hint>
     <hint type="destinationlabel">
      <x>768</x>
@@ -1164,8 +1164,8 @@ padding: 3px;</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>211</x>
-     <y>604</y>
+     <x>256</x>
+     <y>715</y>
     </hint>
     <hint type="destinationlabel">
      <x>210</x>
@@ -1180,8 +1180,8 @@ padding: 3px;</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>171</x>
-     <y>603</y>
+     <x>256</x>
+     <y>715</y>
     </hint>
     <hint type="destinationlabel">
      <x>65</x>

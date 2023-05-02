@@ -147,6 +147,9 @@ bool Process::isNeededAskAboutUpdate(Task new_task)
     if (new_task == Task::InstallAfterSearchPOLAUR)
         return true;
 
+    if (new_task == Task::Install)
+        return true;
+
     return false;
 }
 
@@ -210,7 +213,7 @@ void Process::updateMap(QStringList& checked_packages)
 {
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Uninstall, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -R --noconfirm " + checked_packages.join(" ") + "\"");
-    commands_map.insert(Task::Install, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -S --noconfirm " + checked_packages.join(" ") + "\"");
+    commands_map.insert(Task::Install, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -S " + checked_packages.join(" "));
     commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -S " + checked_packages.join(" "));
     commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -SA " + checked_packages.join(" "));
     commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -SP " + checked_packages.join(" "));

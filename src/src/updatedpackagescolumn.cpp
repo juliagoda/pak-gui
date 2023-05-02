@@ -12,8 +12,9 @@
 
 UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
                                              QLineEdit* new_search_lineedit,
+                                             QCheckBox* new_reverse_sort_checkbox,
                                              QWidget* new_parent) :
-    PackagesColumn(new_list_widget, new_search_lineedit, new_parent),
+    PackagesColumn(new_list_widget, new_search_lineedit, new_reverse_sort_checkbox, new_parent),
     current_packages_count(0),
     parent(new_parent)
 {

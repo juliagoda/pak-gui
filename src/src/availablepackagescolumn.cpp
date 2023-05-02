@@ -12,8 +12,11 @@
 #include <QDebug>
 
 
-AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget, QLineEdit* new_search_lineedit, QWidget* new_parent) :
-    PackagesColumn(new_list_widget, new_search_lineedit, new_parent)
+AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget,
+                                                 QLineEdit* new_search_lineedit,
+                                                 QCheckBox* new_reverse_sort_checkbox,
+                                                 QWidget* new_parent) :
+    PackagesColumn(new_list_widget, new_search_lineedit, new_reverse_sort_checkbox, new_parent)
 {
     if (!search_lineedit)
         return;

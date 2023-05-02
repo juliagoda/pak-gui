@@ -13,8 +13,10 @@
 
 QMutex Sorter::mutex;
 
-Sorter::Sorter(QListWidget* list_widgets) :
+Sorter::Sorter(QListWidget* list_widgets,
+               QCheckBox* new_reverse_sort_checkbox) :
     list_widget(list_widgets),
+    reverse_sort_checkbox(new_reverse_sort_checkbox),
     untouched_list_widget(new QListWidget)
 {
    // ...
@@ -73,6 +75,9 @@ void Sorter::sortAvailablePackagesByText(const QString &text)
         list_widget->addItem(new SiPackage(*item));
     }
 
+    if (reverse_sort_checkbox->checkState() == Qt::Checked)
+        sortReverse();
+
     showInfo();
 }
 
@@ -88,6 +93,9 @@ void Sorter::sortInstalledPackagesByText(const QString &text)
         QiPackage* item = dynamic_cast<QiPackage*>(*widgets_it);
         list_widget->addItem(new QiPackage(*item));
     }
+
+    if (reverse_sort_checkbox->checkState() == Qt::Checked)
+        sortReverse();
 
     showInfo();
 }

@@ -55,7 +55,7 @@ QString CheckCommandParser::generatePakCheckResults()
     pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -C --noconfirm");
     pacman_qi->waitForStarted();
-    pacman_qi->waitForFinished(100000);
+    pacman_qi->waitForFinished();
     return pacman_qi->readAllStandardOutput();
 }
 

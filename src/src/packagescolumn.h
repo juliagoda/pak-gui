@@ -17,6 +17,7 @@ class PackagesColumn : public QObject
 public:
     PackagesColumn(QListWidget* new_list_widget,
                    QLineEdit* new_search_lineedit,
+                   QCheckBox* new_reverse_sort_checkbox,
                    QWidget* new_parent);
     ~PackagesColumn() override = default;
 

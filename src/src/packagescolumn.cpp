@@ -5,12 +5,13 @@
 
 PackagesColumn::PackagesColumn(QListWidget* new_list_widget,
                                QLineEdit* new_search_lineedit,
+                               QCheckBox* new_reverse_sort_checkbox,
                                QWidget* new_parent) :
     QObject(),
     checked_packages(0),
     list_widget(new_list_widget),
     search_lineedit(new_search_lineedit),
-    packages_sorter(new Sorter(list_widget), &QObject::deleteLater),
+    packages_sorter(new Sorter(list_widget, new_reverse_sort_checkbox), &QObject::deleteLater),
     parent(new_parent),
     checked_packages_list()
 {

@@ -5,13 +5,15 @@
 #include <QList>
 #include <QListWidgetItem>
 #include <QMutex>
+#include <QCheckBox>
 
 class Sorter : public QObject
 {
     Q_OBJECT
 
 public:
-    Sorter(QListWidget* list_widgets);
+    Sorter(QListWidget* list_widgets,
+           QCheckBox* new_reverse_sort_checkbox);
     ~Sorter() override = default;
 
     void updateOriginalList(int index, Package* package);
@@ -30,6 +32,7 @@ private:
     void showInfo();
 
     QListWidget* list_widget;
+    QCheckBox* reverse_sort_checkbox;
     QSharedPointer<QListWidget> untouched_list_widget;
     static QMutex mutex;
 };
