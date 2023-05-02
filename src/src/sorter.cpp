@@ -17,7 +17,7 @@ Sorter::Sorter(QListWidget* list_widgets,
                QCheckBox* new_reverse_sort_checkbox) :
     list_widget(list_widgets),
     reverse_sort_checkbox(new_reverse_sort_checkbox),
-    untouched_list_widget(new QListWidget)
+    untouched_list_widget(new QListWidget, &QObject::deleteLater)
 {
    // ...
 }
@@ -53,11 +53,14 @@ void Sorter::sortPackagesToUpdateByText(const QString &text)
     clear();
     QList<QListWidgetItem*>::iterator widgets_it;
 
-    for(widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
+    for (widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
     {
         CheckPackage* item = dynamic_cast<CheckPackage*>(*widgets_it);
         list_widget->addItem(new CheckPackage(*item));
     }
+
+    if (reverse_sort_checkbox->checkState() == Qt::Checked)
+        sortReverse();
 
     showInfo();
 }
@@ -69,7 +72,7 @@ void Sorter::sortAvailablePackagesByText(const QString &text)
     clear();
     QList<QListWidgetItem*>::iterator widgets_it;
 
-    for(widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
+    for (widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
     {
         SiPackage* item = dynamic_cast<SiPackage*>(*widgets_it);
         list_widget->addItem(new SiPackage(*item));
@@ -88,7 +91,7 @@ void Sorter::sortInstalledPackagesByText(const QString &text)
     clear();
     QList<QListWidgetItem*>::iterator widgets_it;
 
-    for(widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
+    for (widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
     {
         QiPackage* item = dynamic_cast<QiPackage*>(*widgets_it);
         list_widget->addItem(new QiPackage(*item));
@@ -134,7 +137,7 @@ void Sorter::clear()
 void Sorter::updateOriginalList(int index, Package* package)
 {
     if (untouched_list_widget.isNull())
-        untouched_list_widget.reset(new QListWidget);
+        untouched_list_widget.reset(new QListWidget, &QObject::deleteLater);
 
     untouched_list_widget->insertItem(index, package);
 }

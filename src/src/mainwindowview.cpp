@@ -378,11 +378,29 @@ void MainWindowView::checkSpinningVisibility()
 
 void MainWindowView::showSingleAnimation(Process::Task task)
 {
-    if (Process::Task::UpdateAll == task)
+    if ((Process::Task::UpdateAll == task) ||
+        (Process::Task::Update == task))
     {
         m_ui.packages_to_update_label->setText(i18n("TO UPDATE"));
         m_ui.update_spinning_widget->show();
+        m_ui.packages_to_update_list->show();
         spinning_animation->startOnWidget(m_ui.update_spinning_label);
+    }
+
+    if (Process::Task::Install == task)
+    {
+        m_ui.accessible_packages->setText(i18n("AVAILABLE TO INSTALL"));
+        m_ui.installation_spinning_widget->show();
+        m_ui.available_packages_list->hide();
+        spinning_animation->startOnWidget(m_ui.installation_spinning_label);
+    }
+
+    if (Process::Task::Uninstall == task)
+    {
+        m_ui.installed_packages_label->setText(i18n("INSTALLED"));
+        m_ui.remove_spinning_widget->show();
+        m_ui.installed_packages_list->hide();
+        spinning_animation->startOnWidget(m_ui.remove_spinning_label);
     }
 }
 
@@ -466,7 +484,9 @@ void MainWindowView::generateOutput(Process::Task task, const QString& line)
         break;
 
     default:
-        generated_previews_map.value(task)->findChild<QTextBrowser*>(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()))->append(line);
+        auto foundTextBrowser = generated_previews_map.value(task)->findChild<QTextBrowser*>(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()));
+        if (foundTextBrowser)
+            foundTextBrowser->append(line);
         break;
     }
 }
@@ -495,6 +515,7 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
     available_packages_column.data()->clear();
     installed_packages_column.data()->clear();
     updated_packages_column.data()->clear();
+    Process::resetRunningTask(task);
     startAnimations();
     run();
 }

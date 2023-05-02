@@ -13,6 +13,9 @@ ProgressView::ProgressView(QDialog* parent)
 
 void ProgressView::addProgressView(QWidget* progress_view)
 {
+    if (!progress_view)
+        return;
+
     Logger::logger()->logDebug(QStringLiteral("Generated operation tab in preview window titled \"%1\"").arg(progress_view->objectName()));
     m_ui.progress_view_tabwidget->addTab(progress_view, progress_view->objectName());
 }
@@ -20,6 +23,9 @@ void ProgressView::addProgressView(QWidget* progress_view)
 
 void ProgressView::removeProgressView(QWidget* progress_view)
 {
+    if (!progress_view)
+        return;
+
     int index = m_ui.progress_view_tabwidget->indexOf(progress_view);
 
     if (index == -1)

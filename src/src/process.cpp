@@ -11,7 +11,22 @@
 #include <QSharedPointer>
 #include <QProcess>
 #include <utility>
+#include <QDebug>
 
+QMap<Process::Task, bool> running_tasks_map{
+    {Process::Task::Clean, false},
+    {Process::Task::MirrorsUpdate, false},
+    {Process::Task::UpdateAll, false},
+    {Process::Task::PrintVCSPackages, false},
+    {Process::Task::UpdateInstalledPackages, false},
+    {Process::Task::Uninstall, false},
+    {Process::Task::Install, false},
+    {Process::Task::InstallAfterSearchRepo, false},
+    {Process::Task::InstallAfterSearchAUR, false},
+    {Process::Task::InstallAfterSearchPOLAUR, false},
+    {Process::Task::Update, false},
+    {Process::Task::SyncPOLAUR, false},
+};
 
 Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
     messages_map(),
@@ -40,6 +55,15 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
 void Process::run(Process::Task new_task,
                   QStringList new_checked_packages)
 {
+    if (isAlreadyRunning(new_task))
+    {
+        QMessageBox::warning(parent, messages_map.value(new_task).first,
+                             i18n("The task is already running!"),
+                             QMessageBox::Ok);
+
+        return;
+    }
+
     updateMap(new_checked_packages);
     if (!askQuestion(new_task, new_checked_packages))
     {
@@ -48,6 +72,7 @@ void Process::run(Process::Task new_task,
     }
 
     Logger::logger()->logDebug(QStringLiteral("Packages in current task: %1").arg(new_checked_packages.join(" ")));
+    running_tasks_map[new_task] = true;
     emitTask(new_task);
     startProcess(new_task);
     prepareMapsForNextTask();
@@ -57,6 +82,24 @@ void Process::run(Process::Task new_task,
 void Process::setPackagesToUpdate(uint packages_to_update_count)
 {
     packages_to_update = packages_to_update_count;
+}
+
+
+bool Process::isAlreadyRunning(Task new_task)
+{
+    if (new_task == Task::Update && running_tasks_map.value(Task::UpdateAll))
+        return true;
+
+    if (new_task == Task::UpdateAll && running_tasks_map.value(Task::Update))
+        return true;
+
+    return running_tasks_map.value(new_task);
+}
+
+
+void Process::resetRunningTask(Task new_task)
+{
+    running_tasks_map[new_task] = false;
 }
 
 
@@ -212,7 +255,7 @@ void Process::replaceAutoAcceptationForTask(Task new_task, const QString& accept
 void Process::updateMap(QStringList& checked_packages)
 {
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
-    commands_map.insert(Task::Uninstall, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -R --noconfirm " + checked_packages.join(" ") + "\"");
+    commands_map.insert(Task::Uninstall, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -R " + checked_packages.join(" "));
     commands_map.insert(Task::Install, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -S " + checked_packages.join(" "));
     commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -S " + checked_packages.join(" "));
     commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -SA " + checked_packages.join(" "));

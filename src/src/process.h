@@ -37,11 +37,14 @@ public:
 
     void run(Task new_task, QStringList new_checked_packages = QStringList());
     void setPackagesToUpdate(uint packages_to_update_count);
+    static bool isAlreadyRunning(Task new_task);
+    static void resetRunningTask(Task new_task);
 
 protected:
     virtual void startProcess(Task new_task);
     virtual bool askQuestion(Task new_task, QStringList new_checked_packages);
     void processReadLine(QString& line, Process::Task new_task);
+
 
 private Q_SLOTS:
     void updateCleanCommand(bool is_auracle_installed);
