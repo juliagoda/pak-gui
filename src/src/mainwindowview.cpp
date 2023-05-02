@@ -382,6 +382,7 @@ void MainWindowView::showSingleAnimation(Process::Task task)
         (Process::Task::Update == task))
     {
         m_ui.packages_to_update_label->setText(i18n("TO UPDATE"));
+        m_ui.update_packages_button->setDisabled(true);
         m_ui.update_spinning_widget->show();
         m_ui.packages_to_update_list->show();
         spinning_animation->startOnWidget(m_ui.update_spinning_label);
@@ -390,6 +391,7 @@ void MainWindowView::showSingleAnimation(Process::Task task)
     if (Process::Task::Install == task)
     {
         m_ui.accessible_packages->setText(i18n("AVAILABLE TO INSTALL"));
+        m_ui.install_packages_button->setDisabled(true);
         m_ui.installation_spinning_widget->show();
         m_ui.available_packages_list->hide();
         spinning_animation->startOnWidget(m_ui.installation_spinning_label);
@@ -398,6 +400,7 @@ void MainWindowView::showSingleAnimation(Process::Task task)
     if (Process::Task::Uninstall == task)
     {
         m_ui.installed_packages_label->setText(i18n("INSTALLED"));
+        m_ui.uninstall_packages_button->setDisabled(true);
         m_ui.remove_spinning_widget->show();
         m_ui.installed_packages_list->hide();
         spinning_animation->startOnWidget(m_ui.remove_spinning_label);

@@ -31,6 +31,7 @@ void PackagesColumn::fill()
 
 void PackagesColumn::clear()
 {
+    checked_packages_list.clear();
     checked_packages = 0;
     list_widget->clear();
     list_widget->update();
@@ -47,8 +48,16 @@ QStringList PackagesColumn::getCheckedPackagesStringList()
 {
     QStringList checked_packages;
     decltype(checked_packages_list)::iterator it;
-    for(it = checked_packages_list.begin(); it != checked_packages_list.end(); it++)
+    for (it = checked_packages_list.begin(); it != checked_packages_list.end(); it++)
+    {
+        if (!(*it))
+        {
+            checked_packages_list.removeOne((*it));
+            continue;
+        }
+
         checked_packages.append((*it)->getName());
+    }
 
     return checked_packages;
 }
