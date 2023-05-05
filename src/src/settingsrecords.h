@@ -40,6 +40,7 @@ public:
     int updateCheckTimeMinutes();
     int internetReconnectionTimeMinutes();
     bool hideInfoLogs();
+    bool operateOnActionsManually();
     bool overwriteFullHistoryFile();
     bool saveLogsIntoFile();
     bool showDebug();

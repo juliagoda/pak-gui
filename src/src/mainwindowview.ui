@@ -109,9 +109,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-179</y>
+            <y>-205</y>
             <width>260</width>
-            <height>702</height>
+            <height>751</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -288,7 +288,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>240</width>
-                <height>210</height>
+                <height>259</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -300,6 +300,28 @@ background-color: black;
 font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
 padding: 3px;</string>
                  </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="input_uninstall_widget" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_14">
+                  <item>
+                   <widget class="QLineEdit" name="input_for_uninstall_lineedit"/>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="input_for_uninstall_btn">
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Input</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </item>
               </layout>
@@ -586,7 +608,7 @@ padding: 3px;</string>
                 <x>0</x>
                 <y>0</y>
                 <width>254</width>
-                <height>150</height>
+                <height>183</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -598,6 +620,28 @@ background-color: black;
 font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
 padding: 3px;</string>
                  </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="input_update_widget" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_15">
+                  <item>
+                   <widget class="QLineEdit" name="input_for_update_lineedit"/>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="input_for_update_btn">
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Input</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </item>
               </layout>
@@ -894,7 +938,7 @@ padding: 3px;</string>
                 <x>0</x>
                 <y>0</y>
                 <width>254</width>
-                <height>150</height>
+                <height>183</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -906,6 +950,28 @@ background-color: black;
 font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
 padding: 3px;</string>
                  </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="input_install_widget" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_16">
+                  <item>
+                   <widget class="QLineEdit" name="input_for_install_lineedit"/>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="input_for_install_btn">
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Input</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </item>
               </layout>
@@ -1165,11 +1231,11 @@ padding: 3px;</string>
    <hints>
     <hint type="sourcelabel">
      <x>256</x>
-     <y>715</y>
+     <y>588</y>
     </hint>
     <hint type="destinationlabel">
-     <x>210</x>
-     <y>102</y>
+     <x>258</x>
+     <y>-58</y>
     </hint>
    </hints>
   </connection>
@@ -1181,11 +1247,11 @@ padding: 3px;</string>
    <hints>
     <hint type="sourcelabel">
      <x>256</x>
-     <y>715</y>
+     <y>588</y>
     </hint>
     <hint type="destinationlabel">
-     <x>65</x>
-     <y>116</y>
+     <x>78</x>
+     <y>-59</y>
     </hint>
    </hints>
   </connection>

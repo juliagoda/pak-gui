@@ -29,6 +29,10 @@
 	    <label></label>
 	    <default>0</default>
     </entry>
+    <entry name="manual_operations_checkbox" type="Bool">
+	    <label></label>
+	    <default>false</default>
+    </entry>
     <entry name="overwrite_full_history_file" type="Bool">
 	    <label></label>
 	    <default>false</default>

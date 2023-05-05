@@ -114,7 +114,7 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
     }
 
     bool isAllChecked = getCheckedPackagesList().count() == list_widget->count();
-    emit preparedList(getCheckedPackagesStringList(), isAllChecked ? Process::Task::UpdateAll : Process::Task::Update);
+    emit preparedList(getCheckedPackagesStringList(), isAllChecked ? Process::Task::UpdateAll : Process::Task::Update, getAurPackagesCount());
 }
 
 

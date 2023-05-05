@@ -1,9 +1,11 @@
 #include "process.h"
 
+#include "settingsrecords.h"
 #include "outputfilter.h"
 #include "actionsaccesschecker.h"
 #include "logger.h"
 #include "defs.h"
+#include "src/settings.h"
 
 #include <KLocalizedString>
 #include <QMessageBox>
@@ -11,6 +13,8 @@
 #include <QSharedPointer>
 #include <QProcess>
 #include <utility>
+#include <QSharedPointer>
+#include <QDebug>
 
 QMap<Process::Task, bool> running_tasks_map{
     {Process::Task::Clean, false},
@@ -30,6 +34,7 @@ QMap<Process::Task, bool> running_tasks_map{
 Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
     messages_map(),
     commands_map(),
+    current_process(nullptr),
     parent(new_parent)
 {
     if (!new_actions_access_checker.isNull())
@@ -42,12 +47,18 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
     messages_map.insert(Task::UpdateInstalledPackages, {i18n("Installed packages update"), i18n("update installed packages?")});
     messages_map.insert(Task::SyncPOLAUR, {i18n("Sync POLAUR"), i18n("sync POLAUR packages?")});
 
-    commands_map.insert(Task::SyncPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SyP");
-    commands_map.insert(Task::Clean, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -Sc");
-    commands_map.insert(Task::MirrorsUpdate, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -m");
-    commands_map.insert(Task::UpdateAll, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\ny\" | pak -Su");
-    commands_map.insert(Task::PrintVCSPackages, QStringList() << "-c" << Constants::askPassCommand() + " && pak --vcs");
-    commands_map.insert(Task::UpdateInstalledPackages, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -Sy");
+    setDefaultCommands();
+}
+
+
+void Process::setDefaultCommands()
+{
+    commands_map[Task::SyncPOLAUR] = QStringList() << "-c" << Constants::askPassCommand() + " && pak -SyP";
+    commands_map[Task::Clean] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -Sc";
+    commands_map[Task::MirrorsUpdate] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -m";
+    commands_map[Task::UpdateAll] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\ny\" | pak -Su";
+    commands_map[Task::PrintVCSPackages] = QStringList() << "-c" << Constants::askPassCommand() + " && pak --vcs";
+    commands_map[Task::UpdateInstalledPackages] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -Sy";
 }
 
 
@@ -72,15 +83,53 @@ void Process::run(Process::Task new_task,
 
     Logger::logger()->logDebug(QStringLiteral("Packages in current task: %1").arg(new_checked_packages.join(" ")));
     running_tasks_map[new_task] = true;
-    emitTask(new_task);
+    if (Settings::records()->operateOnActionsManually())
+    {
+        removeAutoAcceptationFromCommand(new_task);
+        emit showInput(new_task);
+    }
+
+    changeUpdateAllCommand(new_task);
     startProcess(new_task);
     prepareMapsForNextTask();
+}
+
+
+void Process::inputAnswer(const QString& new_answer)
+{
+    if (new_answer.isEmpty())
+    {
+        Logger::logger()->logWarning("Answer is empty string");
+        return;
+    }
+
+    if (current_process.isNull())
+    {
+        Logger::logger()->logWarning("Current process is empty");
+        return;
+    }
+
+    if (current_process->state() != QProcess::Running && !current_process->isWritable())
+    {
+        Logger::logger()->logWarning("Process is not running or is not writable. Answer input is not possible");
+        return;
+    }
+
+    Logger::logger()->logInfo(QStringLiteral("Input: %1").arg(new_answer));
+    current_process->write(new_answer.toLocal8Bit() + "\n");
+    current_process->waitForReadyRead();
 }
 
 
 void Process::setPackagesToUpdate(uint packages_to_update_count)
 {
     packages_to_update = packages_to_update_count;
+}
+
+
+void Process::setAurPackagesToUpdate(uint packages_to_update_count)
+{
+    aur_packages_to_update_count = packages_to_update_count;
 }
 
 
@@ -138,17 +187,28 @@ void Process::startProcess(Process::Task new_task)
 {
     Logger::logger()->logInfo(QStringLiteral("Started task \"%1\"").arg(QVariant::fromValue(new_task).toString()));
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
+    current_process = pak_s;
+    emitTask(new_task);
     pak_s->setProcessChannelMode(QProcess::MergedChannels);
     bool contains_pacman = commands_map.value(new_task).join(" ").contains("pacman");
     connectSignals(pak_s, new_task);
-    pak_s.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
-    Logger::logger()->writeSectionToFile(Constants::taskToWriteOperationMap().value(new_task));
     QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [pak_s, new_task, this]() {
+
+        if (Settings::records()->operateOnActionsManually() || aur_packages_to_update_count > 0)
+        {
+            QString res{pak_s->readAllStandardOutput()};
+            processReadLine(res, new_task);
+        }
+
         while (pak_s.data()->canReadLine())
         {
             QString line = pak_s.data()->readLine();
             processReadLine(line, new_task);
         }});
+
+    pak_s.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
+    pak_s.data()->waitForStarted();
+    Logger::logger()->writeSectionToFile(Constants::taskToWriteOperationMap().value(new_task));
 }
 
 
@@ -180,6 +240,9 @@ void Process::connectSignals(QSharedPointer<QProcess>& process, Process::Task ne
 
 bool Process::isNeededAskAboutUpdate(Task new_task)
 {
+    if (Settings::records()->operateOnActionsManually())
+        return false;
+
     if (new_task == Task::InstallAfterSearchRepo)
         return true;
 
@@ -224,7 +287,7 @@ void Process::updateCurrentCommandForUpdate(Task new_task)
 
     if (packages_to_update == 0)
     {
-        replaceAutoAcceptationForTask(new_task, "echo -e \"y\"");
+        replaceAutoAcceptationForTask(new_task, "echo -e \"(n|y)\ny\"", "echo -e \"y\"");
         return;
     }
 
@@ -232,22 +295,60 @@ void Process::updateCurrentCommandForUpdate(Task new_task)
 
     if (accepted)
     {
-        replaceAutoAcceptationForTask(new_task, "echo -e \"y\ny\"");
+        replaceAutoAcceptationForTask(new_task, "echo -e \"(n|y)\ny\"", "echo -e \"y\ny\"");
         return;
     }
 
-    replaceAutoAcceptationForTask(new_task, "echo -e \"n\ny\"");
+    replaceAutoAcceptationForTask(new_task, "echo -e \"(n|y)\ny\"", "echo -e \"n\ny\"");
 }
 
 
-void Process::replaceAutoAcceptationForTask(Task new_task, const QString& acceptation_form)
+void Process::replaceAutoAcceptationForTask(Task new_task,
+                                            const QString& original_form,
+                                            const QString& acceptation_form)
 {
     auto command = commands_map.value(new_task);
     auto last_part = command.at(1);
-    last_part = last_part.replace(QRegExp("echo -e \"(n|y)\ny\""), acceptation_form);
+    last_part = last_part.replace(QRegExp(original_form), acceptation_form);
     command.pop_back();
     command.push_back(last_part);
     commands_map[new_task] = command;
+}
+
+
+void Process::removeAutoAcceptationFromCommand(Process::Task new_task)
+{
+    auto command = commands_map.value(new_task);
+    auto last_part = command.at(1);
+    last_part = last_part.remove(QRegExp("echo.*\\|\\s+"));
+    command.pop_back();
+    command.push_back(last_part);
+    commands_map[new_task] = command;
+}
+
+
+void Process::changeUpdateAllCommand(Task new_task)
+{
+    const bool is_command_change_not_needed = new_task != Task::UpdateAll || packages_to_update == 0 ||
+                                              aur_packages_to_update_count == 0;
+    if (is_command_change_not_needed)
+        return;
+
+    QMessageBox::information(parent, messages_map.value(new_task).first,
+                             i18n("Select preview and respond to questions manually"),
+                             QMessageBox::Ok);
+
+    auto command = commands_map.value(new_task);
+
+    if (command.count() < 2)
+    {
+        Logger::logger()->logWarning(QStringLiteral("Command form for current task is incorrect"));
+        return;
+    }
+
+    emit showInput(new_task);
+
+    removeAutoAcceptationFromCommand(new_task);
 }
 
 
@@ -274,6 +375,8 @@ void Process::prepareMapsForNextTask()
     messages_map.remove(Task::Uninstall);
     messages_map.remove(Task::Install);
     messages_map.remove(Task::Update);
+
+    setDefaultCommands();
 }
 
 

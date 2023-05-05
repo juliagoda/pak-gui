@@ -183,6 +183,34 @@ class pakGuiSettings : public KConfigSkeleton
     }
 
     /**
+      Set manual_operations_checkbox
+    */
+    static
+    void setManual_operations_checkbox( bool v )
+    {
+      if (!self()->isManual_operations_checkboxImmutable())
+        self()->mManual_operations_checkbox = v;
+    }
+
+    /**
+      Get manual_operations_checkbox
+    */
+    static
+    bool manual_operations_checkbox()
+    {
+      return self()->mManual_operations_checkbox;
+    }
+
+    /**
+      Is manual_operations_checkbox Immutable
+    */
+    static
+    bool isManual_operations_checkboxImmutable()
+    {
+      return self()->isImmutable( QStringLiteral( "manual_operations_checkbox" ) );
+    }
+
+    /**
       Set overwrite_full_history_file
     */
     static
@@ -558,6 +586,7 @@ class pakGuiSettings : public KConfigSkeleton
     int mUpdate_check_time_in_days;
     int mUpdate_check_time_in_hours;
     int mUpdate_check_time_in_minutes;
+    bool mManual_operations_checkbox;
     bool mOverwrite_full_history_file;
     bool mUse_system_tray_icon;
 
@@ -582,3 +611,4 @@ class pakGuiSettings : public KConfigSkeleton
 };
 
 #endif
+

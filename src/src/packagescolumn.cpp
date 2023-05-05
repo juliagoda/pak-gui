@@ -9,6 +9,7 @@ PackagesColumn::PackagesColumn(QListWidget* new_list_widget,
                                QWidget* new_parent) :
     QObject(),
     checked_packages(0),
+    aur_checked_packages(0),
     list_widget(new_list_widget),
     search_lineedit(new_search_lineedit),
     packages_sorter(new Sorter(list_widget, new_reverse_sort_checkbox), &QObject::deleteLater),
@@ -33,6 +34,7 @@ void PackagesColumn::clear()
 {
     checked_packages_list.clear();
     checked_packages = 0;
+    aur_checked_packages = 0;
     list_widget->clear();
     list_widget->update();
 }
@@ -41,6 +43,12 @@ void PackagesColumn::clear()
 QList<Package*> PackagesColumn::getCheckedPackagesList() const
 {
     return checked_packages_list;
+}
+
+
+uint PackagesColumn::getAurPackagesCount() const
+{
+    return aur_checked_packages;
 }
 
 
@@ -110,6 +118,7 @@ void PackagesColumn::addCheckedPackage(Package* package)
     if (package->getSource() == Package::Source::AUR ||
         package->getSource() == Package::Source::POLAUR)
     {
+        aur_checked_packages++;
         checked_packages_list.prepend(package);
         Logger::logger()->logDebug(QStringLiteral("Added at the beginning of list package: %1").arg(package->getName()));
         return;
@@ -123,6 +132,9 @@ void PackagesColumn::addCheckedPackage(Package* package)
 void PackagesColumn::removeUncheckedPackage(Package* package)
 {
     int index = checked_packages_list.indexOf(package);
+    if (package->getSource() == Package::Source::AUR)
+        aur_checked_packages--;
+
     checked_packages_list.removeAt(index);
     Logger::logger()->logDebug(QStringLiteral("Removed package name from list: %1 - index: %2").arg(package->getName(), index));
 }

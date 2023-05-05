@@ -51,6 +51,9 @@ pakGuiSettings::pakGuiSettings( )
   KConfigSkeleton::ItemInt  *itemUpdate_check_time_in_minutes;
   itemUpdate_check_time_in_minutes = new KConfigSkeleton::ItemInt( currentGroup(), QStringLiteral( "update_check_time_in_minutes" ), mUpdate_check_time_in_minutes, 0 );
   addItem( itemUpdate_check_time_in_minutes, QStringLiteral( "update_check_time_in_minutes" ) );
+  KConfigSkeleton::ItemBool  *itemManual_operations_checkbox;
+  itemManual_operations_checkbox = new KConfigSkeleton::ItemBool( currentGroup(), QStringLiteral( "manual_operations_checkbox" ), mManual_operations_checkbox, false );
+  addItem( itemManual_operations_checkbox, QStringLiteral( "manual_operations_checkbox" ) );
   KConfigSkeleton::ItemBool  *itemOverwrite_full_history_file;
   itemOverwrite_full_history_file = new KConfigSkeleton::ItemBool( currentGroup(), QStringLiteral( "overwrite_full_history_file" ), mOverwrite_full_history_file, false );
   addItem( itemOverwrite_full_history_file, QStringLiteral( "overwrite_full_history_file" ) );
@@ -67,7 +70,7 @@ pakGuiSettings::pakGuiSettings( )
   itemPreview_font_color = new KConfigSkeleton::ItemColor( currentGroup(), QStringLiteral( "preview_font_color" ), mPreview_font_color, QColor( "white" ) );
   addItem( itemPreview_font_color, QStringLiteral( "preview_font_color" ) );
   KConfigSkeleton::ItemString  *itemPreview_font_family;
-  itemPreview_font_family = new KConfigSkeleton::ItemString( currentGroup(), QStringLiteral( "preview_font_family" ), mPreview_font_family, QStringLiteral( "Lucida Console" ) );
+  itemPreview_font_family = new KConfigSkeleton::ItemString( currentGroup(), QStringLiteral( "preview_font_family" ), mPreview_font_family, QStringLiteral( "Noto Sans" ) );
   addItem( itemPreview_font_family, QStringLiteral( "preview_font_family" ) );
   KConfigSkeleton::ItemInt  *itemPreview_font_size;
   itemPreview_font_size = new KConfigSkeleton::ItemInt( currentGroup(), QStringLiteral( "preview_font_size" ), mPreview_font_size, 15 );
@@ -82,7 +85,7 @@ pakGuiSettings::pakGuiSettings( )
   defaultpackages_info_available.append( QString::fromUtf8( "Groups" ) );
   defaultpackages_info_available.append( QString::fromUtf8( "Provides" ) );
   defaultpackages_info_available.append( QString::fromUtf8( "Optional Deps" ) );
-  defaultpackages_info_available.append( QString::fromUtf8( "Required By" ) );
+  defaultpackages_info_available.append( QString::fromUtf8( "RequiredBy" ) );
   defaultpackages_info_available.append( QString::fromUtf8( "Optional For" ) );
   defaultpackages_info_available.append( QString::fromUtf8( "Conflicts With" ) );
   defaultpackages_info_available.append( QString::fromUtf8( "Replaces" ) );
@@ -133,3 +136,4 @@ pakGuiSettings::~pakGuiSettings()
     s_globalpakGuiSettings()->q = nullptr;
   }
 }
+

@@ -151,6 +151,16 @@
             </spacer>
            </item>
            <item>
+            <widget class="QCheckBox" name="kcfg_manual_operations_checkbox">
+             <property name="toolTip">
+              <string>If checked, any action needs answer from user within preview</string>
+             </property>
+             <property name="text">
+              <string>Operate on actions manually</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QCheckBox" name="kcfg_overwrite_full_history_file">
              <property name="text">
               <string>Overwrite operations history file (when full size)</string>

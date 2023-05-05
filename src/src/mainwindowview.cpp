@@ -3,6 +3,7 @@
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
 #include "qnamespace.h"
+#include "qpushbutton.h"
 #include "statisticscommandparser.h"
 #include "updatedpackagescolumn.h"
 #include "installcommandparser.h"
@@ -44,6 +45,17 @@ MainWindowView::MainWindowView(QWidget *parent)
       is_operation_running(true)
 {
     m_ui.setupUi(this);
+
+    m_ui.input_update_widget->setHidden(true);
+    m_ui.input_install_widget->setHidden(true);
+    m_ui.input_uninstall_widget->setHidden(true);
+    QObject::connect(m_ui.input_for_uninstall_lineedit, &QLineEdit::textChanged, this, [this](const QString& text)
+        { text.isEmpty() ? m_ui.input_for_uninstall_btn->setEnabled(false) : m_ui.input_for_uninstall_btn->setEnabled(true); });
+    QObject::connect(m_ui.input_for_install_lineedit, &QLineEdit::textChanged, this, [this](const QString& text)
+        { text.isEmpty() ? m_ui.input_for_install_btn->setEnabled(false) : m_ui.input_for_install_btn->setEnabled(true); });
+    QObject::connect(m_ui.input_for_update_lineedit, &QLineEdit::textChanged, this, [this](const QString& text)
+        { text.isEmpty() ? m_ui.input_for_update_btn->setEnabled(false) : m_ui.input_for_update_btn->setEnabled(true); });
+
     m_ui.aur_led_label->setToolTip(i18n("Internet connection state and auracle-git package presence"));
     m_ui.polaur_led_label->setToolTip(i18n("Internet connection state and git package presence"));
     m_ui.repo_led_label->setToolTip(i18n("Internet connection state"));
@@ -188,6 +200,13 @@ void MainWindowView::initSignals()
     if (process.isNull())
         return;
 
+    QObject::connect(process.data(), &Process::showInput, this, &MainWindowView::showInputWidgets);
+    QObject::connect(m_ui.input_for_uninstall_btn, &QPushButton::clicked, process.data(), [this](bool)
+        { process->inputAnswer(m_ui.input_for_uninstall_lineedit->text()); });
+    QObject::connect(m_ui.input_for_install_btn, &QPushButton::clicked, process.data(), [this](bool)
+        { process->inputAnswer(m_ui.input_for_install_lineedit->text()); });
+    QObject::connect(m_ui.input_for_update_btn, &QPushButton::clicked, process.data(), [this](bool)
+        { process->inputAnswer(m_ui.input_for_update_lineedit->text()); });
     QObject::connect(process.data(), &Process::acceptedMainTask, this, &MainWindowView::showSingleAnimation, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::generatedOutput, this, &MainWindowView::generateOutput, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
@@ -233,7 +252,8 @@ void MainWindowView::initColumns()
     QObject::connect(m_ui.sort_packages_to_update, &QCheckBox::toggled, updated_packages_column.data(), &UpdatedPackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { m_ui.update_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
     QObject::connect(m_ui.update_packages_button, &QPushButton::clicked, this, [this]() { updated_packages_column.data()->prepareBeforeProcessRun(); }, Qt::AutoConnection);
-    QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::preparedList, [this](QStringList packages_list, Process::Task task){ m_ui.text_browser_tab_update->clear(); process->run(task, packages_list); });
+    QObject::connect(updated_packages_column.data(), &UpdatedPackagesColumn::preparedList, [this](QStringList packages_list, Process::Task task, uint aur_checked_packages){ process->setPackagesToUpdate(packages_list.count()); process->setAurPackagesToUpdate(aur_checked_packages);
+    m_ui.text_browser_tab_update->clear(); process->run(task, packages_list); });
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.packages_to_update_list->count() == 0) m_ui.update_packages_button->setEnabled(false); }, Qt::AutoConnection);
 
     QObject::connect(m_ui.installed_packages_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.search_installed_packages_checkbox->setEnabled(true); }, Qt::AutoConnection);
@@ -272,6 +292,32 @@ void MainWindowView::initColumns()
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.packages_to_update_list->count() == 0) m_ui.search_packages_to_update_checkbox->setEnabled(false); }, Qt::AutoConnection);
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ m_ui.check_all_updates_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (m_ui.packages_to_update_list->count() == 0) m_ui.check_all_updates_checkbox->setEnabled(false); }, Qt::AutoConnection);
+}
+
+
+void MainWindowView::clearMainPreviews(Process::Task task)
+{
+    if ((Process::Task::UpdateAll == task) ||
+        (Process::Task::Update == task))
+    {
+        m_ui.text_browser_tab_update->clear();
+        m_ui.input_for_update_lineedit->clear();
+        m_ui.input_update_widget->setHidden(true);
+    }
+
+    if (Process::Task::Install == task)
+    {
+        m_ui.text_browser_tab_install->clear();
+        m_ui.input_for_install_lineedit->clear();
+        m_ui.input_install_widget->setHidden(true);
+    }
+
+    if (Process::Task::Uninstall == task)
+    {
+        m_ui.text_browser_tab_uninstall->clear();
+        m_ui.input_for_uninstall_lineedit->clear();
+        m_ui.input_uninstall_widget->setHidden(true);
+    }
 }
 
 
@@ -376,6 +422,26 @@ void MainWindowView::checkSpinningVisibility()
 }
 
 
+void MainWindowView::showInputWidgets(Process::Task task)
+{
+    if ((Process::Task::UpdateAll == task) ||
+        (Process::Task::Update == task))
+    {
+        m_ui.input_update_widget->setHidden(false);
+    }
+
+    if (Process::Task::Install == task)
+    {
+        m_ui.input_install_widget->setHidden(false);
+    }
+
+    if (Process::Task::Uninstall == task)
+    {
+        m_ui.input_uninstall_widget->setHidden(false);
+    }
+}
+
+
 void MainWindowView::showSingleAnimation(Process::Task task)
 {
     if ((Process::Task::UpdateAll == task) ||
@@ -384,7 +450,7 @@ void MainWindowView::showSingleAnimation(Process::Task task)
         m_ui.packages_to_update_label->setText(i18n("TO UPDATE"));
         m_ui.update_packages_button->setDisabled(true);
         m_ui.update_spinning_widget->show();
-        m_ui.packages_to_update_list->show();
+        m_ui.packages_to_update_list->hide();
         spinning_animation->startOnWidget(m_ui.update_spinning_label);
     }
 
@@ -410,6 +476,7 @@ void MainWindowView::showSingleAnimation(Process::Task task)
 
 void MainWindowView::generatePreview(Process::Task task)
 {
+    QString task_text = QVariant::fromValue(task).toString().toLower();
     QWidget* operation_preview = new QWidget;
     operation_preview->setObjectName(QVariant::fromValue(task).toString());
     QVBoxLayout* vertical_layout = new QVBoxLayout(operation_preview);
@@ -420,15 +487,50 @@ void MainWindowView::generatePreview(Process::Task task)
     QVBoxLayout* vertical_layout2 = new QVBoxLayout(scroll_area_widget_contents);
     QTextBrowser* text_browser_tab = new QTextBrowser(scroll_area_widget_contents);
     PreviewDesign::update(text_browser_tab);
-    text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(QVariant::fromValue(task).toString().toLower()));
+    text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(task_text));
 
     vertical_layout2->addWidget(text_browser_tab);
+    if (Settings::records()->operateOnActionsManually())
+    {
+        auto widgets = addInputWidgets(vertical_layout2, scroll_area_widget_contents, task_text);
+      /*  QObject::connect(widgets.first, &QLineEdit::textChanged, this, [&widgets](const QString& text)
+            { text.isEmpty() ? widgets.second->setEnabled(false) : widgets.second->setEnabled(true); });
+        QObject::connect(widgets.second, &QPushButton::clicked, process.data(), [this, &widgets](bool)
+            { process->inputAnswer(widgets.first->text()); });*/
+    }
+
     scroll_area->setWidget(scroll_area_widget_contents);
     vertical_layout->addWidget(scroll_area);
     generated_previews_map.insert(task, operation_preview);
     progress_view.data()->addProgressView(operation_preview);
 
     emit operationsAmountIncreased();
+}
+
+
+QPair<QLineEdit*, QPushButton*> MainWindowView::addInputWidgets(QVBoxLayout*& vbox_layout,
+                                                                QWidget*& scroll_area_widget_contents,
+                                                                const QString& text)
+{
+    auto input_widget = new QWidget(scroll_area_widget_contents);
+    input_widget->setObjectName(QString::fromUtf8("input_%1_widget").arg(text));
+    auto horizontal_layout = new QHBoxLayout(input_widget);
+    horizontal_layout->setObjectName(QString::fromUtf8("horizontal_layout_%1").arg(text));
+    auto input_lineedit = new QLineEdit(input_widget);
+    input_lineedit->setObjectName(QString::fromUtf8("input_for_%1_lineedit").arg(text));
+
+    horizontal_layout->addWidget(input_lineedit);
+
+    auto input_btn = new QPushButton(input_widget);
+    input_btn->setText(i18n("Input"));
+    input_btn->setObjectName(QString::fromUtf8("input_for_%1_btn").arg(text));
+    input_btn->setMaximumSize(QSize(50, 16777215));
+
+    horizontal_layout->addWidget(input_btn);
+
+    vbox_layout->addWidget(input_widget);
+
+    return {input_lineedit, input_btn};
 }
 
 
@@ -518,6 +620,7 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
     available_packages_column.data()->clear();
     installed_packages_column.data()->clear();
     updated_packages_column.data()->clear();
+    clearMainPreviews(task);
     Process::resetRunningTask(task);
     startAnimations();
     run();
@@ -542,12 +645,12 @@ void MainWindowView::checkUpdates()
 
    QObject::connect(this, &MainWindowView::startOtherThreads, [updated_packages_thread, this]()
     {
-        is_operation_running = true;
+        //is_operation_running = true;
         updated_packages_thread->start(QThread::TimeCriticalPriority);
     });
 
-   if (!is_operation_running)
-        updated_packages_thread->start(QThread::TimeCriticalPriority);
+  // if (!is_operation_running)
+  //      updated_packages_thread->start(QThread::TimeCriticalPriority);
 }
 
 

@@ -38,6 +38,7 @@ public:
 
 public Q_SLOTS:
     void refresh();
+    void showInputWidgets(Process::Task task);
     void generatePreview(Process::Task task);
     void showSingleAnimation(Process::Task task);
     void generateOutput(Process::Task task, const QString& line);
@@ -81,6 +82,9 @@ protected:
     virtual void startInternetCheckTimer();
 
 private:
+    QPair<QLineEdit*, QPushButton*> addInputWidgets(QVBoxLayout*& vbox_layout,
+                                                    QWidget*& scroll_area_widget_contents,
+                                                    const QString& text);
     void stopRunningThread(QSharedPointer<QThread> &thread);
     void setTimerOnActionsAccessChecker();
     void startCheckTimer(QPointer<QTimer> timer, int miliseconds, const QString& timer_type);
@@ -91,6 +95,7 @@ private:
     void startPackagesCheckTimer();
     void initSignals();
     void initColumns();
+    void clearMainPreviews(Process::Task task);
 
 
     QSharedPointer<Process> process;

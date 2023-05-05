@@ -30,7 +30,7 @@ signals:
     void currentPackagesCountChanged(int new_current_packages_count);
     void chosenUpdateAll();
     void chosenUncheckSidePackages();
-    void preparedList(QStringList packages, Process::Task);
+    void preparedList(QStringList packages, Process::Task, uint aur_checked_packages);
 
 private:
     void updatePackagesCount(uint new_current_packages_count);

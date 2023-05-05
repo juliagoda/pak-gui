@@ -26,7 +26,7 @@ public:
 
     QList<Package*> getCheckedPackagesList() const;
     QStringList getCheckedPackagesStringList();
-
+    uint getAurPackagesCount() const;
 
 public Q_SLOTS:
     virtual void update(int exit_code,
@@ -45,6 +45,7 @@ protected:
     void removeUncheckedPackage(Package* package);
 
     int checked_packages;
+    uint aur_checked_packages;
     QListWidget* list_widget;
     QLineEdit* search_lineedit;
     QSharedPointer<Sorter> packages_sorter;

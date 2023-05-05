@@ -256,6 +256,17 @@ bool SettingsRecords::hideInfoLogs()
 }
 
 
+bool SettingsRecords::operateOnActionsManually()
+{
+
+#ifdef RUN_TESTS
+    return false;
+#endif
+
+    return pakGuiSettings::manual_operations_checkbox();
+}
+
+
 bool SettingsRecords::overwriteFullHistoryFile()
 {
 
