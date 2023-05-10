@@ -1,13 +1,22 @@
 #include "progressview.h"
-
 #include "logger.h"
+
+#include <QLineEdit>
+#include <QPushButton>
 
 
 ProgressView::ProgressView(QDialog* parent)
-    : QDialog(parent)
+    : QDialog(parent),
+    process(nullptr)
 {
     m_ui.setupUi(this);
     m_ui.progress_view_tabwidget->clear();
+}
+
+
+ProgressView::~ProgressView()
+{
+    manual_input_widgets.clear();
 }
 
 
@@ -18,6 +27,23 @@ void ProgressView::addProgressView(QWidget* progress_view)
 
     Logger::logger()->logDebug(QStringLiteral("Generated operation tab in preview window titled \"%1\"").arg(progress_view->objectName()));
     m_ui.progress_view_tabwidget->addTab(progress_view, progress_view->objectName());
+}
+
+
+void ProgressView::createSignals(Process::Task task, QSharedPointer<Process> new_process)
+{
+    process = new_process;
+    auto task_text = QVariant::fromValue(task).toString().toLower();
+    manual_input_widgets.insert(m_ui.progress_view_tabwidget->currentWidget()->objectName(),
+                                {m_ui.progress_view_tabwidget->currentWidget()->findChild<QLineEdit*>(QString("input_for_%1_lineedit").arg(task_text)),
+                                 m_ui.progress_view_tabwidget->currentWidget()->findChild<QPushButton*>(QString("input_for_%1_btn").arg(task_text))});
+    tasks_map.insert(m_ui.progress_view_tabwidget->currentWidget()->objectName(), task);
+
+    QObject::connect(manual_input_widgets.value(m_ui.progress_view_tabwidget->currentWidget()->objectName()).first, &QLineEdit::textChanged, this, [this](const QString& text)
+                     { text.isEmpty() ? manual_input_widgets.value(m_ui.progress_view_tabwidget->currentWidget()->objectName()).second->setEnabled(false) : manual_input_widgets.value(m_ui.progress_view_tabwidget->currentWidget()->objectName()).second->setEnabled(true); });
+    QObject::connect(manual_input_widgets.value(m_ui.progress_view_tabwidget->currentWidget()->objectName()).second, &QPushButton::clicked, process.data(), [this](bool)
+                     { process->inputAnswer(manual_input_widgets.value(m_ui.progress_view_tabwidget->currentWidget()->objectName()).first->text(),
+                       tasks_map.value(m_ui.progress_view_tabwidget->currentWidget()->objectName())); });
 }
 
 

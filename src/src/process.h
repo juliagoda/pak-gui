@@ -17,6 +17,7 @@ class Process : public QObject
 public:
     enum class Task
     {
+        Unknown,
         Clean,
         MirrorsUpdate,
         UpdateAll,
@@ -50,7 +51,7 @@ private Q_SLOTS:
     void updateCleanCommand(bool is_auracle_installed);
 
 public Q_SLOTS:
-    void inputAnswer(const QString& new_answer);
+    void inputAnswer(const QString& new_answer, Process::Task task);
 
 signals:
     void finished(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
@@ -72,10 +73,12 @@ private:
     void replaceAutoAcceptationForTask(Process::Task new_task, const QString& original_form, const QString& acceptation_form);
     void removeAutoAcceptationFromCommand(Process::Task new_task);
     void changeUpdateAllCommand(Process::Task new_task);
+    static bool isUpdateTask(Process::Task new_task);
+    static bool isRunningUpdateTask();
 
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;
-    QSharedPointer<QProcess> current_process;
+    QMap<Task, QSharedPointer<QProcess>> process_map;
     uint packages_to_update = 0;
     uint aur_packages_to_update_count = 0;
     QWidget* parent;

@@ -82,9 +82,9 @@ protected:
     virtual void startInternetCheckTimer();
 
 private:
-    QPair<QLineEdit*, QPushButton*> addInputWidgets(QVBoxLayout*& vbox_layout,
-                                                    QWidget*& scroll_area_widget_contents,
-                                                    const QString& text);
+    void addInputWidgets(QVBoxLayout*& vbox_layout,
+                         QWidget*& scroll_area_widget_contents,
+                         const QString& text);
     void stopRunningThread(QSharedPointer<QThread> &thread);
     void setTimerOnActionsAccessChecker();
     void startCheckTimer(QPointer<QTimer> timer, int miliseconds, const QString& timer_type);

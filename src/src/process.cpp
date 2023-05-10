@@ -34,7 +34,7 @@ QMap<Process::Task, bool> running_tasks_map{
 Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
     messages_map(),
     commands_map(),
-    current_process(nullptr),
+    process_map(),
     parent(new_parent)
 {
     if (!new_actions_access_checker.isNull())
@@ -95,7 +95,7 @@ void Process::run(Process::Task new_task,
 }
 
 
-void Process::inputAnswer(const QString& new_answer)
+void Process::inputAnswer(const QString& new_answer, Process::Task task)
 {
     if (new_answer.isEmpty())
     {
@@ -103,21 +103,21 @@ void Process::inputAnswer(const QString& new_answer)
         return;
     }
 
-    if (current_process.isNull())
+    if (process_map.value(task, nullptr).isNull())
     {
         Logger::logger()->logWarning("Current process is empty");
         return;
     }
 
-    if (current_process->state() != QProcess::Running && !current_process->isWritable())
+    if (process_map.value(task)->state() != QProcess::Running && !process_map.value(task)->isWritable())
     {
         Logger::logger()->logWarning("Process is not running or is not writable. Answer input is not possible");
         return;
     }
 
     Logger::logger()->logInfo(QStringLiteral("Input: %1").arg(new_answer));
-    current_process->write(new_answer.toLocal8Bit() + "\n");
-    current_process->waitForReadyRead();
+    process_map.value(task)->write(new_answer.toLocal8Bit() + "\n");
+    process_map.value(task)->waitForReadyRead();
 }
 
 
@@ -135,10 +135,7 @@ void Process::setAurPackagesToUpdate(uint packages_to_update_count)
 
 bool Process::isAlreadyRunning(Task new_task)
 {
-    if (new_task == Task::Update && running_tasks_map.value(Task::UpdateAll))
-        return true;
-
-    if (new_task == Task::UpdateAll && running_tasks_map.value(Task::Update))
+    if (isUpdateTask(new_task) && isRunningUpdateTask())
         return true;
 
     return running_tasks_map.value(new_task);
@@ -187,11 +184,13 @@ void Process::startProcess(Process::Task new_task)
 {
     Logger::logger()->logInfo(QStringLiteral("Started task \"%1\"").arg(QVariant::fromValue(new_task).toString()));
     QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
-    current_process = pak_s;
+
+    isUpdateTask(new_task) ? process_map[Task::Update] = pak_s : process_map[new_task] = pak_s;
     emitTask(new_task);
     pak_s->setProcessChannelMode(QProcess::MergedChannels);
     bool contains_pacman = commands_map.value(new_task).join(" ").contains("pacman");
     connectSignals(pak_s, new_task);
+
     QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [pak_s, new_task, this]() {
 
         if (Settings::records()->operateOnActionsManually() || aur_packages_to_update_count > 0)
@@ -349,6 +348,22 @@ void Process::changeUpdateAllCommand(Task new_task)
     emit showInput(new_task);
 
     removeAutoAcceptationFromCommand(new_task);
+}
+
+
+bool Process::isUpdateTask(Task new_task)
+{
+    return new_task == Process::Task::Update ||
+           new_task == Process::Task::UpdateAll ||
+           new_task == Process::Task::UpdateInstalledPackages;
+}
+
+
+bool Process::isRunningUpdateTask()
+{
+    return running_tasks_map.value(Task::UpdateAll) ||
+           running_tasks_map.value(Task::Update) ||
+           running_tasks_map.value(Task::UpdateInstalledPackages);
 }
 
 

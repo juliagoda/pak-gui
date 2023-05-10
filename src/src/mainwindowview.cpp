@@ -202,11 +202,11 @@ void MainWindowView::initSignals()
 
     QObject::connect(process.data(), &Process::showInput, this, &MainWindowView::showInputWidgets);
     QObject::connect(m_ui.input_for_uninstall_btn, &QPushButton::clicked, process.data(), [this](bool)
-        { process->inputAnswer(m_ui.input_for_uninstall_lineedit->text()); });
+                     { process->inputAnswer(m_ui.input_for_uninstall_lineedit->text(), Process::Task::Uninstall); });
     QObject::connect(m_ui.input_for_install_btn, &QPushButton::clicked, process.data(), [this](bool)
-        { process->inputAnswer(m_ui.input_for_install_lineedit->text()); });
+                     { process->inputAnswer(m_ui.input_for_install_lineedit->text(), Process::Task::Install); });
     QObject::connect(m_ui.input_for_update_btn, &QPushButton::clicked, process.data(), [this](bool)
-        { process->inputAnswer(m_ui.input_for_update_lineedit->text()); });
+                     { process->inputAnswer(m_ui.input_for_update_lineedit->text(), Process::Task::Update); });
     QObject::connect(process.data(), &Process::acceptedMainTask, this, &MainWindowView::showSingleAnimation, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::generatedOutput, this, &MainWindowView::generateOutput, Qt::AutoConnection);
     QObject::connect(process.data(), &Process::acceptedTask, this, &MainWindowView::generatePreview);
@@ -488,29 +488,26 @@ void MainWindowView::generatePreview(Process::Task task)
     QTextBrowser* text_browser_tab = new QTextBrowser(scroll_area_widget_contents);
     PreviewDesign::update(text_browser_tab);
     text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(task_text));
-
     vertical_layout2->addWidget(text_browser_tab);
+
     if (Settings::records()->operateOnActionsManually())
-    {
-        auto widgets = addInputWidgets(vertical_layout2, scroll_area_widget_contents, task_text);
-      /*  QObject::connect(widgets.first, &QLineEdit::textChanged, this, [&widgets](const QString& text)
-            { text.isEmpty() ? widgets.second->setEnabled(false) : widgets.second->setEnabled(true); });
-        QObject::connect(widgets.second, &QPushButton::clicked, process.data(), [this, &widgets](bool)
-            { process->inputAnswer(widgets.first->text()); });*/
-    }
+        addInputWidgets(vertical_layout2, scroll_area_widget_contents, task_text);
 
     scroll_area->setWidget(scroll_area_widget_contents);
     vertical_layout->addWidget(scroll_area);
     generated_previews_map.insert(task, operation_preview);
     progress_view.data()->addProgressView(operation_preview);
 
+    if (Settings::records()->operateOnActionsManually())
+        progress_view.data()->createSignals(task, process);
+
     emit operationsAmountIncreased();
 }
 
 
-QPair<QLineEdit*, QPushButton*> MainWindowView::addInputWidgets(QVBoxLayout*& vbox_layout,
-                                                                QWidget*& scroll_area_widget_contents,
-                                                                const QString& text)
+void MainWindowView::addInputWidgets(QVBoxLayout*& vbox_layout,
+                                     QWidget*& scroll_area_widget_contents,
+                                     const QString& text)
 {
     auto input_widget = new QWidget(scroll_area_widget_contents);
     input_widget->setObjectName(QString::fromUtf8("input_%1_widget").arg(text));
@@ -529,8 +526,6 @@ QPair<QLineEdit*, QPushButton*> MainWindowView::addInputWidgets(QVBoxLayout*& vb
     horizontal_layout->addWidget(input_btn);
 
     vbox_layout->addWidget(input_widget);
-
-    return {input_lineedit, input_btn};
 }
 
 
