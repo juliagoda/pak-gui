@@ -36,6 +36,7 @@ public:
     Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent);
     ~Process() override = default;
 
+    bool preparedBeforeRun(Process::Task new_task, QStringList new_checked_packages = QStringList());
     void run(Process::Task new_task, QStringList new_checked_packages = QStringList());
     void setPackagesToUpdate(uint packages_to_update_count);
     void setAurPackagesToUpdate(uint packages_to_update_count);
@@ -62,11 +63,12 @@ signals:
 
 private:
     void setDefaultCommands();
-    void updateMap(QStringList& checked_packages);
+    void updateMaps(QStringList& checked_packages);
     void prepareMapsForNextTask();
     void emitTask(Process::Task task);
     QString questionForm(QStringList& new_checked_packages, Task new_task);
     void connectSignals(QSharedPointer<QProcess> &process, Task new_task);
+    void connectReadyReadStandardOutput(QSharedPointer<QProcess>& process, Task new_task);
     bool isNeededAskAboutUpdate(Task new_task);
     bool getAnswer(Process::Task new_task, QStringList new_checked_packages);
     void updateCurrentCommandForUpdate(Process::Task new_task);

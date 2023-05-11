@@ -17,19 +17,19 @@
 #include <QDebug>
 
 QMap<Process::Task, bool> running_tasks_map{
-    {Process::Task::Clean, false},
-    {Process::Task::MirrorsUpdate, false},
-    {Process::Task::UpdateAll, false},
-    {Process::Task::PrintVCSPackages, false},
-    {Process::Task::UpdateInstalledPackages, false},
-    {Process::Task::Uninstall, false},
-    {Process::Task::Install, false},
-    {Process::Task::InstallAfterSearchRepo, false},
-    {Process::Task::InstallAfterSearchAUR, false},
-    {Process::Task::InstallAfterSearchPOLAUR, false},
-    {Process::Task::Update, false},
-    {Process::Task::SyncPOLAUR, false},
-};
+                                            {Process::Task::Clean, false},
+                                            {Process::Task::MirrorsUpdate, false},
+                                            {Process::Task::UpdateAll, false},
+                                            {Process::Task::PrintVCSPackages, false},
+                                            {Process::Task::UpdateInstalledPackages, false},
+                                            {Process::Task::Uninstall, false},
+                                            {Process::Task::Install, false},
+                                            {Process::Task::InstallAfterSearchRepo, false},
+                                            {Process::Task::InstallAfterSearchAUR, false},
+                                            {Process::Task::InstallAfterSearchPOLAUR, false},
+                                            {Process::Task::Update, false},
+                                            {Process::Task::SyncPOLAUR, false},
+                                            };
 
 Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
     messages_map(),
@@ -51,6 +51,28 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
 }
 
 
+bool Process::preparedBeforeRun(Task new_task, QStringList new_checked_packages)
+{
+    if (isAlreadyRunning(new_task))
+    {
+        QMessageBox::warning(parent, messages_map.value(new_task).first,
+                             i18n("The task is already running!"),
+                             QMessageBox::Ok);
+
+        return false;
+    }
+
+    updateMaps(new_checked_packages);
+    if (!askQuestion(new_task, new_checked_packages))
+    {
+        prepareMapsForNextTask();
+        return false;
+    }
+
+    return true;
+}
+
+
 void Process::setDefaultCommands()
 {
     commands_map[Task::SyncPOLAUR] = QStringList() << "-c" << Constants::askPassCommand() + " && pak -SyP";
@@ -65,22 +87,6 @@ void Process::setDefaultCommands()
 void Process::run(Process::Task new_task,
                   QStringList new_checked_packages)
 {
-    if (isAlreadyRunning(new_task))
-    {
-        QMessageBox::warning(parent, messages_map.value(new_task).first,
-                             i18n("The task is already running!"),
-                             QMessageBox::Ok);
-
-        return;
-    }
-
-    updateMap(new_checked_packages);
-    if (!askQuestion(new_task, new_checked_packages))
-    {
-        prepareMapsForNextTask();
-        return;
-    }
-
     Logger::logger()->logDebug(QStringLiteral("Packages in current task: %1").arg(new_checked_packages.join(" ")));
     running_tasks_map[new_task] = true;
     if (Settings::records()->operateOnActionsManually())
@@ -163,13 +169,6 @@ void Process::updateCleanCommand(bool is_auracle_installed)
 bool Process::askQuestion(Process::Task new_task,
                           QStringList new_checked_packages)
 {
-    messages_map.insert(Task::Uninstall, {i18n("Uninstallation"), i18np("remove package?", "remove packages?", new_checked_packages.count())});
-    messages_map.insert(Task::Install, {i18n("Installation"), i18np("install package?", "install packages?", new_checked_packages.count())});
-    messages_map.insert(Task::InstallAfterSearchRepo, {i18n("Installation from Repo"), i18np("install package?", "install packages?", new_checked_packages.count())});
-    messages_map.insert(Task::InstallAfterSearchAUR, {i18n("Installation from AUR"), i18np("install package?", "install packages?", new_checked_packages.count())});
-    messages_map.insert(Task::InstallAfterSearchPOLAUR, {i18n("Installation from POLAUR"), i18np("install package?", "install packages?", new_checked_packages.count())});
-    messages_map.insert(Task::Update, {i18n("Update"), i18np("update package?", "update packages?", new_checked_packages.count())});
-
     if (!getAnswer(new_task, new_checked_packages))
         return false;
 
@@ -190,20 +189,7 @@ void Process::startProcess(Process::Task new_task)
     pak_s->setProcessChannelMode(QProcess::MergedChannels);
     bool contains_pacman = commands_map.value(new_task).join(" ").contains("pacman");
     connectSignals(pak_s, new_task);
-
-    QObject::connect(pak_s.data(), &QProcess::readyReadStandardOutput, [pak_s, new_task, this]() {
-
-        if (Settings::records()->operateOnActionsManually() || aur_packages_to_update_count > 0)
-        {
-            QString res{pak_s->readAllStandardOutput()};
-            processReadLine(res, new_task);
-        }
-
-        while (pak_s.data()->canReadLine())
-        {
-            QString line = pak_s.data()->readLine();
-            processReadLine(line, new_task);
-        }});
+    connectReadyReadStandardOutput(pak_s, new_task);
 
     pak_s.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
     pak_s.data()->waitForStarted();
@@ -222,18 +208,37 @@ void Process::processReadLine(QString& line, Process::Task new_task)
 void Process::connectSignals(QSharedPointer<QProcess>& process, Process::Task new_task)
 {
     QObject::connect(process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
-        [this, new_task, process](QProcess::ProcessError process_error)
-    {
-        QMessageBox::warning(parent, messages_map.value(new_task).first, tr("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(process.data()->error()), QMessageBox::Ok);
-        Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString(), QVariant::fromValue(process_error).toString()));
-    });
+                     [this, new_task, process](QProcess::ProcessError process_error)
+                     {
+                         QMessageBox::warning(parent, messages_map.value(new_task).first, tr("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(process.data()->error()), QMessageBox::Ok);
+                         Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString(), QVariant::fromValue(process_error).toString()));
+                     });
 
     QObject::connect(process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-        [this, new_task](int exit_code, QProcess::ExitStatus exit_status)
+                     [this, new_task](int exit_code, QProcess::ExitStatus exit_status)
+                     {
+                         emit finished(new_task, exit_code, exit_status);
+                         Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));
+                     });
+}
+
+
+void Process::connectReadyReadStandardOutput(QSharedPointer<QProcess>& process, Task new_task)
+{
+    QObject::connect(process.data(), &QProcess::readyReadStandardOutput, [process, new_task, this]()
     {
-        emit finished(new_task, exit_code, exit_status);
-        Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));
-        });
+        if (Settings::records()->operateOnActionsManually() || aur_packages_to_update_count > 0)
+        {
+            QString res{process->readAllStandardOutput()};
+            processReadLine(res, new_task);
+        }
+
+        while (process.data()->canReadLine())
+        {
+            QString line = process.data()->readLine();
+            processReadLine(line, new_task);
+        }
+    });
 }
 
 
@@ -261,8 +266,8 @@ bool Process::isNeededAskAboutUpdate(Task new_task)
 bool Process::getAnswer(Task new_task, QStringList new_checked_packages)
 {
     int answer = QMessageBox::information(parent, messages_map.value(new_task).first,
-        questionForm(new_checked_packages, new_task),
-        QMessageBox::Yes | QMessageBox::No);
+                                          questionForm(new_checked_packages, new_task),
+                                          QMessageBox::Yes | QMessageBox::No);
 
     if (static_cast<QMessageBox::StandardButton>(answer) == QMessageBox::No)
     {
@@ -367,7 +372,7 @@ bool Process::isRunningUpdateTask()
 }
 
 
-void Process::updateMap(QStringList& checked_packages)
+void Process::updateMaps(QStringList& checked_packages)
 {
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Uninstall, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"y\" | pak -R " + checked_packages.join(" "));
@@ -375,6 +380,13 @@ void Process::updateMap(QStringList& checked_packages)
     commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -S " + checked_packages.join(" "));
     commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -SA " + checked_packages.join(" "));
     commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"n\ny\" | pak -SP " + checked_packages.join(" "));
+
+    messages_map.insert(Task::Uninstall, {i18n("Uninstallation"), i18np("remove package?", "remove packages?", checked_packages.count())});
+    messages_map.insert(Task::Install, {i18n("Installation"), i18np("install package?", "install packages?", checked_packages.count())});
+    messages_map.insert(Task::InstallAfterSearchRepo, {i18n("Installation from Repo"), i18np("install package?", "install packages?", checked_packages.count())});
+    messages_map.insert(Task::InstallAfterSearchAUR, {i18n("Installation from AUR"), i18np("install package?", "install packages?", checked_packages.count())});
+    messages_map.insert(Task::InstallAfterSearchPOLAUR, {i18n("Installation from POLAUR"), i18np("install package?", "install packages?", checked_packages.count())});
+    messages_map.insert(Task::Update, {i18n("Update"), i18np("update package?", "update packages?", checked_packages.count())});
 }
 
 

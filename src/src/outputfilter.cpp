@@ -22,7 +22,7 @@ QStringList OutputFilter::filteredOutputFromInstalledPackages(const QStringList&
 {
     QStringList output_list;
     QStringList::const_iterator list_it;
-    QRegularExpression tag{"\\[.*\\]"};
+    static QRegularExpression tag{"\\[.*\\]"};
     for (list_it = text_output.begin(); list_it != text_output.end(); list_it++)
     {
         QString list_el = *list_it;
@@ -42,14 +42,14 @@ QString OutputFilter::getSourceFromDoubleColon(QString& output_line)
 
 QString OutputFilter::getSourceFromSearchLine(QString& output_line)
 {
-    QRegularExpression regex(".*\\[(.*)\\].*");
+    static QRegularExpression regex(".*\\[(.*)\\].*");
     return regex.match(output_line).captured(1);
 }
 
 
 QString OutputFilter::getPackageFromSearchLine(QString& output_line)
 {
-    QRegularExpression regex("^(\\S*)\\s*\\S*");
+    static QRegularExpression regex("^(\\S*)\\s*\\S*");
     return regex.match(output_line).captured(1);
 }
 

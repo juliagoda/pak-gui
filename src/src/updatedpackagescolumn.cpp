@@ -96,8 +96,6 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
                                       i18n("Update all"), i18n("Uncheck these packages"), i18n("Cancel"));
     }
 
-    QList<Package*>::const_iterator it;
-
     if (result == 2)
         return;
 
@@ -106,7 +104,7 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
 
     if (result == 1)
     {
-        for (it = getCheckedPackagesList().cbegin(); it != getCheckedPackagesList().cend(); it++)
+        for (auto it = getCheckedPackagesList().cbegin(); it != getCheckedPackagesList().cend(); it++)
         {
             if ((*it)->getSource() == Package::Source::AUR || (*it)->getSource() == Package::Source::POLAUR)
                 (*it)->setCheckState(Qt::Unchecked);

@@ -74,4 +74,11 @@ protected:
     Package::Source source{Package::Source::Repo};
     QMap<int, TooltipLine> numberToTooltipLine{};
     int no{0};
+
+private:
+    void setNameParameter(int parameter_line,
+                          const QStringList& lines);
+
+    void setVersionParameter(int parameter_line,
+                             const QStringList& lines);
 };

@@ -45,7 +45,8 @@ void ChoiceWindow::fillComboBox(QString& output)
 {
     QString result_output{output};
     result_output = OutputFilter::filteredOutput(result_output);
-    QStringList splitted_list{result_output.split(QRegularExpression("\n"))};
+    static QRegularExpression new_line_expression("\n");
+    QStringList splitted_list{result_output.split(new_line_expression)};
     m_ui.choice_combo_box->clear();
     m_ui.choice_combo_box->addItems(OutputFilter::filteredLines(splitted_list, OutputFilter::startsFromNumber));
     m_ui.choice_combo_box->update();

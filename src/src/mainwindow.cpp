@@ -142,8 +142,7 @@ void MainWindow::startTimerOnOperation(const QDateTime& time, QTimer& timer,
 
     timer.start(rest_time);
     Logger::logger()->logDebug(QStringLiteral("Time passed for %1: %2")
-                               .arg(operation)
-                               .arg(TimeConverter::timeToString(time_passed_in_milliseconds)));
+                               .arg(operation, TimeConverter::timeToString(time_passed_in_milliseconds)));
 }
 
 
@@ -197,7 +196,7 @@ void MainWindow::initSignals()
 
     KActionCollection* actionCollection = this->actionCollection();
     setAction(update_action, i18n("&Update"), QString("update"), QKeySequence(Qt::CTRL, Qt::Key_U));
-    connect(update_action, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
+    connect(update_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::UpdateInstalledPackages)) process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
 
     setAction(refresh_action, i18n("&Refresh"), QString("refresh"), QKeySequence(Qt::CTRL, Qt::Key_R));
     connect(refresh_action, &QAction::triggered, main_window_view, &MainWindowView::refresh);
@@ -221,16 +220,16 @@ void MainWindow::initSignals()
     connect(search_action, &QAction::triggered, main_window_view, &MainWindowView::searchPackage);
 
     setAction(update_all_action, i18n("&Update all packages"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A));
-    connect(update_all_action, &QAction::triggered, this, [this]() { process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
+    connect(update_all_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::UpdateAll)) process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
 
     setAction(update_mirrors_action, i18n("&Update mirrors"), QString("updateMirrors"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_M));
-    connect(update_mirrors_action, &QAction::triggered, this, [this]() { process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
+    connect(update_mirrors_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::MirrorsUpdate)) process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
 
     setAction(clean_action, i18n("&Clean"), QString("clean"), QKeySequence(Qt::CTRL, Qt::Key_C));
-    connect(clean_action, &QAction::triggered, this, [this]() { process->run(Process::Task::Clean); }, Qt::AutoConnection);
+    connect(clean_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::Clean)) process->run(Process::Task::Clean); }, Qt::AutoConnection);
 
     setAction(sync_polaur_action, i18n("&Sync POLAUR"), QString("syncPOLAUR"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_P));
-    connect(sync_polaur_action, &QAction::triggered, this, [this]() { process->run(Process::Task::SyncPOLAUR); }, Qt::AutoConnection);
+    connect(sync_polaur_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::SyncPOLAUR)) process->run(Process::Task::SyncPOLAUR); }, Qt::AutoConnection);
 
     setAction(print_statistics_action, i18n("&Statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_T));
     connect(print_statistics_action, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);

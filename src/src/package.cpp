@@ -55,24 +55,36 @@ void Package::setNo(const int new_no)
 
 void Package::updateData(const QString& package_content, int name_line, int version_line)
 {
-    QStringList lines = package_content.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+    QStringList lines = package_content.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
 
     if (lines.count() == 0)
         return;
 
     setToolTipOnPackage(package_content);
+    setNameParameter(name_line, lines);
+    setVersionParameter(version_line, lines);
+}
 
-    if (!validate(lines, name_line + 1, QString("updateData()")))
+
+void Package::setNameParameter(int parameter_line,
+                               const QStringList& lines)
+{
+    if (!validate(lines, parameter_line + 1, QString("updateData()")))
         return;
 
-    int name_separator_index = lines.at(name_line).indexOf(": ") + 1;
-    setName(lines.at(name_line).mid(name_separator_index));
+    int parameter_separator_index = lines.at(parameter_line).indexOf(": ") + 1;
+    setName(lines.at(parameter_line).mid(parameter_separator_index));
+}
 
-    if (!validate(lines, version_line + 1, QString("updateData()")))
+
+void Package::setVersionParameter(int parameter_line,
+                                  const QStringList& lines)
+{
+    if (!validate(lines, parameter_line + 1, QString("updateData()")))
         return;
 
-    int version_separator_index = lines.at(version_line).indexOf(": ") + 1;
-    setVersion(lines.at(version_line).mid(version_separator_index));
+    int parameter_separator_index = lines.at(parameter_line).indexOf(": ") + 1;
+    setVersion(lines.at(parameter_line).mid(parameter_separator_index));
 }
 
 

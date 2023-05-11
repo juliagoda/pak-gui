@@ -25,24 +25,15 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
 
     QHash<QString, Package::Source> system_packages;
-    QStringList output_list{output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts)};
+    QStringList output_list{output.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts)};
     QStringListIterator it{output_list};
     uint double_colon_line_count{0};
 
     while (it.hasNext())
     {
         QString line{it.next()};
-        QString filtered_line{OutputFilter::filteredOutput(line).simplified()};
-        bool starts_from_double_colon{OutputFilter::startsFromDoubleColon(filtered_line)};
-
-        if (starts_from_double_colon)
-            double_colon_line_count++;
-
-        if (finishProcessBeforeEnd(starts_from_double_colon, double_colon_line_count))
+        if (!processCurrentLine(double_colon_line_count, system_packages, line))
             break;
-
-        if (line.contains("=>") && !OutputFilter::isCheckWarningLine(filtered_line))
-           system_packages.insert(filtered_line, line_to_source_map.value(double_colon_line_count));
     }
 
     return system_packages;
@@ -70,4 +61,25 @@ bool CheckCommandParser::finishProcessBeforeEnd(bool starts_from_double_colon, i
     }
 
     return false;
+}
+
+
+bool CheckCommandParser::processCurrentLine(uint& double_colon_line_count,
+                                            QHash<QString, Package::Source>& system_packages,
+                                            const QString& new_line)
+{
+    QString line = new_line;
+    QString filtered_line{OutputFilter::filteredOutput(line).simplified()};
+    bool starts_from_double_colon{OutputFilter::startsFromDoubleColon(filtered_line)};
+
+    if (starts_from_double_colon)
+        double_colon_line_count++;
+
+    if (finishProcessBeforeEnd(starts_from_double_colon, double_colon_line_count))
+        return false;
+
+    if (line.contains("=>") && !OutputFilter::isCheckWarningLine(filtered_line))
+        system_packages.insert(filtered_line, line_to_source_map.value(double_colon_line_count));
+
+    return true;
 }

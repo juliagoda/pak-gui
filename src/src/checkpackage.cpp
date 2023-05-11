@@ -33,8 +33,10 @@ void CheckPackage::updateData(const QString& package_content, int name_line, int
     Q_UNUSED(name_line)
     Q_UNUSED(version_line)
 
-    int first_whitespace_index = package_content.indexOf(QRegularExpression(" "), 0);
-    int first_number_index = package_content.indexOf(QRegularExpression("[0-9]"), 0);
+    static QRegularExpression whitespace_expression(" ");
+    static QRegularExpression numbers_expression("[0-9]");
+    int first_whitespace_index = package_content.indexOf(whitespace_expression);
+    int first_number_index = package_content.indexOf(numbers_expression);
 
     QString name_part = package_content.left(first_whitespace_index);
     setName(name_part);

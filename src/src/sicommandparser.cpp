@@ -11,7 +11,8 @@ QStringList SiCommandParser::retrieveInfo()
 {
     QString output = generateResult();
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckAvailable);
-    auto list = output.split(QRegularExpression("\n\n"));
+    static QRegularExpression new_lines_expression("\n\n");
+    auto list = output.split(new_lines_expression);
     if (list.last().trimmed().isEmpty())
         list.pop_back();
 

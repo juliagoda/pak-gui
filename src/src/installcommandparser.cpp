@@ -53,5 +53,7 @@ void InstallCommandParser::start(QSharedPointer<Process>& process,
                                  uint packages_to_update)
 {
     process->setPackagesToUpdate(packages_to_update);
-    process->run(current_task, QStringList() << package_name);
+
+    if (process->preparedBeforeRun(current_task, QStringList() << package_name))
+        process->run(current_task, QStringList() << package_name);
 }
