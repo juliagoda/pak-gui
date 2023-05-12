@@ -22,9 +22,13 @@ namespace Ui {
 class MainWindowView;
 }
 
+class MainWindowViewSignals;
+
 class MainWindowView : public QWidget
 {
     Q_OBJECT
+
+    friend class MainWindowViewSignals;
 
 public:
     explicit MainWindowView(QWidget* parent = nullptr);
@@ -52,7 +56,9 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void startAnimations();
-    void connectSignalsForAvailablePackages();
+    void connectS    QPointer<QTimer> internet_connection_timer;
+    QSharedPointer<Process> process;
+    QSharedPointer<ActionsAccessChecker> actions_access_checker;ignalsForAvailablePackages();
     void connectSignalsForInstalledPackages();
     void connectSignalsForUpdatedPackages();
     void toggleWidgetsAccess(bool is_online);
@@ -76,10 +82,10 @@ protected:
     QSharedPointer<SpinningAnimation> spinning_animation;
     QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
     QSharedPointer<ProgressView> progress_view;
+    QSharedPointer<MainWindowViewSignals> main_window_view_signals;
 
     virtual void showFinishInformation();
     virtual void updatePreviewsDesign();
-    virtual void startInternetCheckTimer();
 
 private:
     void addInputWidgets(QVBoxLayout*& vbox_layout,
@@ -92,11 +98,7 @@ private:
     void hideWidgets();
     void hideWidgetsExceptInstalled();
     void checkSpinningVisibility();
-    void startPackagesCheckTimer();
-    void initSignals();
-    void initColumns();
     void clearMainPreviews(Process::Task task);
-
 
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;

@@ -10,6 +10,8 @@ target_sources(pak-gui PRIVATE
     src/mainwindow.h
     src/mainwindowview.cpp
     src/mainwindowview.h
+    src/mainwindowviewsignals.cpp
+    src/mainwindowviewsignals.h
     src/availablepackagescolumn.cpp
     src/availablepackagescolumn.h
     src/updatedpackagescolumn.cpp
