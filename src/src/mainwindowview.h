@@ -56,9 +56,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void startAnimations();
-    void connectS    QPointer<QTimer> internet_connection_timer;
-    QSharedPointer<Process> process;
-    QSharedPointer<ActionsAccessChecker> actions_access_checker;ignalsForAvailablePackages();
+    void connectSignalsForAvailablePackages();
     void connectSignalsForInstalledPackages();
     void connectSignalsForUpdatedPackages();
     void toggleWidgetsAccess(bool is_online);
