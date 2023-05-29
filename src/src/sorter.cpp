@@ -10,6 +10,7 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 #include <algorithm>
+#include <iterator>
 
 QMutex Sorter::mutex;
 
@@ -17,7 +18,7 @@ Sorter::Sorter(QListWidget* list_widgets,
                QCheckBox* new_reverse_sort_checkbox) :
     list_widget(list_widgets),
     reverse_sort_checkbox(new_reverse_sort_checkbox),
-    untouched_list_widget(new QListWidget, &QObject::deleteLater)
+    untouched_list_widget()
 {
    // ...
 }
@@ -47,58 +48,41 @@ void Sorter::sortReverse()
 }
 
 
-void Sorter::sortPackagesToUpdateByText(const QString &text)
+template<typename T>
+void Sorter::sortPackagesByText(const QString &text, T emptyPackage)
 {
-    auto widgets_list = untouched_list_widget->findItems(text, Qt::MatchStartsWith);
-    clear();
-    QList<QListWidgetItem*>::iterator widgets_it;
+    Q_UNUSED(emptyPackage) // we have errors without T as argument
 
-    for (widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
-    {
-        CheckPackage* item = dynamic_cast<CheckPackage*>(*widgets_it);
-        list_widget->addItem(new CheckPackage(*item));
-    }
+    if (untouched_list_widget.empty())
+        fillUntouchedList<T>();
+
+    clear();
+    QVector<QListWidgetItem*>::reverse_iterator widgets_reversed_it;
 
     if (reverse_sort_checkbox->checkState() == Qt::Checked)
-        sortReverse();
-
-    showInfo();
-}
-
-
-void Sorter::sortAvailablePackagesByText(const QString &text)
-{
-    auto widgets_list = untouched_list_widget->findItems(text, Qt::MatchStartsWith);
-    clear();
-    QList<QListWidgetItem*>::iterator widgets_it;
-
-    for (widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
     {
-        SiPackage* item = dynamic_cast<SiPackage*>(*widgets_it);
-        list_widget->addItem(new SiPackage(*item));
+        for (widgets_reversed_it = untouched_list_widget.rbegin(); widgets_reversed_it != untouched_list_widget.rend(); widgets_reversed_it++)
+        {
+            if (!(*widgets_reversed_it)->text().startsWith(text))
+                continue;
+
+            T* item = dynamic_cast<T*>(*widgets_reversed_it);
+            list_widget->addItem(new T(*item));
+        }
+
+        showInfo();
+        return;
     }
 
-    if (reverse_sort_checkbox->checkState() == Qt::Checked)
-        sortReverse();
-
-    showInfo();
-}
-
-
-void Sorter::sortInstalledPackagesByText(const QString &text)
-{
-    auto widgets_list = untouched_list_widget->findItems(text, Qt::MatchStartsWith);
-    clear();
-    QList<QListWidgetItem*>::iterator widgets_it;
-
-    for (widgets_it = widgets_list.begin(); widgets_it != widgets_list.end(); widgets_it++)
+    QVector<QListWidgetItem*>::iterator widgets_it;
+    for (widgets_it = untouched_list_widget.begin(); widgets_it != untouched_list_widget.end(); widgets_it++)
     {
-        QiPackage* item = dynamic_cast<QiPackage*>(*widgets_it);
-        list_widget->addItem(new QiPackage(*item));
-    }
+        if (!(*widgets_it)->text().startsWith(text))
+            continue;
 
-    if (reverse_sort_checkbox->checkState() == Qt::Checked)
-        sortReverse();
+        T* item = dynamic_cast<T*>(*widgets_it);
+        list_widget->addItem(new T(*item));
+    }
 
     showInfo();
 }
@@ -106,11 +90,11 @@ void Sorter::sortInstalledPackagesByText(const QString &text)
 
 void Sorter::setCheckStateForUnsortedList(QListWidgetItem* item)
 {
-    if (untouched_list_widget.isNull() || untouched_list_widget->count() == 0)
+    if (untouched_list_widget.count() == 0)
         return;
 
     Package* package = dynamic_cast<Package*>(item);
-    untouched_list_widget->item(package->getNo() - 1)->setCheckState(item->checkState());
+    untouched_list_widget.at(package->getNo() - 1)->setCheckState(item->checkState());
 }
 
 
@@ -124,6 +108,16 @@ void Sorter::showInfo()
 }
 
 
+template <typename T>
+void Sorter::fillUntouchedList()
+{
+    auto widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
+    untouched_list_widget.reserve(widgets_list.count());
+    std::transform(widgets_list.begin(), widgets_list.end(), std::back_inserter(untouched_list_widget),
+                   [](QListWidgetItem* item) { return dynamic_cast<T*>(item); });
+}
+
+
 void Sorter::clear()
 {
     while (list_widget->count() > 0)
@@ -134,19 +128,17 @@ void Sorter::clear()
 }
 
 
-void Sorter::updateOriginalList(int index, Package* package)
-{
-    if (untouched_list_widget.isNull())
-        untouched_list_widget.reset(new QListWidget, &QObject::deleteLater);
-
-    untouched_list_widget->insertItem(index, package);
-}
-
-
 void Sorter::resetOriginalList()
 {
-    if (untouched_list_widget.isNull() || untouched_list_widget->count() == 0)
+    if (untouched_list_widget.count() == 0)
         return;
 
     untouched_list_widget.clear();
 }
+
+
+// forward declarations
+
+template void Sorter::sortPackagesByText(const QString& text, CheckPackage);
+template void Sorter::sortPackagesByText(const QString& text, SiPackage);
+template void Sorter::sortPackagesByText(const QString& text, QiPackage);

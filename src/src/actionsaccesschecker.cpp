@@ -9,6 +9,8 @@
 #include <QNetworkInterface>
 #include <QMessageBox>
 
+#include <numeric>
+
 
 ActionsAccessChecker* ActionsAccessChecker::instance{nullptr};
 QStringList ActionsAccessChecker::required_packages{};
@@ -162,17 +164,12 @@ bool ActionsAccessChecker::existsPackageByPromptVersion(const QString& package_n
 bool ActionsAccessChecker::checkNetworkInterfaces() const
 {
     auto all_interfaces = QNetworkInterface::allInterfaces();
-    for (auto interface = all_interfaces.cbegin(); interface != all_interfaces.cend(); interface++)
+    return std::any_of(all_interfaces.cbegin(), all_interfaces.cend(), [](const QNetworkInterface& iNetInterface)
     {
-        if ((*interface).type() == QNetworkInterface::Loopback)
-            continue;
-
-        if ((*interface).flags().testFlag(QNetworkInterface::IsUp) &&
-            (*interface).flags().testFlag(QNetworkInterface::IsRunning))
-            return true;
-    }
-
-    return false;
+        return (iNetInterface.type() != QNetworkInterface::Loopback &&
+                iNetInterface.flags().testFlag(QNetworkInterface::IsUp) &&
+                iNetInterface.flags().testFlag(QNetworkInterface::IsRunning));
+    });
 }
 
 
@@ -188,13 +185,12 @@ bool ActionsAccessChecker::findPackage(const QString& package_name)
 
 QStringList ActionsAccessChecker::getNotInstalledPackagesList()
 {
-    QStringList not_installed_packages{};
-
-    for (auto it = required_packages.cbegin(); it != required_packages.cend(); it++)
+    return std::accumulate(required_packages.cbegin(), required_packages.cend(), QStringList{},
+                           [this](QStringList list, const QString& package)
     {
-        if (!findPackage(*it))
-            not_installed_packages.append(*it);
-    }
+        if (!findPackage(package))
+            list.append(package);
 
-    return not_installed_packages;
+        return list;
+    });
 }

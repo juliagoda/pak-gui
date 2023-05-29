@@ -19,9 +19,9 @@ InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget,
         return;
 
     QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
-                     &Sorter::sortInstalledPackagesByText);
+                     [&](const QString& text) { packages_sorter->sortPackagesByText<QiPackage>(text, QiPackage{""}); });
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
-                     &Sorter::sortInstalledPackagesByText);
+                     [&](const QString& text) { packages_sorter->sortPackagesByText<QiPackage>(text, QiPackage{""}); });
 }
 
 
@@ -44,9 +44,6 @@ void InstalledPackagesColumn::fill()
         QiPackage* package_item = new QiPackage(*it);
         package_item->setNo(i + 1);
         list_widget->insertItem(i, package_item);
-        QiPackage* package_item_unsorted = new QiPackage(*it);
-        package_item_unsorted->setNo(i + 1);
-        packages_sorter->updateOriginalList(i, package_item_unsorted);
         i++;
     }
 

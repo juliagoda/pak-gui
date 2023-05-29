@@ -22,9 +22,9 @@ AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget,
         return;
 
     QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
-                     &Sorter::sortAvailablePackagesByText);
+                     [&](const QString& text) { packages_sorter->sortPackagesByText<SiPackage>(text, SiPackage{""}); });
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
-                     &Sorter::sortAvailablePackagesByText);
+                     [&](const QString& text) { packages_sorter->sortPackagesByText<SiPackage>(text, SiPackage{""}); });
 }
 
 
@@ -48,9 +48,6 @@ void AvailablePackagesColumn::fill()
         auto package_item = new SiPackage(*it);
         package_item->setNo(i+1);
         list_widget->insertItem(i, package_item);
-        auto package_item_unsorted = new SiPackage(*it);
-        package_item_unsorted->setNo(i+1);
-        packages_sorter->updateOriginalList(i, package_item_unsorted);
         i++;
     }
 

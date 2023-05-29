@@ -22,9 +22,9 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
         return;
 
     QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
-                     &Sorter::sortPackagesToUpdateByText);
+                     [&](const QString& text) { packages_sorter->sortPackagesByText<CheckPackage>(text, CheckPackage{"", Package::Source::Unknown}); });
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
-        &Sorter::sortPackagesToUpdateByText);
+                     [&](const QString& text) { packages_sorter->sortPackagesByText<CheckPackage>(text, CheckPackage{"", Package::Source::Unknown}); });
 }
 
 
@@ -54,9 +54,6 @@ void UpdatedPackagesColumn::fill()
         CheckPackage* package_item = new CheckPackage(it.key(), it.value());
         package_item->setNo(i + 1);
         list_widget->insertItem(i, package_item);
-        CheckPackage* package_item_unsorted = new CheckPackage(it.key(), it.value());
-        package_item_unsorted->setNo(i + 1);
-        packages_sorter->updateOriginalList(i, package_item_unsorted);
         i++;
     }
 

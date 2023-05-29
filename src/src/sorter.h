@@ -16,24 +16,25 @@ public:
            QCheckBox* new_reverse_sort_checkbox);
     ~Sorter() override = default;
 
-    void updateOriginalList(int index, Package* package);
     void resetOriginalList();
-    QListWidget* listWidget() { return untouched_list_widget.get(); }
+    QVector<QListWidgetItem*> listWidget() { return untouched_list_widget; }
+
+    template <typename T>
+    void sortPackagesByText(const QString& text, T emptyPackage);
 
 public Q_SLOTS:
     void sortReverse();
-    void sortPackagesToUpdateByText(const QString& text);
-    void sortAvailablePackagesByText(const QString& text);
-    void sortInstalledPackagesByText(const QString& text);
     void setCheckStateForUnsortedList(QListWidgetItem* item);
 
 private:
     void clear();
     void showInfo();
+    template <typename T>
+    void fillUntouchedList();
 
     QListWidget* list_widget;
     QCheckBox* reverse_sort_checkbox;
-    QSharedPointer<QListWidget> untouched_list_widget;
+    QVector<QListWidgetItem*> untouched_list_widget;
     static QMutex mutex;
 };
 
