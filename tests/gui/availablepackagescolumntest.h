@@ -16,6 +16,7 @@ class MockAvailablePackagesColumn : public AvailablePackagesColumn
 public:
     explicit MockAvailablePackagesColumn(QListWidget* new_list_widget,
                                          QLineEdit* new_search_lineedit,
+                                         QCheckBox* new_reverse_sort_checkbox,
                                          QWidget* new_parent);
     friend class TestAvailablePackagesColumn;
 
@@ -25,7 +26,6 @@ protected:
 public Q_SLOTS:
     void sort(bool is_sorted) override;
 };
-
 
 
 class TestAvailablePackagesColumn : public QObject

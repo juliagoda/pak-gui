@@ -9,7 +9,6 @@
 #include <QWidget>
 
 
-
 class TestOutputFilter : public QObject
 {
     Q_OBJECT

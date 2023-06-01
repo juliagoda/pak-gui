@@ -17,7 +17,6 @@ public:
 };
 
 
-
 class TestQiCommandParser : public QObject
 {
     Q_OBJECT

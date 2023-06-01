@@ -69,7 +69,6 @@ signals:
     void installedPackagesFillEnded();
     void packagesToUpdateFillEnded();
     void hideOnlineActions();
-    void startOtherThreads();
     void packagesToUpdateCountChanged(uint packages_count);
 
 protected:

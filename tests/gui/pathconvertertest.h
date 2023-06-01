@@ -5,7 +5,6 @@
 #include <QWidget>
 
 
-
 class TestPathConverter : public QObject
 {
     Q_OBJECT

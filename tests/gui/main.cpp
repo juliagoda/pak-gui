@@ -33,6 +33,7 @@
 #include <QApplication>
 #include <KCrash>
 #include <KDBusService>
+#include <KLocalizedString>
 
 
 int main(int argc, char* argv[])

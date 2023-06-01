@@ -8,7 +8,6 @@ MockProgressView::MockProgressView(QDialog* parent) :
 }
 
 
-
 TestProgressView::TestProgressView(QObject* parent) :
     QObject(parent),
     progress_view(new QDialog)

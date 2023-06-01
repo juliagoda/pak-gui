@@ -8,28 +8,11 @@ MockPackageDownloader::MockPackageDownloader() :
 }
 
 
-
-MockAutomaticInstallation::MockAutomaticInstallation(QSharedPointer<DownloadCommandParser>& new_download_command_parser,
-                                                     QWidget* new_parent) :
-    AutomaticInstallation(new_download_command_parser, new_parent)
-{
-    // ...
-}
-
-
-QMessageBox::StandardButton MockAutomaticInstallation::chooseDownloadOption()
-{
-    return QMessageBox::Yes;
-}
-
-
-
 MockPackageInput::MockPackageInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
     PackageInput(new_download_command_parser)
 {
   // ...
 }
-
 
 
 MockPathsChoiceInput::MockPathsChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
@@ -39,7 +22,6 @@ MockPathsChoiceInput::MockPathsChoiceInput(QSharedPointer<DownloadCommandParser>
 }
 
 
-
 MockReposChoiceInput::MockReposChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
     ReposChoiceInput(new_download_command_parser)
 {
@@ -47,12 +29,9 @@ MockReposChoiceInput::MockReposChoiceInput(QSharedPointer<DownloadCommandParser>
 }
 
 
-
 TestPackageDownloader::TestPackageDownloader(QObject* parent) :
     QObject(parent),
     package_downloader(),
-    automatic_installation(download_command_parser,
-                           new QWidget),
     package_input(download_command_parser),
     paths_choice_input(download_command_parser),
     repos_choice_input(download_command_parser)

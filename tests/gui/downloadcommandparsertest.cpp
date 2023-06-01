@@ -1,4 +1,4 @@
- #include "downloadcommandparsertest.h"
+#include "downloadcommandparsertest.h"
 
 
 MockDownloadCommandParser::MockDownloadCommandParser(const QString& new_package_name, QWidget* new_parent) :
@@ -37,8 +37,6 @@ bool MockDownloadCommandParser::validateFinishedOutput(int exit_code)
     Q_UNUSED(exit_code)
     return isPackageAlreadyDownloaded();
 }
-
-
 
 
 TestDownloadCommandParser::TestDownloadCommandParser(QObject* parent) :

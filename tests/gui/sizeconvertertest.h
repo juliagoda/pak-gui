@@ -5,7 +5,6 @@
 #include <QWidget>
 
 
-
 class TestSizeConverter : public QObject
 {
     Q_OBJECT

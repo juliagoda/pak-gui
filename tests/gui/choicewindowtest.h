@@ -18,7 +18,6 @@ public:
 };
 
 
-
 class TestChoiceWindow : public QObject
 {
     Q_OBJECT

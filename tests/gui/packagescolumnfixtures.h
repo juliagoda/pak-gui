@@ -192,6 +192,7 @@ public:
     }
 };
 
+
 class MockMainWindow : public MainWindow
 {
 public:
@@ -242,7 +243,6 @@ public:
 
     friend class TestCheckPackage;
 };
-
 
 
 class MockQiPackage : public QiPackage

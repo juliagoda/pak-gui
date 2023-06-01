@@ -20,7 +20,6 @@ public:
 };
 
 
-
 class TestStatisticsWindow : public QObject
 {
     Q_OBJECT

@@ -3,7 +3,6 @@
 #include <QHash>
 
 
-
 QString MockCheckCommandParser::generatePakCheckResults()
 {
     return QString{":: Latest Arch Linux news: 2\n"
@@ -33,7 +32,6 @@ bool MockCheckCommandParser::finishProcessBeforeEnd(bool starts_from_double_colo
 {
     return starts_from_double_colon && double_colon_line_count == 5;
 }
-
 
 
 TestCheckCommandParser::TestCheckCommandParser(QObject* parent) :

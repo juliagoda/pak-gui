@@ -21,7 +21,6 @@ public:
 };
 
 
-
 class TestCheckCommandParser : public QObject
 {
     Q_OBJECT

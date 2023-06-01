@@ -17,6 +17,7 @@ public:
     ~InstalledPackagesColumn() override = default;
 
     void fill() override;
+    void clearForSort();
 
 protected:
     virtual QStringList getPackagesList();

@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "installedpackagescolumn.h"
 
 #include "packagescolumnfixtures.h"
@@ -10,7 +9,6 @@
 #include <QWidget>
 
 
-
 class MockInstalledPackagesColumn : public InstalledPackagesColumn
 {
     Q_OBJECT
@@ -18,6 +16,7 @@ class MockInstalledPackagesColumn : public InstalledPackagesColumn
 public:
     explicit MockInstalledPackagesColumn(QListWidget* new_list_widget,
                                          QLineEdit* new_search_lineedit,
+                                         QCheckBox* new_reverse_sort_checkbox,
                                          QWidget* new_parent);
     friend class TestInstalledPackagesColumn;
 
@@ -27,7 +26,6 @@ protected:
 public Q_SLOTS:
     void sort(bool is_sorted) override;
 };
-
 
 
 class TestInstalledPackagesColumn : public QObject

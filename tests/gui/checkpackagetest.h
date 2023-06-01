@@ -7,7 +7,6 @@
 #include <QWidget>
 
 
-
 class TestCheckPackage : public QObject
 {
     Q_OBJECT

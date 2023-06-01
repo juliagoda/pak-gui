@@ -27,7 +27,6 @@ void MainWindowViewSignals::attachFillColumns(QThread* available_packages_thread
 {
     QObject::connect(available_packages_thread, &QThread::started, [this]() { main_window_view->available_packages_column->fill(); emit main_window_view->availablePackagesFillEnded(); });
     QObject::connect(installed_packages_thread, &QThread::started, [this]() { main_window_view->installed_packages_column->fill(); emit main_window_view->installedPackagesFillEnded(); });
-    QObject::connect(main_window_view->available_packages_column.get(), &AvailablePackagesColumn::startOtherThreads, [this]() { emit main_window_view->startOtherThreads(); });
     QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
     QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread,  &QThread::deleteLater);
 }
@@ -230,13 +229,5 @@ void MainWindowViewSignals::attachCheckUpdates(QThread* updated_packages_thread)
         main_window_view->updated_packages_column->fill();
         emit main_window_view->packagesToUpdateFillEnded(); });
     QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
-
-    QObject::connect(main_window_view, &MainWindowView::startOtherThreads, [updated_packages_thread, this]()
-                     {
-                         //main_window_view->is_operation_running = true;
-                         updated_packages_thread->start(QThread::TimeCriticalPriority);
-                     });
-
-    // if (!main_window_view->is_operation_running)
-    //      main_window_view->updated_packages_thread->start(QThread::TimeCriticalPriority);
+    updated_packages_thread->start(QThread::TimeCriticalPriority);
 }

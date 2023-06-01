@@ -18,8 +18,6 @@ InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget,
     if (!search_lineedit)
         return;
 
-    QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
-                     [&](const QString& text) { packages_sorter->sortPackagesByText<QiPackage>(text, QiPackage{""}); });
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
                      [&](const QString& text) { packages_sorter->sortPackagesByText<QiPackage>(text, QiPackage{""}); });
 }
@@ -49,4 +47,11 @@ void InstalledPackagesColumn::fill()
 
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 installed packages").arg(list_widget->count()));
     list_widget->update();
+}
+
+
+void InstalledPackagesColumn::clearForSort()
+{
+    QObject::disconnect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(), nullptr);
+    packages_sorter->resetOriginalList();
 }

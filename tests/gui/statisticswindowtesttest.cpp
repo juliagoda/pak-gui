@@ -1,14 +1,12 @@
 #include "statisticswindowtesttest.h"
 
 
-
 MockStatisticsWindow::MockStatisticsWindow(const QMap<QString, uint>& new_statistics_map,
                                            QWidget* parent) :
     Statistics(new_statistics_map, parent)
 {
   // ...
 }
-
 
 
 TestStatisticsWindow::TestStatisticsWindow(QObject* parent) :

@@ -19,8 +19,6 @@ public:
 };
 
 
-
-
 class TestStatisticsCommandParser : public QObject
 {
     Q_OBJECT

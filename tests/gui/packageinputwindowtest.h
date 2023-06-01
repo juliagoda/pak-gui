@@ -16,8 +16,6 @@ public:
 };
 
 
-
-
 class TestPackageInputWindow : public QObject
 {
     Q_OBJECT

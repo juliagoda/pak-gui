@@ -1,13 +1,11 @@
 #include "systemtraytest.h"
 
 
-
 MockSystemTray::MockSystemTray(MainWindow* parent) :
     SystemTray{parent}
 {
   // ...
 }
-
 
 
 TestSystemTray::TestSystemTray(QObject* parent) :

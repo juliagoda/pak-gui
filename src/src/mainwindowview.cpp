@@ -38,9 +38,9 @@ MainWindowView::MainWindowView(QWidget *parent)
     generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
     progress_view(QSharedPointer<ProgressView>(new ProgressView)),
     main_window_view_signals(new MainWindowViewSignals(this)),
-    internet_connection_timer(new QTimer(this)),
     process(nullptr),
     actions_access_checker(nullptr),
+    internet_connection_timer(new QTimer(this)),
     is_operation_running(true)
 {
     m_ui.setupUi(this);

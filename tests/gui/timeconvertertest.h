@@ -7,7 +7,6 @@
 #include <QWidget>
 
 
-
 class TestTimeConverter : public QObject
 {
     Q_OBJECT

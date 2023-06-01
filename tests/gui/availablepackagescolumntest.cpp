@@ -1,14 +1,15 @@
 #include "availablepackagescolumntest.h"
 
-
+#include <KLocalizedString>
 
 
 MockAvailablePackagesColumn::MockAvailablePackagesColumn(QListWidget* new_list_widget,
                                                          QLineEdit* new_search_lineedit,
+                                                         QCheckBox* new_reverse_sort_checkbox,
                                                          QWidget* new_parent) :
-    AvailablePackagesColumn(new_list_widget, new_search_lineedit, new_parent)
+    AvailablePackagesColumn(new_list_widget, new_search_lineedit, new_reverse_sort_checkbox, new_parent)
 {
-
+   // ...
 }
 
 
@@ -26,8 +27,6 @@ QStringList MockAvailablePackagesColumn::getPackagesList()
     QString package_content2 = package_content_alsa_utils_si;
     return QStringList() << package_content1 << package_content2;
 }
-
-
 
 
 TestAvailablePackagesColumn::TestAvailablePackagesColumn(QObject* parent) :
@@ -162,7 +161,7 @@ void TestAvailablePackagesColumn::installButtonDisabledAfterPackagesRemove()
 
 void TestAvailablePackagesColumn::packagesOrderIsReversedAfterButtonCheck()
 {
-   auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, &main_window_view), &QObject::deleteLater);
+   auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, main_window_view.m_ui.sort_available_packages, &main_window_view), &QObject::deleteLater);
    disconnect(main_window_view.m_ui.sort_available_packages, &QCheckBox::toggled, main_window_view.available_packages_column.data(), &InstalledPackagesColumn::sort);
    connect(main_window_view.m_ui.sort_available_packages, &QCheckBox::toggled, column.data(), &MockAvailablePackagesColumn::sort);
    column->fill();
@@ -173,24 +172,30 @@ void TestAvailablePackagesColumn::packagesOrderIsReversedAfterButtonCheck()
    disconnect(main_window_view.m_ui.sort_available_packages, &QCheckBox::toggled, column.data(), &MockAvailablePackagesColumn::sort);
    QCOMPARE(last_package->text(), "a52dec-0.7.4-12.1 [cachyos-v3]");
    QCOMPARE(first_package->text(), "alsa-utils-1.2.8-1.1 [extra-x86-64-v3]");
+   column->clearForSort();
 }
 
 
 void TestAvailablePackagesColumn::packageOrderIsAlphabeticallByDefault()
 {
-    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, main_window_view.m_ui.sort_available_packages, &main_window_view), &QObject::deleteLater);
     column->fill();
+
+    if (main_window_view.m_ui.available_packages_list->count() == 0)
+        QSKIP("Don't check, if there is an empty list");
+
     auto first_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).constFirst());
     auto last_package = dynamic_cast<SiPackage*>(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).constLast());
     disconnect(main_window_view.m_ui.sort_available_packages, &QCheckBox::toggled, column.data(), &MockAvailablePackagesColumn::sort);
     QCOMPARE(first_package->text(), "a52dec-0.7.4-12.1 [cachyos-v3]");
     QCOMPARE(last_package->text(), "alsa-utils-1.2.8-1.1 [extra-x86-64-v3]");
+    column->clearForSort();
 }
 
 
 void TestAvailablePackagesColumn::checkedPackageIsStillCheckedAfterTextInputClear()
 {
-    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, main_window_view.m_ui.sort_available_packages, &main_window_view), &QObject::deleteLater);
     column->fill();
     QTest::keyClicks(&*main_window_view.m_ui.search_available_packages_lineedit, "a52");
     auto items = main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard);
@@ -200,24 +205,27 @@ void TestAvailablePackagesColumn::checkedPackageIsStillCheckedAfterTextInputClea
     QTest::keyClicks(&*main_window_view.m_ui.search_available_packages_lineedit, "");
     auto itemsAfterClear = main_window_view.m_ui.available_packages_list->findItems("a52", Qt::MatchStartsWith);
     QCOMPARE(itemsAfterClear.first()->checkState(), Qt::Checked);
+    column->clearForSort();
 }
 
 
 void TestAvailablePackagesColumn::textInputSortBya52IsEqualToOne()
 {
-    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, main_window_view.m_ui.sort_available_packages, &main_window_view), &QObject::deleteLater);
     column->fill();
     QTest::keyClicks(&*main_window_view.m_ui.search_available_packages_lineedit, "a52");
     QCOMPARE(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).count(), 1);
+    column->clearForSort();
 }
 
 
 void TestAvailablePackagesColumn::textInputSortByaaIsEqualToZero()
 {
-    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, main_window_view.m_ui.sort_available_packages, &main_window_view), &QObject::deleteLater);
     column->fill();
     QTest::keyClicks(&*main_window_view.m_ui.search_available_packages_lineedit, "aa");
     QCOMPARE(main_window_view.m_ui.available_packages_list->findItems("*", Qt::MatchWildcard).count(), 0);
+    column->clearForSort();
 }
 
 
@@ -248,10 +256,11 @@ void TestAvailablePackagesColumn::animationIsHiddenAfterSignalSend()
 
 void TestAvailablePackagesColumn::notEmptyPackagesListIsVisibleAfterSignalSend()
 {
-    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockAvailablePackagesColumn>(new MockAvailablePackagesColumn(main_window_view.m_ui.available_packages_list, main_window_view.m_ui.search_available_packages_lineedit, main_window_view.m_ui.sort_available_packages, &main_window_view), &QObject::deleteLater);
     column->fill();
     emit main_window_view.availablePackagesFillEnded();
     QVERIFY(!main_window_view.m_ui.available_packages_list->isHidden());
+    column->clear();
 }
 
 
@@ -264,7 +273,7 @@ void TestAvailablePackagesColumn::titleIsVisibleWhenPackagesListIsEmptyAfterSign
 
 void TestAvailablePackagesColumn::cleanup()
 {
-    connect(main_window_view.m_ui.sort_available_packages, &QCheckBox::toggled, main_window_view.available_packages_column.data(), &InstalledPackagesColumn::sort);
+    disconnect(main_window_view.m_ui.sort_available_packages, &QCheckBox::toggled, main_window_view.available_packages_column.data(), &InstalledPackagesColumn::sort);
     main_window_view.m_ui.available_packages_list->clear();
     main_window_view.m_ui.search_available_packages_lineedit->clear();
     main_window_view.m_ui.console_view_install->setCheckState(Qt::Unchecked);
@@ -273,7 +282,7 @@ void TestAvailablePackagesColumn::cleanup()
     main_window_view.m_ui.install_packages_button->setEnabled(false);
     main_window_view.m_ui.sort_available_packages->setCheckState(Qt::Unchecked);
 
-    while(main_window_view.m_ui.available_packages_list->count() > 0)
+    while (main_window_view.m_ui.available_packages_list->count() > 0)
     {
         if (main_window_view.m_ui.available_packages_list->item(0))
             delete main_window_view.m_ui.available_packages_list->takeItem(0);

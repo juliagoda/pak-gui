@@ -8,7 +8,6 @@ MockPackageInputWindow::MockPackageInputWindow(QWidget* new_parent) :
 }
 
 
-
 TestPackageInputWindow::TestPackageInputWindow(QObject* parent) :
     QObject(parent),
     package_input_window(new QWidget)

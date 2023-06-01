@@ -9,7 +9,6 @@
 #include <QWidget>
 
 
-
 class TestPreviewDesign: public QObject
 {
     Q_OBJECT

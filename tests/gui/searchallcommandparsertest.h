@@ -21,8 +21,6 @@ public:
 };
 
 
-
-
 class TestSearchAllCommandParser : public QObject
 {
     Q_OBJECT

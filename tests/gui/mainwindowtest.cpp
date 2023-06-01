@@ -1,5 +1,7 @@
 #include "mainwindowtest.h"
 
+#include <KLocalizedString>
+#include <KLed>
 
 
 TestMainWindow::TestMainWindow(QObject* parent) :
@@ -121,8 +123,8 @@ void TestMainWindow::actionsAreDisabledAfterInitializationStart()
 
 void TestMainWindow::actionsAreEnabledAfterInitializationEnd()
 {
-    emit main_window.actions_access_checker->reflectorAccessChanged(true);
     emit main_window.main_window_view->initEnded();
+    emit main_window.actions_access_checker->reflectorAccessChanged(true);
     QVERIFY(main_window.update_action.data()->isEnabled());
     QVERIFY(main_window.download_action.data()->isEnabled());
     QVERIFY(main_window.update_all_action.data()->isEnabled());

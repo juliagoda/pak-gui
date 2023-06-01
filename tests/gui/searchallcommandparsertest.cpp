@@ -1,7 +1,6 @@
 #include "searchallcommandparsertest.h"
 
 
-
 MockSearchAllCommandParser::MockSearchAllCommandParser(const QString& new_package_name) :
     SearchAllCommandParser(new_package_name)
 {
@@ -13,7 +12,6 @@ QStringList MockSearchAllCommandParser::retrieveInfo()
 {
    return QStringList();
 }
-
 
 
 TestSearchAllCommandParser::TestSearchAllCommandParser(QObject* parent) :

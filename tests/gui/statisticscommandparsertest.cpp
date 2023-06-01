@@ -1,7 +1,6 @@
 #include "statisticscommandparsertest.h"
 
 
-
 QString MockStatisticsCommandParser::generateResult()
 {
     return QString(":: Statistics by month: 2023-02\n"

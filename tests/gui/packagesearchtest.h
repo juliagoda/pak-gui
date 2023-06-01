@@ -19,8 +19,6 @@ public:
 };
 
 
-
-
 class MockPackageSearchInput : public PackageSearchInput
 {
     Q_OBJECT
@@ -31,19 +29,16 @@ public:
 };
 
 
-
-
 class MockSearchResultsList : public SearchResultsList
 {
     Q_OBJECT
 
 public:
     explicit MockSearchResultsList(QSharedPointer<InstallCommandParser>& new_install_command_parser,
-                                   QSharedPointer<Process>& new_process);
+                                   QSharedPointer<Process>& new_process,
+                                   uint packages_to_update_count);
     friend class TestPackageSearch;
 };
-
-
 
 
 class TestPackageSearch : public QObject
@@ -62,4 +57,5 @@ private:
     MockSearchResultsList search_results_list;
     QSharedPointer<InstallCommandParser> install_command_parser = QSharedPointer<InstallCommandParser>(nullptr);
     QSharedPointer<Process> process = QSharedPointer<Process>(nullptr);
+    uint packages_to_update_count = 0;
 };

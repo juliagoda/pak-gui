@@ -90,10 +90,14 @@ void Sorter::sortPackagesByText(const QString &text, T emptyPackage)
 
 void Sorter::setCheckStateForUnsortedList(QListWidgetItem* item)
 {
-    if (untouched_list_widget.count() == 0)
+    if (!item)
         return;
 
     Package* package = dynamic_cast<Package*>(item);
+
+    if (untouched_list_widget.empty() || package->getNo() > untouched_list_widget.count())
+        return;
+
     untouched_list_widget.at(package->getNo() - 1)->setCheckState(item->checkState());
 }
 
@@ -114,7 +118,7 @@ void Sorter::fillUntouchedList()
     auto widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
     untouched_list_widget.reserve(widgets_list.count());
     std::transform(widgets_list.begin(), widgets_list.end(), std::back_inserter(untouched_list_widget),
-                   [](QListWidgetItem* item) { return dynamic_cast<T*>(item); });
+                   [=](QListWidgetItem* item) mutable { return new T(*dynamic_cast<T*>(item)); });
 }
 
 
@@ -133,7 +137,8 @@ void Sorter::resetOriginalList()
     if (untouched_list_widget.count() == 0)
         return;
 
-    untouched_list_widget.clear();
+    while (!untouched_list_widget.empty())
+        delete untouched_list_widget.takeAt(0);
 }
 
 

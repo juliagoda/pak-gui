@@ -19,8 +19,6 @@ public:
 };
 
 
-
-
 class TestProgressView : public QObject
 {
     Q_OBJECT

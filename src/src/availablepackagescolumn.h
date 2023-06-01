@@ -19,9 +19,7 @@ public:
     ~AvailablePackagesColumn() override = default;
 
     void fill() override;
-
-signals:
-    void startOtherThreads();
+    void clearForSort();
 
 protected:
     virtual QStringList getPackagesList();

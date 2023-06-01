@@ -17,7 +17,6 @@ public:
 };
 
 
-
 class TestLogger : public QObject
 {
     Q_OBJECT

@@ -1,19 +1,21 @@
 #include "packagestoupdatecolumntest.h"
+#include "qtestcase.h"
 
+#include <KLocalizedString>
 
 
 MockUpdatedPackagesColumn::MockUpdatedPackagesColumn(QListWidget* new_list_widget,
                                                      QLineEdit* new_search_lineedit,
+                                                     QCheckBox* new_reverse_sort_checkbox,
                                                      QWidget* new_parent) :
-    UpdatedPackagesColumn(new_list_widget, new_search_lineedit, new_parent)
+    UpdatedPackagesColumn(new_list_widget, new_search_lineedit, new_reverse_sort_checkbox, new_parent)
 {
-
+   // ...
 }
 
 
 void MockUpdatedPackagesColumn::sort(bool is_sorted)
 {
-    qDebug() << "sort in MockUpdatedPackagesColumn";
    Q_UNUSED(is_sorted)
    packages_sorter->sortReverse();
    list_widget->update();
@@ -29,8 +31,6 @@ QHash<QString, Package::Source> MockUpdatedPackagesColumn::getPackagesList()
     packages_map.insert(packages_to_update_content_konsole, Package::Source::POLAUR);
     return packages_map;
 }
-
-
 
 
 TestUpdatedPackagesColumn::TestUpdatedPackagesColumn(QObject* parent) :
@@ -175,7 +175,7 @@ void TestUpdatedPackagesColumn::updateButtonDisabledAfterPackagesRemove()
 
 void TestUpdatedPackagesColumn::packagesOrderIsReversedAfterButtonCheck()
 {
-   auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
+   auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, main_window_view.m_ui.sort_packages_to_update, &main_window_view), &QObject::deleteLater);
    disconnect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, main_window_view.updated_packages_column.data(), &UpdatedPackagesColumn::sort);
    connect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, column.data(), &MockUpdatedPackagesColumn::sort);
    column->fill();
@@ -188,60 +188,70 @@ void TestUpdatedPackagesColumn::packagesOrderIsReversedAfterButtonCheck()
    disconnect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, column.data(), &MockUpdatedPackagesColumn::sort);
    QCOMPARE(first_package->text(), last_package_before_sort->text());
    QCOMPARE(last_package->text(), first_package_before_sort->text());
+   column->clearForSort();
 }
 
 
 void TestUpdatedPackagesColumn::checkedPackageIsStillCheckedAfterTextInputClear()
 {
-    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, main_window_view.m_ui.sort_packages_to_update, &main_window_view), &QObject::deleteLater);
     column->fill();
     QTest::keyClicks(&*main_window_view.m_ui.search_packages_to_update_lineedit, "bin");
     auto items = main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard);
     qDebug() << "count after filter: " << main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).count();
+
+    if (items.empty())
+        QSKIP("Don't check, if there are no items");
+
     items.first()->setCheckState(Qt::Checked);
     qDebug() << "checkstate: " << items.first()->checkState();
     QTest::keyClicks(&*main_window_view.m_ui.search_packages_to_update_lineedit, "");
     auto itemsAfterClear = main_window_view.m_ui.packages_to_update_list->findItems("bin", Qt::MatchStartsWith);
     QCOMPARE(itemsAfterClear.first()->checkState(), Qt::Checked);
+    column->clearForSort();
 }
 
 
 void TestUpdatedPackagesColumn::textInputSortBya52IsEqualToOne()
 {
-    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, main_window_view.m_ui.sort_packages_to_update, &main_window_view), &QObject::deleteLater);
     column->fill();
     QTest::keyClicks(&*main_window_view.m_ui.search_packages_to_update_lineedit, "bin");
     QCOMPARE(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).count(), 1);
+    column->clearForSort();
 }
 
 
 void TestUpdatedPackagesColumn::textInputSortByaaIsEqualToZero()
 {
-    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, main_window_view.m_ui.sort_packages_to_update, &main_window_view), &QObject::deleteLater);
     column->fill();
     QTest::keyClicks(&*main_window_view.m_ui.search_packages_to_update_lineedit, "aa");
     QCOMPARE(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).count(), 0);
+    column->clearForSort();
 }
 
 
 void TestUpdatedPackagesColumn::allPackagesCheckedAfterButtonCheck()
 {
-    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, main_window_view.m_ui.sort_packages_to_update, &main_window_view), &QObject::deleteLater);
     column->fill();
     QTest::mouseClick(&*main_window_view.m_ui.check_all_updates_checkbox, Qt::LeftButton);
     auto items = main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard);
     QVERIFY(std::all_of(std::begin(items), std::end(items), [](QListWidgetItem* item){ return item->checkState() == Qt::Checked; }));
+    column->clearForSort();
 }
 
 
 void TestUpdatedPackagesColumn::allPackagesUncheckedAfterButtonUncheck()
 {
-    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, main_window_view.m_ui.sort_packages_to_update, &main_window_view), &QObject::deleteLater);
     column->fill();
     QTest::mouseClick(&*main_window_view.m_ui.check_all_updates_checkbox, Qt::LeftButton);
     QTest::mouseClick(&*main_window_view.m_ui.check_all_updates_checkbox, Qt::LeftButton);
     auto items = main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard);
     QVERIFY(std::all_of(std::begin(items), std::end(items), [](QListWidgetItem* item){ return item->checkState() == Qt::Unchecked; }));
+    column->clearForSort();
 }
 
 
@@ -272,10 +282,11 @@ void TestUpdatedPackagesColumn::animationIsHiddenAfterSignalSend()
 
 void TestUpdatedPackagesColumn::notEmptyPackagesListIsVisibleAfterSignalSend()
 {
-    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, &main_window_view), &QObject::deleteLater);
+    auto column = QSharedPointer<MockUpdatedPackagesColumn>(new MockUpdatedPackagesColumn(main_window_view.m_ui.packages_to_update_list, main_window_view.m_ui.search_packages_to_update_lineedit, main_window_view.m_ui.sort_packages_to_update, &main_window_view), &QObject::deleteLater);
     column->fill();
     emit main_window_view.packagesToUpdateFillEnded();
     QVERIFY(!main_window_view.m_ui.packages_to_update_list->isHidden());
+    column->clearForSort();
 }
 
 
@@ -288,7 +299,7 @@ void TestUpdatedPackagesColumn::titleIsVisibleWhenPackagesListIsEmptyAfterSignal
 
 void TestUpdatedPackagesColumn::cleanup()
 {
-    connect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, main_window_view.updated_packages_column.data(), &UpdatedPackagesColumn::sort);
+    disconnect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, main_window_view.updated_packages_column.data(), &UpdatedPackagesColumn::sort);
     main_window_view.m_ui.packages_to_update_list->clear();
     main_window_view.m_ui.search_packages_to_update_lineedit->clear();
     main_window_view.m_ui.console_view_update->setCheckState(Qt::Unchecked);

@@ -18,6 +18,7 @@ public:
                           QWidget* new_parent);
     uint getCurrentPackagesCount() const;
     void fill() override;
+    void clearForSort();
 
 public Q_SLOTS:
     void toggleAllPackages(bool is_all_checked);

@@ -1,4 +1,4 @@
- #include "previewdesigntest.h"
+#include "previewdesigntest.h"
 
 
 TestPreviewDesign::TestPreviewDesign(QObject* parent) :

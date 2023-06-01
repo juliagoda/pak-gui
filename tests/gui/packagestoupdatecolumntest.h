@@ -16,6 +16,7 @@ class MockUpdatedPackagesColumn : public UpdatedPackagesColumn
 public:
     explicit MockUpdatedPackagesColumn(QListWidget* new_list_widget,
                                        QLineEdit* new_search_lineedit,
+                                       QCheckBox* new_reverse_sort_checkbox,
                                        QWidget* new_parent);
     friend class TestUpdatedPackagesColumn;
 
@@ -25,7 +26,6 @@ protected:
 public Q_SLOTS:
     void sort(bool is_sorted) override;
 };
-
 
 
 class TestUpdatedPackagesColumn : public QObject

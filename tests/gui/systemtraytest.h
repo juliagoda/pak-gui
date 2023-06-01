@@ -19,7 +19,6 @@ public:
 };
 
 
-
 class TestSystemTray : public QObject
 {
     Q_OBJECT

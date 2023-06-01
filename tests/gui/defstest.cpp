@@ -50,7 +50,7 @@ void TestDefs::execFilesHaveCorrectNames()
     QCOMPARE(Constants::aspExecFile(), QString("asp"));
     QCOMPARE(Constants::gitExecFile(), QString("git"));
     QCOMPARE(Constants::reflectorExecFile(), QString("reflector"));
-    QCOMPARE(Constants::auracleGitExecFile(), QString("auracle-git"));
+    QCOMPARE(Constants::auracleGit(), QString("auracle"));
 }
 
 

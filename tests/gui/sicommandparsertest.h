@@ -19,7 +19,6 @@ public:
 };
 
 
-
 class TestSiCommandParser : public QObject
 {
     Q_OBJECT

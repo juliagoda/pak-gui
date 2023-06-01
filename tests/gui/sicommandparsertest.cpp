@@ -3,7 +3,6 @@
 #include "packagescolumnfixtures.h"
 
 
-
 QString MockSiCommandParser::generateResult()
 {
     QString a52dec = package_content_a52dec_si;

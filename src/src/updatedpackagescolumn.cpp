@@ -21,8 +21,6 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
     if (!search_lineedit)
         return;
 
-    QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
-                     [&](const QString& text) { packages_sorter->sortPackagesByText<CheckPackage>(text, CheckPackage{"", Package::Source::Unknown}); });
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
                      [&](const QString& text) { packages_sorter->sortPackagesByText<CheckPackage>(text, CheckPackage{"", Package::Source::Unknown}); });
 }
@@ -119,4 +117,11 @@ void UpdatedPackagesColumn::updatePackagesCount(uint new_current_packages_count)
         emit currentPackagesCountChanged(new_current_packages_count);
 
     current_packages_count = new_current_packages_count;
+}
+
+
+void UpdatedPackagesColumn::clearForSort()
+{
+    QObject::disconnect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(), nullptr);
+    packages_sorter->resetOriginalList();
 }

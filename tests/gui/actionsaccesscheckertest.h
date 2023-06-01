@@ -20,8 +20,6 @@ public:
 };
 
 
-
-
 class TestActionsAccessChecker : public QObject
 {
     Q_OBJECT

@@ -1,5 +1,4 @@
- #include "packagesearchtest.h"
-
+#include "packagesearchtest.h"
 
 
 MockPackageSearch::MockPackageSearch() :
@@ -9,7 +8,6 @@ MockPackageSearch::MockPackageSearch() :
 }
 
 
-
 MockPackageSearchInput::MockPackageSearchInput(QSharedPointer<InstallCommandParser>& new_install_command_parser) :
     PackageSearchInput(new_install_command_parser)
 {
@@ -17,15 +15,13 @@ MockPackageSearchInput::MockPackageSearchInput(QSharedPointer<InstallCommandPars
 }
 
 
-
-
 MockSearchResultsList::MockSearchResultsList(QSharedPointer<InstallCommandParser>& new_install_command_parser,
-                                             QSharedPointer<Process>& new_process) :
-    SearchResultsList(new_install_command_parser, new_process)
+                                             QSharedPointer<Process>& new_process,
+                                             uint packages_to_update_count) :
+    SearchResultsList(new_install_command_parser, new_process, packages_to_update_count)
 {
   // ...
 }
-
 
 
 TestPackageSearch::TestPackageSearch(QObject* parent) :
@@ -33,7 +29,8 @@ TestPackageSearch::TestPackageSearch(QObject* parent) :
     package_search(),
     package_search_input(install_command_parser),
     search_results_list(install_command_parser,
-                        process)
+                        process,
+                        packages_to_update_count)
 {
     QTestEventLoop::instance().enterLoop(1);
 }

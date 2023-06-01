@@ -7,12 +7,12 @@ MockInstallCommandParser::MockInstallCommandParser() :
     // ...
 }
 
-void MockInstallCommandParser::start(QSharedPointer<Process> &process)
+
+void MockInstallCommandParser::start(QSharedPointer<Process> &process,
+                                     uint packages_to_update)
 {
    // ...
 }
-
-
 
 
 TestInstallCommandParser::TestInstallCommandParser(QObject* parent) :

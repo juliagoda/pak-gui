@@ -1,6 +1,7 @@
 #include "choicewindowtest.h"
 
 #include <QPushButton>
+#include <QDialogButtonBox>
 
 
 MockChoiceWindow::MockChoiceWindow(const QString& new_title,
@@ -9,7 +10,6 @@ MockChoiceWindow::MockChoiceWindow(const QString& new_title,
 {
    // ...
 }
-
 
 
 TestChoiceWindow::TestChoiceWindow(QObject* parent) :
@@ -50,7 +50,7 @@ void TestChoiceWindow::isOkButtonDisabledOnStart()
 
 void TestChoiceWindow::isOkButtonEnabledAfterChoice()
 {
-    QStringList choice_options{QStringList() << "option1" << "option2"};
+    QStringList choice_options{QStringList() << "[option1]" << "[option2]"};
     choice_window.fillComboBox(choice_options);
     QTest::keyClicks(choice_window.retrieveUi()->choice_combo_box, "option1");
 
@@ -63,7 +63,7 @@ void TestChoiceWindow::isChoiceDefinedSignalEmittedAfterOkButtonPress()
     QSignalSpy choice_defined_signal_text(&choice_window, SIGNAL(choiceDefined(QString)));
     QSignalSpy choice_defined_signal_index(&choice_window, SIGNAL(choiceDefined(int)));
 
-    QStringList choice_options{QStringList() << "option1" << "option2"};
+    QStringList choice_options{QStringList() << "[option1]" << "[option2]"};
     choice_window.fillComboBox(choice_options);
     QTest::keyClicks(choice_window.retrieveUi()->choice_combo_box, "option1");
     QTest::mouseClick(choice_window.retrieveUi()->buttonBox->button(QDialogButtonBox::Ok), Qt::LeftButton);

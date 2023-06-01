@@ -21,8 +21,6 @@ AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget,
     if (!search_lineedit)
         return;
 
-    QObject::connect(search_lineedit, &QLineEdit::textEdited, packages_sorter.data(),
-                     [&](const QString& text) { packages_sorter->sortPackagesByText<SiPackage>(text, SiPackage{""}); });
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
                      [&](const QString& text) { packages_sorter->sortPackagesByText<SiPackage>(text, SiPackage{""}); });
 }
@@ -39,7 +37,6 @@ void AvailablePackagesColumn::fill()
 {
     packages_sorter->resetOriginalList();
     QStringList pak_packages = getPackagesList();
-    emit startOtherThreads();
     QStringList::iterator it = pak_packages.begin();
     int i = 0;
 
@@ -53,4 +50,11 @@ void AvailablePackagesColumn::fill()
 
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 available packages").arg(list_widget->count()));
     list_widget->update();
+}
+
+
+void AvailablePackagesColumn::clearForSort()
+{
+    QObject::disconnect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(), nullptr);
+    packages_sorter->resetOriginalList();
 }
