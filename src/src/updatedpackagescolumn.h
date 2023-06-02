@@ -36,6 +36,8 @@ signals:
 private:
     void updatePackagesCount(uint new_current_packages_count);
 
+    template<int> void runAfterChoice();
+
     uint current_packages_count;
     QWidget* parent;
 };

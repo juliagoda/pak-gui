@@ -72,7 +72,7 @@ protected:
     QString name{};
     QString version{};
     Package::Source source{Package::Source::Repo};
-    QMap<int, TooltipLine> numberToTooltipLine{};
+    QHash<int, TooltipLine> numberToTooltipLine{};
     int no{0};
 
 private:

@@ -2,9 +2,9 @@
 
 #include "commandparser.h"
 #include "package.h"
-#include "qprocess.h"
 
 #include <QHash>
+#include <QProcess>
 
 
 class CheckCommandParser : public CommandParser
@@ -20,12 +20,13 @@ public:
 
 protected:
     virtual QString generatePakCheckResults();
-    virtual bool finishProcessBeforeEnd(bool starts_from_double_colon, int double_colon_line_count);
 
 private:
-    bool processCurrentLine(uint& double_colon_line_count,
-                            QHash<QString, Package::Source>& system_packages,
-                            const QString& new_line);
+    void processLines(QHash<QString, Package::Source>& system_packages,
+                      QStringListIterator& iterator);
+    void increaseDoubleColonCounter(const QString& filtered_line, uint& counter);
+    void appendPackageLine(QHash<QString, Package::Source>& system_packages,
+                           const QString& filtered_line, uint &counter);
 
     QHash<uint, Package::Source> line_to_source_map;
     QScopedPointer<QProcess> pacman_qi = QScopedPointer<QProcess>(nullptr);

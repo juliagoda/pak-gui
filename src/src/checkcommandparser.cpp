@@ -27,14 +27,7 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
     QHash<QString, Package::Source> system_packages;
     QStringList output_list{output.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts)};
     QStringListIterator it{output_list};
-    uint double_colon_line_count{0};
-
-    while (it.hasNext())
-    {
-        QString line{it.next()};
-        if (!processCurrentLine(double_colon_line_count, system_packages, line))
-            break;
-    }
+    processLines(system_packages, it);
 
     return system_packages;
 }
@@ -51,35 +44,33 @@ QString CheckCommandParser::generatePakCheckResults()
 }
 
 
-bool CheckCommandParser::finishProcessBeforeEnd(bool starts_from_double_colon, int double_colon_line_count)
+void CheckCommandParser::processLines(QHash<QString, Package::Source>& system_packages,
+                                      QStringListIterator& iterator)
 {
-    const bool is_unmerged_pacnew_files_line = starts_from_double_colon && double_colon_line_count == 5;
-    if (is_unmerged_pacnew_files_line)
-    {
-        emit pacman_qi.data()->finished(0, QProcess::ExitStatus::NormalExit);
-        return true;
-    }
+    uint double_colon_line_count{0};
 
-    return false;
+    while (iterator.hasNext())
+    {
+        QString line{iterator.next()};
+        QString filtered_line{OutputFilter::filteredOutput(line).simplified()};
+        increaseDoubleColonCounter(filtered_line, double_colon_line_count);
+        appendPackageLine(system_packages, filtered_line, double_colon_line_count);
+    }
 }
 
 
-bool CheckCommandParser::processCurrentLine(uint& double_colon_line_count,
-                                            QHash<QString, Package::Source>& system_packages,
-                                            const QString& new_line)
+void CheckCommandParser::increaseDoubleColonCounter(const QString& filtered_line, uint &counter)
 {
-    QString line = new_line;
-    QString filtered_line{OutputFilter::filteredOutput(line).simplified()};
     bool starts_from_double_colon{OutputFilter::startsFromDoubleColon(filtered_line)};
 
     if (starts_from_double_colon)
-        double_colon_line_count++;
+        counter++;
+}
 
-    if (finishProcessBeforeEnd(starts_from_double_colon, double_colon_line_count))
-        return false;
 
-    if (line.contains("=>") && !OutputFilter::isCheckWarningLine(filtered_line))
-        system_packages.insert(filtered_line, line_to_source_map.value(double_colon_line_count));
-
-    return true;
+void CheckCommandParser::appendPackageLine(QHash<QString, Package::Source>& system_packages,
+                                           const QString& filtered_line, uint& counter)
+{
+    if (filtered_line.contains("=>") && !OutputFilter::isCheckWarningLine(filtered_line))
+        system_packages.insert(filtered_line, line_to_source_map.value(counter));
 }

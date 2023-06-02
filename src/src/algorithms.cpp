@@ -6,7 +6,7 @@ template<typename T>
 QStringList Algorithms::createSplittedList(const QString& text,
                                            const QString& separator,
                                            const QList<T>& list,
-                                           const QMap<int, T>& map)
+                                           const QHash<int, T>& map)
 {
     QStringList selected_infos{};
     int selected_info_size = list.count();
@@ -32,7 +32,7 @@ void Algorithms::createListOfLines(QStringList& selected_infos,
                                    const QString& text,
                                    const QString& separator,
                                    const QList<T>& list,
-                                   const QMap<int, T>& map)
+                                   const QHash<int, T>& map)
 {
     auto lines_list = text.split('\n');
     int i = 0;
@@ -58,7 +58,7 @@ bool Algorithms::foundIndexOdSeparator(const QStringList::iterator& line_it,
                                        const QString& separator,
                                        int& index_of_separator,
                                        const QList<T>& list,
-                                       const QMap<int, T>& map,
+                                       const QHash<int, T>& map,
                                        int& i,
                                        QStringList& selected_infos,
                                        int& last_index)
@@ -98,19 +98,19 @@ int Algorithms::getFirstIndexAfterSeparator(const QList<T>& list,
 template QStringList Algorithms::createSplittedList(const QString& text,
                                                     const QString& separator,
                                                     const QList<Package::TooltipLine>& list,
-                                                    const QMap<int, Package::TooltipLine>& map);
+                                                    const QHash<int, Package::TooltipLine>& map);
 
 template void Algorithms::createListOfLines(QStringList& selected_infos,
                                             const QString& text,
                                             const QString& separator,
                                             const QList<Package::TooltipLine>& list,
-                                            const QMap<int, Package::TooltipLine>& map);
+                                            const QHash<int, Package::TooltipLine>& map);
 
 template bool Algorithms::foundIndexOdSeparator(const QStringList::iterator& line_it,
                                                 const QString& separator,
                                                 int& index_of_separator,
                                                 const QList<Package::TooltipLine>& list,
-                                                const QMap<int, Package::TooltipLine>& map,
+                                                const QHash<int, Package::TooltipLine>& map,
                                                 int& i,
                                                 QStringList& selected_infos,
                                                 int& last_index);

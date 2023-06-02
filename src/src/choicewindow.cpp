@@ -1,7 +1,6 @@
 #include "choicewindow.h"
 
 #include "outputfilter.h"
-#include "qnamespace.h"
 
 #include <QPushButton>
 #include <QDialogButtonBox>

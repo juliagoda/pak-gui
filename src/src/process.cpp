@@ -14,7 +14,7 @@
 #include <QProcess>
 #include <utility>
 #include <QSharedPointer>
-#include <QDebug>
+
 
 QMap<Process::Task, bool> running_tasks_map{
                                             {Process::Task::Clean, false},

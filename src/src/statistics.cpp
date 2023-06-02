@@ -1,11 +1,10 @@
 #include "statistics.h"
 
 #include "logger.h"
-#include "qboxlayout.h"
-#include "qnamespace.h"
 
 #include <KLocalizedString>
 #include <QtCharts>
+#include <QVBoxLayout>
 
 
 Statistics::Statistics(const QMap<QString, uint>& new_statistics_map,

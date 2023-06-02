@@ -1,7 +1,6 @@
 #include "sorter.h"
 
 #include "logger.h"
-#include "qnamespace.h"
 #include "settings.h"
 #include "checkpackage.h"
 #include "sipackage.h"
@@ -11,6 +10,7 @@
 #include <QtConcurrent/QtConcurrent>
 #include <algorithm>
 #include <iterator>
+
 
 QMutex Sorter::mutex;
 
@@ -38,25 +38,29 @@ void Sorter::sortReverse()
     }
 
     mutex.unlock();
-    if (!Settings::records()->showDebug())
-        return;
-
-    auto all_items = list_widget->findItems("*", Qt::MatchWildcard);
-    QList<QListWidgetItem*>::iterator first_list_iterator = all_items.begin();
-    QList<QListWidgetItem*>::iterator last_list_iterator = all_items.end();
-    Logger::logger()->logDebug(QStringLiteral("Reverse sorting - now first package is \"%1\" and last one \"%2\"").arg((*first_list_iterator)->text(), (*last_list_iterator)->text()));
+    showInfoSortReverse();
 }
 
 
 template<typename T>
 void Sorter::sortPackagesByText(const QString &text, T emptyPackage)
 {
-    Q_UNUSED(emptyPackage) // we have errors without T as argument
-
     if (untouched_list_widget.empty())
         fillUntouchedList<T>();
 
     clear();
+    if (sortPackagesAsReversed<T>(text, emptyPackage))
+        return;
+
+    sortPackages<T>(text, emptyPackage);
+    showInfo();
+}
+
+
+template<typename T>
+bool Sorter::sortPackagesAsReversed(const QString& text, T emptyPackage)
+{
+    Q_UNUSED(emptyPackage) // we have errors without T as argument
     QVector<QListWidgetItem*>::reverse_iterator widgets_reversed_it;
 
     if (reverse_sort_checkbox->checkState() == Qt::Checked)
@@ -71,9 +75,17 @@ void Sorter::sortPackagesByText(const QString &text, T emptyPackage)
         }
 
         showInfo();
-        return;
+        return true;
     }
 
+    return false;
+}
+
+
+template<typename T>
+void Sorter::sortPackages(const QString& text, T emptyPackage)
+{
+    Q_UNUSED(emptyPackage) // we have errors without T as argument
     QVector<QListWidgetItem*>::iterator widgets_it;
     for (widgets_it = untouched_list_widget.begin(); widgets_it != untouched_list_widget.end(); widgets_it++)
     {
@@ -83,8 +95,6 @@ void Sorter::sortPackagesByText(const QString &text, T emptyPackage)
         T* item = dynamic_cast<T*>(*widgets_it);
         list_widget->addItem(new T(*item));
     }
-
-    showInfo();
 }
 
 
@@ -109,6 +119,18 @@ void Sorter::showInfo()
 
     auto all_items = list_widget->findItems("*", Qt::MatchWildcard);
     Logger::logger()->logDebug(QStringLiteral("Count of sorted packages: %1").arg(all_items.count()));
+}
+
+
+void Sorter::showInfoSortReverse()
+{
+    if (!Settings::records()->showDebug())
+        return;
+
+    auto all_items = list_widget->findItems("*", Qt::MatchWildcard);
+    QList<QListWidgetItem*>::iterator first_list_iterator = all_items.begin();
+    QList<QListWidgetItem*>::iterator last_list_iterator = all_items.end();
+    Logger::logger()->logDebug(QStringLiteral("Reverse sorting - now first package is \"%1\" and last one \"%2\"").arg((*first_list_iterator)->text(), (*last_list_iterator)->text()));
 }
 
 
@@ -147,3 +169,15 @@ void Sorter::resetOriginalList()
 template void Sorter::sortPackagesByText(const QString& text, CheckPackage);
 template void Sorter::sortPackagesByText(const QString& text, SiPackage);
 template void Sorter::sortPackagesByText(const QString& text, QiPackage);
+
+template bool Sorter::sortPackagesAsReversed(const QString& text, CheckPackage);
+template bool Sorter::sortPackagesAsReversed(const QString& text, SiPackage);
+template bool Sorter::sortPackagesAsReversed(const QString& text, QiPackage);
+
+template void Sorter::sortPackages(const QString& text, CheckPackage);
+template void Sorter::sortPackages(const QString& text, SiPackage);
+template void Sorter::sortPackages(const QString& text, QiPackage);
+
+
+
+

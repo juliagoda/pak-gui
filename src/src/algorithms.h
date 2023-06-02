@@ -11,7 +11,7 @@ public:
     QStringList createSplittedList(const QString& text,
                                    const QString& separator,
                                    const QList<T>& list,
-                                   const QMap<int, T>& map);
+                                   const QHash<int, T>& map);
 
 private:
     template<typename T>
@@ -19,7 +19,7 @@ private:
                            const QString& text,
                            const QString& separator,
                            const QList<T>& list,
-                           const QMap<int, T>& map);
+                           const QHash<int, T>& map);
 
 
     template<typename T>
@@ -27,7 +27,7 @@ private:
                                const QString& separator,
                                int& index_of_separator,
                                const QList<T>& list,
-                               const QMap<int, T>& map,
+                               const QHash<int, T>& map,
                                int& i,
                                QStringList& selected_infos,
                                int& last_index);

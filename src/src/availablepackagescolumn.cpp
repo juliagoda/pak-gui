@@ -9,7 +9,6 @@
 #include <QListWidgetItem>
 #include <QPointer>
 #include <QMessageBox>
-#include <QDebug>
 
 
 AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget,

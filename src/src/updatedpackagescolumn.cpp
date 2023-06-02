@@ -73,9 +73,27 @@ void UpdatedPackagesColumn::toggleAllPackages(bool is_all_checked)
 }
 
 
+template<> void UpdatedPackagesColumn::runAfterChoice<0>()
+{
+    toggleAllPackages(true);
+    bool isAllChecked = getCheckedPackagesList().count() == list_widget->count();
+    emit preparedList(getCheckedPackagesStringList(), isAllChecked ? Process::Task::UpdateAll : Process::Task::Update, getAurPackagesCount());
+}
+
+
+template<> void UpdatedPackagesColumn::runAfterChoice<1>()
+{
+    for (auto it = getCheckedPackagesList().begin(); it != getCheckedPackagesList().end(); it++)
+    {
+        if ((*it)->getSource() == Package::Source::AUR || (*it)->getSource() == Package::Source::POLAUR)
+            (*it)->setCheckState(Qt::Unchecked);
+    }
+}
+
+
 void UpdatedPackagesColumn::prepareBeforeProcessRun()
 {
-    int result = 3;
+    int result = 2;
 
     if (getCheckedPackagesList().size() == 0)
     {
@@ -91,23 +109,10 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
                                       i18n("Update all"), i18n("Uncheck these packages"), i18n("Cancel"));
     }
 
-    if (result == 2)
-        return;
-
     if (result == 0)
-        toggleAllPackages(true);
-
+        runAfterChoice<0>();
     if (result == 1)
-    {
-        for (auto it = getCheckedPackagesList().cbegin(); it != getCheckedPackagesList().cend(); it++)
-        {
-            if ((*it)->getSource() == Package::Source::AUR || (*it)->getSource() == Package::Source::POLAUR)
-                (*it)->setCheckState(Qt::Unchecked);
-        }
-    }
-
-    bool isAllChecked = getCheckedPackagesList().count() == list_widget->count();
-    emit preparedList(getCheckedPackagesStringList(), isAllChecked ? Process::Task::UpdateAll : Process::Task::Update, getAurPackagesCount());
+        runAfterChoice<1>();
 }
 
 

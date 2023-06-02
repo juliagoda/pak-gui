@@ -22,6 +22,7 @@ public:
     template <typename T>
     void sortPackagesByText(const QString& text, T emptyPackage);
 
+
 public Q_SLOTS:
     void sortReverse();
     void setCheckStateForUnsortedList(QListWidgetItem* item);
@@ -29,8 +30,16 @@ public Q_SLOTS:
 private:
     void clear();
     void showInfo();
+    void showInfoSortReverse();
+
     template <typename T>
     void fillUntouchedList();
+
+    template <typename T>
+    bool sortPackagesAsReversed(const QString& text, T emptyPackage);
+
+    template <typename T>
+    void sortPackages(const QString& text, T emptyPackage);
 
     QListWidget* list_widget;
     QCheckBox* reverse_sort_checkbox;
