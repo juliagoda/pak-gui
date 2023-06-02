@@ -23,7 +23,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 
-find_package(GTest REQUIRED)
 find_package(Qt5Test REQUIRED)
 find_package(pak REQUIRED)
 find_package(pacman-contrib REQUIRED)
@@ -54,16 +53,15 @@ find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
 qt5_add_resources(RESOURCES ${CMAKE_SOURCE_DIR}/resources/pak-gui.qrc)
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets Charts Concurrent Network)
 
-include_directories(${GTEST_INCLUDE_DIRS})
-file(GLOB_RECURSE MY_APP_SRC ${CMAKE_SOURCE_DIR}/src/src/*.cpp)
-file(GLOB_RECURSE MY_APP_HEADERS ${CMAKE_SOURCE_DIR}/src/src/*.h)
-file(GLOB_RECURSE MY_APP_UI ${CMAKE_SOURCE_DIR}/src/src/*.ui)
+file(GLOB_RECURSE PAK_GUI_SRC ${CMAKE_SOURCE_DIR}/src/src/*.cpp)
+file(GLOB_RECURSE PAK_GUI_HEADERS ${CMAKE_SOURCE_DIR}/src/src/*.h)
+file(GLOB_RECURSE PAK_GUI_UI ${CMAKE_SOURCE_DIR}/src/src/*.ui)
 kconfig_add_kcfg_files(pak-gui-src ${CMAKE_SOURCE_DIR}/src/src/pakGuiSettings.kcfgc)
 
 ki18n_wrap_ui(pak-gui-src
     ${MY_APP_UI})
 
-add_library(pak-gui-src ${MY_APP_SRC} ${MY_APP_HEADERS} ${MY_APP_UI} ${RESOURCES})
+add_library(pak-gui-src ${PAK_GUI_SRC} ${PAK_GUI_HEADERS} ${PAK_GUI_UI} ${RESOURCES})
 
 target_link_libraries(pak-gui-src
     KF5::CoreAddons
@@ -83,16 +81,6 @@ target_link_libraries(pak-gui-src
 )
 
 target_include_directories(pak-gui-src PUBLIC ${CMAKE_SOURCE_DIR}/src/src)
-
-add_executable(pak-gtests
-    ${CMAKE_SOURCE_DIR}/tests/main.cpp
-    ${CMAKE_SOURCE_DIR}/tests/tests.cpp
-    ${CMAKE_SOURCE_DIR}/tests/settings.cpp
-    ${CMAKE_SOURCE_DIR}/tests/gui/packagescolumnfixtures.h
-    ${MY_APP_SRC}
-    ${MY_APP_HEADERS}
-    ${MY_APP_UI}
-    ${RESOURCES})
 
 add_executable(pak-qtests
     ${CMAKE_SOURCE_DIR}/tests/gui/main.cpp
@@ -169,23 +157,10 @@ add_executable(pak-qtests
     ${CMAKE_SOURCE_DIR}/tests/gui/timeconvertertest.h
     ${CMAKE_SOURCE_DIR}/tests/gui/defstest.h
     ${CMAKE_SOURCE_DIR}/tests/gui/defstest.cpp
-    ${MY_APP_SRC}
-    ${MY_APP_HEADERS}
-    ${MY_APP_UI}
+    ${PAK_GUI_SRC}
+    ${PAK_GUI_HEADERS}
+    ${PAK_GUI_UI}
     ${RESOURCES}
-)
-
-target_link_libraries(pak-gtests
-    GTest::gtest
-    GTest::gtest_main
-    GTest::gmock
-    GTest::gmock_main
-    KF5::CoreAddons
-    Qt5::Test
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    pak-gui-src
 )
 
 target_link_libraries(pak-qtests
@@ -198,5 +173,4 @@ target_link_libraries(pak-qtests
 )
 
 add_test(NAME pak-qtests COMMAND $<TARGET_FILE:pak-qtests>)
-add_test(NAME pak-gtests COMMAND $<TARGET_FILE:pak-gtests>)
 

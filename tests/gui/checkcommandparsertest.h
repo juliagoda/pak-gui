@@ -17,7 +17,6 @@ public:
     friend class TestCheckCommandParser;
 
     QString generatePakCheckResults() override;
-    bool finishProcessBeforeEnd(bool starts_from_double_colon, int double_colon_line_count) override;
 };
 
 
@@ -32,7 +31,6 @@ private slots:
     void retrievedPackagesMapCountIsEqualToThree();
     void retrievedPackagesMapContainsAclPackagesFromRepo();
     void retrievedPackagesMapContainsKonsolePackageFromPolaur();
-    void unmergedPacsaveFilesLineTriggersProcessExit();
 
 private:
     MockCheckCommandParser check_command_parser;

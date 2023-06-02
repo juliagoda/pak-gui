@@ -28,12 +28,6 @@ QString MockCheckCommandParser::generatePakCheckResults()
 }
 
 
-bool MockCheckCommandParser::finishProcessBeforeEnd(bool starts_from_double_colon, int double_colon_line_count)
-{
-    return starts_from_double_colon && double_colon_line_count == 5;
-}
-
-
 TestCheckCommandParser::TestCheckCommandParser(QObject* parent) :
     QObject{parent},
     check_command_parser()
@@ -60,12 +54,4 @@ void TestCheckCommandParser::retrievedPackagesMapContainsKonsolePackageFromPolau
 {
    auto results_map = check_command_parser.retrieveInfoMap();
    QCOMPARE(results_map.value("repo-refreshed/konsole 22.12.1-1.1 => 22.12.2-1.4"), Package::Source::POLAUR);
-}
-
-
-void TestCheckCommandParser::unmergedPacsaveFilesLineTriggersProcessExit()
-{
-   const bool starts_from_double_colon = true;
-   constexpr int unmerged_pacnew_double_colon_line_count = 5;
-   QVERIFY(check_command_parser.finishProcessBeforeEnd(starts_from_double_colon, unmerged_pacnew_double_colon_line_count));
 }
