@@ -53,13 +53,19 @@ find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
 qt5_add_resources(RESOURCES ${CMAKE_SOURCE_DIR}/resources/pak-gui.qrc)
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets Charts Concurrent Network)
 
+ki18n_wrap_ui(pak-gui-tests
+    ${CMAKE_SOURCE_DIR}/src/src/mainwindowview.ui
+    ${CMAKE_SOURCE_DIR}/src/src/generalsettings.ui
+    ${CMAKE_SOURCE_DIR}/src/src/progressview.ui
+    ${CMAKE_SOURCE_DIR}/src/src/packageinput.ui
+    ${CMAKE_SOURCE_DIR}/src/src/choicewindow.ui
+    ${CMAKE_SOURCE_DIR}/src/src/previewsappearancesettings.ui
+    ${CMAKE_SOURCE_DIR}/src/src/packagesinfosettings.ui
+    ${CMAKE_SOURCE_DIR}/src/src/logssettings.ui)
+
 file(GLOB_RECURSE PAK_GUI_SRC ${CMAKE_SOURCE_DIR}/src/src/*.cpp)
 file(GLOB_RECURSE PAK_GUI_HEADERS ${CMAKE_SOURCE_DIR}/src/src/*.h)
-file(GLOB_RECURSE PAK_GUI_UI ${CMAKE_SOURCE_DIR}/src/src/*.ui)
 kconfig_add_kcfg_files(pak-gui-src ${CMAKE_SOURCE_DIR}/src/src/pakGuiSettings.kcfgc)
-
-ki18n_wrap_ui(pak-gui-src
-    ${MY_APP_UI})
 
 add_library(pak-gui-src ${PAK_GUI_SRC} ${PAK_GUI_HEADERS} ${PAK_GUI_UI} ${RESOURCES})
 
