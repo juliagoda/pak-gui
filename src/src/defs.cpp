@@ -1,3 +1,21 @@
+// Copyright (C) 2023 Jagoda "juliagoda" Górska
+//
+// This file is part of CachyOS package manager based on "pak" application.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
 #include "defs.h"
 
 
@@ -101,4 +119,44 @@ QMap<Process::Task, Logger::WriteOperations> Constants::taskToWriteOperationMap(
            {Process::Task::Uninstall, Logger::WriteOperations::Remove},
            {Process::Task::Install, Logger::WriteOperations::Install},
            {Process::Task::Update, Logger::WriteOperations::Update}};
+}
+
+
+QHash<QLocale::Language, QPair<Constants::Yes, Constants::No> > Constants::langNamesToYesNoMap()
+{
+    return {{QLocale::Polish, QPair{"T", "n"}},
+            {QLocale::English, QPair{"Y", "n"}},
+            {QLocale::German, QPair{"J", "n"}},
+            {QLocale::Hindi, QPair{"Y", "n"}},
+            {QLocale::Ukrainian, QPair{"Y", "n"}},
+            {QLocale::Greek, QPair{"Y", "n"}},
+            {QLocale::Russian, QPair{"Y", "n"}},
+            {QLocale::Bulgarian, QPair{"Y", "n"}},
+            {QLocale::Serbian, QPair{"Д", "н"}},
+            {QLocale::Japanese, QPair{"Y", "n"}},
+            {QLocale::French, QPair{"O", "n"}},
+            {QLocale::Korean, QPair{"Y", "n"}},
+            {QLocale::Spanish, QPair{"S", "n"}},
+            {QLocale::Bosnian, QPair{"Y", "n"}},
+            {QLocale::Hungarian, QPair{"I", "n"}},
+            {QLocale::Azerbaijani, QPair{"Y", "n"}},
+            {QLocale::Portuguese, QPair{"S", "n"}},
+            {QLocale::Italian, QPair{"S", "n"}},
+            {QLocale::Galician, QPair{"S", "n"}},
+            {QLocale::Turkish, QPair{"E", "h"}},
+            {QLocale::Lithuanian, QPair{"T", "n"}},
+            {QLocale::Czech, QPair{"A", "n"}},
+            {QLocale::Dutch, QPair{"J", "n"}},
+            {QLocale::Romanian, QPair{"D", "n"}},
+            {QLocale::Slovak, QPair{"A", "n"}},
+            {QLocale::Swedish, QPair{"J", "n"}},
+            {QLocale::Danish, QPair{"J", "n"}},
+            {QLocale::NorwegianBokmal, QPair{"J", "n"}},
+            {QLocale::Chinese, QPair{"Y", "n"}},
+            {QLocale::Basque, QPair{"B", "e"}},
+            {QLocale::Esperanto, QPair{"J", "n"}},
+            {QLocale::Finnish, QPair{"K", "e"}},
+            {QLocale::Indonesian, QPair{"Y", "n"}},
+            {QLocale::Slovenian, QPair{"D", "n"}}
+            };
 }

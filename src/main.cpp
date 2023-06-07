@@ -1,8 +1,20 @@
-/*
-    SPDX-FileCopyrightText: %{CURRENT_YEAR} %{AUTHOR} <%{EMAIL}>
-
-    SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
-*/
+// Copyright (C) 2023 Jagoda "juliagoda" Górska
+//
+// This file is part of CachyOS package manager based on "pak" application.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "src/mainwindow.h"
 #include "src/settings.h"
@@ -21,6 +33,7 @@
 #include <QLoggingCategory>
 #include <QResource>
 #include <QDir>
+
 
 int main(int argc, char **argv)
 {
@@ -55,7 +68,16 @@ int main(int argc, char **argv)
 
     KDBusService appDBusService(KDBusService::Multiple | KDBusService::NoExitOnFailure);
 
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    QString codec = "UTF-8";
+    QString locale = std::locale("").name().c_str();
+    QString lcName = "LC_NAME=";
+    auto in = locale.indexOf(lcName);
+    auto out = locale.indexOf(";", in);
+    auto result = locale.mid(in + lcName.size(), out - (in + lcName.size()));
+
+    codec = result.split(".").back();
+
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName(codec.toStdString().c_str()));
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
     QString config_path = Settings::records()->logsFilePath();
