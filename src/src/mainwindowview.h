@@ -72,6 +72,7 @@ public Q_SLOTS:
     virtual void checkUpdates();
     virtual void updateWidgets();
     void checkRunningThreadsBeforeQuit();
+    void blockUpdateColumn();
 
 private Q_SLOTS:
     void startAnimations();
@@ -115,6 +116,8 @@ private:
     void hideWidgetsExceptInstalled();
     void checkSpinningVisibility();
     void clearMainPreviews(Process::Task task);
+    void disconnectSortSignals();
+    void reconnectSortSignals();
 
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;

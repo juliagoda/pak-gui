@@ -38,6 +38,7 @@ public:
 
     void fill() override;
     void clearForSort();
+    void fillForSort();
 
 protected:
     virtual QStringList getPackagesList();

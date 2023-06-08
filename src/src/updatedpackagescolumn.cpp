@@ -1,12 +1,3 @@
-#include "updatedpackagescolumn.h"
-
-#include "logger.h"
-#include "checkpackage.h"
-#include "checkcommandparser.h"
-
-#include <QPointer>
-#include <QMessageBox>
-#include <QtConcurrent/QtConcurrent>
 // Copyright (C) 2023 Jagoda "juliagoda" Górska
 //
 // This file is part of CachyOS package manager based on "pak" application.
@@ -24,6 +15,16 @@
 // You should have received a copy of the GNU General Public License along
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+#include "updatedpackagescolumn.h"
+
+#include "logger.h"
+#include "checkpackage.h"
+#include "checkcommandparser.h"
+
+#include <QPointer>
+#include <QMessageBox>
+#include <QtConcurrent/QtConcurrent>
 
 #include <KLocalizedString>
 
@@ -147,4 +148,14 @@ void UpdatedPackagesColumn::clearForSort()
 {
     QObject::disconnect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(), nullptr);
     packages_sorter->resetOriginalList();
+}
+
+
+void UpdatedPackagesColumn::fillForSort()
+{
+    if (!search_lineedit)
+        return;
+
+    QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
+    [&](const QString& text) { packages_sorter->sortPackagesByText<CheckPackage>(text, CheckPackage{"", Package::Source::Unknown}); });
 }

@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     KDBusService appDBusService(KDBusService::Multiple | KDBusService::NoExitOnFailure);
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-    QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, false);
+    //QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, false);
     QLoggingCategory::defaultCategory()->setEnabled(QtInfoMsg, true);
 
     int status = 0;

@@ -144,6 +144,7 @@ void MainWindowViewSignals::attachAvailablePackagesColumn()
     if (main_window_view->process->preparedBeforeRun(Process::Task::Install, main_window_view->available_packages_column.data()->getCheckedPackagesStringList()))
       main_window_view->process->run(Process::Task::Install, main_window_view->available_packages_column.data()->getCheckedPackagesStringList()); }, Qt::AutoConnection);
 
+    QObject::connect(main_window_view->process.get(), &Process::acceptedUpdateAll, main_window_view, &MainWindowView::blockUpdateColumn);
     QObject::connect(main_window_view->m_ui.available_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.available_packages_list->count() == 0) main_window_view->m_ui.install_packages_button->setEnabled(false); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.available_packages_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ main_window_view->m_ui.search_available_packages_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.available_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.available_packages_list->count() == 0) main_window_view->m_ui.search_available_packages_checkbox->setEnabled(false); }, Qt::AutoConnection);

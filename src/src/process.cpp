@@ -49,6 +49,9 @@ QMap<Process::Task, bool> running_tasks_map{
                                             {Process::Task::SyncPOLAUR, false},
                                             };
 
+QString Process::yes_command = "Y";
+QString Process::no_command = "n";
+
 
 Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
     messages_map(),
@@ -56,9 +59,7 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
     process_map(),
     parent(new_parent)
 {
-    auto map = Constants::langNamesToYesNoMap();
-    yesCommand = map.value(QLocale::system().language(), QPair{"Y", "n"}).first;
-    noCommand = map.value(QLocale::system().language(), QPair{"Y", "n"}).second;
+    std::call_once(yes_no_commands_update, updateYesNoCommands);
 
     if (!new_actions_access_checker.isNull())
         connect(new_actions_access_checker.get(), &ActionsAccessChecker::auracleAccessChanged, this, &Process::updateCleanCommand);
@@ -99,11 +100,11 @@ bool Process::preparedBeforeRun(Task new_task, QStringList new_checked_packages)
 void Process::setDefaultCommands()
 {
     commands_map[Task::SyncPOLAUR] = QStringList() << "-c" << Constants::askPassCommand() + " && pak -SyP";
-    commands_map[Task::Clean] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yesCommand + "\" | pak -Sc";
-    commands_map[Task::MirrorsUpdate] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yesCommand + "\" | pak -m";
-    commands_map[Task::UpdateAll] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yesCommand + "\n" + yesCommand + "\" | pak -Su";
+    commands_map[Task::Clean] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sc";
+    commands_map[Task::MirrorsUpdate] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -m";
+    commands_map[Task::UpdateAll] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\n" + yes_command + "\" | pak -Su";
     commands_map[Task::PrintVCSPackages] = QStringList() << "-c" << Constants::askPassCommand() + " && pak --vcs";
-    commands_map[Task::UpdateInstalledPackages] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yesCommand + "\" | pak -Sy";
+    commands_map[Task::UpdateInstalledPackages] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sy";
 }
 
 
@@ -179,11 +180,11 @@ void Process::resetRunningTask(Task new_task)
 
 void Process::updateCleanCommand(bool is_auracle_installed)
 {
-    QString basic_command = Constants::askPassCommand() + " && echo -e \"" + yesCommand + "\" | pak -Sc";
+    QString basic_command = Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sc";
     commands_map.remove(Task::Clean);
 
     if (is_auracle_installed)
-        commands_map.insert(Task::Clean, QStringList() << "-c" << basic_command + " && echo -e \"" + yesCommand + "\" | pak -ScA");
+        commands_map.insert(Task::Clean, QStringList() << "-c" << basic_command + " && echo -e \"" + yes_command + "\" | pak -ScA");
     else
         commands_map.insert(Task::Clean, QStringList() << "-c" << basic_command);
 }
@@ -314,7 +315,7 @@ void Process::updateCurrentCommandForUpdate(Task new_task)
 
     if (packages_to_update == 0)
     {
-        replaceAutoAcceptationForTask(new_task, "echo -e \"(" + noCommand + "|" + yesCommand + ")\n" + yesCommand + "\"", "echo -e \"" + yesCommand + "\"");
+        replaceAutoAcceptationForTask(new_task, "echo -e \"(" + no_command + "|" + yes_command + ")\n" + yes_command + "\"", "echo -e \"" + yes_command + "\"");
         return;
     }
 
@@ -322,11 +323,12 @@ void Process::updateCurrentCommandForUpdate(Task new_task)
 
     if (accepted)
     {
-        replaceAutoAcceptationForTask(new_task, "echo -e \"(" + noCommand + "|" + yesCommand + ")\n" + yesCommand + "\"", "echo -e \"" + yesCommand + "\n" + yesCommand + "\"");
+        emit acceptedUpdateAll();
+        replaceAutoAcceptationForTask(new_task, "echo -e \"(" + no_command + "|" + yes_command + ")\n" + yes_command + "\"", "echo -e \"" + yes_command + "\n" + yes_command + "\"");
         return;
     }
 
-    replaceAutoAcceptationForTask(new_task, "echo -e \"(" + noCommand + "|" + yesCommand + ")\n" + yesCommand + "\"", "echo -e \"" + noCommand + "\n" + yesCommand + "\"");
+    replaceAutoAcceptationForTask(new_task, "echo -e \"(" + no_command + "|" + yes_command + ")\n" + yes_command + "\"", "echo -e \"" + no_command + "\n" + yes_command + "\"");
 }
 
 
@@ -395,14 +397,22 @@ bool Process::isRunningUpdateTask()
 }
 
 
+void Process::updateYesNoCommands()
+{
+    auto map = Constants::langNamesToYesNoMap();
+    yes_command = map.value(QLocale::system().language(), QPair{"Y", "n"}).first;
+    no_command = map.value(QLocale::system().language(), QPair{"Y", "n"}).second;
+}
+
+
 void Process::updateMaps(QStringList& checked_packages)
 {
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
-    commands_map.insert(Task::Uninstall, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yesCommand + "\" | pak -R " + checked_packages.join(" "));
-    commands_map.insert(Task::Install, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + noCommand + "\n" + yesCommand + "\" | pak -S " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + noCommand + "\n" + yesCommand + "\" | pak -S " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + noCommand + "\n" + yesCommand + "\" | pak -SA " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + noCommand + "\n" + yesCommand + "\" | pak -SP " + checked_packages.join(" "));
+    commands_map.insert(Task::Uninstall, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -R " + checked_packages.join(" "));
+    commands_map.insert(Task::Install, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -S " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -S " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -SA " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -SP " + checked_packages.join(" "));
 
     messages_map.insert(Task::Uninstall, {i18n("Uninstallation"), i18np("remove package?", "remove packages?", checked_packages.count())});
     messages_map.insert(Task::Install, {i18n("Installation"), i18np("install package?", "install packages?", checked_packages.count())});

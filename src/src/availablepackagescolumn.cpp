@@ -74,3 +74,13 @@ void AvailablePackagesColumn::clearForSort()
     QObject::disconnect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(), nullptr);
     packages_sorter->resetOriginalList();
 }
+
+
+void AvailablePackagesColumn::fillForSort()
+{
+    if (!search_lineedit)
+        return;
+
+    QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
+                     [&](const QString& text) { packages_sorter->sortPackagesByText<SiPackage>(text, SiPackage{""}); });
+}

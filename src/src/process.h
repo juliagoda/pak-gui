@@ -25,6 +25,8 @@
 #include <QStringList>
 #include <QSharedPointer>
 
+#include <mutex>
+
 
 class ActionsAccessChecker;
 
@@ -78,6 +80,7 @@ signals:
     void acceptedTask(Process::Task task);
     void acceptedMainTask(Process::Task task);
     void showInput(Process::Task task);
+    void acceptedUpdateAll();
 
 private:
     void setDefaultCommands();
@@ -95,14 +98,16 @@ private:
     void changeUpdateAllCommand(Process::Task new_task);
     static bool isUpdateTask(Process::Task new_task);
     static bool isRunningUpdateTask();
+    static void updateYesNoCommands();
 
-    QString yesCommand = "Y";
-    QString noCommand = "n";
+    static QString yes_command;
+    static QString no_command;
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;
     QMap<Task, QSharedPointer<QProcess>> process_map;
     uint packages_to_update = 0;
     uint aur_packages_to_update_count = 0;
     QWidget* parent;
+    std::once_flag yes_no_commands_update;
 };
 

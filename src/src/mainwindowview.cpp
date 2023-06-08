@@ -21,6 +21,7 @@
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
 #include "mainwindowviewsignals.h"
+#include "qnamespace.h"
 #include "statisticscommandparser.h"
 #include "updatedpackagescolumn.h"
 #include "installcommandparser.h"
@@ -123,6 +124,12 @@ void MainWindowView::run()
 
 void MainWindowView::hideWidgets()
 {
+    m_ui.sort_installed_packages->setCheckState(Qt::Unchecked);
+    m_ui.search_installed_packages_lineedit->clear();
+    m_ui.search_installed_packages_checkbox->setCheckState(Qt::Unchecked);
+
+    m_ui.console_view_uninstall->setCheckState(Qt::Unchecked);
+
     m_ui.installed_preview_area->hide();
     m_ui.progress_view_checkbox->hide();
     m_ui.sort_installed_packages->hide();
@@ -134,6 +141,17 @@ void MainWindowView::hideWidgets()
 
 void MainWindowView::hideWidgetsExceptInstalled()
 {
+    m_ui.search_packages_to_update_lineedit->clear();
+    m_ui.search_available_packages_lineedit->clear();
+    m_ui.sort_available_packages->setCheckState(Qt::Unchecked);
+    m_ui.sort_packages_to_update->setCheckState(Qt::Unchecked);
+    m_ui.search_available_packages_checkbox->setCheckState(Qt::Unchecked);
+    m_ui.console_view_install->setCheckState(Qt::Unchecked);
+
+    m_ui.check_all_updates_checkbox->setCheckState(Qt::Unchecked);
+    m_ui.search_packages_to_update_checkbox->setCheckState(Qt::Unchecked);
+    m_ui.console_view_update->setCheckState(Qt::Unchecked);
+
     m_ui.updated_preview_area->hide();
     m_ui.available_preview_area->hide();
     m_ui.sort_available_packages->hide();
@@ -191,6 +209,28 @@ void MainWindowView::clearMainPreviews(Process::Task task)
         m_ui.input_for_uninstall_lineedit->clear();
         m_ui.input_uninstall_widget->setHidden(true);
     }
+}
+
+
+void MainWindowView::disconnectSortSignals()
+{
+    disconnect(m_ui.sort_installed_packages, &QCheckBox::toggled, installed_packages_column.data(), &InstalledPackagesColumn::sort);
+    installed_packages_column->clearForSort();
+    disconnect(m_ui.sort_packages_to_update, &QCheckBox::toggled, updated_packages_column.data(), &UpdatedPackagesColumn::sort);
+    disconnect(m_ui.sort_available_packages, &QCheckBox::toggled, available_packages_column.data(), &AvailablePackagesColumn::sort);
+    updated_packages_column->clearForSort();
+    available_packages_column->clearForSort();
+}
+
+
+void MainWindowView::reconnectSortSignals()
+{
+    connect(m_ui.sort_installed_packages, &QCheckBox::toggled, installed_packages_column.data(), &InstalledPackagesColumn::sort);
+    installed_packages_column->fillForSort();
+    connect(m_ui.sort_packages_to_update, &QCheckBox::toggled, updated_packages_column.data(), &UpdatedPackagesColumn::sort);
+    connect(m_ui.sort_available_packages, &QCheckBox::toggled, available_packages_column.data(), &AvailablePackagesColumn::sort);
+    updated_packages_column->fillForSort();
+    available_packages_column->fillForSort();
 }
 
 
@@ -259,7 +299,14 @@ void MainWindowView::connectSignalsForInstalledPackages()
 void MainWindowView::connectSignalsForUpdatedPackages()
 {
     if (m_ui.packages_to_update_list->count() > 0)
+    {
         m_ui.packages_to_update_list->show();
+        m_ui.search_packages_to_update_checkbox->setEnabled(true);
+        m_ui.check_all_updates_checkbox->setEnabled(true);
+        m_ui.update_packages_button->setEnabled(true);
+        m_ui.sort_packages_to_update->setEnabled(true);
+        m_ui.search_packages_to_update_lineedit->setEnabled(true);
+    }
 
     if (m_ui.packages_to_update_list->count() == 0 && (actions_access_checker.isNull() || !actions_access_checker->isOnline()))
     {
@@ -504,12 +551,8 @@ void MainWindowView::checkUpdates()
     Logger::logger()->logInfo(QStringLiteral("Start check updates - %1").arg(QDateTime::currentDateTime().toString()));
 
     updated_packages_column.data()->clear();
-    m_ui.update_spinning_widget->show();
-    spinning_animation->startOnWidget(m_ui.update_spinning_label);
     QThread* updated_packages_thread(new QThread);
-    m_ui.packages_to_update_list->hide();
-    m_ui.search_packages_to_update_checkbox->setEnabled(false);
-    m_ui.check_all_updates_checkbox->setEnabled(false);
+    blockUpdateColumn();
     main_window_view_signals->attachCheckUpdates(updated_packages_thread);
 }
 
@@ -535,12 +578,32 @@ void MainWindowView::checkRunningThreadsBeforeQuit()
 }
 
 
+void MainWindowView::blockUpdateColumn()
+{
+    m_ui.update_spinning_widget->show();
+    spinning_animation->startOnWidget(m_ui.update_spinning_label);
+    m_ui.packages_to_update_list->hide();
+    m_ui.search_packages_to_update_checkbox->setCheckState(Qt::Unchecked);
+    m_ui.search_packages_to_update_checkbox->setEnabled(false);
+    m_ui.check_all_updates_checkbox->setCheckState(Qt::Unchecked);
+    m_ui.check_all_updates_checkbox->setEnabled(false);
+    m_ui.sort_packages_to_update->setCheckState(Qt::Unchecked);
+    m_ui.sort_packages_to_update->hide();
+    m_ui.search_packages_to_update_lineedit->clear();
+    m_ui.search_packages_to_update_lineedit->hide();
+    m_ui.update_packages_button->setEnabled(false);
+    m_ui.sort_packages_to_update->setEnabled(false);
+    m_ui.search_packages_to_update_lineedit->setEnabled(false);
+}
+
+
 void MainWindowView::refresh()
 {
     if (is_operation_running)
         return;
 
     is_operation_running = true;
+    disconnectSortSignals();
     hideWidgets();
     emit initStarted();
 
@@ -550,6 +613,7 @@ void MainWindowView::refresh()
 
     startAnimations();
     run();
+    reconnectSortSignals();
 }
 
 

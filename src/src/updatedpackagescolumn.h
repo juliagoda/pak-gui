@@ -37,6 +37,7 @@ public:
     uint getCurrentPackagesCount() const;
     void fill() override;
     void clearForSort();
+    void fillForSort();
 
 public Q_SLOTS:
     void toggleAllPackages(bool is_all_checked);
