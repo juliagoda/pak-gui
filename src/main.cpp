@@ -19,6 +19,7 @@
 #include "src/mainwindow.h"
 #include "src/settings.h"
 #include "src/logger.h"
+#include "src/defs.h"
 
 #include <KCrash>
 #include <KDBusService>
@@ -45,7 +46,7 @@ int main(int argc, char **argv)
     KAboutData aboutData( QStringLiteral("pak-gui"),
                           QStringLiteral("pak-gui"),
                           QStringLiteral("1.0"),
-                          i18n("Pacman wrapper, AUR and POLAUR helper with Gui"),
+                          i18n("Pacman wrapper, AUR and POLAUR helper with Gui (based on \"pak\" application)"),
                           KAboutLicense::GPL_V3,
                           i18n("Copyright 2023, Jagoda \"juliagoda\" Górska"),
                           QLatin1String(),
@@ -60,6 +61,9 @@ int main(int argc, char **argv)
     KAboutData::setApplicationData(aboutData);
     application.setWindowIcon(QIcon::fromTheme(QStringLiteral("pak-gui")));
 
+    Constants constants;
+    constants.init();
+
     QCommandLineParser parser;
     aboutData.setupCommandLine(&parser);
 
@@ -68,16 +72,7 @@ int main(int argc, char **argv)
 
     KDBusService appDBusService(KDBusService::Multiple | KDBusService::NoExitOnFailure);
 
-    QString codec = "UTF-8";
-    QString locale = std::locale("").name().c_str();
-    QString lcName = "LC_NAME=";
-    auto in = locale.indexOf(lcName);
-    auto out = locale.indexOf(";", in);
-    auto result = locale.mid(in + lcName.size(), out - (in + lcName.size()));
-
-    codec = result.split(".").back();
-
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName(codec.toStdString().c_str()));
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
     QString config_path = Settings::records()->logsFilePath();

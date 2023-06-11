@@ -24,31 +24,41 @@
 #include <QString>
 #include <QMap>
 #include <QLocale>
+#include <QPair>
+
+#include <unordered_map>
 
 
 class Constants
 {
 public:
+    Constants();
+    void init();
+
     using Yes = QString;
     using No = QString;
 
-    static int packageQiNameLine();
-    static int packageQiVersionLine();
-    static int packageSiRepoName();
-    static int packageSiNameLine();
-    static int packageSiVersionLine();
+    static constexpr int packageQiNameLine();
+    static constexpr int packageQiVersionLine();
+    static constexpr int packageSiRepoName();
+    static constexpr int packageSiNameLine();
+    static constexpr int packageSiVersionLine();
 
-    static QString pacmanExecFile();
-    static QString pacmanContribExecFile();
-    static QString kdesuExecFile();
-    static QString ksshAskPassExecFile();
-    static QString pakExecFile();
-    static QString aspExecFile();
-    static QString gitExecFile();
-    static QString reflectorExecFile();
-    static QString auracleGit();
+    static const QString pacmanExecFile();
+    static const QString pacmanContribExecFile();
+    static const QString kdesuExecFile();
+    static const QString ksshAskPassExecFile();
+    static const QString pakExecFile();
+    static const QString aspExecFile();
+    static const QString gitExecFile();
+    static const QString reflectorExecFile();
+    static const QString auracleGit();
+    static const QString askPassCommand();
 
-    static QString askPassCommand();
-    static QMap<Process::Task, Logger::WriteOperations> taskToWriteOperationMap();
-    static QHash<QLocale::Language, QPair<Yes, No>> langNamesToYesNoMap();
+    static Logger::WriteOperations taskToWriteOperation(Process::Task task) const;
+    static QPair<Constants::Yes, Constants::No> langNamesToYesNo(QLocale::Language language) const;
+
+private:
+    static QMap<Process::Task, Logger::WriteOperations> task_to_write_operation_map;
+    static std::unordered_map<QLocale::Language, QPair<Yes, No>> lang_names_to_yes_no_map;
 };

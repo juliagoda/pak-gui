@@ -18,145 +18,169 @@
 
 #include "defs.h"
 
+#include "process.h"
 
-int Constants::packageQiNameLine()
+
+QMap<Process::Task, Logger::WriteOperations> Constants::task_to_write_operation_map;
+std::unordered_map<QLocale::Language, QPair<QString, QString>> Constants::lang_names_to_yes_no_map;
+
+
+Constants::Constants()
+{
+  // ...
+}
+
+
+void Constants::init()
+{
+    task_to_write_operation_map = {{Process::Task::Clean, Logger::WriteOperations::Clean},
+            {Process::Task::MirrorsUpdate, Logger::WriteOperations::MirrorsUpdate},
+            {Process::Task::UpdateAll, Logger::WriteOperations::UpdateAll},
+            {Process::Task::PrintVCSPackages, Logger::WriteOperations::PrintVCSPackages},
+            {Process::Task::UpdateInstalledPackages, Logger::WriteOperations::UpdateInstalled},
+            {Process::Task::Uninstall, Logger::WriteOperations::Remove},
+            {Process::Task::Install, Logger::WriteOperations::Install},
+            {Process::Task::Update, Logger::WriteOperations::Update}};
+
+    // TODOJG - maybe put it in external file
+    lang_names_to_yes_no_map = {{QLocale::Polish, QPair{"T", "n"}},
+                                {QLocale::English, QPair{"Y", "n"}},
+                                {QLocale::German, QPair{"J", "n"}},
+                                {QLocale::Hindi, QPair{"Y", "n"}},
+                                {QLocale::Ukrainian, QPair{"Y", "n"}},
+                                {QLocale::Greek, QPair{"Y", "n"}},
+                                {QLocale::Russian, QPair{"Y", "n"}},
+                                {QLocale::Bulgarian, QPair{"Y", "n"}},
+                                {QLocale::Serbian, QPair{"Д", "н"}},
+                                {QLocale::Japanese, QPair{"Y", "n"}},
+                                {QLocale::French, QPair{"O", "n"}},
+                                {QLocale::Korean, QPair{"Y", "n"}},
+                                {QLocale::Spanish, QPair{"S", "n"}},
+                                {QLocale::Bosnian, QPair{"Y", "n"}},
+                                {QLocale::Hungarian, QPair{"I", "n"}},
+                                {QLocale::Azerbaijani, QPair{"Y", "n"}},
+                                {QLocale::Portuguese, QPair{"S", "n"}},
+                                {QLocale::Italian, QPair{"S", "n"}},
+                                {QLocale::Galician, QPair{"S", "n"}},
+                                {QLocale::Turkish, QPair{"E", "h"}},
+                                {QLocale::Lithuanian, QPair{"T", "n"}},
+                                {QLocale::Czech, QPair{"A", "n"}},
+                                {QLocale::Dutch, QPair{"J", "n"}},
+                                {QLocale::Romanian, QPair{"D", "n"}},
+                                {QLocale::Slovak, QPair{"A", "n"}},
+                                {QLocale::Swedish, QPair{"J", "n"}},
+                                {QLocale::Danish, QPair{"J", "n"}},
+                                {QLocale::NorwegianBokmal, QPair{"J", "n"}},
+                                {QLocale::Chinese, QPair{"Y", "n"}},
+                                {QLocale::Basque, QPair{"B", "e"}},
+                                {QLocale::Esperanto, QPair{"J", "n"}},
+                                {QLocale::Finnish, QPair{"K", "e"}},
+                                {QLocale::Indonesian, QPair{"Y", "n"}},
+                                {QLocale::Slovenian, QPair{"D", "n"}}
+                                };
+}
+
+
+constexpr int Constants::packageQiNameLine()
 {
     return 0;
 }
 
 
-int Constants::packageQiVersionLine()
+constexpr int Constants::packageQiVersionLine()
 {
     return 1;
 }
 
 
-int Constants::packageSiRepoName()
+constexpr int Constants::packageSiRepoName()
 {
     return 0;
 }
 
 
-int Constants::packageSiNameLine()
+constexpr int Constants::packageSiNameLine()
 {
     return 1;
 }
 
 
-int Constants::packageSiVersionLine()
+constexpr int Constants::packageSiVersionLine()
 {
     return 2;
 }
 
 
-QString Constants::pacmanExecFile()
+const QString Constants::pacmanExecFile()
 {
     return "pacman";
 }
 
 
-QString Constants::pacmanContribExecFile()
+const QString Constants::pacmanContribExecFile()
 {
     return "checkupdates";
 }
 
 
-QString Constants::kdesuExecFile()
+const QString Constants::kdesuExecFile()
 {
     return "kdesu";
 }
 
 
-QString Constants::ksshAskPassExecFile()
+const QString Constants::ksshAskPassExecFile()
 {
     return "ksshaskpass";
 }
 
 
-QString Constants::pakExecFile()
+const QString Constants::pakExecFile()
 {
     return "pak";
 }
 
 
-QString Constants::aspExecFile()
+const QString Constants::aspExecFile()
 {
     return "asp";
 }
 
 
-QString Constants::gitExecFile()
+const QString Constants::gitExecFile()
 {
     return "git";
 }
 
 
-QString Constants::reflectorExecFile()
+const QString Constants::reflectorExecFile()
 {
     return "reflector";
 }
 
 
-QString Constants::auracleGit()
+const QString Constants::auracleGit()
 {
     return "auracle";
 }
 
 
-QString Constants::askPassCommand()
+const QString Constants::askPassCommand()
 {
     return "export SUDO_ASKPASS=/usr/bin/ksshaskpass && sudo --askpass true";
 }
 
 
-QMap<Process::Task, Logger::WriteOperations> Constants::taskToWriteOperationMap()
+Logger::WriteOperations Constants::taskToWriteOperation(Process::Task task) const
 {
-    return {{Process::Task::Clean, Logger::WriteOperations::Clean},
-           {Process::Task::MirrorsUpdate, Logger::WriteOperations::MirrorsUpdate},
-           {Process::Task::UpdateAll, Logger::WriteOperations::UpdateAll},
-           {Process::Task::PrintVCSPackages, Logger::WriteOperations::PrintVCSPackages},
-           {Process::Task::UpdateInstalledPackages, Logger::WriteOperations::UpdateInstalled},
-           {Process::Task::Uninstall, Logger::WriteOperations::Remove},
-           {Process::Task::Install, Logger::WriteOperations::Install},
-           {Process::Task::Update, Logger::WriteOperations::Update}};
+    return task_to_write_operation_map.value(task);
 }
 
 
-QHash<QLocale::Language, QPair<Constants::Yes, Constants::No> > Constants::langNamesToYesNoMap()
+QPair<Constants::Yes, Constants::No> Constants::langNamesToYesNo(QLocale::Language language) const
 {
-    return {{QLocale::Polish, QPair{"T", "n"}},
-            {QLocale::English, QPair{"Y", "n"}},
-            {QLocale::German, QPair{"J", "n"}},
-            {QLocale::Hindi, QPair{"Y", "n"}},
-            {QLocale::Ukrainian, QPair{"Y", "n"}},
-            {QLocale::Greek, QPair{"Y", "n"}},
-            {QLocale::Russian, QPair{"Y", "n"}},
-            {QLocale::Bulgarian, QPair{"Y", "n"}},
-            {QLocale::Serbian, QPair{"Д", "н"}},
-            {QLocale::Japanese, QPair{"Y", "n"}},
-            {QLocale::French, QPair{"O", "n"}},
-            {QLocale::Korean, QPair{"Y", "n"}},
-            {QLocale::Spanish, QPair{"S", "n"}},
-            {QLocale::Bosnian, QPair{"Y", "n"}},
-            {QLocale::Hungarian, QPair{"I", "n"}},
-            {QLocale::Azerbaijani, QPair{"Y", "n"}},
-            {QLocale::Portuguese, QPair{"S", "n"}},
-            {QLocale::Italian, QPair{"S", "n"}},
-            {QLocale::Galician, QPair{"S", "n"}},
-            {QLocale::Turkish, QPair{"E", "h"}},
-            {QLocale::Lithuanian, QPair{"T", "n"}},
-            {QLocale::Czech, QPair{"A", "n"}},
-            {QLocale::Dutch, QPair{"J", "n"}},
-            {QLocale::Romanian, QPair{"D", "n"}},
-            {QLocale::Slovak, QPair{"A", "n"}},
-            {QLocale::Swedish, QPair{"J", "n"}},
-            {QLocale::Danish, QPair{"J", "n"}},
-            {QLocale::NorwegianBokmal, QPair{"J", "n"}},
-            {QLocale::Chinese, QPair{"Y", "n"}},
-            {QLocale::Basque, QPair{"B", "e"}},
-            {QLocale::Esperanto, QPair{"J", "n"}},
-            {QLocale::Finnish, QPair{"K", "e"}},
-            {QLocale::Indonesian, QPair{"Y", "n"}},
-            {QLocale::Slovenian, QPair{"D", "n"}}
-            };
+    if (lang_names_to_yes_no_map.contains(language))
+        return lang_names_to_yes_no_map.at(language);
+
+    return QPair{"Y", "n"};
 }
