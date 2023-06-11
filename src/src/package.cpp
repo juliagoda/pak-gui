@@ -119,7 +119,7 @@ void Package::setToolTipOnPackage(const QString& text)
 }
 
 
-bool Package::validate(const QStringList& lines, int expected_size, const QString&  funtion_name)
+bool Package::validate(const QStringList& lines, int expected_size, const QString& funtion_name)
 {
     if (lines.size() < expected_size)
     {

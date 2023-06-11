@@ -20,6 +20,7 @@
 #include "package.h"
 
 
+// TODOJG - reduce parameters list
 template<typename T>
 QStringList Algorithms::createSplittedList(const QString& text,
                                            const QString& separator,
@@ -44,7 +45,7 @@ QStringList Algorithms::createSplittedList(const QString& text,
     return selected_infos;
 }
 
-
+// TODOJG - reduce parameters list
 template<typename T>
 void Algorithms::createListOfLines(QStringList& selected_infos,
                                    const QString& text,
@@ -70,7 +71,7 @@ void Algorithms::createListOfLines(QStringList& selected_infos,
     }
 }
 
-
+// TODOJG - reduce parameters list
 template<typename T>
 bool Algorithms::foundIndexOdSeparator(const QStringList::iterator& line_it,
                                        const QString& separator,
@@ -93,8 +94,7 @@ bool Algorithms::foundIndexOdSeparator(const QStringList::iterator& line_it,
     return false;
 }
 
-
-
+// TODOJG - reduce parameters list
 template<typename T>
 int Algorithms::getFirstIndexAfterSeparator(const QList<T>& list,
                                             T tooltip_part,
@@ -112,6 +112,7 @@ int Algorithms::getFirstIndexAfterSeparator(const QList<T>& list,
 
 
 // forward declarations
+// TODOJG - maybe better class template
 
 template QStringList Algorithms::createSplittedList(const QString& text,
                                                     const QString& separator,

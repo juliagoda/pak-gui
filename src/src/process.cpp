@@ -185,7 +185,8 @@ void Process::updateCleanCommand(bool is_auracle_installed)
 
     if (is_auracle_installed)
         commands_map.insert(Task::Clean, QStringList() << "-c" << basic_command + " && echo -e \"" + yes_command + "\" | pak -ScA");
-    else
+
+    if (!is_auracle_installed)
         commands_map.insert(Task::Clean, QStringList() << "-c" << basic_command);
 }
 
@@ -253,8 +254,8 @@ void Process::connectReadyReadStandardOutput(QSharedPointer<QProcess>& process, 
     {
         if (Settings::records()->operateOnActionsManually() || aur_packages_to_update_count > 0)
         {
-            QString res{process->readAllStandardOutput()};
-            processReadLine(res, new_task);
+            QString result{process->readAllStandardOutput()};
+            processReadLine(result, new_task);
         }
 
         while (process.data()->canReadLine())

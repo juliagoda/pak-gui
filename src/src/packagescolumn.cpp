@@ -122,9 +122,12 @@ void PackagesColumn::sort(bool is_sorted)
 void PackagesColumn::countCheckedPackages(QListWidgetItem* item)
 {
     Package* package = dynamic_cast<Package*>(item);
-    if (package->checkState() == Qt::Checked)
+    const bool is_package_checked = package->checkState() == Qt::Checked;
+
+    if (is_package_checked)
         addCheckedPackage(package);
-    else
+
+    if (!is_package_checked)
         removeUncheckedPackage(package);
 
     emit checkedPackagesCounterChanged(checked_packages_list.count() > 0);
@@ -133,8 +136,9 @@ void PackagesColumn::countCheckedPackages(QListWidgetItem* item)
 
 void PackagesColumn::addCheckedPackage(Package* package)
 {
-    if (package->getSource() == Package::Source::AUR ||
-        package->getSource() == Package::Source::POLAUR)
+    const bool is_not_repo_package = package->getSource() == Package::Source::AUR ||
+                                     package->getSource() == Package::Source::POLAUR;
+    if (is_not_repo_package)
     {
         aur_checked_packages++;
         checked_packages_list.prepend(package);

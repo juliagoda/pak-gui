@@ -28,6 +28,8 @@
 
 #include <KLocalizedString>
 
+#include <algorithm>
+
 
 UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
                                              QLineEdit* new_search_lineedit,
@@ -102,11 +104,13 @@ template<> void UpdatedPackagesColumn::runAfterChoice<0>()
 
 template<> void UpdatedPackagesColumn::runAfterChoice<1>()
 {
-    for (auto it = getCheckedPackagesList().begin(); it != getCheckedPackagesList().end(); it++)
+    std::for_each(checked_packages_list.begin(), checked_packages_list.end(), [](Package* package)
     {
-        if ((*it)->getSource() == Package::Source::AUR || (*it)->getSource() == Package::Source::POLAUR)
-            (*it)->setCheckState(Qt::Unchecked);
-    }
+        if (package->getSource() == Package::Source::AUR || package->getSource() == Package::Source::POLAUR)
+            package->setCheckState(Qt::Unchecked);
+
+        return package;
+    });
 }
 
 

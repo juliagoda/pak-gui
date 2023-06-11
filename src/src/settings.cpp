@@ -25,6 +25,8 @@
 
 #include <QListWidget>
 #include <QPointer>
+#include <algorithm>
+#include <iterator>
 
 
 QSharedPointer<SettingsRecords> Settings::settings_records(new SettingsRecords);
@@ -154,11 +156,14 @@ void Settings::enableButtons()
 void Settings::updateAvailableInfoList()
 {
     QStringList available_info_list = QStringList();
-    for (const auto& available_item : packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard))
+    auto items = packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard);
+    std::accumulate(items.begin(), items.end(), &available_info_list, [&](QStringList* list, QListWidgetItem* item)
     {
-        if (!available_info_list.contains(available_item->text()))
-            available_info_list.append(available_item->text());
-    }
+        if (!list->contains(item->text()))
+            list->append(item->text());
+
+        return list;
+    });
 
     settings_records->setAvailablePackageInfo(available_info_list);
 }
@@ -167,11 +172,15 @@ void Settings::updateAvailableInfoList()
 void Settings::updateSelectedInfoList()
 {
     QStringList selected_info_list = QStringList();
-    for (const auto& selected_item : packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard))
+    auto items = packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard);
+    std::accumulate(items.begin(), items.end(), &selected_info_list, [&](QStringList* list, QListWidgetItem* item)
     {
-        if (!selected_info_list.contains(selected_item->text()))
-            selected_info_list.append(selected_item->text());
-    }
+        if (!list->contains(item->text()))
+            list->append(item->text());
+
+        return list;
+    });
+
 
     settings_records->setSelectedPackageInfo(selected_info_list);
     Logger::logger()->logDebug(QStringLiteral("selected packages info saved: %1").arg(selected_info_list.join(", ")));

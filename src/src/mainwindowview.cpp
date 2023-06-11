@@ -52,14 +52,14 @@
 
 MainWindowView::MainWindowView(QWidget *parent)
     : QWidget(parent),
-    spinning_animation(new SpinningAnimation),
-    generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
-    progress_view(QSharedPointer<ProgressView>(new ProgressView)),
-    main_window_view_signals(new MainWindowViewSignals(this)),
-    process(nullptr),
-    actions_access_checker(nullptr),
-    internet_connection_timer(new QTimer(this)),
-    is_operation_running(true)
+      spinning_animation(new SpinningAnimation),
+      generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
+      progress_view(QSharedPointer<ProgressView>(new ProgressView)),
+      main_window_view_signals(new MainWindowViewSignals(this)),
+      process(nullptr),
+      actions_access_checker(nullptr),
+      internet_connection_timer(new QTimer(this)),
+      current_state(State::Running)
 {
     m_ui.setupUi(this);
 
@@ -185,7 +185,7 @@ void MainWindowView::updatePreviewsDesign()
     PreviewDesign::update(m_ui.text_browser_tab_update);
 }
 
-
+// TODOJG - to strategy design pattern
 void MainWindowView::clearMainPreviews(Process::Task task)
 {
     if ((Process::Task::UpdateAll == task) ||
@@ -337,7 +337,7 @@ void MainWindowView::checkSpinningVisibility()
         if (!m_ui.update_spinning_widget->isHidden())
             return;
 
-        is_operation_running = false;
+        current_state = State::Waiting;
         spinning_animation->stopOnMainWidgets(m_ui.installation_spinning_label,
                                               m_ui.remove_spinning_label,
                                               m_ui.update_spinning_label);
@@ -345,7 +345,7 @@ void MainWindowView::checkSpinningVisibility()
     }
 }
 
-
+// TODOJG - to strategy design pattern
 void MainWindowView::showInputWidgets(Process::Task task)
 {
     if ((Process::Task::UpdateAll == task) ||
@@ -365,7 +365,7 @@ void MainWindowView::showInputWidgets(Process::Task task)
     }
 }
 
-
+// TODOJG - to strategy design pattern
 void MainWindowView::showSingleAnimation(Process::Task task)
 {
     if ((Process::Task::UpdateAll == task) ||
@@ -489,7 +489,7 @@ void MainWindowView::searchPackage()
     package_input->handle();
 }
 
-
+// TODOJG - to strategy design pattern
 void MainWindowView::generateOutput(Process::Task task, const QString& line)
 {
     switch(task)
@@ -568,7 +568,7 @@ void MainWindowView::updateWidgets()
 
 void MainWindowView::checkRunningThreadsBeforeQuit()
 {
-    if (is_operation_running)
+    if (current_state == State::Running)
     {
         QMessageBox::warning(this, i18n("Quit"), i18n("Application cannot be closed immediately. Try again after end of running operations."));
         return;
@@ -599,10 +599,13 @@ void MainWindowView::blockUpdateColumn()
 
 void MainWindowView::refresh()
 {
-    if (is_operation_running)
+    if (current_state == State::Running)
+    {
+        QMessageBox::information(this, i18n("Process running"), i18n("Wait until all major processes are complete"));
         return;
+    }
 
-    is_operation_running = true;
+    current_state = State::Waiting;
     disconnectSortSignals();
     hideWidgets();
     emit initStarted();

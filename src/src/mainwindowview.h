@@ -50,6 +50,12 @@ class MainWindowView : public QWidget
     friend class MainWindowViewSignals;
 
 public:
+    enum class State
+    {
+        Running = 0,
+        Waiting
+    };
+
     explicit MainWindowView(QWidget* parent = nullptr);
     ~MainWindowView() override = default;
 
@@ -122,5 +128,5 @@ private:
     QSharedPointer<Process> process;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
     QPointer<QTimer> internet_connection_timer;
-    bool is_operation_running;
+    State current_state;
 };

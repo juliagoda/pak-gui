@@ -52,7 +52,8 @@ QStringList SearchAllCommandParser::retrieveInfo()
         {
             QString line = pacman_qi.data()->readLine();
             processReadLine(line, current_source_line);
-        }});
+        }
+    });
 
     return QStringList();
 }

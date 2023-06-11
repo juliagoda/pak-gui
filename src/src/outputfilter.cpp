@@ -41,12 +41,14 @@ QStringList OutputFilter::filteredOutputFromInstalledPackages(const QStringList&
     QStringList output_list;
     QStringList::const_iterator list_it;
     static QRegularExpression tag{"\\[.*\\]"};
-    for (list_it = text_output.begin(); list_it != text_output.end(); list_it++)
+    std::accumulate(text_output.begin(), text_output.end(), &output_list, [&](QStringList* list, const QString& elem)
     {
-        QString list_el = *list_it;
-        if (list_el.count(tag) == 1)
-            output_list.append(list_el.trimmed());
-    }
+        QString output = elem;
+        if (output.count(tag) == 1)
+            output_list.append(output.trimmed());
+
+        return list;
+    });
 
     return output_list;
 }
