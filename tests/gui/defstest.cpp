@@ -80,14 +80,14 @@ void TestDefs::ksshAskPassCommandIsCorrect()
 
 void TestDefs::taskToWriteOperationMapHasCorrectValues()
 {
-    QMap<Process::Task, Logger::WriteOperations> map{{{Process::Task::Clean, Logger::WriteOperations::Clean},
-            {Process::Task::MirrorsUpdate, Logger::WriteOperations::MirrorsUpdate},
-            {Process::Task::UpdateAll, Logger::WriteOperations::UpdateAll},
-            {Process::Task::PrintVCSPackages, Logger::WriteOperations::PrintVCSPackages},
-            {Process::Task::UpdateInstalledPackages, Logger::WriteOperations::UpdateInstalled},
-            {Process::Task::Uninstall, Logger::WriteOperations::Remove},
-            {Process::Task::Install, Logger::WriteOperations::Install},
-            {Process::Task::Update, Logger::WriteOperations::Update}}};
-
-    QCOMPARE(Constants::taskToWriteOperationMap(), map);
+    Constants constants;
+    constants.init();
+    QCOMPARE(Constants::taskToWriteOperation(Process::Task::MirrorsUpdate), Logger::WriteOperations::MirrorsUpdate);
+    QCOMPARE(Constants::taskToWriteOperation(Process::Task::UpdateAll), Logger::WriteOperations::UpdateAll);
+    QCOMPARE(Constants::taskToWriteOperation(Process::Task::PrintVCSPackages), Logger::WriteOperations::PrintVCSPackages);
+    QCOMPARE(Constants::taskToWriteOperation(Process::Task::UpdateInstalledPackages), Logger::WriteOperations::UpdateInstalled);
+    QCOMPARE(Constants::taskToWriteOperation(Process::Task::Uninstall), Logger::WriteOperations::Remove);
+    QCOMPARE(Constants::taskToWriteOperation(Process::Task::Install), Logger::WriteOperations::Install);
+    QCOMPARE(Constants::taskToWriteOperation(Process::Task::Update), Logger::WriteOperations::Update);
+    QCOMPARE(Constants::taskToWriteOperation(Process::Task::Clean), Logger::WriteOperations::Clean);
 }

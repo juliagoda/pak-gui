@@ -97,7 +97,7 @@ void UpdatedPackagesColumn::toggleAllPackages(bool is_all_checked)
 template<> void UpdatedPackagesColumn::runAfterChoice<0>()
 {
     toggleAllPackages(true);
-    bool isAllChecked = getCheckedPackagesList().size() == list_widget->count();
+    bool isAllChecked = static_cast<int>(getCheckedPackagesList().size()) == list_widget->count();
     emit preparedList(getCheckedPackagesStringList(), isAllChecked ? Process::Task::UpdateAll : Process::Task::Update, getAurPackagesCount());
 }
 
