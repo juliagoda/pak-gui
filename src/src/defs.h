@@ -38,11 +38,11 @@ public:
     using Yes = QString;
     using No = QString;
 
-    static constexpr int packageQiNameLine();
-    static constexpr int packageQiVersionLine();
-    static constexpr int packageSiRepoName();
-    static constexpr int packageSiNameLine();
-    static constexpr int packageSiVersionLine();
+    static constexpr int packageQiNameLine() { return 0; }
+    static constexpr int packageQiVersionLine() { return 1; }
+    static constexpr int packageSiRepoName() { return 0; }
+    static constexpr int packageSiNameLine() { return 1; }
+    static constexpr int packageSiVersionLine() { return 2; }
 
     static const QString pacmanExecFile();
     static const QString pacmanContribExecFile();
@@ -55,8 +55,8 @@ public:
     static const QString auracleGit();
     static const QString askPassCommand();
 
-    static Logger::WriteOperations taskToWriteOperation(Process::Task task) const;
-    static QPair<Constants::Yes, Constants::No> langNamesToYesNo(QLocale::Language language) const;
+    static Logger::WriteOperations taskToWriteOperation(Process::Task task);
+    static QPair<Constants::Yes, Constants::No> langNamesToYesNo(QLocale::Language language);
 
 private:
     static QMap<Process::Task, Logger::WriteOperations> task_to_write_operation_map;

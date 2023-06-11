@@ -64,6 +64,7 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
     if (!new_actions_access_checker.isNull())
         connect(new_actions_access_checker.get(), &ActionsAccessChecker::auracleAccessChanged, this, &Process::updateCleanCommand);
 
+    // TODOJG - lazy evaluation / strategy design instead of map
     messages_map.insert(Task::Clean, {i18n("Clean"), i18n("clean packages after installation?")});
     messages_map.insert(Task::MirrorsUpdate, {i18n("Update mirrors"), i18n("update mirrors?")});
     messages_map.insert(Task::UpdateAll, {i18n("Update all"), i18n("update all packages?")});
@@ -99,6 +100,7 @@ bool Process::preparedBeforeRun(Task new_task, QStringList new_checked_packages)
 
 void Process::setDefaultCommands()
 {
+    // TODOJG - lazy evaluation / strategy design instead of map
     commands_map[Task::SyncPOLAUR] = QStringList() << "-c" << Constants::askPassCommand() + " && pak -SyP";
     commands_map[Task::Clean] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sc";
     commands_map[Task::MirrorsUpdate] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -m";
@@ -218,7 +220,7 @@ void Process::startProcess(Process::Task new_task)
 
     pak_s.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
     pak_s.data()->waitForStarted();
-    Logger::logger()->writeSectionToFile(Constants::taskToWriteOperationMap().value(new_task));
+    Logger::logger()->writeSectionToFile(Constants::taskToWriteOperation(new_task));
 }
 
 
@@ -400,14 +402,15 @@ bool Process::isRunningUpdateTask()
 
 void Process::updateYesNoCommands()
 {
-    auto map = Constants::langNamesToYesNoMap();
-    yes_command = map.value(QLocale::system().language(), QPair{"Y", "n"}).first;
-    no_command = map.value(QLocale::system().language(), QPair{"Y", "n"}).second;
+    auto yesNoCommand = Constants::langNamesToYesNo(QLocale::system().language());
+    yes_command = yesNoCommand.first;
+    no_command = yesNoCommand.second;
 }
 
 
 void Process::updateMaps(QStringList& checked_packages)
 {
+    // TODOJG - lazy evaluation / strategy design instead of map
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Uninstall, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -R " + checked_packages.join(" "));
     commands_map.insert(Task::Install, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -S " + checked_packages.join(" "));
@@ -426,6 +429,7 @@ void Process::updateMaps(QStringList& checked_packages)
 
 void Process::prepareMapsForNextTask()
 {
+    // TODOJG - lazy evaluation / strategy design instead of map
     commands_map.remove(Task::Update);
     commands_map.remove(Task::Uninstall);
     commands_map.remove(Task::Install);

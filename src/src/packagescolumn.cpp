@@ -19,6 +19,7 @@
 #include "packagescolumn.h"
 
 #include "logger.h"
+#include <list>
 
 
 PackagesColumn::PackagesColumn(QListWidget* new_list_widget,
@@ -58,7 +59,7 @@ void PackagesColumn::clear()
 }
 
 
-QList<Package*> PackagesColumn::getCheckedPackagesList() const
+std::deque<Package*> PackagesColumn::getCheckedPackagesList() const
 {
     return checked_packages_list;
 }
@@ -78,7 +79,7 @@ QStringList PackagesColumn::getCheckedPackagesStringList()
     {
         if (!(*it))
         {
-            checked_packages_list.removeOne((*it));
+            std::erase(checked_packages_list, (*it));
             continue;
         }
 
@@ -130,7 +131,7 @@ void PackagesColumn::countCheckedPackages(QListWidgetItem* item)
     if (!is_package_checked)
         removeUncheckedPackage(package);
 
-    emit checkedPackagesCounterChanged(checked_packages_list.count() > 0);
+    emit checkedPackagesCounterChanged(!checked_packages_list.empty());
 }
 
 
@@ -141,22 +142,21 @@ void PackagesColumn::addCheckedPackage(Package* package)
     if (is_not_repo_package)
     {
         aur_checked_packages++;
-        checked_packages_list.prepend(package);
+        checked_packages_list.push_front(package);
         Logger::logger()->logDebug(QStringLiteral("Added at the beginning of list package: %1").arg(package->getName()));
         return;
     }
 
-    checked_packages_list.append(package);
+    checked_packages_list.push_back(package);
     Logger::logger()->logDebug(QStringLiteral("Added at the end of list package: %1").arg(package->getName()));
 }
 
 
 void PackagesColumn::removeUncheckedPackage(Package* package)
 {
-    int index = checked_packages_list.indexOf(package);
     if (package->getSource() == Package::Source::AUR)
         aur_checked_packages--;
 
-    checked_packages_list.removeAt(index);
-    Logger::logger()->logDebug(QStringLiteral("Removed package name from list: %1 - index: %2").arg(package->getName(), index));
+    Logger::logger()->logDebug(QStringLiteral("Removed package from list: %1").arg(package->getName()));
+    std::erase(checked_packages_list, package);
 }

@@ -81,36 +81,6 @@ void Constants::init()
 }
 
 
-constexpr int Constants::packageQiNameLine()
-{
-    return 0;
-}
-
-
-constexpr int Constants::packageQiVersionLine()
-{
-    return 1;
-}
-
-
-constexpr int Constants::packageSiRepoName()
-{
-    return 0;
-}
-
-
-constexpr int Constants::packageSiNameLine()
-{
-    return 1;
-}
-
-
-constexpr int Constants::packageSiVersionLine()
-{
-    return 2;
-}
-
-
 const QString Constants::pacmanExecFile()
 {
     return "pacman";
@@ -171,13 +141,13 @@ const QString Constants::askPassCommand()
 }
 
 
-Logger::WriteOperations Constants::taskToWriteOperation(Process::Task task) const
+Logger::WriteOperations Constants::taskToWriteOperation(Process::Task task)
 {
     return task_to_write_operation_map.value(task);
 }
 
 
-QPair<Constants::Yes, Constants::No> Constants::langNamesToYesNo(QLocale::Language language) const
+QPair<Constants::Yes, Constants::No> Constants::langNamesToYesNo(QLocale::Language language)
 {
     if (lang_names_to_yes_no_map.contains(language))
         return lang_names_to_yes_no_map.at(language);

@@ -27,6 +27,8 @@
 #include <QMessageBox>
 #include <QtConcurrent>
 
+#include <deque>
+
 
 class PackagesColumn : public QObject
 {
@@ -42,7 +44,7 @@ public:
     virtual void fill();
     virtual void clear();
 
-    QList<Package*> getCheckedPackagesList() const;
+    std::deque<Package*> getCheckedPackagesList() const;
     QStringList getCheckedPackagesStringList();
     uint getAurPackagesCount() const;
 
@@ -68,6 +70,6 @@ protected:
     QLineEdit* search_lineedit;
     QSharedPointer<Sorter> packages_sorter;
     QWidget* parent;
-    QList<Package*> checked_packages_list;
+    std::deque<Package*> checked_packages_list;
 };
 

@@ -150,13 +150,14 @@ void MainWindowViewSignals::attachAvailablePackagesColumn()
     QObject::connect(main_window_view->m_ui.available_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.available_packages_list->count() == 0) main_window_view->m_ui.search_available_packages_checkbox->setEnabled(false); }, Qt::AutoConnection);
 
     QObject::connect(main_window_view->m_ui.search_available_packages_checkbox, &QCheckBox::clicked, this, [this](bool checked)
-                     { if (!checked)
-                         {
-                             main_window_view->m_ui.search_available_packages_lineedit->clear();
-                             if (main_window_view->m_ui.sort_available_packages->checkState() == Qt::Checked)
-                                 main_window_view->m_ui.sort_available_packages->click();
-                         }
-                     });
+    {
+        if (!checked)
+        {
+            main_window_view->m_ui.search_available_packages_lineedit->clear();
+            if (main_window_view->m_ui.sort_available_packages->checkState() == Qt::Checked)
+                main_window_view->m_ui.sort_available_packages->click();
+        }
+    });
 }
 
 
@@ -174,13 +175,14 @@ void MainWindowViewSignals::attachInstalledPackagesColumn()
     QObject::connect(main_window_view->m_ui.installed_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.installed_packages_list->count() == 0) main_window_view->m_ui.search_installed_packages_checkbox->setEnabled(false); }, Qt::AutoConnection);
 
     QObject::connect(main_window_view->m_ui.search_installed_packages_checkbox, &QCheckBox::clicked, this, [this](bool checked)
-                     { if (!checked)
-                         {
-                             main_window_view->m_ui.search_installed_packages_lineedit->clear();
-                             if (main_window_view->m_ui.sort_installed_packages->checkState() == Qt::Checked)
-                                 main_window_view->m_ui.sort_installed_packages->click();
-                         }
-                     });
+    {
+        if (!checked)
+        {
+            main_window_view->m_ui.search_installed_packages_lineedit->clear();
+            if (main_window_view->m_ui.sort_installed_packages->checkState() == Qt::Checked)
+                main_window_view->m_ui.sort_installed_packages->click();
+        }
+    });
 }
 
 
@@ -202,13 +204,14 @@ void MainWindowViewSignals::attachPackagesToUpdateColumn()
     QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.packages_to_update_list->count() == 0) main_window_view->m_ui.check_all_updates_checkbox->setEnabled(false); }, Qt::AutoConnection);
 
     QObject::connect(main_window_view->m_ui.search_packages_to_update_checkbox, &QCheckBox::clicked, this, [this](bool checked)
-                     { if (!checked)
-                         {
-                             main_window_view->m_ui.search_packages_to_update_lineedit->clear();
-                             if (main_window_view->m_ui.sort_packages_to_update->checkState() == Qt::Checked)
-                                 main_window_view->m_ui.sort_packages_to_update->click();
-                         }
-                     });
+    {
+        if (!checked)
+        {
+            main_window_view->m_ui.search_packages_to_update_lineedit->clear();
+            if (main_window_view->m_ui.sort_packages_to_update->checkState() == Qt::Checked)
+                main_window_view->m_ui.sort_packages_to_update->click();
+        }
+    });
 }
 
 
@@ -244,9 +247,12 @@ void MainWindowViewSignals::initColumns()
 
 void MainWindowViewSignals::attachCheckUpdates(QThread* updated_packages_thread)
 {
-    QObject::connect(updated_packages_thread, &QThread::started, [this]() {
+    QObject::connect(updated_packages_thread, &QThread::started, [this]()
+    {
         main_window_view->updated_packages_column->fill();
-        emit main_window_view->packagesToUpdateFillEnded(); });
+        emit main_window_view->packagesToUpdateFillEnded();
+    });
+
     QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
     updated_packages_thread->start(QThread::TimeCriticalPriority);
 }
