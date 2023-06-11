@@ -20,6 +20,7 @@
 
 #include "ui_choicewindow.h"
 #include "spinninganimation.h"
+#include "outputfilter.h"
 
 #include <QWidget>
 #include <QString>
@@ -61,5 +62,6 @@ private:
     Ui::ChoiceWindow m_ui;
     QString title;
     QSharedPointer<SpinningAnimation> spinning_animation = QSharedPointer<SpinningAnimation>(new SpinningAnimation);
+    QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
 };
 

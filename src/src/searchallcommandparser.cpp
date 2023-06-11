@@ -26,7 +26,8 @@
 
 SearchAllCommandParser::SearchAllCommandParser(const QString& new_package_name) :
     package_name(new_package_name),
-    packages_lines()
+    packages_lines(),
+    output_filter{new OutputFilter}
 {
    // ...
 }
@@ -74,13 +75,13 @@ void SearchAllCommandParser::showError(const QString& errorString)
 
 void SearchAllCommandParser::processReadLine(QString& line, QString& current_source_line)
 {
-    auto filtered_line = OutputFilter::filteredOutput(line).remove("\n");
+    auto filtered_line = output_filter->filteredOutput(line).remove("\n");
     Logger::logger()->writeLineToFile(filtered_line);
 
-    if (OutputFilter::startsFromDoubleColon(filtered_line))
-        current_source_line = OutputFilter::getSourceFromDoubleColon(filtered_line);
+    if (output_filter->startsFromDoubleColon(filtered_line))
+        current_source_line = output_filter->getSourceFromDoubleColon(filtered_line);
 
-    if (OutputFilter::isPackageLine(filtered_line))
+    if (output_filter->isPackageLine(filtered_line))
     {
         QString appendedSourceToLine(" [" + current_source_line + "]\n");
         packages_lines.append(filtered_line.append(appendedSourceToLine));

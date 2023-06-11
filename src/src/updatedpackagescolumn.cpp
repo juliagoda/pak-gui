@@ -126,7 +126,7 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
 
     auto first_package_source = getCheckedPackagesList().at(0)->getSource();
     bool containsSideSource = first_package_source == Package::Source::AUR || first_package_source == Package::Source::POLAUR;
-    if (getCheckedPackagesList().size() != list_widget->count() && containsSideSource)
+    if (static_cast<int>(getCheckedPackagesList().size()) != list_widget->count() && containsSideSource)
     {
         result = QMessageBox::warning(parent, i18n("Single AUR/POLAUR packages"), i18n("It's not possible to update single AUR/POLAUR packages"),
                                       i18n("Update all"), i18n("Uncheck these packages"), i18n("Cancel"));

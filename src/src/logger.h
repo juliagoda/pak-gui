@@ -19,6 +19,7 @@
 #pragma once
 
 #include "pathconverter.h"
+#include "src/outputfilter.h"
 
 #include <QObject>
 #include <QFile>
@@ -84,6 +85,7 @@ private:
     void writeToStream();
 
     QFile logs_file = QFile(PathConverter::fullConfigPath());
+    QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
     QString stream_text;
     QTextStream output_stream;
     static Logger* instance;

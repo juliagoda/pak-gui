@@ -81,6 +81,7 @@ SearchResultsList::SearchResultsList(QSharedPointer<InstallCommandParser>& new_i
                                      uint packages_to_update_count) :
     PackageSearch(),
     install_command_parser(new_install_command_parser),
+    output_filter(QScopedPointer<OutputFilter>(new OutputFilter)),
     process(new_process),
     packages_to_update(packages_to_update_count)
 {
@@ -99,8 +100,8 @@ void SearchResultsList::handle()
     connect(choice_window, QOverload<QString>::of(&ChoiceWindow::choiceDefined), [this](QString chosen_package)
     {
         emit acceptedChoice();
-        install_command_parser->updateTask(OutputFilter::getSourceFromSearchLine(chosen_package));
-        install_command_parser->updatePackageName(OutputFilter::getPackageFromSearchLine(chosen_package));
+        install_command_parser->updateTask(output_filter->getSourceFromSearchLine(chosen_package));
+        install_command_parser->updatePackageName(output_filter->getPackageFromSearchLine(chosen_package));
         install_command_parser->start(process, packages_to_update);
     });
 

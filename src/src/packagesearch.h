@@ -21,6 +21,8 @@
 #include "installcommandparser.h"
 
 #include "process.h"
+#include "qscopedpointer.h"
+#include "src/outputfilter.h"
 
 #include <QString>
 #include <QPointer>
@@ -92,6 +94,7 @@ signals:
 
 private:
     QSharedPointer<InstallCommandParser> install_command_parser;
+    QScopedPointer<OutputFilter> output_filter;
     QSharedPointer<Process> process;
     uint packages_to_update;
 };

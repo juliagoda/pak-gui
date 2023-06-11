@@ -19,6 +19,7 @@
 #pragma once
 
 #include "commandparser.h"
+#include "src/outputfilter.h"
 
 #include <QProcess>
 #include <QScopedPointer>
@@ -65,6 +66,7 @@ private:
     using DirectoryPath = QString;
 
     QScopedPointer<QProcess> pak_download = QScopedPointer<QProcess>(nullptr);
+    QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
     QString package_name;
     QString command = QString("pak -G");
     QString result_output;

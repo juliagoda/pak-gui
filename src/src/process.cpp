@@ -18,12 +18,13 @@
 
 #include "process.h"
 
-#include "settingsrecords.h"
-#include "outputfilter.h"
-#include "actionsaccesschecker.h"
-#include "logger.h"
-#include "defs.h"
+#include "src/settingsrecords.h"
+#include "src/actionsaccesschecker.h"
+#include "src/logger.h"
+#include "src/defs.h"
+#include "src/outputfilter.h"
 #include "src/settings.h"
+#include "src/outputfilter.h"
 
 #include <KLocalizedString>
 #include <QMessageBox>
@@ -226,7 +227,8 @@ void Process::startProcess(Process::Task new_task)
 
 void Process::processReadLine(QString& line, Process::Task new_task)
 {
-    QString filtered_line = OutputFilter::filteredOutput(line);
+    QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
+    QString filtered_line = output_filter->filteredOutput(line);
     emit generatedOutput(new_task, filtered_line);
     Logger::logger()->writeLineToFile(filtered_line);
 }

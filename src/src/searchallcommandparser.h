@@ -19,6 +19,7 @@
 #pragma once
 
 #include "commandparser.h"
+#include "src/outputfilter.h"
 
 #include <QProcess>
 #include <QString>
@@ -49,5 +50,7 @@ protected:
 private:
     QString package_name;
     QStringList packages_lines;
+
+    QScopedPointer<OutputFilter> output_filter;
 };
 

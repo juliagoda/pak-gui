@@ -67,7 +67,7 @@ void Logger::writeToFile(QString& text, WriteOperations section)
 {
     appendSection(section);
     appendNewLine();
-    stream_text += OutputFilter::filteredOutput(text);
+    stream_text += output_filter->filteredOutput(text);
     appendNewLine();
     appendSeparator();
     appendNewLine();
@@ -102,7 +102,7 @@ void Logger::writeSectionToFile(WriteOperations section)
 
 void Logger::writeLineToFile(QString& line)
 {
-    stream_text += OutputFilter::filteredOutput(line);
+    stream_text += output_filter->filteredOutput(line);
     appendNewLine();
 
 #ifdef RUN_TESTS
@@ -186,7 +186,7 @@ void Logger::logIntoFile(const QString& section, const QString& text)
 {
     QString local_time{QDateTime::currentDateTime().toLocalTime().toString()};
     QString local_text{text};
-    stream_text += " [" + section + "]  " + OutputFilter::filteredOutput(local_text) + "  (" + local_time + ")\n";
+    stream_text += " [" + section + "]  " + output_filter->filteredOutput(local_text) + "  (" + local_time + ")\n";
 
 #ifdef RUN_TESTS
     return;

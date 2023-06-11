@@ -18,7 +18,6 @@
 
 #include "downloadcommandparser.h"
 
-#include "outputfilter.h"
 #include "logger.h"
 
 #include <KLocalizedString>
@@ -71,7 +70,7 @@ void DownloadCommandParser::connectSignals()
 
 void DownloadCommandParser::processReadLine(QString& line, int& directories_line_count)
 {
-    auto filtered_line = OutputFilter::filteredOutput(line);
+    auto filtered_line = output_filter->filteredOutput(line);
     Logger::logger()->writeLineToFile(filtered_line);
     result_output += filtered_line;
 
@@ -153,10 +152,10 @@ bool DownloadCommandParser::validate()
 void DownloadCommandParser::fillDirectoriesMap(const QString& result)
 {
     auto result_local = result;
-    result_local = OutputFilter::filteredOutput(result_local);
+    result_local = output_filter->filteredOutput(result_local);
     static QRegularExpression new_line_expression("\n");
     QStringList splitted_list{result_local.split(new_line_expression)};
-    auto splitted_lines = OutputFilter::filteredLines(splitted_list, OutputFilter::startsFromNumber);
+    auto splitted_lines = output_filter->filteredLines(splitted_list, output_filter->startsFromNumber);
 
     for (const auto& line : splitted_lines)
     {

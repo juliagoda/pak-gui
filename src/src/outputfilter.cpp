@@ -28,8 +28,8 @@ QList<QRegExp> OutputFilter::filtersList = initializeList();
 
 QString OutputFilter::filteredOutput(QString& text_output)
 {
-    QList<QRegExp>::iterator filters_it;
-    for (filters_it = filtersList.begin(); filters_it != filtersList.end(); filters_it++)
+    QList<QRegExp>::const_iterator filters_it;
+    for (filters_it = filtersList.cbegin(); filters_it != filtersList.cend(); filters_it++)
         text_output.remove(*filters_it);
 
     return text_output;
@@ -89,7 +89,9 @@ QStringList OutputFilter::filteredLines(QStringList& output_lines, std::function
 
 QList<QRegExp> OutputFilter::initializeList()
 {
+    constexpr int size = 9;
     QList<QRegExp> filters;
+    filters.reserve(size);
     filters.append(QRegExp("\u001B"));
     filters.append(QRegExp("\\[[0-9]{2}m"));
     filters.append(QRegExp("\\[0m"));

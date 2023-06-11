@@ -1,5 +1,3 @@
-#include "checkcommandparser.h"
-
 // Copyright (C) 2023 Jagoda "juliagoda" Górska
 //
 // This file is part of CachyOS package manager based on "pak" application.
@@ -18,7 +16,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include "outputfilter.h"
+#include "checkcommandparser.h"
 #include "logger.h"
 
 #include <QProcess>
@@ -70,7 +68,7 @@ void CheckCommandParser::processLines(QHash<QString, Package::Source>& system_pa
     while (iterator.hasNext())
     {
         QString line{iterator.next()};
-        QString filtered_line{OutputFilter::filteredOutput(line).simplified()};
+        QString filtered_line{output_filter->filteredOutput(line).simplified()};
         increaseDoubleColonCounter(filtered_line, double_colon_line_count);
         appendPackageLine(system_packages, filtered_line, double_colon_line_count);
     }
@@ -79,7 +77,7 @@ void CheckCommandParser::processLines(QHash<QString, Package::Source>& system_pa
 
 void CheckCommandParser::increaseDoubleColonCounter(const QString& filtered_line, uint &counter)
 {
-    bool starts_from_double_colon{OutputFilter::startsFromDoubleColon(filtered_line)};
+    bool starts_from_double_colon{output_filter->startsFromDoubleColon(filtered_line)};
 
     if (starts_from_double_colon)
         counter++;
@@ -89,6 +87,6 @@ void CheckCommandParser::increaseDoubleColonCounter(const QString& filtered_line
 void CheckCommandParser::appendPackageLine(QHash<QString, Package::Source>& system_packages,
                                            const QString& filtered_line, uint& counter)
 {
-    if (filtered_line.contains("=>") && !OutputFilter::isCheckWarningLine(filtered_line))
+    if (filtered_line.contains("=>") && !output_filter->isCheckWarningLine(filtered_line))
         system_packages.insert(filtered_line, line_to_source_map.value(counter));
 }

@@ -37,7 +37,7 @@ QStringList StatisticsCommandParser::retrieveInfo()
     while (it.hasNext())
     {
         QString line{it.next().toUtf8()};
-        QString filtered_line = OutputFilter::filteredOutput(line);
+        QString filtered_line = outputfilter->filteredOutput(line);
         QRegExp action_regex{"^[\\w+\\s+]+:\\s+\\d+"};
         if (action_regex.exactMatch(filtered_line))
            result.append(filtered_line);

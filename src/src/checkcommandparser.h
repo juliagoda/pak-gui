@@ -20,9 +20,11 @@
 
 #include "commandparser.h"
 #include "package.h"
+#include "src/outputfilter.h"
 
 #include <QHash>
 #include <QProcess>
+#include <QScopedPointer>
 
 
 class CheckCommandParser : public CommandParser
@@ -48,5 +50,6 @@ private:
 
     QHash<uint, Package::Source> line_to_source_map;
     QScopedPointer<QProcess> pacman_qi = QScopedPointer<QProcess>(nullptr);
+    QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
 };
 

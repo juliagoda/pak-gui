@@ -19,6 +19,7 @@
 #pragma once
 
 #include "commandparser.h"
+#include "src/outputfilter.h"
 
 
 class StatisticsCommandParser : public CommandParser
@@ -31,5 +32,7 @@ public:
 
 protected:
     virtual QString generateResult();
+
+    QScopedPointer<OutputFilter> outputfilter{new OutputFilter};
 };
 

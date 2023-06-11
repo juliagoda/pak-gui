@@ -35,7 +35,7 @@ public:
     ~Sorter() override = default;
 
     void resetOriginalList();
-    QVector<QListWidgetItem*> listWidget() { return untouched_list_widget; }
+    QList<QListWidgetItem*> listWidget() { return untouched_list_widget; }
 
     template <typename T>
     void sortPackagesByText(const QString& text, T emptyPackage);
@@ -48,7 +48,8 @@ public Q_SLOTS:
 private:
     void clear();
     void showInfo();
-    void showInfoSortReverse();
+    void showInfoSortReverse(const QString& first_package_name,
+                             const QString& second_package_name);
 
     template <typename T>
     void fillUntouchedList();
@@ -61,7 +62,7 @@ private:
 
     QListWidget* list_widget;
     QCheckBox* reverse_sort_checkbox;
-    QVector<QListWidgetItem*> untouched_list_widget;
+    QList<QListWidgetItem*> untouched_list_widget;
     static QMutex mutex;
 };
 
