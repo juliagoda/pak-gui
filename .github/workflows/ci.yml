@@ -9,7 +9,7 @@ on:
 jobs:
   build-ubuntu-qt5:
     env:
-      DISPLAY: ':99.0'
+      DISPLAY: ':0'
     runs-on: ubuntu-latest
     steps:
       - name: initialize
@@ -28,7 +28,7 @@ jobs:
           export QT_DEBUG_PLUGINS=1
           cmake -DRUN_TESTS=ON ..
           make -j 3
-          nohup Xvfb :99 > /dev/null 2>&1 &
+          nohup Xvfb :0 > /dev/null 2>&1 &
           bin/pak-qtests
           gcovr -r .. -j 2 -f ../src/src/.*cpp
 
