@@ -103,6 +103,8 @@ void UpdatedPackagesColumn::toggleAllPackages(bool is_all_checked)
 template<> void UpdatedPackagesColumn::runAfterChoice<0>()
 {
     toggleAllPackages(true);
+    bool isAllChecked = static_cast<int>(getCheckedPackagesList().size()) == list_widget->count();
+    emit preparedList(getCheckedPackagesStringList(), isAllChecked ? Process::Task::UpdateAll : Process::Task::Update, getAurPackagesCount());
 }
 
 
@@ -140,12 +142,6 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
         runAfterChoice<0>();
     if (result == 1)
         runAfterChoice<1>();
-    const bool isAnyPackageChecked = result != 2 || list_widget->count() > 0;
-    if (isAnyPackageChecked)
-    {
-        bool isAllChecked = static_cast<int>(getCheckedPackagesList().size()) == list_widget->count();
-        emit preparedList(getCheckedPackagesStringList(), isAllChecked ? Process::Task::UpdateAll : Process::Task::Update, getAurPackagesCount());
-    }
 }
 
 

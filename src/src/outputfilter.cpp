@@ -114,7 +114,7 @@ bool OutputFilter::startsFromNumber(const QString& output_line)
 
 bool OutputFilter::startsFromDoubleColon(const QString& output_line)
 {
-    return output_line.startsWith(QString(":: "));
+    return output_line.contains(QRegExp("^::\\s+\\w+\\s*$"));
 }
 
 

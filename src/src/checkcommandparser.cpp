@@ -28,9 +28,9 @@
 
 CheckCommandParser::CheckCommandParser()
 {
-     line_to_source_map.insert(2, Package::Source::Repo);
-     line_to_source_map.insert(3, Package::Source::AUR);
-     line_to_source_map.insert(4, Package::Source::POLAUR);
+     line_to_source_map.insert(1, Package::Source::Repo);
+     line_to_source_map.insert(2, Package::Source::AUR);
+     line_to_source_map.insert(3, Package::Source::POLAUR);
 }
 
 
@@ -69,8 +69,15 @@ void CheckCommandParser::processLines(QHash<QString, Package::Source>& system_pa
     {
         QString line{iterator.next()};
         QString filtered_line{output_filter->filteredOutput(line).simplified()};
+        uint tempLineCount = double_colon_line_count;
         increaseDoubleColonCounter(filtered_line, double_colon_line_count);
         appendPackageLine(system_packages, filtered_line, double_colon_line_count);
+
+        if (double_colon_line_count == 3 && tempLineCount == double_colon_line_count &&
+            filtered_line.startsWith(":: "))
+        {
+            break;
+        }
     }
 }
 
