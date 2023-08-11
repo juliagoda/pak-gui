@@ -1,4 +1,5 @@
 build
+build-pak-gui-Desktop-Debug/
 cmake-build-release
 cmake-build-debug
 CMakeLists.txt.user

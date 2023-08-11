@@ -57,6 +57,12 @@ void InstalledPackagesColumn::fill()
 
     for(;it != pak_packages.end(); it++)
     {
+        if ((*it).contains("=>"))
+        {
+            i++;
+            continue;
+        }
+
         QiPackage* package_item = new QiPackage(*it);
         package_item->setNo(i + 1);
         list_widget->insertItem(i, package_item);

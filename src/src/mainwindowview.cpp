@@ -303,7 +303,7 @@ void MainWindowView::connectSignalsForUpdatedPackages()
         m_ui.packages_to_update_list->show();
         m_ui.search_packages_to_update_checkbox->setEnabled(true);
         m_ui.check_all_updates_checkbox->setEnabled(true);
-        m_ui.update_packages_button->setEnabled(true);
+        m_ui.update_packages_button->setEnabled(false);
         m_ui.sort_packages_to_update->setEnabled(true);
         m_ui.search_packages_to_update_lineedit->setEnabled(true);
     }
@@ -601,6 +601,12 @@ void MainWindowView::refresh()
 {
     if (current_state == State::Running)
     {
+        Logger::logger()->logInfo(QStringLiteral("Waiting until all major processes are complete"));
+
+        #ifdef RUN_TESTS
+          return;
+        #endif
+
         QMessageBox::information(this, i18n("Process running"), i18n("Wait until all major processes are complete"));
         return;
     }
