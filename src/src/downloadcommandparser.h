@@ -50,6 +50,7 @@ protected:
 Q_SIGNALS:
     void continuePathsRetrieve(QString& output);
     void continueReposRetrieve(QString& output);
+    void ended();
 
 protected Q_SLOTS:
     virtual bool validateFinishedOutput(int exit_code);

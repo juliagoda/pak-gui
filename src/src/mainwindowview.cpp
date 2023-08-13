@@ -471,7 +471,12 @@ void MainWindowView::downloadPackage()
     QPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser));
     QPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser));
     QPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser));
+
     QObject::connect(qobject_cast<ReposChoiceInput*>(repos_choice_input.data()), &ReposChoiceInput::acceptedChoice, qobject_cast<PackageInput*>(package_input.data()), &PackageInput::closeWindow);
+
+    QObject::connect(package_input, &DownloaderWindow::ended, package_input, &PackageInput::deleteLater);
+    QObject::connect(package_input, &DownloaderWindow::ended, paths_choice_input, &PathsChoiceInput::deleteLater);
+    QObject::connect(package_input, &DownloaderWindow::ended, repos_choice_input, &ReposChoiceInput::deleteLater);
 
     package_input->setNext(paths_choice_input)->setNext(repos_choice_input);
     package_input->handle();
@@ -483,11 +488,14 @@ void MainWindowView::searchPackage()
     QSharedPointer<InstallCommandParser> search_command_parser(new InstallCommandParser(), &QObject::deleteLater);
     QPointer<SearchWindow> package_input(new PackageSearchInput(search_command_parser));
     QPointer<SearchWindow> search_results_list(new SearchResultsList(search_command_parser, process, updated_packages_column->getCurrentPackagesCount()));
+
     QObject::connect(qobject_cast<SearchResultsList*>(search_results_list.data()), &SearchResultsList::acceptedChoice, qobject_cast<PackageSearchInput*>(package_input.data()), &PackageSearchInput::closeWindow);
+
     QObject::connect(package_input, &SearchWindow::ended, package_input, &PackageSearchInput::deleteLater);
     QObject::connect(package_input, &SearchWindow::ended, search_results_list, &PackageSearchInput::deleteLater);
     QObject::connect(search_results_list, &SearchWindow::ended, package_input, &PackageSearchInput::deleteLater);
     QObject::connect(search_results_list, &SearchWindow::ended, search_results_list, &PackageSearchInput::deleteLater);
+
     package_input->setNext(search_results_list);
     package_input->handle();
 }

@@ -50,6 +50,7 @@ void DownloadCommandParser::connectSignals()
     if (pak_download.isNull())
         return;
 
+    QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), [this]() { emit ended(); });
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::showDirectory);
     QObject::connect(pak_download.get(), &QProcess::errorOccurred, [this]() {

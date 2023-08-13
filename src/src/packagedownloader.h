@@ -20,6 +20,9 @@
 
 #include "downloadcommandparser.h"
 
+#include "packageinputwindow.h"
+#include "choicewindow.h"
+
 #include <QString>
 #include <QPointer>
 #include <QSharedPointer>
@@ -36,6 +39,9 @@ class DownloaderWindow : public QObject
     virtual QPointer<DownloaderWindow>& setNext(QPointer<DownloaderWindow>& new_window) = 0;
     virtual ~DownloaderWindow() = default;
     virtual void handle() = 0;
+
+ signals:
+    void ended();
 };
 
 
@@ -67,7 +73,7 @@ class PackageInput : public PackageDownloader
     void closeWindow();
 
  private:
-    QPointer<PackageInputWindow> package_input_window;
+    QScopedPointer<PackageInputWindow> package_input_window;
     QSharedPointer<DownloadCommandParser> download_command_parser;
 };
 
@@ -83,6 +89,7 @@ class PathsChoiceInput : public PackageDownloader
 
  private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
+    QScopedPointer<ChoiceWindow> choice_window;
 };
 
 
@@ -100,4 +107,5 @@ class ReposChoiceInput : public PackageDownloader
 
  private:
     QSharedPointer<DownloadCommandParser> download_command_parser;
+    QScopedPointer<ChoiceWindow> choice_window;
 };
