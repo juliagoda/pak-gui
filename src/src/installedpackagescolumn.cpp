@@ -27,6 +27,8 @@
 #include <QMessageBox>
 
 
+QMutex InstalledPackagesColumn::mutex;
+
 InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget,
                                                  QLineEdit* new_search_lineedit,
                                                  QCheckBox* new_reverse_sort_checkbox,
@@ -50,6 +52,7 @@ QStringList InstalledPackagesColumn::getPackagesList()
 
 void InstalledPackagesColumn::fill()
 {
+    mutex.lock();
     packages_sorter->resetOriginalList();
     QStringList pak_packages = getPackagesList();
     QStringList::iterator it = pak_packages.begin();
@@ -65,12 +68,15 @@ void InstalledPackagesColumn::fill()
 
         QiPackage* package_item = new QiPackage(*it);
         package_item->setNo(i + 1);
+        Q_ASSERT(package_item != nullptr);
+        Q_ASSERT(list_widget != nullptr);
         list_widget->insertItem(i, package_item);
         i++;
     }
 
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 installed packages").arg(list_widget->count()));
     list_widget->update();
+    mutex.unlock();
 }
 
 

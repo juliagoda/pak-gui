@@ -31,6 +31,8 @@
 #include <algorithm>
 
 
+QMutex UpdatedPackagesColumn::mutex;
+
 UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
                                              QLineEdit* new_search_lineedit,
                                              QCheckBox* new_reverse_sort_checkbox,
@@ -62,6 +64,7 @@ QHash<QString, Package::Source> UpdatedPackagesColumn::getPackagesList()
 
 void UpdatedPackagesColumn::fill()
 {
+    mutex.lock();
     packages_sorter->resetOriginalList();
     auto pak_packages = getPackagesList();
     updatePackagesCount(pak_packages.count());
@@ -78,12 +81,15 @@ void UpdatedPackagesColumn::fill()
 
         CheckPackage* package_item = new CheckPackage(it.key(), it.value());
         package_item->setNo(i + 1);
+        Q_ASSERT(package_item != nullptr);
+        Q_ASSERT(list_widget != nullptr);
         list_widget->insertItem(i, package_item);
         i++;
     }
 
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 packages to update").arg(list_widget->count()));
     list_widget->update();
+    mutex.unlock();
 }
 
 

@@ -287,7 +287,7 @@ bool Logger::validate()
 
 void Logger::writeToStream()
 {
-    write_mutex.tryLock();
+    write_mutex.lock();
     output_stream << streamTextResult();
     clearStreamText();
     write_mutex.unlock();

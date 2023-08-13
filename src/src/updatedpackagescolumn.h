@@ -58,6 +58,7 @@ private:
     template<int> void runAfterChoice();
 
     uint current_packages_count;
+    static QMutex mutex;
     QWidget* parent;
 };
 

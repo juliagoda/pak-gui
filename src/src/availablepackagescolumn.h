@@ -42,5 +42,9 @@ public:
 
 protected:
     virtual QStringList getPackagesList();
+
+private:
+    static QMutex mutex;
+
 };
 
