@@ -118,6 +118,8 @@ void MainWindowView::run()
     main_window_view_signals->attachFillColumns(available_packages_thread, installed_packages_thread);
     installed_packages_thread->start(QThread::TimeCriticalPriority);
     available_packages_thread->start(QThread::TimeCriticalPriority);
+    installed_packages_thread->quit();
+    available_packages_thread->quit();
     checkUpdates();
 }
 
@@ -622,7 +624,7 @@ void MainWindowView::refresh()
         return;
     }
 
-    current_state = State::Waiting;
+    current_state = State::Running;
     disconnectSortSignals();
     hideWidgets();
     emit initStarted();

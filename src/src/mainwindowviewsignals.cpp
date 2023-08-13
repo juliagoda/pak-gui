@@ -255,4 +255,5 @@ void MainWindowViewSignals::attachCheckUpdates(QThread* updated_packages_thread)
 
     QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
     updated_packages_thread->start(QThread::TimeCriticalPriority);
+    updated_packages_thread->quit();
 }
