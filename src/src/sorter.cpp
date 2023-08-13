@@ -45,7 +45,7 @@ Sorter::Sorter(QListWidget* list_widgets,
 
 void Sorter::sortReverse()
 {
-    mutex.tryLock();
+    mutex.lock();
     auto widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
 
     clear();
@@ -56,7 +56,8 @@ void Sorter::sortReverse()
         list_widget->addItem(*widgets_it);
     }
 
-    showInfoSortReverse(widgets_list.first()->text(), widgets_list.last()->text());
+    if (!widgets_list.empty())
+        showInfoSortReverse(widgets_list.first()->text(), widgets_list.last()->text());
     mutex.unlock();
 }
 

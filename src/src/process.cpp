@@ -58,6 +58,7 @@ Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checke
     messages_map(),
     commands_map(),
     process_map(),
+    current_process(QSharedPointer<QProcess>(nullptr)),
     parent(new_parent)
 {
     std::call_once(yes_no_commands_update, updateYesNoCommands);
@@ -166,6 +167,18 @@ void Process::setAurPackagesToUpdate(uint packages_to_update_count)
 }
 
 
+void Process::stop()
+{
+    if (current_process.isNull())
+    {
+        Logger::logger()->logInfo("Current process cannot be stopped. Process is null.");
+        return;
+    }
+
+    current_process->terminate();
+}
+
+
 bool Process::isAlreadyRunning(Task new_task)
 {
     if (isUpdateTask(new_task) && isRunningUpdateTask())
@@ -210,61 +223,71 @@ bool Process::askQuestion(Process::Task new_task,
 void Process::startProcess(Process::Task new_task)
 {
     Logger::logger()->logInfo(QStringLiteral("Started task \"%1\"").arg(QVariant::fromValue(new_task).toString()));
-    QSharedPointer<QProcess> pak_s(QSharedPointer<QProcess>(new QProcess));
 
-    isUpdateTask(new_task) ? process_map[Task::Update] = pak_s : process_map[new_task] = pak_s;
+    current_process.reset(new QProcess);
+
+    isUpdateTask(new_task) ? process_map[Task::Update] = current_process : process_map[new_task] = current_process;
     emitTask(new_task);
-    pak_s->setProcessChannelMode(QProcess::MergedChannels);
+    current_process->setProcessChannelMode(QProcess::MergedChannels);
     bool contains_pacman = commands_map.value(new_task).join(" ").contains("pacman");
-    connectSignals(pak_s, new_task);
-    connectReadyReadStandardOutput(pak_s, new_task);
+    connectSignals(new_task);
+    connectReadyReadStandardOutput(new_task);
 
-    pak_s.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
-    pak_s.data()->waitForStarted();
+    current_process.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
+    current_process.data()->waitForStarted();
     Logger::logger()->writeSectionToFile(Constants::taskToWriteOperation(new_task));
 }
 
 
 void Process::processReadLine(QString& line, Process::Task new_task)
 {
-    QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
+    auto output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
     QString filtered_line = output_filter->filteredOutput(line);
     emit generatedOutput(new_task, filtered_line);
     Logger::logger()->writeLineToFile(filtered_line);
 }
 
 
-void Process::connectSignals(QSharedPointer<QProcess>& process, Process::Task new_task)
+void Process::connectSignals(Process::Task new_task)
 {
-    QObject::connect(process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
-                     [this, new_task, process](QProcess::ProcessError process_error)
+    if (current_process.isNull())
+        return;
+
+    QObject::connect(current_process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
+                     [this, new_task](QProcess::ProcessError process_error)
                      {
-                         QMessageBox::warning(parent, messages_map.value(new_task).first, tr("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(process.data()->error()), QMessageBox::Ok);
+                         QMessageBox::warning(parent, messages_map.value(new_task).first, tr("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(current_process.data()->error()), QMessageBox::Ok);
                          Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString(), QVariant::fromValue(process_error).toString()));
+                         emit ended();
                      });
 
-    QObject::connect(process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+    QObject::connect(current_process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
                      [this, new_task](int exit_code, QProcess::ExitStatus exit_status)
                      {
                          emit finished(new_task, exit_code, exit_status);
                          Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));
+                         current_process.clear();
+                         emit ended();
                      });
 }
 
 
-void Process::connectReadyReadStandardOutput(QSharedPointer<QProcess>& process, Task new_task)
+void Process::connectReadyReadStandardOutput(Task new_task)
 {
-    QObject::connect(process.data(), &QProcess::readyReadStandardOutput, [process, new_task, this]()
+    if (current_process.isNull())
+        return;
+
+    QObject::connect(current_process.data(), &QProcess::readyReadStandardOutput, [new_task, this]()
     {
         if (Settings::records()->operateOnActionsManually() || aur_packages_to_update_count > 0)
         {
-            QString result{process->readAllStandardOutput()};
+            QString result{current_process->readAllStandardOutput()};
             processReadLine(result, new_task);
         }
 
-        while (process.data()->canReadLine())
+        while (current_process.data()->canReadLine())
         {
-            QString line = process.data()->readLine();
+            QString line = current_process.data()->readLine();
             processReadLine(line, new_task);
         }
     });

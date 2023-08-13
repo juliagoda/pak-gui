@@ -39,6 +39,10 @@ public:
     QStringList retrieveInfo() override;
     virtual void start(QSharedPointer<Process>& process,
                        uint packages_to_update = 0);
+    void stop();
+
+signals:
+    void ended();
 
 private:
     void init();
@@ -46,5 +50,6 @@ private:
     QString package_name;
     Process::Task current_task;
     QMap<QString, Process::Task> sourceToTaskMap;
+    QSharedPointer<Process> pak_install{QSharedPointer<Process>(nullptr)};
 };
 

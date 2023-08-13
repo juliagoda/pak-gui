@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "installcommandparser.h"
+#include "logger.h"
 
 #include <QSharedPointer>
 
@@ -71,8 +72,20 @@ QStringList InstallCommandParser::retrieveInfo()
 void InstallCommandParser::start(QSharedPointer<Process>& process,
                                  uint packages_to_update)
 {
+    pak_install = process;
     process->setPackagesToUpdate(packages_to_update);
 
     if (process->preparedBeforeRun(current_task, QStringList() << package_name))
         process->run(current_task, QStringList() << package_name);
+}
+
+
+void InstallCommandParser::stop()
+{
+    if (!pak_install.isNull())
+    {
+        Logger::logger()->logInfo(QStringLiteral("Stop of package installation"));
+        pak_install->stop();
+        emit ended();
+    }
 }

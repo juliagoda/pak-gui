@@ -19,9 +19,6 @@
 #include "packagesearch.h"
 
 #include "outputfilter.h"
-#include "packageinputwindow.h"
-#include "choicewindow.h"
-#include "searchallcommandparser.h"
 
 
 PackageSearch::PackageSearch() :
@@ -57,13 +54,21 @@ PackageSearchInput::PackageSearchInput(QSharedPointer<InstallCommandParser>& new
 
 void PackageSearchInput::handle()
 {
-    package_input_window = new PackageInputWindow();
+    package_input_window.reset(new PackageInputWindow());
     connect(package_input_window.data(), &PackageInputWindow::packageNameInserted,
             [this](const QString& new_package_name)
     {
         install_command_parser->updatePackageName(new_package_name);
         PackageSearch::handle();
     });
+
+    connect(package_input_window.data(), &PackageInputWindow::cancelled,
+        [this]()
+        {
+            install_command_parser->stop();
+            package_input_window->close();
+            emit ended();
+        });
 
     package_input_window->show();
 }
@@ -83,21 +88,23 @@ SearchResultsList::SearchResultsList(QSharedPointer<InstallCommandParser>& new_i
     install_command_parser(new_install_command_parser),
     output_filter(QScopedPointer<OutputFilter>(new OutputFilter)),
     process(new_process),
+    search_all_command_parser(QScopedPointer<SearchAllCommandParser>(nullptr)),
+    choice_window(nullptr),
     packages_to_update(packages_to_update_count)
 {
-   // ...
+    connect(install_command_parser.get(), &InstallCommandParser::ended, [&]() { emit ended(); });
 }
 
 
 void SearchResultsList::handle()
 {
-    QPointer<SearchAllCommandParser> search_all_command_parser(new SearchAllCommandParser(install_command_parser->getPackageName()));
+    search_all_command_parser.reset(new SearchAllCommandParser(install_command_parser->getPackageName()));
 
-    QPointer<ChoiceWindow> choice_window = new ChoiceWindow(tr("Choose package"));
-    connect(search_all_command_parser, &SearchAllCommandParser::searchEnded, choice_window,
+    choice_window.reset(new ChoiceWindow(tr("Choose package")));
+    connect(search_all_command_parser.get(), &SearchAllCommandParser::searchEnded, choice_window.get(),
             QOverload<QStringList>::of(&ChoiceWindow::fillComboBox));
     search_all_command_parser->retrieveInfo();
-    connect(choice_window, QOverload<QString>::of(&ChoiceWindow::choiceDefined), [this](QString chosen_package)
+    connect(choice_window.get(), QOverload<QString>::of(&ChoiceWindow::choiceDefined), [this](QString chosen_package)
     {
         emit acceptedChoice();
         install_command_parser->updateTask(output_filter->getSourceFromSearchLine(chosen_package));

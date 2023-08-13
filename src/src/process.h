@@ -60,6 +60,7 @@ public:
     void run(Process::Task new_task, QStringList new_checked_packages = QStringList());
     void setPackagesToUpdate(uint packages_to_update_count);
     void setAurPackagesToUpdate(uint packages_to_update_count);
+    void stop();
     static bool isAlreadyRunning(Process::Task new_task);
     static void resetRunningTask(Process::Task new_task);
 
@@ -81,6 +82,7 @@ signals:
     void acceptedMainTask(Process::Task task);
     void showInput(Process::Task task);
     void acceptedUpdateAll();
+    void ended();
 
 private:
     void setDefaultCommands();
@@ -88,8 +90,8 @@ private:
     void prepareMapsForNextTask();
     void emitTask(Process::Task task);
     QString questionForm(QStringList& new_checked_packages, Task new_task);
-    void connectSignals(QSharedPointer<QProcess> &process, Task new_task);
-    void connectReadyReadStandardOutput(QSharedPointer<QProcess>& process, Task new_task);
+    void connectSignals(Task new_task);
+    void connectReadyReadStandardOutput(Task new_task);
     bool isNeededAskAboutUpdate(Task new_task);
     bool getAnswer(Process::Task new_task, QStringList new_checked_packages);
     void updateCurrentCommandForUpdate(Process::Task new_task);
@@ -105,6 +107,7 @@ private:
     QMap<Task, QPair<QString, QString>> messages_map;
     QMap<Task, QStringList> commands_map;
     QMap<Task, QSharedPointer<QProcess>> process_map;
+    QSharedPointer<QProcess> current_process;
     uint packages_to_update = 0;
     uint aur_packages_to_update_count = 0;
     QWidget* parent;

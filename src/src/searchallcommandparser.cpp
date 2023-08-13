@@ -37,21 +37,21 @@ QStringList SearchAllCommandParser::retrieveInfo()
 {
     packages_lines.clear();
     QString current_source_line = QString();
-    QPointer<QProcess> pacman_qi(new QProcess);
-    pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
-    pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -SS " + package_name);
-    pacman_qi->waitForStarted();
+    pak_search.reset(new QProcess);
+    pak_search->setProcessChannelMode(QProcess::MergedChannels);
+    pak_search->start("/bin/bash", QStringList() << "-c" << "pak -SS " + package_name);
+    pak_search->waitForStarted();
 
     Logger::logger()->logInfo(QStringLiteral("Trying search package: %1 everywhere").arg(package_name));
     Logger::logger()->writeSectionToFile(Logger::WriteOperations::SearchAll);
-    QObject::connect(pacman_qi, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &SearchAllCommandParser::finishProcess);
-    QObject::connect(pacman_qi, &QProcess::errorOccurred, [&pacman_qi, this](QProcess::ProcessError /*error*/) { showError(pacman_qi->errorString()); });
+    QObject::connect(pak_search.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &SearchAllCommandParser::finishProcess);
+    QObject::connect(pak_search.get(), &QProcess::errorOccurred, [this](QProcess::ProcessError /*error*/) { showError(pak_search->errorString()); });
 
-    QObject::connect(pacman_qi, &QProcess::readyReadStandardOutput, [pacman_qi, current_source_line, this]() mutable
+    QObject::connect(pak_search.get(), &QProcess::readyReadStandardOutput, [current_source_line, this]() mutable
     {
-        while (pacman_qi.data()->canReadLine())
+        while (pak_search.data()->canReadLine())
         {
-            QString line = pacman_qi.data()->readLine();
+            QString line = pak_search.data()->readLine();
             processReadLine(line, current_source_line);
         }
     });
@@ -86,4 +86,11 @@ void SearchAllCommandParser::processReadLine(QString& line, QString& current_sou
         QString appendedSourceToLine(" [" + current_source_line + "]\n");
         packages_lines.append(filtered_line.append(appendedSourceToLine));
     }
+}
+
+
+void SearchAllCommandParser::stop()
+{
+    Logger::logger()->logInfo(QStringLiteral("Stop of package search"));
+    pak_search->terminate();
 }

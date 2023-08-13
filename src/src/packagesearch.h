@@ -19,6 +19,9 @@
 #pragma once
 
 #include "installcommandparser.h"
+#include "searchallcommandparser.h"
+#include "packageinputwindow.h"
+#include "choicewindow.h"
 
 #include "process.h"
 #include "qscopedpointer.h"
@@ -31,9 +34,6 @@
 #include <QProcess>
 
 
-class PackageInputWindow;
-
-
 class SearchWindow : public QObject
 {
     Q_OBJECT
@@ -42,6 +42,9 @@ public:
     virtual QPointer<SearchWindow>& setNext(QPointer<SearchWindow>& new_window) = 0;
     virtual ~SearchWindow() override = default;
     virtual void handle() = 0;
+
+ signals:
+    void ended();
 };
 
 
@@ -74,7 +77,7 @@ public Q_SLOTS:
 
 private:
     QSharedPointer<InstallCommandParser> install_command_parser;
-    QPointer<PackageInputWindow> package_input_window;
+    QScopedPointer<PackageInputWindow> package_input_window;
 };
 
 
@@ -96,5 +99,7 @@ private:
     QSharedPointer<InstallCommandParser> install_command_parser;
     QScopedPointer<OutputFilter> output_filter;
     QSharedPointer<Process> process;
+    QScopedPointer<SearchAllCommandParser> search_all_command_parser;
+    QScopedPointer<ChoiceWindow> choice_window;
     uint packages_to_update;
 };

@@ -484,7 +484,10 @@ void MainWindowView::searchPackage()
     QPointer<SearchWindow> package_input(new PackageSearchInput(search_command_parser));
     QPointer<SearchWindow> search_results_list(new SearchResultsList(search_command_parser, process, updated_packages_column->getCurrentPackagesCount()));
     QObject::connect(qobject_cast<SearchResultsList*>(search_results_list.data()), &SearchResultsList::acceptedChoice, qobject_cast<PackageSearchInput*>(package_input.data()), &PackageSearchInput::closeWindow);
-
+    QObject::connect(package_input, &SearchWindow::ended, package_input, &PackageSearchInput::deleteLater);
+    QObject::connect(package_input, &SearchWindow::ended, search_results_list, &PackageSearchInput::deleteLater);
+    QObject::connect(search_results_list, &SearchWindow::ended, package_input, &PackageSearchInput::deleteLater);
+    QObject::connect(search_results_list, &SearchWindow::ended, search_results_list, &PackageSearchInput::deleteLater);
     package_input->setNext(search_results_list);
     package_input->handle();
 }

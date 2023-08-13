@@ -36,6 +36,7 @@ public:
     ~SearchAllCommandParser() override = default;
 
     virtual QStringList retrieveInfo() override;
+    void stop();
 
 protected Q_SLOTS:
     void finishProcess(int exit_code, QProcess::ExitStatus exit_status);
@@ -48,6 +49,7 @@ protected:
     void processReadLine(QString& line, QString& current_source_line);
 
 private:
+    QScopedPointer<QProcess> pak_search = QScopedPointer<QProcess>(nullptr);
     QString package_name;
     QStringList packages_lines;
 
