@@ -53,8 +53,8 @@ QString StatisticsCommandParser::generateResult()
 {
     QScopedPointer<QProcess> pacman_qi(new QProcess);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -L");
-    pacman_qi->waitForStarted();
-    pacman_qi->waitForFinished();
+    pacman_qi->waitForStarted(-1);
+    pacman_qi->waitForFinished(-1);
     return QString::fromUtf8(pacman_qi->readAll());
 }
 
@@ -62,11 +62,11 @@ QString StatisticsCommandParser::generateResult()
 QMap<QString, uint> StatisticsCommandParser::convertToMap(QStringList& retrievedInfos)
 {
     QMap<QString, uint> retrievedInfoMap;
-    for (auto& retrievedInfo : retrievedInfos)
+    std::for_each(retrievedInfos.begin(), retrievedInfos.end(), [&retrievedInfoMap](const QString& retrievedInfo)
     {
        uint separatorIndex = retrievedInfo.indexOf(":");
        retrievedInfoMap.insert(retrievedInfo.mid(0, separatorIndex).toUtf8(), retrievedInfo.midRef(separatorIndex + 1).toUInt());
-    }
+    });
 
     return retrievedInfoMap;
 }

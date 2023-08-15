@@ -43,7 +43,7 @@ QString QiCommandParser::generateResult()
     pacman_qi.reset(new QProcess(this), &QObject::deleteLater);
     pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -Qi");
-    pacman_qi->waitForStarted();
-    pacman_qi->waitForFinished();
+    pacman_qi->waitForStarted(-1);
+    pacman_qi->waitForFinished(-1);
     return pacman_qi->readAllStandardOutput();
 }

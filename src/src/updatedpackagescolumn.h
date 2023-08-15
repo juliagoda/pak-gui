@@ -54,6 +54,7 @@ signals:
 
 private:
     void updatePackagesCount(uint new_current_packages_count);
+    void clearPackages();
 
     template<int> void runAfterChoice();
 

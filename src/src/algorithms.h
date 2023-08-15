@@ -41,7 +41,7 @@ private:
 
 
     template<typename T>
-    bool foundIndexOdSeparator(const QStringList::iterator& line_it,
+    bool foundIndexOdSeparator(const QString& line,
                                const QString& separator,
                                int& index_of_separator,
                                const QList<T>& list,
@@ -54,6 +54,6 @@ private:
     int getFirstIndexAfterSeparator(const QList<T>& list,
                                     T tooltip_part,
                                     QStringList& selected_infos,
-                                    const QStringList::iterator& line_it);
+                                    const QString& line);
 };
 

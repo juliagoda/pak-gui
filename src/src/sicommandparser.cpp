@@ -45,7 +45,7 @@ QString SiCommandParser::generateResult()
     pacman_si.reset(new QProcess(this), &QObject::deleteLater);
     pacman_si->setProcessChannelMode(QProcess::MergedChannels);
     pacman_si.data()->start("/bin/bash", QStringList() << "-c" << "pak -Si");
-    pacman_si.data()->waitForStarted();
-    pacman_si->waitForFinished();
+    pacman_si.data()->waitForStarted(-1);
+    pacman_si->waitForFinished(-1);
     return pacman_si->readAllStandardOutput();
 }

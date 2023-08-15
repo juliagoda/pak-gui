@@ -32,7 +32,7 @@ QMutex Logger::write_mutex;
 
 Logger::Logger()
 {
-    //reopenFile();
+    reopenFile();
 }
 
 
@@ -65,7 +65,6 @@ Logger* Logger::logger()
 
 void Logger::writeToFile(QString& text, WriteOperations section)
 {
-    stream_text = "";
     appendSection(section);
     appendNewLine();
     stream_text += output_filter->filteredOutput(text);
@@ -249,14 +248,15 @@ void Logger::logIntoFile(const QString& section, const QString& text)
         return;
     }
 
-    if (!logs_file.exists() || !logs_file.isOpen())
+    if (!logs_file.exists())
         reopenFile();
 
     write_mutex.tryLock();
     resizeFileSizeNotWithinRange();
     output_stream << streamTextResult();
     clearStreamText();
-    closeFile();
+    output_stream.resetStatus();
+    output_stream.reset();
     write_mutex.unlock();
 }
 
@@ -323,13 +323,12 @@ void Logger::resizeFileSizeNotWithinRange()
         QByteArray last_bytes{logs_file.read(preferred_bytes)};
         logs_file.resize(0);
         output_stream << last_bytes;
+        output_stream.resetStatus();
+        output_stream.reset();
     }
 
     if (is_file_too_big && Settings::records()->overwriteFullHistoryFile())
         clearLogsFile();
-
-    clearStreamText();
-    closeFile();
 }
 
 
@@ -353,10 +352,9 @@ bool Logger::validate()
 void Logger::writeToStream()
 {
     write_mutex.lock();
-    if (!logs_file.isOpen())
-        reopenFile();
     output_stream << streamTextResult();
     clearStreamText();
-    closeFile();
+    output_stream.resetStatus();
+    output_stream.reset();
     write_mutex.unlock();
 }

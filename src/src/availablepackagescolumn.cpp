@@ -51,31 +51,35 @@ QStringList AvailablePackagesColumn::getPackagesList()
 }
 
 
+void AvailablePackagesColumn::clearPackages()
+{
+    while (list_widget->item(0))
+        delete dynamic_cast<SiPackage*>(list_widget->takeItem(0));
+
+    list_widget->clear();
+    list_widget->update();
+}
+
+
 void AvailablePackagesColumn::fill()
 {
     mutex.lock();
     packages_sorter->resetOriginalList();
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
+    clearPackages();
     Q_ASSERT(list_widget->count() == 0);
     QStringList pak_packages = getPackagesList();
-    QStringList::iterator it = pak_packages.begin();
     int i = 0;
 
-    for (;it != pak_packages.end(); it++)
+    std::for_each(pak_packages.begin(), pak_packages.end(), [this, &i](const QString& package)
     {
-        if ((*it).contains("=>"))
-        {
-            i++;
-            continue;
-        }
-
-        auto package_item = new SiPackage(*it);
+        auto package_item = new SiPackage(package);
         package_item->setNo(i+1);
         Q_ASSERT(package_item != nullptr);
         Q_ASSERT(list_widget != nullptr);
-        list_widget->insertItem(i, package_item);
+        list_widget->addItem(package_item);
         i++;
-    }
+    });
 
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 available packages").arg(list_widget->count()));
     list_widget->update();

@@ -139,7 +139,7 @@ void MainWindowView::run()
             QObject::disconnect(&threads_timer, &QTimer::timeout, this, nullptr);
         });
 
-    threads_timer.start(2000);
+    threads_timer.start(3000);
 }
 
 

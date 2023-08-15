@@ -67,6 +67,7 @@ void UpdatedPackagesColumn::fill()
     mutex.lock();
     packages_sorter->resetOriginalList();
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
+    clearPackages();
     Q_ASSERT(list_widget->count() == 0);
     auto pak_packages = getPackagesList();
     updatePackagesCount(pak_packages.count());
@@ -85,7 +86,7 @@ void UpdatedPackagesColumn::fill()
         package_item->setNo(i + 1);
         Q_ASSERT(package_item != nullptr);
         Q_ASSERT(list_widget != nullptr);
-        list_widget->insertItem(i, package_item);
+        list_widget->addItem(package_item);
         i++;
     }
 
@@ -162,6 +163,16 @@ void UpdatedPackagesColumn::updatePackagesCount(uint new_current_packages_count)
         emit currentPackagesCountChanged(new_current_packages_count);
 
     current_packages_count = new_current_packages_count;
+}
+
+
+void UpdatedPackagesColumn::clearPackages()
+{
+    while (list_widget->item(0))
+        delete dynamic_cast<CheckPackage*>(list_widget->takeItem(0));
+
+    list_widget->clear();
+    list_widget->update();
 }
 
 

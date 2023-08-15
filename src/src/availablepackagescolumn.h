@@ -44,6 +44,7 @@ protected:
     virtual QStringList getPackagesList();
 
 private:
+    void clearPackages();
     static QMutex mutex;
 
 };
