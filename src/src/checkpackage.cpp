@@ -27,6 +27,7 @@ CheckPackage::CheckPackage(QString new_package_content, Package::Source new_sour
     if (new_package_content.isEmpty())
         return;
 
+    setType(Package::Type::Check);
     updateData(new_package_content, 0, 0);
     setText(getName() + "-" + getVersion());
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
@@ -39,6 +40,7 @@ CheckPackage::CheckPackage(CheckPackage& check_package) :
 {
    setName(check_package.getName());
    setNo(check_package.getNo());
+   setType(check_package.getType());
    setVersion(check_package.getVersion());
    setText(getName().trimmed() + "-" + getVersion().trimmed());
    setFlags(check_package.flags());

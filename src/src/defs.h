@@ -19,10 +19,12 @@
 #pragma once
 
 #include "process.h"
+#include "package.h"
 #include "logger.h"
 
 #include <QString>
 #include <QMap>
+#include <QHash>
 #include <QLocale>
 #include <QPair>
 
@@ -58,7 +60,14 @@ public:
     static Logger::WriteOperations taskToWriteOperation(Process::Task task);
     static QPair<Constants::Yes, Constants::No> langNamesToYesNo(QLocale::Language language);
 
+    static QHash<int, Package::TooltipLine> typePackageToTooltipLines(Package::Type package_type);
+
+
 private:
+    static QHash<int, Package::TooltipLine> numberToTooltipLineSiPackage();
+    static QHash<int, Package::TooltipLine> numberToTooltipLineQiPackage();
+    static QHash<int, Package::TooltipLine> numberToTooltipLineCheckPackage();
+
     static QMap<Process::Task, Logger::WriteOperations> task_to_write_operation_map;
     static std::unordered_map<QLocale::Language, QPair<Yes, No>> lang_names_to_yes_no_map;
 };

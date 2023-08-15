@@ -75,6 +75,16 @@ MainWindowView::MainWindowView(QWidget *parent)
 }
 
 
+MainWindowView::~MainWindowView()
+{
+    if (!internet_connection_timer.isNull())
+    {
+        internet_connection_timer->stop();
+        delete internet_connection_timer;
+    }
+}
+
+
 void MainWindowView::setProcess(QSharedPointer<Process> new_process)
 {
     process = new_process;
@@ -107,6 +117,8 @@ void MainWindowView::init()
 
 void MainWindowView::run()
 {
+    checkUpdates();
+
     QThread* available_packages_thread(new QThread);
     QThread* installed_packages_thread(new QThread);
 
@@ -116,11 +128,10 @@ void MainWindowView::run()
     m_ui.search_installed_packages_checkbox->setEnabled(false);
 
     main_window_view_signals->attachFillColumns(available_packages_thread, installed_packages_thread);
-    installed_packages_thread->start(QThread::TimeCriticalPriority);
-    available_packages_thread->start(QThread::TimeCriticalPriority);
+    installed_packages_thread->start(QThread::NormalPriority);
+    available_packages_thread->start(QThread::NormalPriority);
     installed_packages_thread->quit();
     available_packages_thread->quit();
-    checkUpdates();
 }
 
 
@@ -642,6 +653,8 @@ void MainWindowView::refresh()
 void MainWindowView::startAnimations()
 {
     m_ui.packages_to_update_label->setText(i18n("TO UPDATE"));
+    m_ui.accessible_packages->setText(i18n("AVAILABLE TO INSTALL"));
+    m_ui.installed_packages_label->setText(i18n("INSTALLED"));
 
     m_ui.remove_spinning_widget->show();
     m_ui.installation_spinning_widget->show();

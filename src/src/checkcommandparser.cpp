@@ -51,12 +51,13 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
 
 QString CheckCommandParser::generatePakCheckResults()
 {
-    pacman_qi.reset(new QProcess);
-    pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
-    pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -C --noconfirm");
-    pacman_qi->waitForStarted(-1);
-    pacman_qi->waitForFinished(-1);
-    return pacman_qi->readAllStandardOutput();
+    killProcess(pacman_check);
+    pacman_check.reset(new QProcess(this), &QObject::deleteLater);
+    pacman_check->setProcessChannelMode(QProcess::MergedChannels);
+    pacman_check->start("/bin/bash", QStringList() << "-c" << "pak -C");
+    pacman_check->waitForStarted(-1);
+    pacman_check->waitForFinished(-1);
+    return pacman_check->readAllStandardOutput();
 }
 
 

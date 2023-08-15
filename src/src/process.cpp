@@ -235,6 +235,7 @@ void Process::startProcess(Process::Task new_task)
 
     current_process.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
     current_process.data()->waitForStarted();
+
     Logger::logger()->writeSectionToFile(Constants::taskToWriteOperation(new_task));
 }
 
@@ -244,6 +245,7 @@ void Process::processReadLine(QString& line, Process::Task new_task)
     auto output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
     QString filtered_line = output_filter->filteredOutput(line);
     emit generatedOutput(new_task, filtered_line);
+
     Logger::logger()->writeLineToFile(filtered_line);
 }
 

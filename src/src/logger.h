@@ -63,6 +63,9 @@ public:
     void logWarning(const QString& text);
     void logFatal(const QString& text);
     void logDebug(const QString& text);
+    void closeFile();
+    void closeOnQuit();
+    void clearStreamText();
 
 public Q_SLOTS:
     void clearLogsFile();
@@ -70,7 +73,6 @@ public Q_SLOTS:
 
 protected:
     explicit Logger();
-    void clearStreamText();
     const QString& streamTextResult() const;
     void logIntoFile(const QString& section, const QString& text);
 
@@ -79,12 +81,11 @@ private:
     void appendSeparator();
     void appendNewLine();
     bool isWritePossible();
-    void closeOnQuit();
     void resizeFileSizeNotWithinRange();
     bool validate();
     void writeToStream();
 
-    QFile logs_file = QFile(PathConverter::fullConfigPath());
+    QFile logs_file{QFile(PathConverter::fullConfigPath())};
     QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
     QString stream_text;
     QTextStream output_stream;

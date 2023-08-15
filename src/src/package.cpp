@@ -20,6 +20,7 @@
 
 #include "settings.h"
 #include "algorithms.h"
+#include "defs.h"
 #include "logger.h"
 
 
@@ -71,6 +72,12 @@ void Package::setNo(const int new_no)
 }
 
 
+Package::Type Package::getType() const
+{
+    return package_type;
+}
+
+
 void Package::updateData(const QString& package_content, int name_line, int version_line)
 {
     QStringList lines = package_content.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
@@ -113,7 +120,7 @@ void Package::setToolTipOnPackage(const QString& text)
     QScopedPointer<Algorithms> algorithms(new Algorithms);
     QString splitting_text{" : "};
     auto results = algorithms->createSplittedList<Package::TooltipLine>(text, splitting_text,
-                                                                        selected_info_list, numberToTooltipLine);
+        selected_info_list, Constants::typePackageToTooltipLines(getType()));
 
     setToolTip(results.join(QString("\n")));
 }
@@ -149,10 +156,7 @@ void Package::setSource(Source new_source)
 }
 
 
-void Package::buildTooltipsLinesMap()
+void Package::setType(Type new_package_type)
 {
-    numberToTooltipLine.insert(1, Package::TooltipLine::Name);
-    numberToTooltipLine.insert(2, Package::TooltipLine::Version);
-    numberToTooltipLine.insert(3, Package::TooltipLine::Description);
-    numberToTooltipLine.insert(9, Package::TooltipLine::DependsOn);
+    package_type = new_package_type;
 }

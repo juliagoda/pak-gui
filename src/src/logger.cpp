@@ -32,7 +32,7 @@ QMutex Logger::write_mutex;
 
 Logger::Logger()
 {
-    reopenFile();
+    //reopenFile();
 }
 
 
@@ -50,7 +50,7 @@ const QString& Logger::streamTextResult() const
 
 Logger::~Logger()
 {
-    closeOnQuit();
+    closeFile();
 }
 
 
@@ -65,6 +65,7 @@ Logger* Logger::logger()
 
 void Logger::writeToFile(QString& text, WriteOperations section)
 {
+    stream_text = "";
     appendSection(section);
     appendNewLine();
     stream_text += output_filter->filteredOutput(text);
@@ -78,7 +79,10 @@ void Logger::writeToFile(QString& text, WriteOperations section)
 #endif
 
     if (!validate())
+    {
+        clearStreamText();
         return;
+    }
 
     writeToStream();
 }
@@ -94,7 +98,10 @@ void Logger::writeSectionToFile(WriteOperations section)
 #endif
 
     if (!validate())
+    {
+        clearStreamText();
         return;
+    }
 
     writeToStream();
 }
@@ -109,6 +116,12 @@ void Logger::writeLineToFile(QString& line)
     return;
 #endif
 
+    if (!validate())
+    {
+        clearStreamText();
+        return;
+    }
+
     writeToStream();
 }
 
@@ -118,22 +131,43 @@ void Logger::logInfo(const QString &text)
     if (Settings::records()->hideInfoLogs())
         return;
 
-    logIntoFile(QString("INFO"), text);
     qInfo() << "[INFO] " << text;
+
+    if (!Settings::records()->saveLogsIntoFile())
+    {
+        clearStreamText();
+        return;
+    }
+
+    logIntoFile(QString("INFO"), text);
 }
 
 
 void Logger::logWarning(const QString &text)
 {
-    logIntoFile(QString("WARNING"), text);
     qWarning() << "[WARNING] " << text;
+
+    if (!Settings::records()->saveLogsIntoFile())
+    {
+        clearStreamText();
+        return;
+    }
+
+    logIntoFile(QString("WARNING"), text);
 }
 
 
 void Logger::logFatal(const QString &text)
 {
-    logIntoFile(QString("FATAL"), text);
     qCritical() << "[FATAL] " << text;
+
+    if (!Settings::records()->saveLogsIntoFile())
+    {
+        clearStreamText();
+        return;
+    }
+
+    logIntoFile(QString("FATAL"), text);
 }
 
 
@@ -142,8 +176,25 @@ void Logger::logDebug(const QString &text)
     if (!Settings::records()->showDebug())
         return;
 
-    logIntoFile(QString("DEBUG"), text);
     qDebug() << "[DEBUG] " << text;
+
+    if (!Settings::records()->saveLogsIntoFile())
+    {
+        clearStreamText();
+        return;
+    }
+
+    logIntoFile(QString("DEBUG"), text);
+}
+
+
+void Logger::closeFile()
+{
+    if (logs_file.isOpen())
+        logs_file.close();
+
+    if (logs_file.isOpen())
+        logWarning(QStringLiteral("Logs file \"%1\" couldn't be properly closed!").arg(logs_file.fileName()));
 }
 
 
@@ -193,15 +244,19 @@ void Logger::logIntoFile(const QString& section, const QString& text)
 #endif
 
     if (!Settings::records()->saveLogsIntoFile())
+    {
+        clearStreamText();
         return;
+    }
 
-    if (!logs_file.exists())
+    if (!logs_file.exists() || !logs_file.isOpen())
         reopenFile();
 
     write_mutex.tryLock();
     resizeFileSizeNotWithinRange();
     output_stream << streamTextResult();
     clearStreamText();
+    closeFile();
     write_mutex.unlock();
 }
 
@@ -218,11 +273,12 @@ bool Logger::isWritePossible()
 
 void Logger::closeOnQuit()
 {
-    if (logs_file.isOpen())
-        logs_file.close();
+#ifdef RUN_TESTS
+    closeFile();
+    return;
+#endif
 
-    if (logs_file.isOpen())
-        logWarning(QStringLiteral("Logs file \"%1\" couldn't be properly closed!").arg(logs_file.fileName()));
+    delete instance;
 }
 
 
@@ -234,6 +290,9 @@ void Logger::reopenFile()
 
     if (logs_file.isOpen())
         logs_file.close();
+
+    output_stream.resetStatus();
+    output_stream.reset();
 
     if (QString::compare(PathConverter::toAbsolutePath(logs_file.fileName()), PathConverter::fullConfigPath()) != 0)
         logs_file.setFileName(PathConverter::fullConfigPath());
@@ -252,6 +311,9 @@ void Logger::resizeFileSizeNotWithinRange()
     if (size_limit == 0)
         return;
 
+    if (!logs_file.isOpen())
+        reopenFile();
+
     int preferred_bytes{SizeConverter::megabytesToBytes(size_limit)};
     bool is_file_too_big{SizeConverter::bytesToMegabytes(logs_file.size()) > size_limit};
 
@@ -265,6 +327,9 @@ void Logger::resizeFileSizeNotWithinRange()
 
     if (is_file_too_big && Settings::records()->overwriteFullHistoryFile())
         clearLogsFile();
+
+    clearStreamText();
+    closeFile();
 }
 
 
@@ -288,7 +353,10 @@ bool Logger::validate()
 void Logger::writeToStream()
 {
     write_mutex.lock();
+    if (!logs_file.isOpen())
+        reopenFile();
     output_stream << streamTextResult();
     clearStreamText();
+    closeFile();
     write_mutex.unlock();
 }

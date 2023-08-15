@@ -35,7 +35,6 @@ public:
 private:
     void updateData(const QString& package_content, int name_line, int version_line) override;
     void setRepo(const QString& new_repo) { repo = new_repo; };
-    void buildTooltipsLinesMap() override;
     void setRepoParameter(const QStringList& lines);
     void setNameParameter(const QStringList& lines);
     void setVersionParameter(const QStringList& lines);

@@ -21,8 +21,8 @@
 #include "actionsaccesschecker.h"
 #include "mainwindowview.h"
 #include "settingsrecords.h"
+#include "src/settings.h"
 #include "timeconverter.h"
-#include "settings.h"
 #include "logger.h"
 
 #include <QAction>
@@ -37,7 +37,8 @@
 
 MainWindow::MainWindow()
     : KXmlGuiWindow(),
-      actions_access_checker(ActionsAccessChecker::actionsAccessChecker(this))
+      actions_access_checker(ActionsAccessChecker::actionsAccessChecker(this)),
+      settings_window(nullptr)
 {
     // ...
 }
@@ -56,6 +57,8 @@ MainWindow::~MainWindow()
     delete sync_polaur_action;
 
    actions_access_checker.reset(nullptr);
+   Settings::clearRecords();
+   Logger::logger()->closeOnQuit();
 }
 
 
@@ -273,7 +276,7 @@ void MainWindow::enableActions()
 
 void MainWindow::settingsConfigure()
 {
-    QPointer<Settings> settings = new Settings(this);
-    connect(settings, &Settings::settingsChanged, main_window_view, &MainWindowView::updateWidgets);
-    settings->show();
+    settings_window.reset(new Settings(this));
+    connect(settings_window.get(), &Settings::settingsChanged, main_window_view, &MainWindowView::updateWidgets);
+    settings_window->show();
 }

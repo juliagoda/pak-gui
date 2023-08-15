@@ -17,8 +17,8 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "algorithms.h"
-#include "package.h"
 
+#include "package.h"
 
 // TODOJG - reduce parameters list
 template<typename T>

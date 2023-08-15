@@ -62,11 +62,19 @@ public:
         Unknown
     };
 
-    Package(const QString& package_content, Source new_source);
+    enum class Type
+    {
+        Si = 0,
+        Qi,
+        Check,
+        Other
+    };
 
-    Package(Package& package);
+    explicit Package(const QString& package_content, Source new_source);
 
-    ~Package() override = default;
+    explicit Package(Package& package);
+
+    virtual ~Package() override = default;
 
     virtual int getNo() const;
     virtual const QString& getName() const;
@@ -74,6 +82,7 @@ public:
     virtual Package::Source getSource() const;
 
     virtual void setNo(const int new_no);
+    virtual Package::Type getType() const;
 
 protected:
     virtual void updateData(const QString& package_content, int name_line, int version_line);
@@ -85,12 +94,12 @@ protected:
     virtual void setName(const QString& new_name);
     virtual void setVersion(const QString& new_version);
     virtual void setSource(Source new_source);
-    virtual void buildTooltipsLinesMap();
+    virtual void setType(Package::Type package_type);
 
     QString name{};
     QString version{};
     Package::Source source{Package::Source::Repo};
-    QHash<int, TooltipLine> numberToTooltipLine{};
+    Package::Type package_type{Package::Type::Other};
     int no{0};
 
 private:

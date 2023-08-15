@@ -179,6 +179,14 @@ void Sorter::resetOriginalList()
 
     while (!untouched_list_widget.empty())
         delete untouched_list_widget.takeAt(0);
+
+    untouched_list_widget.clear();
+}
+
+
+bool Sorter::isOriginalListEmpty() const
+{
+    return untouched_list_widget.empty();
 }
 
 

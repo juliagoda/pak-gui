@@ -55,11 +55,13 @@ void AvailablePackagesColumn::fill()
 {
     mutex.lock();
     packages_sorter->resetOriginalList();
+    Q_ASSERT(packages_sorter->isOriginalListEmpty());
+    Q_ASSERT(list_widget->count() == 0);
     QStringList pak_packages = getPackagesList();
     QStringList::iterator it = pak_packages.begin();
     int i = 0;
 
-    for(;it != pak_packages.end(); it++)
+    for (;it != pak_packages.end(); it++)
     {
         if ((*it).contains("=>"))
         {

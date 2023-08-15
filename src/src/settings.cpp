@@ -29,7 +29,7 @@
 #include <iterator>
 
 
-QSharedPointer<SettingsRecords> Settings::settings_records(new SettingsRecords);
+QSharedPointer<SettingsRecords> Settings::settings_records(nullptr);
 
 Settings::Settings(MainWindow* main_window) :
     KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self())
@@ -42,6 +42,9 @@ Settings::Settings(MainWindow* main_window) :
 
 QSharedPointer<SettingsRecords> Settings::records()
 {
+    if (settings_records.isNull())
+        settings_records.reset(new SettingsRecords);
+
     return settings_records;
 }
 
@@ -49,17 +52,23 @@ QSharedPointer<SettingsRecords> Settings::records()
 void Settings::saveInitDateTime(const QString& operation_name)
 {
    if (QString::compare(operation_name, QString("update")) == 0)
-       settings_records->resetStartDateTimeForUpdatesCheck();
+       records()->resetStartDateTimeForUpdatesCheck();
 
    if (QString::compare(operation_name, QString("logs remove")) == 0)
-       settings_records->resetStartDateTimeForHistoryStore();
+       records()->resetStartDateTimeForHistoryStore();
+}
+
+
+void Settings::clearRecords()
+{
+   settings_records.reset(nullptr);
 }
 
 
 void Settings::saveInitDateTimesWhenEmpty()
 {    
-    settings_records->setStartDateTimeForUpdatesCheck();
-    settings_records->setStartDateTimeForHistoryStore();
+    records()->setStartDateTimeForUpdatesCheck();
+    records()->setStartDateTimeForHistoryStore();
 }
 
 
@@ -115,9 +124,9 @@ void Settings::loadPackagesInfoSettings()
 {
     packages_info_settings.packages_info_selector->availableListWidget()->clear();
     packages_info_settings.packages_info_selector->selectedListWidget()->clear();
-    auto available_list = settings_records->packagesInfoAvailableStringList();
+    auto available_list = records()->packagesInfoAvailableStringList();
     available_list.removeDuplicates();
-    auto selected_list = settings_records->packagesInfoSelectedStringList();
+    auto selected_list = records()->packagesInfoSelectedStringList();
     selected_list.removeDuplicates();
     packages_info_settings.packages_info_selector->availableListWidget()->addItems(available_list);
     packages_info_settings.packages_info_selector->selectedListWidget()->addItems(selected_list);
@@ -126,7 +135,7 @@ void Settings::loadPackagesInfoSettings()
 
 void Settings::connectSignals(MainWindow* main_window)
 {
-    connect(settings_records.get(), &SettingsRecords::selectedPackageInfoListChanged, [main_window]() { emit main_window->updatedPackageInfoList(); });
+    connect(records().get(), &SettingsRecords::selectedPackageInfoListChanged, [main_window]() { emit main_window->updatedPackageInfoList(); });
 
     if (!packages_info_settings.packages_info_selector)
         return;
@@ -165,7 +174,7 @@ void Settings::updateAvailableInfoList()
         return list;
     });
 
-    settings_records->setAvailablePackageInfo(available_info_list);
+    records()->setAvailablePackageInfo(available_info_list);
 }
 
 
@@ -182,6 +191,6 @@ void Settings::updateSelectedInfoList()
     });
 
 
-    settings_records->setSelectedPackageInfo(selected_info_list);
+    records()->setSelectedPackageInfo(selected_info_list);
     Logger::logger()->logDebug(QStringLiteral("selected packages info saved: %1").arg(selected_info_list.join(", ")));
 }

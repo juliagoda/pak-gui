@@ -41,6 +41,7 @@ public:
     static void saveInitDateTimesWhenEmpty();
     static QSharedPointer<SettingsRecords> records();
     static void saveInitDateTime(const QString& operation_name);
+    static void clearRecords();
 
 protected Q_SLOTS:
     void updateWidgetsDefault() override;

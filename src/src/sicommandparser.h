@@ -20,6 +20,9 @@
 
 #include "commandparser.h"
 
+#include <QSharedPointer>
+#include <QProcess>
+
 
 class SiCommandParser : public CommandParser
 {
@@ -30,5 +33,8 @@ public:
 
 protected:
     virtual QString generateResult();
+
+private:
+    QSharedPointer<QProcess> pacman_si = QSharedPointer<QProcess>(nullptr);
 };
 

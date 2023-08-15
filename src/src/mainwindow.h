@@ -28,6 +28,7 @@
 #include "process.h"
 #include "actionsaccesschecker.h"
 #include "systemtray.h"
+#include "settings.h"
 
 
 class MainWindowView;
@@ -67,6 +68,7 @@ protected:
     QPointer<MainWindowView> main_window_view;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
     QSharedPointer<Process> process;
+    QScopedPointer<Settings> settings_window;
     QTimer timer_on_updates;
     QTimer timer_on_logs;
     QPointer<QAction> update_action;

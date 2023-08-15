@@ -35,6 +35,7 @@ public:
     ~Sorter() override = default;
 
     void resetOriginalList();
+    bool isOriginalListEmpty() const;
     QList<QListWidgetItem*> listWidget() { return untouched_list_widget; }
 
     template <typename T>

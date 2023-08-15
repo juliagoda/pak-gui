@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "packagestoupdatecolumntest.h"
+#include "logger.h"
 #include "qtestcase.h"
 
 #include <KLocalizedString>
@@ -327,7 +328,7 @@ void TestUpdatedPackagesColumn::cleanup()
     main_window_view.m_ui.update_packages_button->setEnabled(false);
     main_window_view.m_ui.sort_packages_to_update->setCheckState(Qt::Unchecked);
 
-    while(main_window_view.m_ui.packages_to_update_list->count() > 0)
+    while (main_window_view.m_ui.packages_to_update_list->count() > 0)
     {
         if (main_window_view.m_ui.packages_to_update_list->item(0))
             delete main_window_view.m_ui.packages_to_update_list->takeItem(0);

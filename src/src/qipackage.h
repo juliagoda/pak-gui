@@ -30,8 +30,5 @@ public:
     QiPackage(QiPackage& check_package);
 
     ~QiPackage() override = default;
-
-private:
-    void buildTooltipsLinesMap() override;
 };
 

@@ -57,7 +57,7 @@ public:
     };
 
     explicit MainWindowView(QWidget* parent = nullptr);
-    ~MainWindowView() override = default;
+    ~MainWindowView() override;
 
     void setProcess(QSharedPointer<Process> new_process);
     void setActionsAccessChecker(QSharedPointer<ActionsAccessChecker> new_actions_access_checker);

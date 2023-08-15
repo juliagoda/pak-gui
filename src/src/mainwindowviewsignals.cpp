@@ -43,8 +43,12 @@ void MainWindowViewSignals::attachInputAnswerLines()
 
 void MainWindowViewSignals::attachFillColumns(QThread* available_packages_thread, QThread* installed_packages_thread)
 {
-    QObject::connect(available_packages_thread, &QThread::started, [this]() { main_window_view->available_packages_column->fill(); emit main_window_view->availablePackagesFillEnded(); });
-    QObject::connect(installed_packages_thread, &QThread::started, [this]() { main_window_view->installed_packages_column->fill(); emit main_window_view->installedPackagesFillEnded(); });
+    QObject::connect(available_packages_thread, &QThread::started, [this]() {
+        main_window_view->available_packages_column->fill();
+        emit main_window_view->availablePackagesFillEnded(); });
+    QObject::connect(installed_packages_thread, &QThread::started, [this]() {
+        main_window_view->installed_packages_column->fill();
+        emit main_window_view->installedPackagesFillEnded(); });
     QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
     QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread,  &QThread::deleteLater);
 }
@@ -254,6 +258,6 @@ void MainWindowViewSignals::attachCheckUpdates(QThread* updated_packages_thread)
     });
 
     QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
-    updated_packages_thread->start(QThread::TimeCriticalPriority);
+    updated_packages_thread->start(QThread::HighPriority);
     updated_packages_thread->quit();
 }

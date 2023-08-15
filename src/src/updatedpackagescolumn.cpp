@@ -66,6 +66,8 @@ void UpdatedPackagesColumn::fill()
 {
     mutex.lock();
     packages_sorter->resetOriginalList();
+    Q_ASSERT(packages_sorter->isOriginalListEmpty());
+    Q_ASSERT(list_widget->count() == 0);
     auto pak_packages = getPackagesList();
     updatePackagesCount(pak_packages.count());
     decltype(pak_packages)::iterator it = pak_packages.begin();

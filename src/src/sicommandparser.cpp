@@ -20,7 +20,6 @@
 
 #include "logger.h"
 
-#include <QProcess>
 #include <QString>
 #include <QRegularExpression>
 
@@ -28,7 +27,9 @@
 QStringList SiCommandParser::retrieveInfo()
 {
     QString output = generateResult();
+
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckAvailable);
+
     static QRegularExpression new_lines_expression("\n\n");
     auto list = output.split(new_lines_expression);
     if (list.last().trimmed().isEmpty())
@@ -40,7 +41,8 @@ QStringList SiCommandParser::retrieveInfo()
 
 QString SiCommandParser::generateResult()
 {
-    QScopedPointer<QProcess> pacman_si(new QProcess);
+    killProcess(pacman_si);
+    pacman_si.reset(new QProcess(this), &QObject::deleteLater);
     pacman_si->setProcessChannelMode(QProcess::MergedChannels);
     pacman_si.data()->start("/bin/bash", QStringList() << "-c" << "pak -Si");
     pacman_si.data()->waitForStarted();

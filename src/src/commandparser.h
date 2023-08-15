@@ -20,6 +20,8 @@
 
 #include <QStringList>
 #include <QObject>
+#include <QSharedPointer>
+#include <QProcess>
 
 
 class CommandParser : public QObject
@@ -29,5 +31,15 @@ class CommandParser : public QObject
 public:
     virtual ~CommandParser() override = default;
     virtual QStringList retrieveInfo() = 0;
+    virtual void killProcess(const QSharedPointer<QProcess>& process)
+    {
+        if (!process.isNull())
+        {
+            process->close();
+            process->kill();
+        }
+    }
+
+
 };
 

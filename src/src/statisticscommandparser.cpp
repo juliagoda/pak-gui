@@ -29,7 +29,9 @@
 QStringList StatisticsCommandParser::retrieveInfo()
 {
     QString output = generateResult();
+
     Logger::logger()->writeToFile(output, Logger::WriteOperations::ShowStatistics);
+
     QStringList output_list = output.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
     QStringListIterator it(output_list);
     QStringList result = QStringList();
