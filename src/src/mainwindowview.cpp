@@ -48,6 +48,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QtConcurrent/QtConcurrent>
+#include <thread>
 
 
 MainWindowView::MainWindowView(QWidget *parent)
@@ -119,19 +120,26 @@ void MainWindowView::run()
 {
     checkUpdates();
 
-    QThread* available_packages_thread(new QThread);
-    QThread* installed_packages_thread(new QThread);
+    // ensuring update thread start before the next ones
+    QObject::connect(&threads_timer, &QTimer::timeout, this, [this]()
+        {
+            QThread* available_packages_thread(new QThread);
+            QThread* installed_packages_thread(new QThread);
 
-    m_ui.available_packages_list->hide();
-    m_ui.installed_packages_list->hide();
-    m_ui.search_available_packages_checkbox->setEnabled(false);
-    m_ui.search_installed_packages_checkbox->setEnabled(false);
+            m_ui.available_packages_list->hide();
+            m_ui.installed_packages_list->hide();
+            m_ui.search_available_packages_checkbox->setEnabled(false);
+            m_ui.search_installed_packages_checkbox->setEnabled(false);
 
-    main_window_view_signals->attachFillColumns(available_packages_thread, installed_packages_thread);
-    installed_packages_thread->start(QThread::NormalPriority);
-    available_packages_thread->start(QThread::NormalPriority);
-    installed_packages_thread->quit();
-    available_packages_thread->quit();
+            main_window_view_signals->attachFillColumns(available_packages_thread, installed_packages_thread);
+            installed_packages_thread->start(QThread::NormalPriority);
+            available_packages_thread->start(QThread::NormalPriority);
+            installed_packages_thread->quit();
+            available_packages_thread->quit();
+            QObject::disconnect(&threads_timer, &QTimer::timeout, this, nullptr);
+        });
+
+    threads_timer.start(2000);
 }
 
 

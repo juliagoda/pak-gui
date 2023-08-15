@@ -18,6 +18,7 @@
 
 #include "checkcommandparser.h"
 #include "logger.h"
+#include "qdebug.h"
 
 #include <QProcess>
 #include <QString>
@@ -70,6 +71,7 @@ void CheckCommandParser::processLines(QHash<QString, Package::Source>& system_pa
     {
         QString line{iterator.next()};
         QString filtered_line{output_filter->filteredOutput(line).simplified()};
+        qDebug() << "FILTERED_LINE: " << filtered_line;
         uint tempLineCount = double_colon_line_count;
         increaseDoubleColonCounter(filtered_line, double_colon_line_count);
         appendPackageLine(system_packages, filtered_line, double_colon_line_count);
@@ -77,6 +79,7 @@ void CheckCommandParser::processLines(QHash<QString, Package::Source>& system_pa
         if (double_colon_line_count == 3 && tempLineCount == double_colon_line_count &&
             filtered_line.startsWith(":: "))
         {
+            qDebug() << "BREAK";
             break;
         }
     }

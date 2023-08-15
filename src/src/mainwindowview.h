@@ -129,4 +129,5 @@ private:
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
     QPointer<QTimer> internet_connection_timer;
     State current_state;
+    QTimer threads_timer;
 };
