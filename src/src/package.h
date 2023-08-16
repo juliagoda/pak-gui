@@ -72,7 +72,10 @@ public:
 
     explicit Package(const QString& package_content, Source new_source);
 
-    explicit Package(Package& package);
+    Package(const Package& package);
+    Package& operator=(const Package& package);
+    Package(Package&& package);
+    Package& operator=(Package&& package);
 
     virtual ~Package() override = default;
 
@@ -83,6 +86,8 @@ public:
 
     virtual void setNo(const int new_no);
     virtual Package::Type getType() const;
+    virtual QListWidgetItem* clone() const override;
+    bool operator<(const QListWidgetItem &other) const override;
 
 protected:
     virtual void updateData(const QString& package_content, int name_line, int version_line);
@@ -100,7 +105,7 @@ protected:
     QString version{};
     Package::Source source{Package::Source::Repo};
     Package::Type package_type{Package::Type::Other};
-    int no{0};
+    int no{-1};
 
 private:
     void setNameParameter(int parameter_line,

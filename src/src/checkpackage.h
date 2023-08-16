@@ -24,9 +24,14 @@
 class CheckPackage : public Package
 {
 public:
-    explicit CheckPackage(QString package_content, Package::Source new_source);
-    CheckPackage(CheckPackage& check_package);
+    explicit CheckPackage(const QString& package_content, Package::Source new_source);
+    CheckPackage(const CheckPackage& check_package);
+    CheckPackage& operator=(const CheckPackage& check_package);
+    CheckPackage(CheckPackage&& check_package);
+    CheckPackage& operator=(CheckPackage&& check_package);
     virtual ~CheckPackage() override = default;
+
+    QListWidgetItem *clone() const override;
 
 private:
     virtual void updateData(const QString& package_content, int name_line, int version_line) override;

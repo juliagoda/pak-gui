@@ -33,10 +33,10 @@ SiPackage::SiPackage(const QString& package_content) :
 }
 
 
-SiPackage::SiPackage(SiPackage& si_package) :
-    Package(si_package),
-    repo()
+SiPackage::SiPackage(const SiPackage& si_package) :
+    Package(si_package)
 {
+    repo = si_package.repo;
     setName(si_package.getName());
     setNo(si_package.getNo());
     setType(si_package.getType());
@@ -46,6 +46,60 @@ SiPackage::SiPackage(SiPackage& si_package) :
     setFlags(si_package.flags());
     setCheckState(si_package.checkState());
     setToolTip(si_package.toolTip());
+}
+
+
+SiPackage& SiPackage::operator=(const SiPackage& si_package)
+{
+    repo = si_package.repo;
+    setName(si_package.getName());
+    setNo(si_package.getNo());
+    setType(si_package.getType());
+    setVersion(si_package.getVersion());
+    setRepo(si_package.getRepo());
+    setText(getName().trimmed() + "-" + getVersion().trimmed() + " [" + getRepo().trimmed() + "]");
+    setFlags(si_package.flags());
+    setCheckState(si_package.checkState());
+    setToolTip(si_package.toolTip());
+    return *this;
+}
+
+
+SiPackage::SiPackage(SiPackage&& si_package) :
+    Package(si_package)
+{
+    repo = si_package.repo;
+    setName(si_package.getName());
+    setNo(si_package.getNo());
+    setType(si_package.getType());
+    setVersion(si_package.getVersion());
+    setRepo(si_package.getRepo());
+    setText(getName().trimmed() + "-" + getVersion().trimmed() + " [" + getRepo().trimmed() + "]");
+    setFlags(si_package.flags());
+    setCheckState(si_package.checkState());
+    setToolTip(si_package.toolTip());
+}
+
+
+SiPackage& SiPackage::operator=(SiPackage&& si_package)
+{
+    repo = si_package.repo;
+    setName(si_package.getName());
+    setNo(si_package.getNo());
+    setType(si_package.getType());
+    setVersion(si_package.getVersion());
+    setRepo(si_package.getRepo());
+    setText(getName().trimmed() + "-" + getVersion().trimmed() + " [" + getRepo().trimmed() + "]");
+    setFlags(si_package.flags());
+    setCheckState(si_package.checkState());
+    setToolTip(si_package.toolTip());
+    return *this;
+}
+
+
+QListWidgetItem* SiPackage::clone() const
+{
+    return new SiPackage(*this);
 }
 
 

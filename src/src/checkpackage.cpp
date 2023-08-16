@@ -21,7 +21,7 @@
 #include <QRegularExpression>
 
 
-CheckPackage::CheckPackage(QString new_package_content, Package::Source new_source) :
+CheckPackage::CheckPackage(const QString& new_package_content, Package::Source new_source) :
     Package{new_package_content, new_source}
 {
     if (new_package_content.isEmpty())
@@ -35,16 +35,65 @@ CheckPackage::CheckPackage(QString new_package_content, Package::Source new_sour
 }
 
 
-CheckPackage::CheckPackage(CheckPackage& check_package) :
+CheckPackage::CheckPackage(const CheckPackage& check_package) :
     Package{check_package}
 {
    setName(check_package.getName());
    setNo(check_package.getNo());
    setType(check_package.getType());
+   setSource(check_package.getSource());
    setVersion(check_package.getVersion());
    setText(getName().trimmed() + "-" + getVersion().trimmed());
    setFlags(check_package.flags());
    setCheckState(check_package.checkState());
+}
+
+
+CheckPackage& CheckPackage::operator=(const CheckPackage& check_package)
+{
+   setName(check_package.getName());
+   setNo(check_package.getNo());
+   setType(check_package.getType());
+   setSource(check_package.getSource());
+   setVersion(check_package.getVersion());
+   setText(getName().trimmed() + "-" + getVersion().trimmed());
+   setFlags(check_package.flags());
+   setCheckState(check_package.checkState());
+   return *this;
+}
+
+
+CheckPackage::CheckPackage(CheckPackage&& check_package) :
+    Package{check_package}
+{
+   setName(check_package.getName());
+   setNo(check_package.getNo());
+   setType(check_package.getType());
+   setSource(check_package.getSource());
+   setVersion(check_package.getVersion());
+   setText(getName().trimmed() + "-" + getVersion().trimmed());
+   setFlags(check_package.flags());
+   setCheckState(check_package.checkState());
+}
+
+
+CheckPackage& CheckPackage::operator=(CheckPackage&& check_package)
+{
+   setName(check_package.getName());
+   setNo(check_package.getNo());
+   setType(check_package.getType());
+   setSource(check_package.getSource());
+   setVersion(check_package.getVersion());
+   setText(getName().trimmed() + "-" + getVersion().trimmed());
+   setFlags(check_package.flags());
+   setCheckState(check_package.checkState());
+   return *this;
+}
+
+
+QListWidgetItem* CheckPackage::clone() const
+{
+   return new CheckPackage(*this);
 }
 
 

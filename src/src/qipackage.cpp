@@ -34,15 +34,67 @@ QiPackage::QiPackage(const QString& package_content) :
 }
 
 
-QiPackage::QiPackage(QiPackage& qi_package) :
+QiPackage::QiPackage(const QiPackage& qi_package) :
     Package(qi_package)
 {
     setName(qi_package.getName());
     setNo(qi_package.getNo());
     setType(qi_package.getType());
+    setSource(qi_package.getSource());
     setVersion(qi_package.getVersion());
     setText(getName().trimmed() + "-" + getVersion().trimmed());
     setFlags(qi_package.flags());
     setCheckState(qi_package.checkState());
     setToolTip(qi_package.toolTip());
+}
+
+
+QiPackage& QiPackage::operator=(const QiPackage& qi_package)
+{
+    setName(qi_package.getName());
+    setNo(qi_package.getNo());
+    setType(qi_package.getType());
+    setSource(qi_package.getSource());
+    setVersion(qi_package.getVersion());
+    setText(getName().trimmed() + "-" + getVersion().trimmed());
+    setFlags(qi_package.flags());
+    setCheckState(qi_package.checkState());
+    setToolTip(qi_package.toolTip());
+    return *this;
+}
+
+
+QiPackage::QiPackage(QiPackage&& qi_package) :
+    Package(qi_package)
+{
+    setName(qi_package.getName());
+    setNo(qi_package.getNo());
+    setType(qi_package.getType());
+    setSource(qi_package.getSource());
+    setVersion(qi_package.getVersion());
+    setText(getName().trimmed() + "-" + getVersion().trimmed());
+    setFlags(qi_package.flags());
+    setCheckState(qi_package.checkState());
+    setToolTip(qi_package.toolTip());
+}
+
+
+QiPackage& QiPackage::operator=(QiPackage&& qi_package)
+{
+    setName(qi_package.getName());
+    setNo(qi_package.getNo());
+    setType(qi_package.getType());
+    setSource(qi_package.getSource());
+    setVersion(qi_package.getVersion());
+    setText(getName().trimmed() + "-" + getVersion().trimmed());
+    setFlags(qi_package.flags());
+    setCheckState(qi_package.checkState());
+    setToolTip(qi_package.toolTip());
+    return *this;
+}
+
+
+QListWidgetItem* QiPackage::clone() const
+{
+    return new QiPackage(*this);
 }

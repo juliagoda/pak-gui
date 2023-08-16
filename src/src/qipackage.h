@@ -26,9 +26,13 @@
 class QiPackage : public Package
 {
 public:
-    QiPackage(const QString& package_content);
-    QiPackage(QiPackage& check_package);
-
+    explicit QiPackage(const QString& package_content);
+    QiPackage(const QiPackage& qi_package);
+    QiPackage& operator=(const QiPackage& qi_package);
+    QiPackage(QiPackage&& qi_package);
+    QiPackage& operator=(QiPackage&& qi_package);
     ~QiPackage() override = default;
+
+    QListWidgetItem *clone() const override;
 };
 

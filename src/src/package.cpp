@@ -32,13 +32,50 @@ Package::Package(const QString& package_content, Source new_source) :
 }
 
 
-Package::Package(Package& package) :
+Package::Package(const Package& package) :
     QListWidgetItem()
 {
     name = package.name;
     version = package.version;
     source = package.source;
     no = package.no;
+    package_type = package.package_type;
+    setToolTip(package.toolTip());
+}
+
+
+Package& Package::operator=(const Package& package)
+{
+    name = package.name;
+    version = package.version;
+    source = package.source;
+    no = package.no;
+    package_type = package.package_type;
+    setToolTip(package.toolTip());
+    return *this;
+}
+
+
+Package::Package(Package&& package)
+{
+    name = package.name;
+    version = package.version;
+    source = package.source;
+    no = package.no;
+    package_type = package.package_type;
+    setToolTip(package.toolTip());
+}
+
+
+Package& Package::operator=(Package&& package)
+{
+    name = package.name;
+    version = package.version;
+    source = package.source;
+    no = package.no;
+    package_type = package.package_type;
+    setToolTip(package.toolTip());
+    return *this;
 }
 
 
@@ -75,6 +112,22 @@ void Package::setNo(const int new_no)
 Package::Type Package::getType() const
 {
     return package_type;
+}
+
+
+QListWidgetItem *Package::clone() const
+{
+    return new Package(*this);
+}
+
+
+bool Package::operator<(const QListWidgetItem& other) const
+{
+    auto& package = dynamic_cast<const Package&>(other);
+    if (no != -1 && package.no != 1)
+        return no < package.no;
+
+    return name < package.name;
 }
 
 

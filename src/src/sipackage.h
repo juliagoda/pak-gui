@@ -26,10 +26,14 @@
 class SiPackage : public Package
 {
 public:
-    SiPackage(const QString& package_content);
-    SiPackage(SiPackage& check_package);
+    explicit SiPackage(const QString& package_content);
+    SiPackage(const SiPackage& si_package);
+    SiPackage& operator=(const SiPackage& si_package);
+    SiPackage(SiPackage&& si_package);
+    SiPackage& operator=(SiPackage&& si_package);
     ~SiPackage() override = default;
 
+    QListWidgetItem* clone() const override;
     const QString& getRepo() const { return repo; };
 
 private:
