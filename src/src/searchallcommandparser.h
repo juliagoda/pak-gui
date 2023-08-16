@@ -43,10 +43,10 @@ protected Q_SLOTS:
     void showError(const QString& errorString);
 
 signals:
-    void searchEnded(QStringList results);
+    void searchEnded(const QStringList& results);
 
 protected:
-    void processReadLine(QString& line, QString& current_source_line);
+    void processReadLine(const QString& line, QString& current_source_line);
 
 private:
     QScopedPointer<QProcess> pak_search = QScopedPointer<QProcess>(nullptr);

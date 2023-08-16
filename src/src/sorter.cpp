@@ -39,7 +39,13 @@ Sorter::Sorter(QListWidget* list_widgets,
     reverse_sort_checkbox(new_reverse_sort_checkbox),
     untouched_list_widget()
 {
-   // ...
+                                                                       // ...
+}
+
+
+Sorter::~Sorter()
+{
+    resetOriginalList();
 }
 
 

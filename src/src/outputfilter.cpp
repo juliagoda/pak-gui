@@ -26,8 +26,9 @@
 QList<QRegExp> OutputFilter::filtersList = initializeList();
 
 
-QString OutputFilter::filteredOutput(QString& text_output)
+QString OutputFilter::filteredOutput(const QString& new_text_output)
 {
+    auto text_output{new_text_output};
     QList<QRegExp>::const_iterator filters_it;
     for (filters_it = filtersList.cbegin(); filters_it != filtersList.cend(); filters_it++)
         text_output.remove(*filters_it);
@@ -54,20 +55,21 @@ QStringList OutputFilter::filteredOutputFromInstalledPackages(const QStringList&
 }
 
 
-QString OutputFilter::getSourceFromDoubleColon(QString& output_line)
+QString OutputFilter::getSourceFromDoubleColon(const QString& new_output_line)
 {
+    auto output_line{new_output_line};
     return output_line.remove(QString("::")).trimmed();
 }
 
 
-QString OutputFilter::getSourceFromSearchLine(QString& output_line)
+QString OutputFilter::getSourceFromSearchLine(const QString& output_line)
 {
     static QRegularExpression regex(".*\\[(.*)\\].*");
     return regex.match(output_line).captured(1);
 }
 
 
-QString OutputFilter::getPackageFromSearchLine(QString& output_line)
+QString OutputFilter::getPackageFromSearchLine(const QString& output_line)
 {
     static QRegularExpression regex("^(\\S*)\\s*\\S*");
     return regex.match(output_line).captured(1);
@@ -80,7 +82,7 @@ void OutputFilter::addToList(QStringList& lines_list, const QString& line)
 }
 
 
-QStringList OutputFilter::filteredLines(QStringList& output_lines, std::function<bool (const QString&)> conditional)
+QStringList OutputFilter::filteredLines(const QStringList& output_lines, std::function<bool (const QString&)> conditional)
 {
     QFuture<QStringList> filtered_strings = QtConcurrent::filteredReduced(output_lines, conditional, addToList);
     return filtered_strings.result();

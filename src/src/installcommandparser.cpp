@@ -69,7 +69,7 @@ QStringList InstallCommandParser::retrieveInfo()
 }
 
 
-void InstallCommandParser::start(QSharedPointer<Process>& process,
+void InstallCommandParser::start(const QSharedPointer<Process>& process,
                                  uint packages_to_update)
 {
     pak_install = process;

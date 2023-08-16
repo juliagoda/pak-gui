@@ -202,7 +202,7 @@ public:
         processReadLine(line, new_task);
     }
 
-    bool askQuestion(Task new_task, QStringList new_checked_packages) override
+    bool askQuestion(Task new_task, const QStringList& new_checked_packages) override
     {
         Q_UNUSED(new_task)
         Q_UNUSED(new_checked_packages)

@@ -30,12 +30,12 @@ public:
     explicit OutputFilter() = default;
     virtual ~OutputFilter() = default;
 
-    QString filteredOutput(QString& text_output);
+    QString filteredOutput(const QString& text_output);
     QStringList filteredOutputFromInstalledPackages(const QStringList& text_output);
-    QString getSourceFromDoubleColon(QString& output_line);
-    QString getSourceFromSearchLine(QString& output_line);
-    QString getPackageFromSearchLine(QString& output_line);
-    QStringList filteredLines(QStringList& output_lines, std::function<bool(const QString&)> conditional);
+    QString getSourceFromDoubleColon(const QString& output_line);
+    QString getSourceFromSearchLine(const QString& output_line);
+    QString getPackageFromSearchLine(const QString& output_line);
+    QStringList filteredLines(const QStringList& output_lines, std::function<bool(const QString&)> conditional);
     static bool startsFromNumber(const QString& output_line);
     bool startsFromDoubleColon(const QString& output_line);
     bool isPackageLine(const QString& output_line);

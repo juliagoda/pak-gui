@@ -54,7 +54,7 @@ QString Process::yes_command = "Y";
 QString Process::no_command = "n";
 
 
-Process::Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
+Process::Process(const QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent) :
     messages_map(),
     commands_map(),
     process_map(),
@@ -208,7 +208,7 @@ void Process::updateCleanCommand(bool is_auracle_installed)
 
 
 bool Process::askQuestion(Process::Task new_task,
-                          QStringList new_checked_packages)
+                          const QStringList& new_checked_packages)
 {
     if (!getAnswer(new_task, new_checked_packages))
         return false;
@@ -240,7 +240,7 @@ void Process::startProcess(Process::Task new_task)
 }
 
 
-void Process::processReadLine(QString& line, Process::Task new_task)
+void Process::processReadLine(const QString& line, Process::Task new_task)
 {
     auto output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
     QString filtered_line = output_filter->filteredOutput(line);
@@ -255,6 +255,18 @@ void Process::connectSignals(Process::Task new_task)
     if (current_process.isNull())
         return;
 
+    QObject::connect(this, &Process::ended, this, [this]()
+    {
+        if (current_process.isNull())
+            return;
+
+        current_process->closeReadChannel(QProcess::StandardOutput);
+        current_process->closeReadChannel(QProcess::StandardError);
+        current_process->closeWriteChannel();
+        current_process->close();
+        current_process->kill();
+    });
+
     QObject::connect(current_process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
                      [this, new_task](QProcess::ProcessError process_error)
                      {
@@ -268,7 +280,6 @@ void Process::connectSignals(Process::Task new_task)
                      {
                          emit finished(new_task, exit_code, exit_status);
                          Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));
-                         current_process.clear();
                          emit ended();
                      });
 }
@@ -317,7 +328,7 @@ bool Process::isNeededAskAboutUpdate(Task new_task)
 }
 
 
-bool Process::getAnswer(Task new_task, QStringList new_checked_packages)
+bool Process::getAnswer(Task new_task, const QStringList& new_checked_packages)
 {
     int answer = QMessageBox::information(parent, messages_map.value(new_task).first,
                                           questionForm(new_checked_packages, new_task),
@@ -487,7 +498,7 @@ void Process::emitTask(Task task)
 }
 
 
-QString Process::questionForm(QStringList& new_checked_packages, Task new_task)
+QString Process::questionForm(const QStringList& new_checked_packages, Task new_task)
 {
     QString question = i18n("Are you sure you want to %1", messages_map.value(new_task).second);
 

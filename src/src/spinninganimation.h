@@ -29,23 +29,23 @@ public:
     explicit SpinningAnimation();
     virtual ~SpinningAnimation() = default;
 
-    void startOnWidget(QPointer<QLabel> label);
-    void stopOnWidget(QPointer<QLabel> label);
-    void startOnMainWidgets(QPointer<QLabel> first_label,
-                            QPointer<QLabel> second_label,
-                            QPointer<QLabel> third_label);
-    void stopOnMainWidgets(QPointer<QLabel> first_label,
-                           QPointer<QLabel> second_label,
-                           QPointer<QLabel> third_label);
+    void startOnWidget(const QPointer<QLabel>& label);
+    void stopOnWidget(const QPointer<QLabel>& label);
+    void startOnMainWidgets(const QPointer<QLabel>& first_label,
+                            const QPointer<QLabel>& second_label,
+                            const QPointer<QLabel>& third_label);
+    void stopOnMainWidgets(const QPointer<QLabel>& first_label,
+                           const QPointer<QLabel>& second_label,
+                           const QPointer<QLabel>& third_label);
     bool isAnimationRunning() const;
     bool isSmallAnimationRunning() const;
 
 public Q_SLOTS:
-    void startSmallOnWidget(QPointer<QLabel> label);
-    void stopSmallOnWidget(QPointer<QLabel> label);
+    void startSmallOnWidget(const QPointer<QLabel>& label);
+    void stopSmallOnWidget(const QPointer<QLabel>& label);
 
 private:
-    bool isValid(QSharedPointer<QMovie>& animation);
+    bool isValid(const QSharedPointer<QMovie>& animation);
 
     QSharedPointer<QMovie> animation;
     QSharedPointer<QMovie> small_animation;

@@ -63,7 +63,7 @@ Logger* Logger::logger()
 }
 
 
-void Logger::writeToFile(QString& text, WriteOperations section)
+void Logger::writeToFile(const QString& text, WriteOperations section)
 {
     appendSection(section);
     appendNewLine();
@@ -106,7 +106,7 @@ void Logger::writeSectionToFile(WriteOperations section)
 }
 
 
-void Logger::writeLineToFile(QString& line)
+void Logger::writeLineToFile(const QString& line)
 {
     stream_text += output_filter->filteredOutput(line);
     appendNewLine();

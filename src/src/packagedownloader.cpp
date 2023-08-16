@@ -40,7 +40,7 @@ void PackageDownloader::handle()
 }
 
 
-PackageInput::PackageInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
+PackageInput::PackageInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
     PackageDownloader(),
     package_input_window(nullptr),
     download_command_parser(new_download_command_parser)
@@ -78,7 +78,7 @@ void PackageInput::closeWindow()
 }
 
 
-PathsChoiceInput::PathsChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
+PathsChoiceInput::PathsChoiceInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
     PackageDownloader(),
     download_command_parser(new_download_command_parser),
     choice_window(nullptr)
@@ -91,7 +91,7 @@ void PathsChoiceInput::handle()
 {
     choice_window.reset(new ChoiceWindow(i18n("Choose path for package save")));
     connect(download_command_parser.get(), &DownloadCommandParser::continuePathsRetrieve, choice_window.get(),
-            QOverload<QString&>::of(&ChoiceWindow::fillComboBox));
+            QOverload<const QString&>::of(&ChoiceWindow::fillComboBox));
     download_command_parser->start();
     connect(choice_window.data(), QOverload<int>::of(&ChoiceWindow::choiceDefined), [this](int new_index)
     {
@@ -111,7 +111,7 @@ void PathsChoiceInput::handle()
 }
 
 
-ReposChoiceInput::ReposChoiceInput(QSharedPointer<DownloadCommandParser> &new_download_command_parser) :
+ReposChoiceInput::ReposChoiceInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
     PackageDownloader(),
     download_command_parser(new_download_command_parser),
     choice_window(nullptr)
@@ -124,7 +124,7 @@ void ReposChoiceInput::handle()
 {
     choice_window.reset(new ChoiceWindow(i18n("Choose repo for package download")));
     connect(download_command_parser.get(), &DownloadCommandParser::continueReposRetrieve, choice_window.get(),
-            QOverload<QString&>::of(&ChoiceWindow::fillComboBox));
+            QOverload<const QString&>::of(&ChoiceWindow::fillComboBox));
     connect(choice_window.data(), QOverload<int>::of(&ChoiceWindow::choiceDefined), [this](int new_index)
     {
         emit acceptedChoice();

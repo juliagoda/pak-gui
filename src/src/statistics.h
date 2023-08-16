@@ -43,7 +43,7 @@ private:
     QMap<QString, uint> statistics_map;
     QPointer<QtCharts::QPieSlice> last_pie_slice;
 
-    void createSeries(QPointer<QtCharts::QPieSeries>& pie_series);
+    void createSeries(const QPointer<QtCharts::QPieSeries>& pie_series);
     void createAlternateLabel();
 
 };

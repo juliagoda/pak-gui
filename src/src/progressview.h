@@ -35,7 +35,7 @@ public:
     ~ProgressView() override;
 
     void addProgressView(QWidget* progress_view);
-    void createSignals(Process::Task task, QSharedPointer<Process> process);
+    void createSignals(Process::Task task, const QSharedPointer<Process>& process);
     void removeProgressView(QWidget* progress_view);
     int tabsCount();
 

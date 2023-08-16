@@ -24,7 +24,6 @@
 #include "choicewindow.h"
 
 #include "process.h"
-#include "qscopedpointer.h"
 #include "src/outputfilter.h"
 
 #include <QString>
@@ -68,7 +67,7 @@ class PackageSearchInput : public PackageSearch
     Q_OBJECT
 
 public:
-    PackageSearchInput(QSharedPointer<InstallCommandParser>& new_install_command_parser);
+    PackageSearchInput(const QSharedPointer<InstallCommandParser>& new_install_command_parser);
 
     void handle() override;
 
@@ -86,8 +85,8 @@ class SearchResultsList : public PackageSearch
     Q_OBJECT
 
 public:
-    SearchResultsList(QSharedPointer<InstallCommandParser>& new_install_command_parser,
-                      QSharedPointer<Process>& new_process,
+    SearchResultsList(const QSharedPointer<InstallCommandParser>& new_install_command_parser,
+                      const QSharedPointer<Process>& new_process,
                       uint packages_to_update_count);
 
     void handle() override;

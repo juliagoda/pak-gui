@@ -65,7 +65,7 @@ class PackageInput : public PackageDownloader
     Q_OBJECT
 
  public:
-    PackageInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
+    PackageInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
     void handle() override;
 
@@ -83,7 +83,7 @@ class PathsChoiceInput : public PackageDownloader
     Q_OBJECT
 
  public:
-    PathsChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
+    PathsChoiceInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
     void handle() override;
 
@@ -98,7 +98,7 @@ class ReposChoiceInput : public PackageDownloader
     Q_OBJECT
 
  public:
-    ReposChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser);
+    ReposChoiceInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser);
 
     void handle() override;
 

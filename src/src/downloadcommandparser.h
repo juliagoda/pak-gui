@@ -48,8 +48,8 @@ protected:
     bool isPackageAlreadyDownloaded();
 
 Q_SIGNALS:
-    void continuePathsRetrieve(QString& output);
-    void continueReposRetrieve(QString& output);
+    void continuePathsRetrieve(const QString& output);
+    void continueReposRetrieve(const QString& output);
     void ended();
 
 protected Q_SLOTS:

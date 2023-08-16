@@ -26,7 +26,7 @@ MockInstallCommandParser::MockInstallCommandParser() :
 }
 
 
-void MockInstallCommandParser::start(QSharedPointer<Process> &process,
+void MockInstallCommandParser::start(const QSharedPointer<Process>& process,
                                      uint packages_to_update)
 {
    // ...

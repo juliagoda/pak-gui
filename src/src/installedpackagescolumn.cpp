@@ -39,7 +39,7 @@ InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget,
         return;
 
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
-                     [&](const QString& text) { packages_sorter->sortPackagesByText<QiPackage>(text, QiPackage{""}); });
+        [&](const QString& text) { packages_sorter->sortPackagesByText<QiPackage>(text, QiPackage{""}); });
 }
 
 
@@ -52,6 +52,9 @@ QStringList InstalledPackagesColumn::getPackagesList()
 
 void InstalledPackagesColumn::clearPackages()
 {
+    if (!list_widget)
+        return;
+
     while (list_widget->item(0))
         delete dynamic_cast<QiPackage*>(list_widget->takeItem(0));
 

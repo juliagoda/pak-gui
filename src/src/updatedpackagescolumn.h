@@ -34,10 +34,12 @@ public:
                           QLineEdit* new_search_lineedit,
                           QCheckBox* new_reverse_sort_checkbox,
                           QWidget* new_parent);
+   ~UpdatedPackagesColumn() override = default;
     uint getCurrentPackagesCount() const;
     void fill() override;
     void clearForSort();
     void fillForSort();
+    void clearPackages();
 
 public Q_SLOTS:
     void toggleAllPackages(bool is_all_checked);
@@ -50,11 +52,10 @@ signals:
     void currentPackagesCountChanged(int new_current_packages_count);
     void chosenUpdateAll();
     void chosenUncheckSidePackages();
-    void preparedList(QStringList packages, Process::Task, uint aur_checked_packages);
+    void preparedList(const QStringList& packages, Process::Task, uint aur_checked_packages);
 
 private:
     void updatePackagesCount(uint new_current_packages_count);
-    void clearPackages();
 
     template<int> void runAfterChoice();
 

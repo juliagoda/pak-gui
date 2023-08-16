@@ -32,11 +32,11 @@ class Sorter : public QObject
 public:
     Sorter(QListWidget* list_widgets,
            QCheckBox* new_reverse_sort_checkbox);
-    ~Sorter() override = default;
+    ~Sorter() override;
 
     void resetOriginalList();
     bool isOriginalListEmpty() const;
-    QList<QListWidgetItem*> listWidget() { return untouched_list_widget; }
+    const QList<QListWidgetItem*>& listWidget() { return untouched_list_widget; }
 
     template <typename T>
     void sortPackagesByText(const QString& text, T emptyPackage);

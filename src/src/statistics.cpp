@@ -77,7 +77,7 @@ void Statistics::updateSlice(QtCharts::QPieSlice* pie_slice)
 }
 
 
-void Statistics::createSeries(QPointer<QtCharts::QPieSeries>& pie_series)
+void Statistics::createSeries(const QPointer<QtCharts::QPieSeries>& pie_series)
 {
    QMap<QString, uint>::iterator it;
    for (it = statistics_map.begin(); it != statistics_map.end(); it++)

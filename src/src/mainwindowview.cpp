@@ -78,6 +78,10 @@ MainWindowView::MainWindowView(QWidget *parent)
 
 MainWindowView::~MainWindowView()
 {
+    available_packages_column->clearPackages();
+    installed_packages_column->clearPackages();
+    updated_packages_column->clearPackages();
+
     if (!internet_connection_timer.isNull())
     {
         internet_connection_timer->stop();
@@ -86,13 +90,13 @@ MainWindowView::~MainWindowView()
 }
 
 
-void MainWindowView::setProcess(QSharedPointer<Process> new_process)
+void MainWindowView::setProcess(const QSharedPointer<Process>& new_process)
 {
     process = new_process;
 }
 
 
-void MainWindowView::setActionsAccessChecker(QSharedPointer<ActionsAccessChecker> new_actions_access_checker)
+void MainWindowView::setActionsAccessChecker(const QSharedPointer<ActionsAccessChecker>& new_actions_access_checker)
 {
     actions_access_checker = new_actions_access_checker;
 }

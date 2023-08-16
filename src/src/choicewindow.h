@@ -39,14 +39,14 @@ public:
 
 public Q_SLOTS:
     void toggleOkButton(int new_index);
-    void fillComboBox(QString& output);
-    void fillComboBox(QStringList output_list);
+    void fillComboBox(const QString& output);
+    void fillComboBox(const QStringList& output_list);
 
 protected Q_SLOTS:
     void showNoResults();
 
 signals:
-    bool choiceDefined(QString choice);
+    bool choiceDefined(const QString& choice);
     bool choiceDefined(int new_index);
     void filledOptionsBox();
     void cancelled();

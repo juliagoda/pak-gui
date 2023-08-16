@@ -40,7 +40,7 @@ AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget,
         return;
 
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
-                     [&](const QString& text) { packages_sorter->sortPackagesByText<SiPackage>(text, SiPackage{""}); });
+        [&](const QString& text) { packages_sorter->sortPackagesByText<SiPackage>(text, SiPackage{""}); });
 }
 
 
@@ -53,6 +53,9 @@ QStringList AvailablePackagesColumn::getPackagesList()
 
 void AvailablePackagesColumn::clearPackages()
 {
+    if (!list_widget)
+        return;
+
     while (list_widget->item(0))
         delete dynamic_cast<SiPackage*>(list_widget->takeItem(0));
 

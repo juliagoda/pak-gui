@@ -45,7 +45,7 @@ UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
         return;
 
     QObject::connect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(),
-                     [&](const QString& text) { packages_sorter->sortPackagesByText<CheckPackage>(text, CheckPackage{"", Package::Source::Unknown}); });
+        [&](const QString& text) { packages_sorter->sortPackagesByText<CheckPackage>(text, CheckPackage{"", Package::Source::Unknown}); });
 }
 
 
@@ -168,6 +168,9 @@ void UpdatedPackagesColumn::updatePackagesCount(uint new_current_packages_count)
 
 void UpdatedPackagesColumn::clearPackages()
 {
+    if (!list_widget)
+        return;
+
     while (list_widget->item(0))
         delete dynamic_cast<CheckPackage*>(list_widget->takeItem(0));
 

@@ -37,7 +37,7 @@ public:
     void updateTask(const QString& source_name);
     QString getPackageName();
     QStringList retrieveInfo() override;
-    virtual void start(QSharedPointer<Process>& process,
+    virtual void start(const QSharedPointer<Process>& process,
                        uint packages_to_update = 0);
     void stop();
 

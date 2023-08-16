@@ -177,9 +177,10 @@ bool ActionsAccessChecker::existsPackageByPromptVersion(const QString& package_n
         return false;
 
     pak_download->start("/bin/bash", QStringList() << "-c" << package_name.trimmed() + " --version");
-    pak_download->waitForStarted(-1);
-    pak_download->waitForFinished(-1);
+    pak_download->waitForStarted(2000);
+    pak_download->waitForFinished(2000);
     auto result = QString::fromUtf8(pak_download->readAll());
+    pak_download->kill();
     return result.contains(QRegExp(package_name + "\\s+\\d+.*"));
 }
 

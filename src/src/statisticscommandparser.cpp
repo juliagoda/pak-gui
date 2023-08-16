@@ -55,11 +55,13 @@ QString StatisticsCommandParser::generateResult()
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -L");
     pacman_qi->waitForStarted(-1);
     pacman_qi->waitForFinished(-1);
-    return QString::fromUtf8(pacman_qi->readAll());
+    auto result = QString::fromUtf8(pacman_qi->readAll());
+    clearAfterExecution(pacman_qi);
+    return result;
 }
 
 
-QMap<QString, uint> StatisticsCommandParser::convertToMap(QStringList& retrievedInfos)
+QMap<QString, uint> StatisticsCommandParser::convertToMap(const QStringList& retrievedInfos)
 {
     QMap<QString, uint> retrievedInfoMap;
     std::for_each(retrievedInfos.begin(), retrievedInfos.end(), [&retrievedInfoMap](const QString& retrievedInfo)

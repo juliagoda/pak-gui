@@ -39,7 +39,7 @@ public:
     ~Settings() override = default;
 
     static void saveInitDateTimesWhenEmpty();
-    static QSharedPointer<SettingsRecords> records();
+    static const QSharedPointer<SettingsRecords>& records();
     static void saveInitDateTime(const QString& operation_name);
     static void clearRecords();
 

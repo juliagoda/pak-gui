@@ -29,9 +29,9 @@ SpinningAnimation::SpinningAnimation() :
 }
 
 
-void SpinningAnimation::startOnMainWidgets(QPointer<QLabel> first_label,
-                                           QPointer<QLabel> second_label,
-                                           QPointer<QLabel> third_label)
+void SpinningAnimation::startOnMainWidgets(const QPointer<QLabel>& first_label,
+                                           const QPointer<QLabel>& second_label,
+                                           const QPointer<QLabel>& third_label)
 {
     if (!isValid(animation))
         return;
@@ -47,9 +47,9 @@ void SpinningAnimation::startOnMainWidgets(QPointer<QLabel> first_label,
 }
 
 
-void SpinningAnimation::stopOnMainWidgets(QPointer<QLabel> first_label,
-                                          QPointer<QLabel> second_label,
-                                          QPointer<QLabel> third_label)
+void SpinningAnimation::stopOnMainWidgets(const QPointer<QLabel>& first_label,
+                                          const QPointer<QLabel>& second_label,
+                                          const QPointer<QLabel>& third_label)
 {
     if (!isValid(animation))
         return;
@@ -74,7 +74,7 @@ bool SpinningAnimation::isSmallAnimationRunning() const
 }
 
 
-void SpinningAnimation::startOnWidget(QPointer<QLabel> label)
+void SpinningAnimation::startOnWidget(const QPointer<QLabel>& label)
 {
     if (!isValid(animation))
         return;
@@ -86,7 +86,7 @@ void SpinningAnimation::startOnWidget(QPointer<QLabel> label)
 }
 
 
-void SpinningAnimation::stopOnWidget(QPointer<QLabel> label)
+void SpinningAnimation::stopOnWidget(const QPointer<QLabel>& label)
 {
     if (!isValid(animation))
         return;
@@ -97,7 +97,7 @@ void SpinningAnimation::stopOnWidget(QPointer<QLabel> label)
 }
 
 
-void SpinningAnimation::startSmallOnWidget(QPointer<QLabel> label)
+void SpinningAnimation::startSmallOnWidget(const QPointer<QLabel>& label)
 {
     if (!isValid(small_animation))
         return;
@@ -109,7 +109,7 @@ void SpinningAnimation::startSmallOnWidget(QPointer<QLabel> label)
 }
 
 
-void SpinningAnimation::stopSmallOnWidget(QPointer<QLabel> label)
+void SpinningAnimation::stopSmallOnWidget(const QPointer<QLabel>& label)
 {
     if (!isValid(small_animation))
         return;
@@ -120,7 +120,7 @@ void SpinningAnimation::stopSmallOnWidget(QPointer<QLabel> label)
 }
 
 
-bool SpinningAnimation::isValid(QSharedPointer<QMovie>& animation)
+bool SpinningAnimation::isValid(const QSharedPointer<QMovie>& animation)
 {
     if (animation.isNull())
     {

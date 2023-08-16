@@ -53,7 +53,7 @@ public:
     };
     Q_ENUM(Task)
 
-    Process(QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent);
+    explicit Process(const QSharedPointer<ActionsAccessChecker>& new_actions_access_checker, QWidget* new_parent);
     ~Process() override = default;
 
     bool preparedBeforeRun(Process::Task new_task, QStringList new_checked_packages = QStringList());
@@ -66,8 +66,8 @@ public:
 
 protected:
     virtual void startProcess(Task new_task);
-    virtual bool askQuestion(Task new_task, QStringList new_checked_packages);
-    void processReadLine(QString& line, Process::Task new_task);
+    virtual bool askQuestion(Task new_task, const QStringList& new_checked_packages);
+    void processReadLine(const QString& line, Process::Task new_task);
 
 private Q_SLOTS:
     void updateCleanCommand(bool is_auracle_installed);
@@ -89,11 +89,11 @@ private:
     void updateMaps(QStringList& checked_packages);
     void prepareMapsForNextTask();
     void emitTask(Process::Task task);
-    QString questionForm(QStringList& new_checked_packages, Task new_task);
+    QString questionForm(const QStringList& new_checked_packages, Task new_task);
     void connectSignals(Task new_task);
     void connectReadyReadStandardOutput(Task new_task);
     bool isNeededAskAboutUpdate(Task new_task);
-    bool getAnswer(Process::Task new_task, QStringList new_checked_packages);
+    bool getAnswer(Process::Task new_task, const QStringList& new_checked_packages);
     void updateCurrentCommandForUpdate(Process::Task new_task);
     void replaceAutoAcceptationForTask(Process::Task new_task, const QString& original_form, const QString& acceptation_form);
     void removeAutoAcceptationFromCommand(Process::Task new_task);

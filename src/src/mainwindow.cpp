@@ -46,6 +46,9 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
+    timer_on_logs.stop();
+    timer_on_updates.stop();
+
     delete update_action;
     delete refresh_action;
     delete download_action;
@@ -113,7 +116,7 @@ void MainWindow::prepareMainWindowView(MainWindowView* main_window_view)
 }
 
 
-void MainWindow::prepareProcess(QSharedPointer<Process> new_process)
+void MainWindow::prepareProcess(const QSharedPointer<Process>& new_process)
 {
     process = new_process;
 }
@@ -168,9 +171,9 @@ void MainWindow::startTimerOnOperation(const QDateTime& time, QTimer& timer,
 
 
 void MainWindow::setAction(QPointer<QAction>& action,
-                           QString text,
-                           QString icon,
-                           QKeySequence key_sequence)
+                           const QString& text,
+                           const QString& icon,
+                           const QKeySequence& key_sequence)
 {
     action = new QAction(this);
     action->setText(text);

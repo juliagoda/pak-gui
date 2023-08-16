@@ -43,7 +43,7 @@ void PackageSearch::handle()
 
 
 
-PackageSearchInput::PackageSearchInput(QSharedPointer<InstallCommandParser>& new_install_command_parser) :
+PackageSearchInput::PackageSearchInput(const QSharedPointer<InstallCommandParser>& new_install_command_parser) :
     PackageSearch(),
     install_command_parser(new_install_command_parser),
     package_input_window(nullptr)
@@ -81,8 +81,8 @@ void PackageSearchInput::closeWindow()
 }
 
 
-SearchResultsList::SearchResultsList(QSharedPointer<InstallCommandParser>& new_install_command_parser,
-                                     QSharedPointer<Process>& new_process,
+SearchResultsList::SearchResultsList(const QSharedPointer<InstallCommandParser>& new_install_command_parser,
+                                     const QSharedPointer<Process>& new_process,
                                      uint packages_to_update_count) :
     PackageSearch(),
     install_command_parser(new_install_command_parser),
@@ -102,9 +102,9 @@ void SearchResultsList::handle()
 
     choice_window.reset(new ChoiceWindow(tr("Choose package")));
     connect(search_all_command_parser.get(), &SearchAllCommandParser::searchEnded, choice_window.get(),
-            QOverload<QStringList>::of(&ChoiceWindow::fillComboBox));
+            QOverload<const QStringList&>::of(&ChoiceWindow::fillComboBox));
     search_all_command_parser->retrieveInfo();
-    connect(choice_window.get(), QOverload<QString>::of(&ChoiceWindow::choiceDefined), [this](QString chosen_package)
+    connect(choice_window.get(), QOverload<const QString&>::of(&ChoiceWindow::choiceDefined), [this](const QString& chosen_package)
     {
         emit acceptedChoice();
         install_command_parser->updateTask(output_filter->getSourceFromSearchLine(chosen_package));

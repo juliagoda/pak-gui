@@ -39,12 +39,12 @@ public:
     void fill() override;
     void clearForSort();
     void fillForSort();
+    void clearPackages();
 
 protected:
     virtual QStringList getPackagesList();
 
 private:
-    void clearPackages();
     static QMutex mutex;
 
 };

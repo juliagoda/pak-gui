@@ -45,7 +45,11 @@ QStringList SearchAllCommandParser::retrieveInfo()
     Logger::logger()->logInfo(QStringLiteral("Trying search package: %1 everywhere").arg(package_name));
     Logger::logger()->writeSectionToFile(Logger::WriteOperations::SearchAll);
     QObject::connect(pak_search.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &SearchAllCommandParser::finishProcess);
-    QObject::connect(pak_search.get(), &QProcess::errorOccurred, [this](QProcess::ProcessError /*error*/) { showError(pak_search->errorString()); });
+    QObject::connect(pak_search.get(), &QProcess::errorOccurred, [this](QProcess::ProcessError /*error*/)
+    {
+        showError(pak_search->errorString());
+        clearAfterExecution(pak_search);
+    });
 
     QObject::connect(pak_search.get(), &QProcess::readyReadStandardOutput, [current_source_line, this]() mutable
     {
@@ -64,6 +68,7 @@ void SearchAllCommandParser::finishProcess(int /*exit_code*/, QProcess::ExitStat
 {
     Logger::logger()->logInfo(QStringLiteral("Found %1 sources during package search").arg(packages_lines.count()));
     emit searchEnded(packages_lines);
+    clearAfterExecution(pak_search);
 }
 
 
@@ -73,7 +78,7 @@ void SearchAllCommandParser::showError(const QString& errorString)
 }
 
 
-void SearchAllCommandParser::processReadLine(QString& line, QString& current_source_line)
+void SearchAllCommandParser::processReadLine(const QString& line, QString& current_source_line)
 {
     auto filtered_line = output_filter->filteredOutput(line).remove("\n");
     Logger::logger()->writeLineToFile(filtered_line);
@@ -92,5 +97,5 @@ void SearchAllCommandParser::processReadLine(QString& line, QString& current_sou
 void SearchAllCommandParser::stop()
 {
     Logger::logger()->logInfo(QStringLiteral("Stop of package search"));
-    pak_search->terminate();
+    clearAfterExecution(pak_search);
 }

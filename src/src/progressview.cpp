@@ -49,7 +49,7 @@ void ProgressView::addProgressView(QWidget* progress_view)
 }
 
 
-void ProgressView::createSignals(Process::Task task, QSharedPointer<Process> new_process)
+void ProgressView::createSignals(Process::Task task, const QSharedPointer<Process>& new_process)
 {
     process = new_process;
     auto task_text = QVariant::fromValue(task).toString().toLower();

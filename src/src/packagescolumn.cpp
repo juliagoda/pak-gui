@@ -57,7 +57,7 @@ void PackagesColumn::clear()
 }
 
 
-std::deque<Package*> PackagesColumn::getCheckedPackagesList() const
+const std::deque<Package*>& PackagesColumn::getCheckedPackagesList() const
 {
     return checked_packages_list;
 }

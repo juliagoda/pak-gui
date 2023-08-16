@@ -39,12 +39,12 @@ public:
                    QLineEdit* new_search_lineedit,
                    QCheckBox* new_reverse_sort_checkbox,
                    QWidget* new_parent);
-    ~PackagesColumn() override = default;
+    virtual ~PackagesColumn() override = default;
 
     virtual void fill();
     virtual void clear();
 
-    std::deque<Package*> getCheckedPackagesList() const;
+    const std::deque<Package*>& getCheckedPackagesList() const;
     QStringList getCheckedPackagesStringList();
     uint getAurPackagesCount() const;
 

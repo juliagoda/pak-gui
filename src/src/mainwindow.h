@@ -60,7 +60,7 @@ signals:
 
 protected:
     void prepareMainWindowView(MainWindowView* new_main_window_view);
-    void prepareProcess(QSharedPointer<Process> new_process);
+    void prepareProcess(const QSharedPointer<Process>& new_process);
     void initSignals();
     virtual void connectSignalForUpdateCheck();
     virtual void connectSignalForHistoryStore();
@@ -88,9 +88,9 @@ private:
                                int time_limit_in_milliseconds,
                                const QString& operation);
     void setAction(QPointer<QAction>& action,
-                   QString text,
-                   QString icon,
-                   QKeySequence key_sequence);
+                   const QString& text,
+                   const QString& icon,
+                   const QKeySequence& key_sequence);
 
     bool initEnded = false;
 

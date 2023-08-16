@@ -40,7 +40,7 @@ Settings::Settings(MainWindow* main_window) :
 }
 
 
-QSharedPointer<SettingsRecords> Settings::records()
+const QSharedPointer<SettingsRecords>& Settings::records()
 {
     if (settings_records.isNull())
         settings_records.reset(new SettingsRecords);

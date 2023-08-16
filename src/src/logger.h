@@ -56,9 +56,9 @@ public:
     Logger(Logger& instance) = delete;
 
     void operator=(const Logger& instance) = delete;
-    void writeToFile(QString& text, WriteOperations section);
+    void writeToFile(const QString& text, WriteOperations section);
     void writeSectionToFile(WriteOperations section);
-    void writeLineToFile(QString& line);
+    void writeLineToFile(const QString& line);
     void logInfo(const QString& text);
     void logWarning(const QString& text);
     void logFatal(const QString& text);

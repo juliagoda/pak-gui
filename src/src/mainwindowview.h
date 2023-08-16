@@ -59,8 +59,8 @@ public:
     explicit MainWindowView(QWidget* parent = nullptr);
     ~MainWindowView() override;
 
-    void setProcess(QSharedPointer<Process> new_process);
-    void setActionsAccessChecker(QSharedPointer<ActionsAccessChecker> new_actions_access_checker);
+    void setProcess(const QSharedPointer<Process>& new_process);
+    void setActionsAccessChecker(const QSharedPointer<ActionsAccessChecker>& new_actions_access_checker);
     void init();
     virtual void run();
     void preparePreviews();
@@ -114,7 +114,7 @@ private:
     void addInputWidgets(QVBoxLayout*& vbox_layout,
                          QWidget*& scroll_area_widget_contents,
                          const QString& text);
-    void stopRunningThread(QSharedPointer<QThread> &thread);
+    void stopRunningThread(QSharedPointer<QThread>& thread);
     void setTimerOnActionsAccessChecker();
     void startCheckTimer(QPointer<QTimer> timer, int miliseconds, const QString& timer_type);
     void connectSignals();

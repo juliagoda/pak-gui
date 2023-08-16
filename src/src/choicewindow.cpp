@@ -58,7 +58,7 @@ void ChoiceWindow::toggleOkButton(int new_index)
 }
 
 
-void ChoiceWindow::fillComboBox(QString& output)
+void ChoiceWindow::fillComboBox(const QString& output)
 {
     QString result_output{output};
     result_output = output_filter->filteredOutput(result_output);
@@ -73,7 +73,7 @@ void ChoiceWindow::fillComboBox(QString& output)
 }
 
 
-void ChoiceWindow::fillComboBox(QStringList output_list)
+void ChoiceWindow::fillComboBox(const QStringList& output_list)
 {
     m_ui.choice_combo_box->clear();
     m_ui.choice_combo_box->addItems(output_filter->filteredOutputFromInstalledPackages(output_list));
