@@ -140,7 +140,12 @@ void MainWindowView::run()
             available_packages_thread->start(QThread::NormalPriority);
             installed_packages_thread->quit();
             available_packages_thread->quit();
+
+            QObject::disconnect(available_packages_thread, &QThread::started, this, nullptr);
+            QObject::disconnect(installed_packages_thread, &QThread::started, this, nullptr);
             QObject::disconnect(&threads_timer, &QTimer::timeout, this, nullptr);
+            available_packages_thread->terminate();
+            installed_packages_thread->terminate();
         });
 
     threads_timer.start(3000);

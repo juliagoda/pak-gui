@@ -133,7 +133,7 @@ bool Package::operator<(const QListWidgetItem& other) const
 
 void Package::updateData(const QString& package_content, int name_line, int version_line)
 {
-    QStringList lines = package_content.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
+    const QStringList& lines = package_content.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
 
     if (lines.count() == 0)
         return;
@@ -172,7 +172,7 @@ void Package::setToolTipOnPackage(const QString& text)
 
     QScopedPointer<Algorithms> algorithms(new Algorithms);
     QString splitting_text{" : "};
-    auto results = algorithms->createSplittedList<Package::TooltipLine>(text, splitting_text,
+    const auto& results = algorithms->createSplittedList<Package::TooltipLine>(text, splitting_text,
         selected_info_list, Constants::typePackageToTooltipLines(getType()));
 
     setToolTip(results.join(QString("\n")));

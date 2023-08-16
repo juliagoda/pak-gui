@@ -46,7 +46,7 @@ InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget,
 QStringList InstalledPackagesColumn::getPackagesList()
 {
     QScopedPointer<QiCommandParser> command_parser(new QiCommandParser);
-    return command_parser.data()->retrieveInfo();
+    return command_parser->retrieveInfo();
 }
 
 
@@ -70,7 +70,7 @@ void InstalledPackagesColumn::fill()
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
     clearPackages();
     Q_ASSERT(list_widget->count() == 0);
-    QStringList pak_packages = getPackagesList();
+    const QStringList& pak_packages = getPackagesList();
     int i = 0;
 
     std::for_each(pak_packages.begin(), pak_packages.end(), [this, &i](const QString& package)

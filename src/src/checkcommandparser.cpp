@@ -43,6 +43,7 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
 
     QHash<QString, Package::Source> system_packages;
     QStringList output_list{output.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts)};
+    output.clear();
     QStringListIterator it{output_list};
     processLines(system_packages, it);
 
@@ -52,7 +53,7 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
 
 QString CheckCommandParser::generatePakCheckResults()
 {
-    pacman_check.reset(new QProcess(this), &QObject::deleteLater);
+    QScopedPointer<QProcess> pacman_check(new QProcess(this));
     pacman_check->setProcessChannelMode(QProcess::MergedChannels);
     pacman_check->start("/bin/bash", QStringList() << "-c" << "pak -C");
     pacman_check->waitForStarted(-1);

@@ -69,12 +69,12 @@ void UpdatedPackagesColumn::fill()
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
     clearPackages();
     Q_ASSERT(list_widget->count() == 0);
-    auto pak_packages = getPackagesList();
+    const auto& pak_packages = getPackagesList();
     updatePackagesCount(pak_packages.count());
-    decltype(pak_packages)::iterator it = pak_packages.begin();
+    QHash<QString, Package::Source>::const_iterator it = pak_packages.cbegin();
     int i = 0;
 
-    for (;it != pak_packages.end(); it++)
+    for (;it != pak_packages.cend(); it++)
     {
         if ((it.key()).count("=>") > 1)
         {

@@ -47,7 +47,7 @@ AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget,
 QStringList AvailablePackagesColumn::getPackagesList()
 {
     QScopedPointer<SiCommandParser> command_parser(new SiCommandParser);
-    return command_parser.data()->retrieveInfo();
+    return command_parser->retrieveInfo();
 }
 
 
@@ -71,12 +71,12 @@ void AvailablePackagesColumn::fill()
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
     clearPackages();
     Q_ASSERT(list_widget->count() == 0);
-    QStringList pak_packages = getPackagesList();
+    const QStringList& pak_packages = getPackagesList();
     int i = 0;
 
     std::for_each(pak_packages.begin(), pak_packages.end(), [this, &i](const QString& package)
     {
-        auto package_item = new SiPackage(package);
+        SiPackage* package_item = new SiPackage(package);
         package_item->setNo(i+1);
         Q_ASSERT(package_item != nullptr);
         Q_ASSERT(list_widget != nullptr);

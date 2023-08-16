@@ -30,8 +30,8 @@ QStringList SiCommandParser::retrieveInfo()
 
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckAvailable);
 
-    static QRegularExpression new_lines_expression("\n\n");
-    auto list = output.split(new_lines_expression);
+    QStringList list = output.split(QRegularExpression("\n\n"));
+    output.clear();
     if (list.last().trimmed().isEmpty())
         list.pop_back();
 
@@ -41,10 +41,10 @@ QStringList SiCommandParser::retrieveInfo()
 
 QString SiCommandParser::generateResult()
 {
-    pacman_si.reset(new QProcess(this), &QObject::deleteLater);
+    QScopedPointer<QProcess> pacman_si(new QProcess(this));
     pacman_si->setProcessChannelMode(QProcess::MergedChannels);
-    pacman_si.data()->start("/bin/bash", QStringList() << "-c" << "pak -Si");
-    pacman_si.data()->waitForStarted(-1);
+    pacman_si->start("/bin/bash", QStringList() << "-c" << "pak -Si");
+    pacman_si->waitForStarted(-1);
     pacman_si->waitForFinished(-1);
     pacman_si->closeReadChannel(QProcess::StandardOutput);
     pacman_si->closeReadChannel(QProcess::StandardError);

@@ -33,8 +33,5 @@ public:
 
 protected:
     virtual QString generateResult();
-
-private:
-    QSharedPointer<QProcess> pacman_qi = QSharedPointer<QProcess>(nullptr);
 };
 

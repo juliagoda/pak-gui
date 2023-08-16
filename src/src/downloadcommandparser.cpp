@@ -55,7 +55,7 @@ void DownloadCommandParser::connectSignals()
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
     QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::showDirectory);
     QObject::connect(pak_download.get(), &QProcess::errorOccurred, [this]() {
-        if (!isTerminated)
+      if (!isTerminated)
         Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString()));
     });
 

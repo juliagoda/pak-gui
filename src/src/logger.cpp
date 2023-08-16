@@ -39,6 +39,7 @@ Logger::Logger()
 void Logger::clearStreamText()
 {
     stream_text.clear();
+    stream_text = "";
 }
 
 
@@ -235,8 +236,7 @@ void Logger::appendNewLine()
 void Logger::logIntoFile(const QString& section, const QString& text)
 {
     QString local_time{QDateTime::currentDateTime().toLocalTime().toString()};
-    QString local_text{text};
-    stream_text += " [" + section + "]  " + output_filter->filteredOutput(local_text) + "  (" + local_time + ")\n";
+    stream_text += " [" + section + "]  " + output_filter->filteredOutput(text) + "  (" + local_time + ")\n";
 
 #ifdef RUN_TESTS
     return;

@@ -43,14 +43,13 @@ void MainWindowViewSignals::attachInputAnswerLines()
 
 void MainWindowViewSignals::attachFillColumns(QThread* available_packages_thread, QThread* installed_packages_thread)
 {
-    QObject::connect(available_packages_thread, &QThread::started, [this]() {
+    QObject::connect(available_packages_thread, &QThread::started, this, [this]() {
         main_window_view->available_packages_column->fill();
         emit main_window_view->availablePackagesFillEnded(); });
-    QObject::connect(installed_packages_thread, &QThread::started, [this]() {
+
+    QObject::connect(installed_packages_thread, &QThread::started, this, [this]() {
         main_window_view->installed_packages_column->fill();
         emit main_window_view->installedPackagesFillEnded(); });
-    QObject::connect(available_packages_thread, &QThread::finished, available_packages_thread, &QThread::deleteLater);
-    QObject::connect(installed_packages_thread, &QThread::finished, installed_packages_thread,  &QThread::deleteLater);
 }
 
 
@@ -59,8 +58,8 @@ void MainWindowViewSignals::startPackagesCheckTimer()
     if (main_window_view->actions_access_checker.isNull())
         return;
 
-    QPointer<QTimer> packages_timer = new QTimer(this);
-    connect(packages_timer, &QTimer::timeout, main_window_view->actions_access_checker.get(), &ActionsAccessChecker::checkRequiredPackages);
+    packages_timer.reset(new QTimer(this));
+    connect(packages_timer.get(), &QTimer::timeout, main_window_view->actions_access_checker.get(), &ActionsAccessChecker::checkRequiredPackages);
     packages_timer->start(8000);
     Logger::logger()->logDebug(QStringLiteral("Required packages checker started with interval %2").arg(8000));
 }
@@ -257,7 +256,8 @@ void MainWindowViewSignals::attachCheckUpdates(QThread* updated_packages_thread)
         emit main_window_view->packagesToUpdateFillEnded();
     });
 
-    QObject::connect(updated_packages_thread, &QThread::finished, updated_packages_thread, &QThread::deleteLater);
     updated_packages_thread->start(QThread::HighPriority);
     updated_packages_thread->quit();
+    QObject::disconnect(updated_packages_thread, &QThread::started, this, nullptr);
+    updated_packages_thread->terminate();
 }

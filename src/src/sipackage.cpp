@@ -106,7 +106,7 @@ QListWidgetItem* SiPackage::clone() const
 void SiPackage::updateData(const QString& package_content, int name_line, int version_line)
 {
     Package::updateData(package_content, name_line, version_line);
-    QStringList lines = package_content.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
+    const QStringList& lines = package_content.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
 
     if (lines.count() == 0)
         return;

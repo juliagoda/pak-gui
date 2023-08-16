@@ -29,7 +29,8 @@ QStringList QiCommandParser::retrieveInfo()
     QString output = generateResult();
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckInstalled);
 
-    static auto list = output.split(QRegularExpression("\n\n"));
+    auto list = output.split(QRegularExpression("\n\n"));
+    output.clear();
     if (list.last().trimmed().isEmpty())
         list.pop_back();
 
@@ -39,7 +40,7 @@ QStringList QiCommandParser::retrieveInfo()
 
 QString QiCommandParser::generateResult()
 {
-    pacman_qi.reset(new QProcess(this), &QObject::deleteLater);
+    QScopedPointer<QProcess> pacman_qi(new QProcess(this));
     pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
     pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -Qi");
     pacman_qi->waitForStarted(-1);

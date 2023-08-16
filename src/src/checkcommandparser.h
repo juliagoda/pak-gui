@@ -49,7 +49,6 @@ private:
                            const QString& filtered_line, uint &counter);
 
     QHash<uint, Package::Source> line_to_source_map;
-    QSharedPointer<QProcess> pacman_check = QSharedPointer<QProcess>(nullptr);
     QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
 };
 
