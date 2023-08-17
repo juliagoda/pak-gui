@@ -8,7 +8,7 @@ set(QT_MIN_VERSION "5.12.8")
 set(KF_MIN_VERSION "5.68.0")
 
 find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} "${CMAKE_SOURCE_DIR}/packages")
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -g -O0")
 
 include(KDEInstallDirs)
@@ -24,20 +24,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 
 find_package(Qt5Test REQUIRED)
-find_package(pak REQUIRED)
-find_package(pacman-contrib REQUIRED)
-find_package(kdesu REQUIRED)
-find_package(ksshaskpass REQUIRED)
-
-find_package(Git)
-find_package(asp)
-find_package(auracle-git)
-find_package(namcap)
-find_package(reflector)
-find_package(subversion)
-find_package(fzf)
-find_package(downgrade)
-find_package(libnotify)
 
 find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
     ConfigWidgets
@@ -54,6 +40,7 @@ qt5_add_resources(RESOURCES ${CMAKE_SOURCE_DIR}/resources/pak-gui.qrc)
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets Charts Concurrent Network)
 
 file(GLOB_RECURSE PAK_GUI_SRC ${CMAKE_SOURCE_DIR}/src/src/*.cpp)
+list(REMOVE_ITEM PAK_GUI_SRC ${CMAKE_SOURCE_DIR}/src/src/rc.cpp)
 file(GLOB_RECURSE PAK_GUI_HEADERS ${CMAKE_SOURCE_DIR}/src/src/*.h)
 file(GLOB_RECURSE PAK_GUI_UI ${CMAKE_SOURCE_DIR}/src/src/*.ui)
 kconfig_add_kcfg_files(pak-gui-src ${CMAKE_SOURCE_DIR}/src/src/pakGuiSettings.kcfgc)

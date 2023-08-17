@@ -1,5 +1,0 @@
-#!/bin/bash
-extractrc `find src/src -name \*.ui -o -name \*.rc` >> rc.cpp
-mv rc.cpp src/src
-xgettext -name `find src/src -name \*.cpp` -o resources/translations/pak-gui.pot
-rm -f src/src/rc.cpp
