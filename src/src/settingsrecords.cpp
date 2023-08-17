@@ -82,7 +82,7 @@ QString SettingsRecords::previewFontFamily()
 {
 
 #ifdef RUN_TESTS
-    return QString("Noto Sans");
+    return QString("DejaVu Sans");
 #endif
 
     return pakGuiSettings::preview_font_family();

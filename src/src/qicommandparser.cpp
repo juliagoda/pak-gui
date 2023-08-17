@@ -40,16 +40,16 @@ QStringList QiCommandParser::retrieveInfo()
 
 QString QiCommandParser::generateResult()
 {
-    QScopedPointer<QProcess> pacman_qi(new QProcess(this));
-    pacman_qi->setProcessChannelMode(QProcess::MergedChannels);
-    pacman_qi->start("/bin/bash", QStringList() << "-c" << "pak -Qi");
-    pacman_qi->waitForStarted(-1);
-    pacman_qi->waitForFinished(-1);
-    pacman_qi->closeReadChannel(QProcess::StandardOutput);
-    pacman_qi->closeReadChannel(QProcess::StandardError);
-    pacman_qi->closeWriteChannel();
-    auto result = pacman_qi->readAllStandardOutput();
-    pacman_qi->close();
-    pacman_qi->kill();
+    QProcess pacman_qi;
+    pacman_qi.setProcessChannelMode(QProcess::MergedChannels);
+    pacman_qi.start("/bin/bash", QStringList() << "-c" << "pak -Qi");
+    pacman_qi.waitForStarted(-1);
+    pacman_qi.waitForFinished(-1);
+    pacman_qi.closeReadChannel(QProcess::StandardOutput);
+    pacman_qi.closeReadChannel(QProcess::StandardError);
+    pacman_qi.closeWriteChannel();
+    auto result = pacman_qi.readAllStandardOutput();
+    pacman_qi.close();
+    pacman_qi.kill();
     return result;
 }

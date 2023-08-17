@@ -53,17 +53,17 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
 
 QString CheckCommandParser::generatePakCheckResults()
 {
-    QScopedPointer<QProcess> pacman_check(new QProcess(this));
-    pacman_check->setProcessChannelMode(QProcess::MergedChannels);
-    pacman_check->start("/bin/bash", QStringList() << "-c" << "pak -C");
-    pacman_check->waitForStarted(-1);
-    pacman_check->waitForFinished(-1);
-    pacman_check->closeReadChannel(QProcess::StandardOutput);
-    pacman_check->closeReadChannel(QProcess::StandardError);
-    pacman_check->closeWriteChannel();
-    auto result = pacman_check->readAllStandardOutput();
-    pacman_check->close();
-    pacman_check->kill();
+    QProcess pacman_check;
+    pacman_check.setProcessChannelMode(QProcess::MergedChannels);
+    pacman_check.start("/bin/bash", QStringList() << "-c" << "pak -C");
+    pacman_check.waitForStarted(-1);
+    pacman_check.waitForFinished(-1);
+    pacman_check.closeReadChannel(QProcess::StandardOutput);
+    pacman_check.closeReadChannel(QProcess::StandardError);
+    pacman_check.closeWriteChannel();
+    auto result = pacman_check.readAllStandardOutput();
+    pacman_check.close();
+    pacman_check.kill();
     return result;
 }
 

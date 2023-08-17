@@ -41,16 +41,16 @@ QStringList SiCommandParser::retrieveInfo()
 
 QString SiCommandParser::generateResult()
 {
-    QScopedPointer<QProcess> pacman_si(new QProcess(this));
-    pacman_si->setProcessChannelMode(QProcess::MergedChannels);
-    pacman_si->start("/bin/bash", QStringList() << "-c" << "pak -Si");
-    pacman_si->waitForStarted(-1);
-    pacman_si->waitForFinished(-1);
-    pacman_si->closeReadChannel(QProcess::StandardOutput);
-    pacman_si->closeReadChannel(QProcess::StandardError);
-    pacman_si->closeWriteChannel();
-    auto result = pacman_si->readAllStandardOutput();
-    pacman_si->close();
-    pacman_si->kill();
+    QProcess pacman_si;
+    pacman_si.setProcessChannelMode(QProcess::MergedChannels);
+    pacman_si.start("/bin/bash", QStringList() << "-c" << "pak -Si");
+    pacman_si.waitForStarted(-1);
+    pacman_si.waitForFinished(-1);
+    pacman_si.closeReadChannel(QProcess::StandardOutput);
+    pacman_si.closeReadChannel(QProcess::StandardError);
+    pacman_si.closeWriteChannel();
+    auto result = pacman_si.readAllStandardOutput();
+    pacman_si.close();
+    pacman_si.kill();
     return result;
 }

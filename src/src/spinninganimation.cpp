@@ -38,18 +38,13 @@ void SpinningAnimation::startOnMainWidgets(const QPointer<QLabel>& first_label,
     if (!isValid(animation))
         return;
 
-    if (!first_label->movie())
-        first_label->setMovie(animation.get());
+    restartMovie(first_label, animation);
     first_label->show();
-    if (!second_label->movie())
-        second_label->setMovie(animation2.get());
+    restartMovie(second_label, animation2);
     second_label->show();
-    if (!third_label->movie())
-        third_label->setMovie(animation3.get());
+    restartMovie(third_label, animation3);
     third_label->show();
-    animation->start();
-    animation2->start();
-    animation3->start();
+
     Logger::logger()->logDebug(QStringLiteral("Main animation started!"));
 }
 
@@ -88,10 +83,8 @@ template<> void SpinningAnimation::startOnWidget<1>(const QPointer<QLabel>& labe
     if (!isValid(animation))
         return;
 
-    if (!label->movie())
-        label->setMovie(animation.get());
+    restartMovie(label, animation);
     label->show();
-    animation->start();
     Logger::logger()->logDebug(QStringLiteral("Animation started!"));
 }
 
@@ -101,10 +94,8 @@ template<> void SpinningAnimation::startOnWidget<2>(const QPointer<QLabel>& labe
     if (!isValid(animation2))
         return;
 
-    if (!label->movie())
-        label->setMovie(animation2.get());
+    restartMovie(label, animation2);
     label->show();
-    animation2->start();
     Logger::logger()->logDebug(QStringLiteral("Animation started!"));
 }
 
@@ -114,10 +105,8 @@ template<> void SpinningAnimation::startOnWidget<3>(const QPointer<QLabel>& labe
     if (!isValid(animation3))
         return;
 
-    if (!label->movie())
-        label->setMovie(animation3.get());
+    restartMovie(label, animation3);
     label->show();
-    animation3->start();
     Logger::logger()->logDebug(QStringLiteral("Animation started!"));
 }
 
@@ -160,10 +149,8 @@ void SpinningAnimation::startSmallOnWidget(const QPointer<QLabel>& label)
     if (!isValid(small_animation))
         return;
 
-    if (!label->movie())
-        label->setMovie(small_animation.get());
+    restartMovie(label, small_animation);
     label->show();
-    small_animation->start();
     Logger::logger()->logDebug(QStringLiteral("Small animation started!"));
 }
 
@@ -188,4 +175,19 @@ bool SpinningAnimation::isValid(const QSharedPointer<QMovie>& animation)
     }
 
     return true;
+}
+
+
+void SpinningAnimation::restartMovie(const QPointer<QLabel>& label,
+                                     const QSharedPointer<QMovie>& animation)
+{
+    if (!label->movie())
+    {
+        label->setMovie(animation.get());
+        label->movie()->start();
+        return;
+    }
+
+    label->movie()->jumpToFrame(1);
+    label->movie()->start();
 }

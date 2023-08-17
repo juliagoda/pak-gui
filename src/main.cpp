@@ -53,7 +53,7 @@ int main(int argc, char **argv)
                           QStringLiteral("https://github.com/CachyOS/pak-gui"),
                           QStringLiteral("https://github.com/CachyOS/pak-gui/issues"));
 
-    aboutData.addAuthor(i18n("Jagoda \"juliagoda\" Górska"),i18n("Author"), QStringLiteral("juliagoda.pl@protonmail.com"));
+    aboutData.addAuthor("Jagoda \"juliagoda\" Górska",i18n("Author"), QStringLiteral("juliagoda.pl@protonmail.com"));
     aboutData.setOrganizationDomain("CachyOS.github.com");
     aboutData.setDesktopFileName(QStringLiteral("com.github.CachyOS.pak-gui"));
     aboutData.addLicenseTextFile("LICENSE");

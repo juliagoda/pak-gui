@@ -46,6 +46,8 @@ public Q_SLOTS:
 
 private:
     bool isValid(const QSharedPointer<QMovie>& animation);
+    void restartMovie(const QPointer<QLabel>& first_label,
+                      const QSharedPointer<QMovie>& animation);
 
     QSharedPointer<QMovie> animation;
     QSharedPointer<QMovie> animation2;
