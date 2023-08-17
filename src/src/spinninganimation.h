@@ -29,8 +29,8 @@ public:
     explicit SpinningAnimation();
     virtual ~SpinningAnimation() = default;
 
-    void startOnWidget(const QPointer<QLabel>& label);
-    void stopOnWidget(const QPointer<QLabel>& label);
+    template<int> void startOnWidget(const QPointer<QLabel>& label);
+    template<int> void stopOnWidget(const QPointer<QLabel>& label);
     void startOnMainWidgets(const QPointer<QLabel>& first_label,
                             const QPointer<QLabel>& second_label,
                             const QPointer<QLabel>& third_label);
@@ -48,6 +48,8 @@ private:
     bool isValid(const QSharedPointer<QMovie>& animation);
 
     QSharedPointer<QMovie> animation;
+    QSharedPointer<QMovie> animation2;
+    QSharedPointer<QMovie> animation3;
     QSharedPointer<QMovie> small_animation;
 };
 

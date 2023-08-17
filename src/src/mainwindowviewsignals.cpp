@@ -22,6 +22,8 @@
 #include "settings.h"
 #include "logger.h"
 
+#include <QtConcurrent/QtConcurrent>
+
 
 MainWindowViewSignals::MainWindowViewSignals(MainWindowView* main_window_view) :
     main_window_view(main_window_view)
@@ -41,13 +43,13 @@ void MainWindowViewSignals::attachInputAnswerLines()
 }
 
 
-void MainWindowViewSignals::attachFillColumns(QThread* available_packages_thread, QThread* installed_packages_thread)
+void MainWindowViewSignals::attachFillColumns()
 {
-    QObject::connect(available_packages_thread, &QThread::started, this, [this]() {
+    QtConcurrent::run([this]() {
         main_window_view->available_packages_column->fill();
         emit main_window_view->availablePackagesFillEnded(); });
 
-    QObject::connect(installed_packages_thread, &QThread::started, this, [this]() {
+    QtConcurrent::run([this]() {
         main_window_view->installed_packages_column->fill();
         emit main_window_view->installedPackagesFillEnded(); });
 }
@@ -248,16 +250,11 @@ void MainWindowViewSignals::initColumns()
 }
 
 
-void MainWindowViewSignals::attachCheckUpdates(QThread* updated_packages_thread)
+void MainWindowViewSignals::attachCheckUpdates()
 {
-    QObject::connect(updated_packages_thread, &QThread::started, [this]()
+    QtConcurrent::run([this]()
     {
         main_window_view->updated_packages_column->fill();
         emit main_window_view->packagesToUpdateFillEnded();
     });
-
-    updated_packages_thread->start(QThread::HighPriority);
-    updated_packages_thread->quit();
-    QObject::disconnect(updated_packages_thread, &QThread::started, this, nullptr);
-    updated_packages_thread->terminate();
 }

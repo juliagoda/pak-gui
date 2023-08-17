@@ -23,6 +23,8 @@
 
 SpinningAnimation::SpinningAnimation() :
     animation(new QMovie(":/waiting.gif"), &QObject::deleteLater),
+    animation2(new QMovie(":/waiting.gif"), &QObject::deleteLater),
+    animation3(new QMovie(":/waiting.gif"), &QObject::deleteLater),
     small_animation(new QMovie(":/waiting-small.gif"), &QObject::deleteLater)
 {
    // ...
@@ -40,12 +42,14 @@ void SpinningAnimation::startOnMainWidgets(const QPointer<QLabel>& first_label,
         first_label->setMovie(animation.get());
     first_label->show();
     if (!second_label->movie())
-        second_label->setMovie(animation.get());
+        second_label->setMovie(animation2.get());
     second_label->show();
     if (!third_label->movie())
-        third_label->setMovie(animation.get());
+        third_label->setMovie(animation3.get());
     third_label->show();
     animation->start();
+    animation2->start();
+    animation3->start();
     Logger::logger()->logDebug(QStringLiteral("Main animation started!"));
 }
 
@@ -61,6 +65,8 @@ void SpinningAnimation::stopOnMainWidgets(const QPointer<QLabel>& first_label,
     second_label->hide();
     third_label->hide();
     animation->stop();
+    animation2->stop();
+    animation3->stop();
     Logger::logger()->logDebug(QStringLiteral("Main animations stopped!"));
 }
 
@@ -77,7 +83,7 @@ bool SpinningAnimation::isSmallAnimationRunning() const
 }
 
 
-void SpinningAnimation::startOnWidget(const QPointer<QLabel>& label)
+template<> void SpinningAnimation::startOnWidget<1>(const QPointer<QLabel>& label)
 {
     if (!isValid(animation))
         return;
@@ -90,13 +96,61 @@ void SpinningAnimation::startOnWidget(const QPointer<QLabel>& label)
 }
 
 
-void SpinningAnimation::stopOnWidget(const QPointer<QLabel>& label)
+template<> void SpinningAnimation::startOnWidget<2>(const QPointer<QLabel>& label)
+{
+    if (!isValid(animation2))
+        return;
+
+    if (!label->movie())
+        label->setMovie(animation2.get());
+    label->show();
+    animation2->start();
+    Logger::logger()->logDebug(QStringLiteral("Animation started!"));
+}
+
+
+template<> void SpinningAnimation::startOnWidget<3>(const QPointer<QLabel>& label)
+{
+    if (!isValid(animation3))
+        return;
+
+    if (!label->movie())
+        label->setMovie(animation3.get());
+    label->show();
+    animation3->start();
+    Logger::logger()->logDebug(QStringLiteral("Animation started!"));
+}
+
+
+template<> void SpinningAnimation::stopOnWidget<1>(const QPointer<QLabel>& label)
 {
     if (!isValid(animation))
         return;
 
     label->hide();
     animation->stop();
+    Logger::logger()->logDebug(QStringLiteral("Animation stopped!"));
+}
+
+
+template<> void SpinningAnimation::stopOnWidget<2>(const QPointer<QLabel>& label)
+{
+    if (!isValid(animation2))
+        return;
+
+    label->hide();
+    animation2->stop();
+    Logger::logger()->logDebug(QStringLiteral("Animation stopped!"));
+}
+
+
+template<> void SpinningAnimation::stopOnWidget<3>(const QPointer<QLabel>& label)
+{
+    if (!isValid(animation3))
+        return;
+
+    label->hide();
+    animation3->stop();
     Logger::logger()->logDebug(QStringLiteral("Animation stopped!"));
 }
 

@@ -48,7 +48,6 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QtConcurrent/QtConcurrent>
-#include <thread>
 
 
 MainWindowView::MainWindowView(QWidget *parent)
@@ -127,25 +126,13 @@ void MainWindowView::run()
     // ensuring update thread start before the next ones
     QObject::connect(&threads_timer, &QTimer::timeout, this, [this]()
         {
-            QThread* available_packages_thread(new QThread);
-            QThread* installed_packages_thread(new QThread);
-
             m_ui.available_packages_list->hide();
             m_ui.installed_packages_list->hide();
             m_ui.search_available_packages_checkbox->setEnabled(false);
             m_ui.search_installed_packages_checkbox->setEnabled(false);
 
-            main_window_view_signals->attachFillColumns(available_packages_thread, installed_packages_thread);
-            installed_packages_thread->start(QThread::NormalPriority);
-            available_packages_thread->start(QThread::NormalPriority);
-            installed_packages_thread->quit();
-            available_packages_thread->quit();
-
-            QObject::disconnect(available_packages_thread, &QThread::started, this, nullptr);
-            QObject::disconnect(installed_packages_thread, &QThread::started, this, nullptr);
+            main_window_view_signals->attachFillColumns();
             QObject::disconnect(&threads_timer, &QTimer::timeout, this, nullptr);
-            available_packages_thread->terminate();
-            installed_packages_thread->terminate();
         });
 
     threads_timer.start(3000);
@@ -405,7 +392,7 @@ void MainWindowView::showSingleAnimation(Process::Task task)
         m_ui.update_packages_button->setDisabled(true);
         m_ui.update_spinning_widget->show();
         m_ui.packages_to_update_list->hide();
-        spinning_animation->startOnWidget(m_ui.update_spinning_label);
+        spinning_animation->startOnWidget<2>(m_ui.update_spinning_label);
     }
 
     if (Process::Task::Install == task)
@@ -414,7 +401,7 @@ void MainWindowView::showSingleAnimation(Process::Task task)
         m_ui.install_packages_button->setDisabled(true);
         m_ui.installation_spinning_widget->show();
         m_ui.available_packages_list->hide();
-        spinning_animation->startOnWidget(m_ui.installation_spinning_label);
+        spinning_animation->startOnWidget<3>(m_ui.installation_spinning_label);
     }
 
     if (Process::Task::Uninstall == task)
@@ -423,7 +410,7 @@ void MainWindowView::showSingleAnimation(Process::Task task)
         m_ui.uninstall_packages_button->setDisabled(true);
         m_ui.remove_spinning_widget->show();
         m_ui.installed_packages_list->hide();
-        spinning_animation->startOnWidget(m_ui.remove_spinning_label);
+        spinning_animation->startOnWidget<1>(m_ui.remove_spinning_label);
     }
 }
 
@@ -592,9 +579,8 @@ void MainWindowView::checkUpdates()
     Logger::logger()->logInfo(QStringLiteral("Start check updates - %1").arg(QDateTime::currentDateTime().toString()));
 
     updated_packages_column.data()->clear();
-    QThread* updated_packages_thread(new QThread);
     blockUpdateColumn();
-    main_window_view_signals->attachCheckUpdates(updated_packages_thread);
+    main_window_view_signals->attachCheckUpdates();
 }
 
 
@@ -622,7 +608,7 @@ void MainWindowView::checkRunningThreadsBeforeQuit()
 void MainWindowView::blockUpdateColumn()
 {
     m_ui.update_spinning_widget->show();
-    spinning_animation->startOnWidget(m_ui.update_spinning_label);
+    spinning_animation->startOnWidget<2>(m_ui.update_spinning_label);
     m_ui.packages_to_update_list->hide();
     m_ui.search_packages_to_update_checkbox->setCheckState(Qt::Unchecked);
     m_ui.search_packages_to_update_checkbox->setEnabled(false);

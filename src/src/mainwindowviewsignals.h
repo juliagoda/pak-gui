@@ -30,12 +30,12 @@ public:
     explicit MainWindowViewSignals(MainWindowView* main_window_view);
 
     void attachInputAnswerLines();
-    void attachFillColumns(QThread* available_packages_thread, QThread* installed_packages_thread);
+    void attachFillColumns();
     void startPackagesCheckTimer();
     virtual void startInternetCheckTimer();
     void initSignals();
     void initColumns();
-    void attachCheckUpdates(QThread* updated_packages_thread);
+    void attachCheckUpdates();
 
 private:
     void attachConnectSignalsAfterFillEnd();
