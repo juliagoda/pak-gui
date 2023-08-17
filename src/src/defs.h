@@ -45,6 +45,7 @@ public:
     static constexpr int packageSiRepoName() { return 0; }
     static constexpr int packageSiNameLine() { return 1; }
     static constexpr int packageSiVersionLine() { return 2; }
+    static constexpr int messageboxContentMaxSize() { return 150; }
 
     static const QString pacmanExecFile();
     static const QString pacmanContribExecFile();

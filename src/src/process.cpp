@@ -25,6 +25,7 @@
 #include "src/outputfilter.h"
 #include "src/settings.h"
 #include "src/outputfilter.h"
+#include "src/messagebox.h"
 
 #include <KLocalizedString>
 #include <QMessageBox>
@@ -268,12 +269,17 @@ void Process::connectSignals(Process::Task new_task)
     });
 
     QObject::connect(current_process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
-                     [this, new_task](QProcess::ProcessError process_error)
-                     {
-                         QMessageBox::warning(parent, messages_map.value(new_task).first, tr("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(current_process.data()->error()), QMessageBox::Ok);
-                         Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString(), QVariant::fromValue(process_error).toString()));
-                         emit ended();
-                     });
+        [this, new_task](QProcess::ProcessError process_error)
+        {
+            MessageBox message_box(QMessageBox::Warning, QMessageBox::Ok);
+            message_box.setParent(parent);
+            message_box.setTitle(messages_map.value(new_task).first);
+            message_box.setText(i18n("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(current_process.data()->error()));
+            message_box.run();
+
+            Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString(), QVariant::fromValue(process_error).toString()));
+            emit ended();
+        });
 
     QObject::connect(current_process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
                      [this, new_task](int exit_code, QProcess::ExitStatus exit_status)
@@ -330,9 +336,11 @@ bool Process::isNeededAskAboutUpdate(Task new_task)
 
 bool Process::getAnswer(Task new_task, const QStringList& new_checked_packages)
 {
-    int answer = QMessageBox::information(parent, messages_map.value(new_task).first,
-                                          questionForm(new_checked_packages, new_task),
-                                          QMessageBox::Yes | QMessageBox::No);
+    MessageBox message_box(QMessageBox::Information, QMessageBox::Yes | QMessageBox::No);
+    message_box.setParent(parent);
+    message_box.setTitle(messages_map.value(new_task).first);
+    message_box.setText(questionForm(new_checked_packages, new_task));
+    int answer = message_box.run();
 
     if (static_cast<QMessageBox::StandardButton>(answer) == QMessageBox::No)
     {

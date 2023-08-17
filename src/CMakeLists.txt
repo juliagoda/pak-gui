@@ -6,6 +6,8 @@ target_sources(pak-gui PRIVATE
     main.cpp
     src/algorithms.cpp
     src/algorithms.h
+    src/messagebox.cpp
+    src/messagebox.h
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindowview.cpp
