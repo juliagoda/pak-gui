@@ -32,7 +32,7 @@ public:
     ActionsAccessChecker(ActionsAccessChecker& instance) = delete;
     void operator=(const ActionsAccessChecker& instance) = delete;
 
-    bool isAspInstalled() const;
+    bool isPkgctlInstalled() const;
     bool isAuracleInstalled() const;
     bool isReflectorInstalled() const;
     bool isGitInstalled() const;
@@ -43,7 +43,7 @@ public Q_SLOTS:
     void checkInternetConnection();
 
 signals:
-    void aspAccessChanged(bool is_asp_installed);
+    void pkgctlAccessChanged(bool is_asp_installed);
     void auracleAccessChanged(bool is_auracle_installed);
     void reflectorAccessChanged(bool is_reflector_installed);
     void gitAccessChanged(bool is_git_installed);
@@ -65,7 +65,7 @@ protected:
     QStringList getNotInstalledPackagesList();
 
 private:
-    bool is_asp_installed = false;
+    bool is_pkgctl_installed = false;
     bool is_auracle_installed = false;
     bool is_reflector_installed = false;
     bool is_git_installed = false;

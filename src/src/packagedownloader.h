@@ -87,21 +87,6 @@ class PathsChoiceInput : public PackageDownloader
 
     void handle() override;
 
- private:
-    QSharedPointer<DownloadCommandParser> download_command_parser;
-    QScopedPointer<ChoiceWindow> choice_window;
-};
-
-
-class ReposChoiceInput : public PackageDownloader
-{
-    Q_OBJECT
-
- public:
-    ReposChoiceInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser);
-
-    void handle() override;
-
  signals:
     void acceptedChoice();
 

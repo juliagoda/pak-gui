@@ -487,15 +487,13 @@ void MainWindowView::downloadPackage()
     QSharedPointer<DownloadCommandParser> download_command_parser(new DownloadCommandParser(QString(), this), &QObject::deleteLater);
     QPointer<DownloaderWindow> package_input(new PackageInput(download_command_parser));
     QPointer<DownloaderWindow> paths_choice_input(new PathsChoiceInput(download_command_parser));
-    QPointer<DownloaderWindow> repos_choice_input(new ReposChoiceInput(download_command_parser));
 
-    QObject::connect(qobject_cast<ReposChoiceInput*>(repos_choice_input.data()), &ReposChoiceInput::acceptedChoice, qobject_cast<PackageInput*>(package_input.data()), &PackageInput::closeWindow);
+    QObject::connect(qobject_cast<PathsChoiceInput*>(paths_choice_input.data()), &PathsChoiceInput::acceptedChoice, qobject_cast<PackageInput*>(package_input.data()), &PackageInput::closeWindow);
 
     QObject::connect(package_input, &DownloaderWindow::ended, package_input, &PackageInput::deleteLater);
     QObject::connect(package_input, &DownloaderWindow::ended, paths_choice_input, &PathsChoiceInput::deleteLater);
-    QObject::connect(package_input, &DownloaderWindow::ended, repos_choice_input, &ReposChoiceInput::deleteLater);
 
-    package_input->setNext(paths_choice_input)->setNext(repos_choice_input);
+    package_input->setNext(paths_choice_input);
     package_input->handle();
 }
 

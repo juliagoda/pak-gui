@@ -50,9 +50,9 @@ ActionsAccessChecker::~ActionsAccessChecker()
 }
 
 
-bool ActionsAccessChecker::isAspInstalled() const
+bool ActionsAccessChecker::isPkgctlInstalled() const
 {
-    return is_asp_installed;
+    return is_pkgctl_installed;
 }
 
 
@@ -83,7 +83,7 @@ bool ActionsAccessChecker::isOnline() const
 void ActionsAccessChecker::checkRequiredPackages()
 {
     findRequiredPackages();
-    is_asp_installed = findPackage(Constants::aspExecFile());
+    is_pkgctl_installed = findPackage(Constants::pkgctlExecFile());
     is_auracle_installed = existsPackageByPromptVersion(Constants::auracleGit());
     is_reflector_installed = findPackage(Constants::reflectorExecFile());
     is_git_installed = findPackage(Constants::gitExecFile());
@@ -160,7 +160,7 @@ void ActionsAccessChecker::updateIsOnline(bool new_is_online)
 
 void ActionsAccessChecker::emitSignals()
 {
-    emit aspAccessChanged(is_asp_installed);
+    emit pkgctlAccessChanged(is_pkgctl_installed);
     emit auracleAccessChanged(is_auracle_installed);
     emit reflectorAccessChanged(is_online && is_reflector_installed);
     emit gitAccessChanged(is_online && is_git_installed);

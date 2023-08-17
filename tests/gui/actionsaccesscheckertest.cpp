@@ -40,7 +40,6 @@ bool MockActionsAccessChecker::checkNetworkInterfaces() const
 }
 
 
-
 TestActionsAccessChecker::TestActionsAccessChecker(QObject* parent) :
     QObject{parent},
     actions_access_checker{nullptr}
@@ -70,7 +69,7 @@ void TestActionsAccessChecker::stopApplicationSendSignalAfterNotFindingRequiredP
 
 void TestActionsAccessChecker::initiallyPackagesAreNotFound()
 {
-   QVERIFY(!actions_access_checker.isAspInstalled());
+   QVERIFY(!actions_access_checker.isPkgctlInstalled());
    QVERIFY(!actions_access_checker.isAuracleInstalled());
    QVERIFY(!actions_access_checker.isGitInstalled());
    QVERIFY(!actions_access_checker.isReflectorInstalled());
@@ -91,13 +90,13 @@ void TestActionsAccessChecker::properlyFindsExecutableFileWithExampleOfPakQtests
 
 void TestActionsAccessChecker::emitSignalFunctionContainsEmitsForFourPackages()
 {
-   QSignalSpy asp_access_changed_spy(&actions_access_checker, SIGNAL(aspAccessChanged(bool)));
+   QSignalSpy pkctl_access_changed_spy(&actions_access_checker, SIGNAL(pkgctlAccessChanged(bool)));
    QSignalSpy auracle_access_changed_spy(&actions_access_checker, SIGNAL(auracleAccessChanged(bool)));
    QSignalSpy reflector_access_changed_spy(&actions_access_checker, SIGNAL(reflectorAccessChanged(bool)));
    QSignalSpy git_access_changed_spy(&actions_access_checker, SIGNAL(gitAccessChanged(bool)));
    actions_access_checker.emitSignals();
 
-   uint sum = asp_access_changed_spy.count() + auracle_access_changed_spy.count() +
+   uint sum = pkctl_access_changed_spy.count() + auracle_access_changed_spy.count() +
               reflector_access_changed_spy.count() + git_access_changed_spy.count();
 
    QCOMPARE(sum, 4);

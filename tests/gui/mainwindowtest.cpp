@@ -284,7 +284,7 @@ void TestMainWindow::cleanup()
    main_window_view.m_ui.actions_spinning_animation_label->hide();
    emit main_window.actions_access_checker->internetAccessChanged(false);
    emit main_window.actions_access_checker->gitAccessChanged(false);
-   emit main_window.actions_access_checker->aspAccessChanged(false);
+   emit main_window.actions_access_checker->pkgctlAccessChanged(false);
    emit main_window.actions_access_checker->auracleAccessChanged(false);
    emit main_window.actions_access_checker->reflectorAccessChanged(false);
    main_window_view.generated_previews_map.clear();

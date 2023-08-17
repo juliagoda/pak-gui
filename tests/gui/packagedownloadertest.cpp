@@ -40,20 +40,11 @@ MockPathsChoiceInput::MockPathsChoiceInput(QSharedPointer<DownloadCommandParser>
 }
 
 
-MockReposChoiceInput::MockReposChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
-    ReposChoiceInput(new_download_command_parser)
-{
-  // ...
-}
-
-
 TestPackageDownloader::TestPackageDownloader(QObject* parent) :
     QObject(parent),
     package_downloader(),
     package_input(download_command_parser),
-    paths_choice_input(download_command_parser),
-    repos_choice_input(download_command_parser)
-
+    paths_choice_input(download_command_parser)
 {
     QTestEventLoop::instance().enterLoop(1);
 }

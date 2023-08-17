@@ -82,7 +82,6 @@ void DownloadCommandParser::processReadLine(QString& line, int& directories_line
         error_lines.append(match.captured(2));
 
     processForDirectories(filtered_line, directories_line_count);
-    processForRepos();
 }
 
 
@@ -100,6 +99,8 @@ void DownloadCommandParser::updatePackageName(const QString& new_package_name)
 
 void DownloadCommandParser::start()
 {
+    directories_map.clear();
+
     if (!validate())
         Logger::logger()->logWarning("retrieving paths from download command parser is not possible");
 
@@ -198,12 +199,6 @@ void DownloadCommandParser::processForDirectories(const QString& filtered_line, 
         result_output.clear();
         directories_line_count = 0;
     }
-}
-
-void DownloadCommandParser::processForRepos()
-{
-    if (result_output.contains(QRegExp("\\s+\\d+\\.\\s+")))
-        emit continueReposRetrieve(result_output);
 }
 
 

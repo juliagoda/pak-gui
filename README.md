@@ -12,24 +12,34 @@ pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.
 
 ## Installing from source
 
-### Dependencies - Qt5
+### Required dependencies - Qt5
 
 - cmake
-- pak (`git clone -b e4ee7efea11d48f3a2af32771bd8494bed2 https://gitlab.com/nycko123/pak.git`)
+- extra-cmake-modules
+- pacman-contrib
+- kdesu
+- ksshaskpass
+- bash
+- pak 1:5.5.3.r11.g3e65d8e-1 (`git clone -b 3e65d8e8a15a12e2f0fe1a7ed2d09dd944d65ff1 https://gitlab.com/nycko123/pak.git`)
 - qt5-base
 - qt5-charts
-- gcovr (optional for tests)
-- gtest (optional for tests)
+- kwidgetsaddons
+- kcoreaddons
+- kcrash
+- kdbusaddons
+- kdoctools
+- ki18n
+- kxmlgui
+- knotifications
 
 
-### Dependencies - Qt6
+### Optional dependencies
 
-- cmake
-- pak (`git clone -b e4ee7efea11d48f3a2af32771bd8494bed2 https://gitlab.com/nycko123/pak.git`)
-- qt6-base
-- qt6-charts
-- gcovr (optional for tests)
-- gtest (optional for tests)
+- devtools (pkgtcl)
+- git (POLAUR sync)
+- auracle-git (AUR)
+- reflector (mirrorlists)
+- gcovr (tests)
 
 <br/>
 

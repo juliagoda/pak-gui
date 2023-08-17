@@ -51,7 +51,7 @@ public:
     static const QString kdesuExecFile();
     static const QString ksshAskPassExecFile();
     static const QString pakExecFile();
-    static const QString aspExecFile();
+    static const QString pkgctlExecFile();
     static const QString gitExecFile();
     static const QString reflectorExecFile();
     static const QString auracleGit();

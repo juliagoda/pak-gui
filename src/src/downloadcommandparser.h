@@ -49,7 +49,6 @@ protected:
 
 Q_SIGNALS:
     void continuePathsRetrieve(const QString& output);
-    void continueReposRetrieve(const QString& output);
     void ended();
 
 protected Q_SLOTS:
@@ -61,7 +60,6 @@ private:
     void fillDirectoriesMap(const QString& result);
     void addLineToDirectoriesMap(const QString& result);
     void processForDirectories(const QString& filtered_line, int& directories_line_count);
-    void processForRepos();
 
     using DirectoryNo = int;
     using DirectoryPath = QString;

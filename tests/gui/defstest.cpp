@@ -65,7 +65,7 @@ void TestDefs::execFilesHaveCorrectNames()
     QCOMPARE(Constants::kdesuExecFile(), QString("kdesu"));
     QCOMPARE(Constants::ksshAskPassExecFile(), QString("ksshaskpass"));
     QCOMPARE(Constants::pakExecFile(), QString("pak"));
-    QCOMPARE(Constants::aspExecFile(), QString("asp"));
+    QCOMPARE(Constants::pkgctlExecFile(), QString("pkgctl"));
     QCOMPARE(Constants::gitExecFile(), QString("git"));
     QCOMPARE(Constants::reflectorExecFile(), QString("reflector"));
     QCOMPARE(Constants::auracleGit(), QString("auracle"));

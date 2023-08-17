@@ -83,7 +83,7 @@ PathsChoiceInput::PathsChoiceInput(const QSharedPointer<DownloadCommandParser>& 
     download_command_parser(new_download_command_parser),
     choice_window(nullptr)
 {
-   // ...
+   connect(download_command_parser.get(), &DownloadCommandParser::ended, [this]{ emit ended() ; });
 }
 
 
@@ -98,37 +98,7 @@ void PathsChoiceInput::handle()
         download_command_parser->inputAnswer(QString::number(new_index));
         download_command_parser->updateDirectoryChoice(new_index);
         PackageDownloader::handle();
-    });
-
-    connect(choice_window.data(), &ChoiceWindow::cancelled,
-        [this]()
-        {
-            download_command_parser->stop();
-            choice_window->close();
-        });
-
-    choice_window->show();
-}
-
-
-ReposChoiceInput::ReposChoiceInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
-    PackageDownloader(),
-    download_command_parser(new_download_command_parser),
-    choice_window(nullptr)
-{
-    connect(download_command_parser.get(), &DownloadCommandParser::ended, [this]{ emit ended() ; });
-}
-
-
-void ReposChoiceInput::handle()
-{
-    choice_window.reset(new ChoiceWindow(i18n("Choose repo for package download")));
-    connect(download_command_parser.get(), &DownloadCommandParser::continueReposRetrieve, choice_window.get(),
-            QOverload<const QString&>::of(&ChoiceWindow::fillComboBox));
-    connect(choice_window.data(), QOverload<int>::of(&ChoiceWindow::choiceDefined), [this](int new_index)
-    {
         emit acceptedChoice();
-        download_command_parser->inputAnswer(QString::number(new_index));
     });
 
     connect(choice_window.data(), &ChoiceWindow::cancelled,

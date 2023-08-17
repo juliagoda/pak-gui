@@ -111,9 +111,9 @@ const QString Constants::pakExecFile()
 }
 
 
-const QString Constants::aspExecFile()
+const QString Constants::pkgctlExecFile()
 {
-    return "asp";
+    return "pkgctl";
 }
 
 
