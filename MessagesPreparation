@@ -1,0 +1,2 @@
+#!/bin/bash
+extractrc $(find src/src -name "*.rc" -o -name "*.ui" -o -name "*.kcfg") >> src/src/rc.cpp || exit 11

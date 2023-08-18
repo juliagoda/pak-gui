@@ -31,28 +31,28 @@ SettingsRecords::SettingsRecords()
     if (!text_to_tooltip_line_map.isEmpty())
         return;
 
-    text_to_tooltip_line_map.insert(i18n("Name"), Package::TooltipLine::Name);
-    text_to_tooltip_line_map.insert(i18n("Version"), Package::TooltipLine::Version);
-    text_to_tooltip_line_map.insert(i18n("Description"), Package::TooltipLine::Description);
-    text_to_tooltip_line_map.insert(i18n("Architecture"), Package::TooltipLine::Architecture);
-    text_to_tooltip_line_map.insert(i18n("Provides"), Package::TooltipLine::Provides);
-    text_to_tooltip_line_map.insert(i18n("URL"), Package::TooltipLine::URL);
-    text_to_tooltip_line_map.insert(i18n("Licenses"), Package::TooltipLine::Licenses);
-    text_to_tooltip_line_map.insert(i18n("Groups"), Package::TooltipLine::Groups);
-    text_to_tooltip_line_map.insert(i18n("Depends On"), Package::TooltipLine::DependsOn);
-    text_to_tooltip_line_map.insert(i18n("Optional Deps"), Package::TooltipLine::OptionalDeps);
-    text_to_tooltip_line_map.insert(i18n("Required By"), Package::TooltipLine::RequiredBy);
-    text_to_tooltip_line_map.insert(i18n("Optional For"), Package::TooltipLine::OptionalFor);
-    text_to_tooltip_line_map.insert(i18n("Conflicts With"), Package::TooltipLine::ConflictsWith);
-    text_to_tooltip_line_map.insert(i18n("Replaces"), Package::TooltipLine::Replaces);
-    text_to_tooltip_line_map.insert(i18n("Installed Size"), Package::TooltipLine::InstalledSize);
-    text_to_tooltip_line_map.insert(i18n("Packager"), Package::TooltipLine::Packager);
-    text_to_tooltip_line_map.insert(i18n("Build Date"), Package::TooltipLine::BuildDate);
-    text_to_tooltip_line_map.insert(i18n("Install Date"), Package::TooltipLine::InstallDate);
-    text_to_tooltip_line_map.insert(i18n("Install Reason"), Package::TooltipLine::InstallReason);
-    text_to_tooltip_line_map.insert(i18n("Install Script"), Package::TooltipLine::InstallScript);
-    text_to_tooltip_line_map.insert(i18n("Validated By"), Package::TooltipLine::ValidatedBy);
-    text_to_tooltip_line_map.insert(i18n("Download Size"), Package::TooltipLine::DownloadSize);
+    text_to_tooltip_line_map.insert("Name", Package::TooltipLine::Name);
+    text_to_tooltip_line_map.insert("Version", Package::TooltipLine::Version);
+    text_to_tooltip_line_map.insert("Description", Package::TooltipLine::Description);
+    text_to_tooltip_line_map.insert("Architecture", Package::TooltipLine::Architecture);
+    text_to_tooltip_line_map.insert("Provides", Package::TooltipLine::Provides);
+    text_to_tooltip_line_map.insert("URL", Package::TooltipLine::URL);
+    text_to_tooltip_line_map.insert("Licenses", Package::TooltipLine::Licenses);
+    text_to_tooltip_line_map.insert("Groups", Package::TooltipLine::Groups);
+    text_to_tooltip_line_map.insert("Depends On", Package::TooltipLine::DependsOn);
+    text_to_tooltip_line_map.insert("Optional Deps", Package::TooltipLine::OptionalDeps);
+    text_to_tooltip_line_map.insert("Required By", Package::TooltipLine::RequiredBy);
+    text_to_tooltip_line_map.insert("Optional For", Package::TooltipLine::OptionalFor);
+    text_to_tooltip_line_map.insert("Conflicts With", Package::TooltipLine::ConflictsWith);
+    text_to_tooltip_line_map.insert("Replaces", Package::TooltipLine::Replaces);
+    text_to_tooltip_line_map.insert("Installed Size", Package::TooltipLine::InstalledSize);
+    text_to_tooltip_line_map.insert("Packager", Package::TooltipLine::Packager);
+    text_to_tooltip_line_map.insert("Build Date", Package::TooltipLine::BuildDate);
+    text_to_tooltip_line_map.insert("Install Date", Package::TooltipLine::InstallDate);
+    text_to_tooltip_line_map.insert("Install Reason", Package::TooltipLine::InstallReason);
+    text_to_tooltip_line_map.insert("Install Script", Package::TooltipLine::InstallScript);
+    text_to_tooltip_line_map.insert("Validated By", Package::TooltipLine::ValidatedBy);
+    text_to_tooltip_line_map.insert("Download Size", Package::TooltipLine::DownloadSize);
 }
 
 
@@ -128,7 +128,10 @@ const QList<Package::TooltipLine>& SettingsRecords::packagesInfoSelected()
     if (selected_info_list.isEmpty())
     {
         for (const auto& info_item : packagesInfoSelectedStringList())
+        {
+            qDebug() << "info_item: " << info_item;
             selected_info_list.append(text_to_tooltip_line_map.value(info_item));
+        }
     }
 
    return selected_info_list;
