@@ -27,11 +27,10 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 
+#include <execution>
 #include <algorithm>
 #include <iterator>
 
-
-QMutex Sorter::mutex;
 
 Sorter::Sorter(QListWidget* list_widgets,
                QCheckBox* new_reverse_sort_checkbox) :
@@ -39,7 +38,7 @@ Sorter::Sorter(QListWidget* list_widgets,
     reverse_sort_checkbox(new_reverse_sort_checkbox),
     untouched_list_widget()
 {
-                                                                       // ...
+    // ...
 }
 
 
@@ -51,25 +50,22 @@ Sorter::~Sorter()
 
 void Sorter::sortReverse()
 {
-    mutex.lock();
     auto widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
 
     clear();
 
-    QList<QListWidgetItem*>::reverse_iterator widgets_it;
-    for (widgets_it = widgets_list.rbegin(); widgets_it != widgets_list.rend(); widgets_it++)
+    std::for_each(std::execution::par, widgets_list.rbegin(), widgets_list.rend(), [this](QListWidgetItem* item)
     {
-        list_widget->addItem(*widgets_it);
-    }
+        list_widget->addItem(item);
+    });
 
     if (!widgets_list.empty())
         showInfoSortReverse(widgets_list.first()->text(), widgets_list.last()->text());
-    mutex.unlock();
 }
 
 
 template<typename T>
-void Sorter::sortPackagesByText(const QString &text, T emptyPackage)
+void Sorter::sortPackagesByText(const QString& text, T emptyPackage)
 {
     if (untouched_list_widget.empty())
         fillUntouchedList<T>();
@@ -87,18 +83,15 @@ template<typename T>
 bool Sorter::sortPackagesAsReversed(const QString& text, T emptyPackage)
 {
     Q_UNUSED(emptyPackage) // we have errors without T as argument
-    QList<QListWidgetItem*>::reverse_iterator widgets_reversed_it;
-
     if (reverse_sort_checkbox->checkState() == Qt::Checked)
     {
-        for (widgets_reversed_it = untouched_list_widget.rbegin(); widgets_reversed_it != untouched_list_widget.rend(); widgets_reversed_it++)
-        {
-            if (!(*widgets_reversed_it)->text().startsWith(text))
-                continue;
+        std::for_each(std::execution::par, untouched_list_widget.rbegin(), untouched_list_widget.rend(), [&, this](QListWidgetItem* item)
+            {
+                if (!item->text().startsWith(text))
+                    return;
 
-            T* item = dynamic_cast<T*>(*widgets_reversed_it);
-            list_widget->addItem(new T(*item));
-        }
+                list_widget->addItem(item);
+            });
 
         showInfo();
         return true;
@@ -112,15 +105,13 @@ template<typename T>
 void Sorter::sortPackages(const QString& text, T emptyPackage)
 {
     Q_UNUSED(emptyPackage) // we have errors without T as argument
-    QList<QListWidgetItem*>::iterator widgets_it;
-    for (widgets_it = untouched_list_widget.begin(); widgets_it != untouched_list_widget.end(); widgets_it++)
-    {
-        if (!(*widgets_it)->text().startsWith(text))
-            continue;
+    std::for_each(std::execution::par, untouched_list_widget.begin(), untouched_list_widget.end(), [&, this](QListWidgetItem* item)
+        {
+            if (!item->text().startsWith(text))
+                return;
 
-        T* item = dynamic_cast<T*>(*widgets_it);
-        list_widget->addItem(new T(*item));
-    }
+            list_widget->addItem(item);
+        });
 }
 
 
@@ -164,7 +155,7 @@ void Sorter::fillUntouchedList()
     auto widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
     untouched_list_widget.reserve(widgets_list.count());
     std::transform(widgets_list.begin(), widgets_list.end(), std::back_inserter(untouched_list_widget),
-                   [=](QListWidgetItem* item) mutable { return new T(*dynamic_cast<T*>(item)); });
+                   [=](QListWidgetItem* item) mutable { return item; });
 }
 
 
@@ -175,6 +166,8 @@ void Sorter::clear()
         if (list_widget->item(0))
             list_widget->takeItem(0);
     }
+
+    list_widget->clear();
 }
 
 
@@ -182,9 +175,6 @@ void Sorter::resetOriginalList()
 {
     if (untouched_list_widget.count() == 0)
         return;
-
-    while (!untouched_list_widget.empty())
-        delete untouched_list_widget.takeAt(0);
 
     untouched_list_widget.clear();
 }

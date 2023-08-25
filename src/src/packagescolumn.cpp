@@ -115,7 +115,7 @@ void PackagesColumn::sort(bool is_sorted)
 {
     Q_UNUSED(is_sorted)
     if (!packages_sorter.isNull())
-        QtConcurrent::run(packages_sorter.get(), &Sorter::sortReverse);
+        packages_sorter->sortReverse();
     list_widget->update();
 }
 

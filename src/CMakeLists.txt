@@ -2,6 +2,7 @@ qt5_add_resources(RESOURCES ${CMAKE_SOURCE_DIR}/resources/pak-gui.qrc)
 
 add_executable(pak-gui ${RESOURCES})
 
+target_compile_options(pak-gui PRIVATE -fexceptions -DPARALLEL)
 target_sources(pak-gui PRIVATE
     main.cpp
     src/algorithms.cpp

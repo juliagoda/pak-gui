@@ -458,7 +458,7 @@ void Process::updateMaps(QStringList& checked_packages)
 {
     // TODOJG - lazy evaluation / strategy design instead of map
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
-    commands_map.insert(Task::Uninstall, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -R " + checked_packages.join(" "));
+    commands_map.insert(Task::Uninstall, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Rs " + checked_packages.join(" "));
     commands_map.insert(Task::Install, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -S " + checked_packages.join(" "));
     commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -S " + checked_packages.join(" "));
     commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -SA " + checked_packages.join(" "));

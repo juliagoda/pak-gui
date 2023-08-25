@@ -64,6 +64,6 @@ private:
     QListWidget* list_widget;
     QCheckBox* reverse_sort_checkbox;
     QList<QListWidgetItem*> untouched_list_widget;
-    static QMutex mutex;
+    QMutex mutex;
 };
 
