@@ -160,3 +160,13 @@ void PackagesColumn::removeUncheckedPackage(Package* package)
     Logger::logger()->logDebug(QStringLiteral("Removed package from list: %1").arg(package->getName()));
     std::erase(checked_packages_list, package);
 }
+
+
+uint PackagesColumn::getWaitTime()
+{
+#ifdef RUN_TESTS
+    return 500; // milliseconds
+#endif
+
+    return 6000; // 6 seconds
+}

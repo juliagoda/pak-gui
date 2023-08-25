@@ -64,7 +64,7 @@ void InstalledPackagesColumn::clearPackages()
 void InstalledPackagesColumn::fill()
 {
     mutex.lock();
-    QDeadlineTimer deadline(6000);
+    QDeadlineTimer deadline(getWaitTime());
     condition.wait(&mutex, deadline);
     packages_sorter->resetOriginalList();
     Q_ASSERT(packages_sorter->isOriginalListEmpty());

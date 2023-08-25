@@ -293,6 +293,7 @@ void TestAvailablePackagesColumn::cleanup()
 {
     disconnect(main_window_view.m_ui.sort_available_packages, &QCheckBox::toggled, main_window_view.available_packages_column.data(), &InstalledPackagesColumn::sort);
     main_window_view.m_ui.available_packages_list->clear();
+    disconnect(main_window_view.m_ui.search_available_packages_lineedit, &QLineEdit::textChanged, nullptr, nullptr);
     main_window_view.m_ui.search_available_packages_lineedit->clear();
     main_window_view.m_ui.console_view_install->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.search_available_packages_checkbox->setCheckState(Qt::Unchecked);

@@ -64,6 +64,7 @@ signals:
 protected:
     void addCheckedPackage(Package* package);
     void removeUncheckedPackage(Package* package);
+    uint getWaitTime();
 
     int checked_packages;
     uint aur_checked_packages;

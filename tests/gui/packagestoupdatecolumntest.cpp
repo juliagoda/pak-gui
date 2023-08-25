@@ -320,6 +320,7 @@ void TestUpdatedPackagesColumn::cleanup()
 {
     disconnect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, main_window_view.updated_packages_column.data(), &UpdatedPackagesColumn::sort);
     main_window_view.m_ui.packages_to_update_list->clear();
+    disconnect(main_window_view.m_ui.search_packages_to_update_lineedit, &QLineEdit::textChanged, nullptr, nullptr);
     main_window_view.m_ui.search_packages_to_update_lineedit->clear();
     main_window_view.m_ui.console_view_update->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.check_all_updates_checkbox->setCheckState(Qt::Unchecked);

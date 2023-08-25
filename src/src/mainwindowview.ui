@@ -109,9 +109,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
+            <y>-21</y>
             <width>260</width>
-            <height>751</height>
+            <height>782</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -276,6 +276,19 @@
            </item>
            <item>
             <widget class="QListWidget" name="installed_packages_list"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="abort_uninstallation_process_btn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Abort</string>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QScrollArea" name="installed_preview_area">
@@ -598,6 +611,19 @@ padding: 3px;</string>
             <widget class="QListWidget" name="packages_to_update_list"/>
            </item>
            <item>
+            <widget class="QPushButton" name="abort_update_process_btn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Abort</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QScrollArea" name="updated_preview_area">
              <property name="widgetResizable">
               <bool>true</bool>
@@ -608,7 +634,7 @@ padding: 3px;</string>
                 <x>0</x>
                 <y>0</y>
                 <width>254</width>
-                <height>183</height>
+                <height>170</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -630,6 +656,12 @@ padding: 3px;</string>
                   </item>
                   <item>
                    <widget class="QPushButton" name="input_for_update_btn">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="maximumSize">
                      <size>
                       <width>50</width>
@@ -928,6 +960,19 @@ padding: 3px;</string>
             <widget class="QListWidget" name="available_packages_list"/>
            </item>
            <item>
+            <widget class="QPushButton" name="abort_installation_process_btn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Abort</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QScrollArea" name="available_preview_area">
              <property name="widgetResizable">
               <bool>true</bool>
@@ -938,7 +983,7 @@ padding: 3px;</string>
                 <x>0</x>
                 <y>0</y>
                 <width>254</width>
-                <height>183</height>
+                <height>170</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">

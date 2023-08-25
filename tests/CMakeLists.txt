@@ -67,6 +67,7 @@ target_link_libraries(pak-gui-src
     Qt5::Network
 )
 
+target_compile_options(pak-gui-src PRIVATE -fexceptions -DPARALLEL)
 target_include_directories(pak-gui-src PUBLIC ${CMAKE_SOURCE_DIR}/src/src)
 
 add_executable(pak-qtests
@@ -158,6 +159,8 @@ target_link_libraries(pak-qtests
     Qt5::Widgets
     pak-gui-src
 )
+
+target_compile_options(pak-qtests PRIVATE -fexceptions -DPARALLEL)
 
 add_test(NAME pak-qtests COMMAND $<TARGET_FILE:pak-qtests>)
 

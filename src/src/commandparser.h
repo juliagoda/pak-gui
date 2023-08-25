@@ -32,17 +32,21 @@ public:
     virtual ~CommandParser() override = default;
     virtual QStringList retrieveInfo() = 0;
 
+signals:
+    void processStarted();
+    void processEnded();
+
 protected Q_SLOTS:
     void clearAfterExecution(const QScopedPointer<QProcess>& process)
-   {
-       if (process.isNull())
+    {
+        if (process.isNull())
             return;
 
-       process->closeReadChannel(QProcess::StandardOutput);
-       process->closeReadChannel(QProcess::StandardError);
-       process->closeWriteChannel();
-       process->close();
-       process->kill();
-   }
+        process->closeReadChannel(QProcess::StandardOutput);
+        process->closeReadChannel(QProcess::StandardError);
+        process->closeWriteChannel();
+        process->close();
+        process->kill();
+    }
 };
 
