@@ -18,7 +18,6 @@
 
 #include "checkcommandparser.h"
 #include "logger.h"
-#include "qdebug.h"
 
 #include <QProcess>
 #include <QString>

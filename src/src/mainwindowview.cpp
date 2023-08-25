@@ -21,7 +21,6 @@
 #include "availablepackagescolumn.h"
 #include "installedpackagescolumn.h"
 #include "mainwindowviewsignals.h"
-#include "qnamespace.h"
 #include "statisticscommandparser.h"
 #include "updatedpackagescolumn.h"
 #include "installcommandparser.h"
@@ -123,19 +122,12 @@ void MainWindowView::run()
 {
     checkUpdates();
 
-    // ensuring update thread start before the next ones
-    QObject::connect(&threads_timer, &QTimer::timeout, this, [this]()
-        {
-            m_ui.available_packages_list->hide();
-            m_ui.installed_packages_list->hide();
-            m_ui.search_available_packages_checkbox->setEnabled(false);
-            m_ui.search_installed_packages_checkbox->setEnabled(false);
+    m_ui.available_packages_list->hide();
+    m_ui.installed_packages_list->hide();
+    m_ui.search_available_packages_checkbox->setEnabled(false);
+    m_ui.search_installed_packages_checkbox->setEnabled(false);
 
-            main_window_view_signals->attachFillColumns();
-            QObject::disconnect(&threads_timer, &QTimer::timeout, this, nullptr);
-        });
-
-    threads_timer.start(3000);
+    main_window_view_signals->attachFillColumns();
 }
 
 
@@ -593,13 +585,20 @@ void MainWindowView::updateWidgets()
 
 void MainWindowView::checkRunningThreadsBeforeQuit()
 {
+    if (!isRunningMainThreads())
+        QApplication::closeAllWindows();
+}
+
+
+bool MainWindowView::isRunningMainThreads()
+{
     if (current_state == State::Running)
     {
         QMessageBox::warning(this, i18n("Quit"), i18n("Application cannot be closed immediately. Try again after end of running operations."));
-        return;
+        return true;
     }
 
-    QApplication::closeAllWindows();
+    return false;
 }
 
 

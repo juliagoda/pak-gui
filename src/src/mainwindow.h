@@ -24,6 +24,7 @@
 #include <QPointer>
 #include <QTimer>
 #include <QKeySequence>
+#include <QCloseEvent>
 
 #include "process.h"
 #include "actionsaccesschecker.h"
@@ -62,6 +63,7 @@ protected:
     void prepareMainWindowView(MainWindowView* new_main_window_view);
     void prepareProcess(const QSharedPointer<Process>& new_process);
     void initSignals();
+    void closeEvent(QCloseEvent* event) override;
     virtual void connectSignalForUpdateCheck();
     virtual void connectSignalForHistoryStore();
 

@@ -265,6 +265,18 @@ void MainWindow::initSignals()
 }
 
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (!main_window_view->isRunningMainThreads())
+    {
+        event->accept();
+        return;
+    }
+
+    event->ignore();
+}
+
+
 void MainWindow::enableActions()
 {
     update_action->setDisabled(false);

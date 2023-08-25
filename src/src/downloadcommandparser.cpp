@@ -116,6 +116,8 @@ void DownloadCommandParser::stop()
 {
     Logger::logger()->logInfo(QStringLiteral("Stop of package download"));
     isTerminated = true;
+    result_output.clear();
+    directories_map.clear();
     pak_download->terminate();
 }
 

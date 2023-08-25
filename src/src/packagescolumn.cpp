@@ -19,8 +19,11 @@
 #include "packagescolumn.h"
 
 #include "logger.h"
+
 #include <list>
 
+
+QWaitCondition PackagesColumn::condition;
 
 PackagesColumn::PackagesColumn(QListWidget* new_list_widget,
                                QLineEdit* new_search_lineedit,

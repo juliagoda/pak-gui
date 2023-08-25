@@ -127,11 +127,9 @@ const QList<Package::TooltipLine>& SettingsRecords::packagesInfoSelected()
 {
     if (selected_info_list.isEmpty())
     {
+        selected_info_list.reserve(packagesInfoSelectedStringList().count());
         for (const auto& info_item : packagesInfoSelectedStringList())
-        {
-            qDebug() << "info_item: " << info_item;
             selected_info_list.append(text_to_tooltip_line_map.value(info_item));
-        }
     }
 
    return selected_info_list;

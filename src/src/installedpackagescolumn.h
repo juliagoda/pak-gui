@@ -43,7 +43,7 @@ protected:
     virtual QStringList getPackagesList();
 
 private:
-    static QMutex mutex;
+    QMutex mutex;
 };
 
 

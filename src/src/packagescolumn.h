@@ -26,6 +26,7 @@
 #include <QStringList>
 #include <QMessageBox>
 #include <QtConcurrent>
+#include <QWaitCondition>
 
 #include <deque>
 
@@ -71,5 +72,6 @@ protected:
     QSharedPointer<Sorter> packages_sorter;
     QWidget* parent;
     std::deque<Package*> checked_packages_list;
+    static QWaitCondition condition;
 };
 

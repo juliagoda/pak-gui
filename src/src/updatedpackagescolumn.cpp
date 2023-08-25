@@ -31,8 +31,6 @@
 #include <algorithm>
 
 
-QMutex UpdatedPackagesColumn::mutex;
-
 UpdatedPackagesColumn::UpdatedPackagesColumn(QListWidget* new_list_widget,
                                              QLineEdit* new_search_lineedit,
                                              QCheckBox* new_reverse_sort_checkbox,
@@ -71,6 +69,7 @@ void UpdatedPackagesColumn::fill()
     Q_ASSERT(list_widget->count() == 0);
     const auto& pak_packages = getPackagesList();
     updatePackagesCount(pak_packages.count());
+    condition.wakeAll();
     QHash<QString, Package::Source>::const_iterator it = pak_packages.cbegin();
     int i = 0;
 

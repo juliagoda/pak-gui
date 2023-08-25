@@ -48,7 +48,7 @@ QStringList SearchAllCommandParser::retrieveInfo()
     QObject::connect(pak_search.get(), &QProcess::errorOccurred, [this](QProcess::ProcessError /*error*/)
     {
         showError(pak_search->errorString());
-        clearAfterExecution(pak_search);
+        stop();
     });
 
     QObject::connect(pak_search.get(), &QProcess::readyReadStandardOutput, [current_source_line, this]() mutable
@@ -68,7 +68,7 @@ void SearchAllCommandParser::finishProcess(int /*exit_code*/, QProcess::ExitStat
 {
     Logger::logger()->logInfo(QStringLiteral("Found %1 sources during package search").arg(packages_lines.count()));
     emit searchEnded(packages_lines);
-    clearAfterExecution(pak_search);
+    stop();
 }
 
 
@@ -96,6 +96,9 @@ void SearchAllCommandParser::processReadLine(const QString& line, QString& curre
 
 void SearchAllCommandParser::stop()
 {
-    Logger::logger()->logInfo(QStringLiteral("Stop of package search"));
+    Logger::logger()->logInfo(QStringLiteral("End of package search"));
     clearAfterExecution(pak_search);
+    package_name.clear();
+    packages_lines.clear();
+
 }

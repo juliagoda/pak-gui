@@ -28,8 +28,6 @@
 #include <QMessageBox>
 
 
-QMutex AvailablePackagesColumn::mutex;
-
 AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget,
                                                  QLineEdit* new_search_lineedit,
                                                  QCheckBox* new_reverse_sort_checkbox,
@@ -67,6 +65,8 @@ void AvailablePackagesColumn::clearPackages()
 void AvailablePackagesColumn::fill()
 {
     mutex.lock();
+    QDeadlineTimer deadline(6000);
+    condition.wait(&mutex, deadline);
     packages_sorter->resetOriginalList();
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
     clearPackages();
