@@ -276,6 +276,27 @@ void MainWindowView::toggleWidgetsAccess(bool is_online)
 }
 
 
+void MainWindowView::abortProcessFromButton(QProcess* process, QPushButton* button)
+{
+    if (!process)
+        return;
+
+    int answer = QMessageBox::question(this, i18n("Process abort"), i18n("Are you sure about quitting this process?"), QMessageBox::Yes | QMessageBox::No);
+    if (static_cast<QMessageBox::StandardButton>(answer) == QMessageBox::Yes)
+    {
+        process->closeReadChannel(QProcess::StandardOutput);
+        process->closeReadChannel(QProcess::StandardError);
+        process->closeWriteChannel();
+        process->close();
+        process->kill();
+        button->hide();
+
+        if (process->isOpen())
+            process->terminate();
+    }
+}
+
+
 void MainWindowView::connectSignalsForAvailablePackages()
 {
     if (m_ui.available_packages_list->count() > 0)
@@ -557,13 +578,9 @@ void MainWindowView::finishProcess(Process::Task task, int exit_code, QProcess::
         }
     }
 
-    available_packages_column.data()->clear();
-    installed_packages_column.data()->clear();
-    updated_packages_column.data()->clear();
-    clearMainPreviews(task);
     Process::resetRunningTask(task);
-    startAnimations();
-    run();
+    current_state = State::Waiting;
+    refresh();
 }
 
 

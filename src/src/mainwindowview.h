@@ -87,6 +87,7 @@ private Q_SLOTS:
     void connectSignalsForInstalledPackages();
     void connectSignalsForUpdatedPackages();
     void toggleWidgetsAccess(bool is_online);
+    void abortProcessFromButton(QProcess* process, QPushButton* button);
 
 signals:
     void operationsAmountIncreased();
@@ -130,4 +131,7 @@ private:
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
     QPointer<QTimer> internet_connection_timer;
     State current_state;
+    QProcess* current_installation_process = nullptr;
+    QProcess* current_update_process = nullptr;
+    QProcess* current_uninstallation_process = nullptr;
 };

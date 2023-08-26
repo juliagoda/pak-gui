@@ -86,19 +86,19 @@ msgstr ""
 "\n"
 "%2"
 
-#: src/downloadcommandparser.cpp:207
+#: src/downloadcommandparser.cpp:209
 msgid "Package Name"
 msgstr "Package Name"
 
-#: src/downloadcommandparser.cpp:208
+#: src/downloadcommandparser.cpp:210
 msgid "Package name cannot be empty"
 msgstr "Package name cannot be empty"
 
-#: src/downloadcommandparser.cpp:229
+#: src/downloadcommandparser.cpp:231
 msgid "Package download failure"
 msgstr "Package download failure"
 
-#: src/downloadcommandparser.cpp:229
+#: src/downloadcommandparser.cpp:231
 msgid ""
 "Package couldn't be downloaded:\n"
 "\n"
@@ -110,59 +110,59 @@ msgstr ""
 "Error lines:\n"
 "%1"
 
-#: src/downloadcommandparser.cpp:234
+#: src/downloadcommandparser.cpp:236
 msgid "Package download"
 msgstr "Package download"
 
-#: src/downloadcommandparser.cpp:234 src/downloadcommandparser.cpp:235
+#: src/downloadcommandparser.cpp:236 src/downloadcommandparser.cpp:237
 msgid "and installed"
 msgstr "and installed"
 
-#: src/downloadcommandparser.cpp:234
+#: src/downloadcommandparser.cpp:236
 msgid "Package %1 has been downloaded %2"
 msgstr "Package %1 has been downloaded %2"
 
-#: src/downloadcommandparser.cpp:251
+#: src/downloadcommandparser.cpp:253
 msgid "Directory"
 msgstr "Directory"
 
-#: src/downloadcommandparser.cpp:252
+#: src/downloadcommandparser.cpp:254
 msgid "Do you want to open directory?"
 msgstr "Do you want to open directory?"
 
-#: src/mainwindow.cpp:222
+#: src/mainwindow.cpp:226
 msgid "&Update"
 msgstr "&Update"
 
-#: src/mainwindow.cpp:225
+#: src/mainwindow.cpp:229
 msgid "&Refresh"
 msgstr "&Refresh"
 
-#: src/mainwindow.cpp:240
+#: src/mainwindow.cpp:244
 msgid "&Download"
 msgstr "&Download"
 
-#: src/mainwindow.cpp:243
+#: src/mainwindow.cpp:247
 msgid "&Search"
 msgstr "&Search"
 
-#: src/mainwindow.cpp:246
+#: src/mainwindow.cpp:250
 msgid "&Update all packages"
 msgstr "&Update all packages"
 
-#: src/mainwindow.cpp:249
+#: src/mainwindow.cpp:253
 msgid "&Update mirrors"
 msgstr "&Update mirrors"
 
-#: src/mainwindow.cpp:252
+#: src/mainwindow.cpp:256
 msgid "&Clean"
 msgstr "&Clean"
 
-#: src/mainwindow.cpp:255
+#: src/mainwindow.cpp:259
 msgid "&Sync POLAUR"
 msgstr "&Sync POLAUR"
 
-#: src/mainwindow.cpp:258
+#: src/mainwindow.cpp:262
 msgid "&Statistics"
 msgstr "&Statistics"
 
@@ -173,63 +173,71 @@ msgstr "&Statistics"
 #
 #. i18n: file: src/src/mainwindowview.ui:1111
 #. i18n: ectx: property (toolTip), widget (QLabel, aur_led_label)
-#: src/mainwindowview.cpp:72 src/rc.cpp:69
+#: src/mainwindowview.cpp:71 src/rc.cpp:69
 msgid "Internet connection state and auracle-git package presence"
 msgstr "Internet connection state and auracle-git package presence"
 
 #. i18n: file: src/src/mainwindowview.ui:1124
 #. i18n: ectx: property (toolTip), widget (QLabel, polaur_led_label)
-#: src/mainwindowview.cpp:73 src/rc.cpp:75
+#: src/mainwindowview.cpp:72 src/rc.cpp:75
 msgid "Internet connection state and git package presence"
 msgstr "Internet connection state and git package presence"
 
 #. i18n: file: src/src/mainwindowview.ui:1098
 #. i18n: ectx: property (toolTip), widget (QLabel, repo_led_label)
-#: src/mainwindowview.cpp:74 src/rc.cpp:63
+#: src/mainwindowview.cpp:73 src/rc.cpp:63
 msgid "Internet connection state"
 msgstr "Internet connection state"
 
-#: src/mainwindowview.cpp:185
+#: src/mainwindowview.cpp:180
 msgid "All processes ended"
 msgstr "All processes ended"
 
-#: src/mainwindowview.cpp:185
+#: src/mainwindowview.cpp:180
 msgid "All processes have been completed."
 msgstr "All processes have been completed."
 
 #. i18n: file: src/src/mainwindowview.ui:473
 #. i18n: ectx: property (text), widget (QLabel, packages_to_update_label)
-#: src/mainwindowview.cpp:265 src/mainwindowview.cpp:391
-#: src/mainwindowview.cpp:656 src/rc.cpp:24
+#: src/mainwindowview.cpp:260 src/mainwindowview.cpp:407
+#: src/mainwindowview.cpp:675 src/rc.cpp:24
 msgid "TO UPDATE"
 msgstr "TO UPDATE"
 
 #. i18n: file: src/src/mainwindowview.ui:803
 #. i18n: ectx: property (text), widget (QLabel, accessible_packages)
-#: src/mainwindowview.cpp:266 src/mainwindowview.cpp:400
-#: src/mainwindowview.cpp:657 src/rc.cpp:45
+#: src/mainwindowview.cpp:261 src/mainwindowview.cpp:416
+#: src/mainwindowview.cpp:676 src/rc.cpp:45
 msgid "AVAILABLE TO INSTALL"
 msgstr "AVAILABLE TO INSTALL"
 
-#: src/mainwindowview.cpp:274 src/mainwindowview.cpp:276
+#: src/mainwindowview.cpp:269 src/mainwindowview.cpp:271
 msgid "No internet connection"
 msgstr "No internet connection"
 
-#: src/mainwindowview.cpp:292 src/mainwindowview.cpp:308
+#: src/mainwindowview.cpp:284
+msgid "Process abort"
+msgstr "Process abort"
+
+#: src/mainwindowview.cpp:284
+msgid "Are you sure about quitting this process?"
+msgstr "Are you sure about quitting this process?"
+
+#: src/mainwindowview.cpp:308 src/mainwindowview.cpp:324
 msgid "Something went wrong. Try to refresh"
 msgstr "Something went wrong. Try to refresh"
 
-#: src/mainwindowview.cpp:331
+#: src/mainwindowview.cpp:347
 msgid "Cannot be updated - try to refresh"
 msgstr "Cannot be updated - try to refresh"
 
-#: src/mainwindowview.cpp:337
+#: src/mainwindowview.cpp:353
 msgid "There aren't packages to update"
 msgstr "There aren't packages to update"
 
 #. i18n: file: src/src/mainwindowview.ui:153
 #. i18n: ectx: property (text), widget (QLabel, installed_packages_label)
-#: src/mainwindowview.cpp:409 src/mainwindowview.cpp:658 src/rc.cpp:6
+#: src/mainwindowview.cpp:425 src/mainwindowview.cpp:677 src/rc.cpp:6
 msgid "INSTALLED"
 msgstr "INSTALLED"
 
@@ -239,15 +247,15 @@ msgstr "INSTALLED"
 #. i18n: ectx: property (text), widget (QPushButton, input_for_update_btn)
 #. i18n: file: src/src/mainwindowview.ui:970
 #. i18n: ectx: property (text), widget (QPushButton, input_for_install_btn)
-#: src/mainwindowview.cpp:463 src/rc.cpp:12 src/rc.cpp:30 src/rc.cpp:51
+#: src/mainwindowview.cpp:479 src/rc.cpp:12 src/rc.cpp:30 src/rc.cpp:51
 msgid "Input"
 msgstr "Input"
 
-#: src/mainwindowview.cpp:598
+#: src/mainwindowview.cpp:617
 msgid "Quit"
 msgstr "Quit"
 
-#: src/mainwindowview.cpp:598
+#: src/mainwindowview.cpp:617
 msgid ""
 "Application cannot be closed immediately. Try again after end of running "
 "operations."
@@ -255,11 +263,11 @@ msgstr ""
 "Application cannot be closed immediately. Try again after end of running "
 "operations."
 
-#: src/mainwindowview.cpp:635
+#: src/mainwindowview.cpp:654
 msgid "Process running"
 msgstr "Process running"
 
-#: src/mainwindowview.cpp:635
+#: src/mainwindowview.cpp:654
 msgid "Wait until all major processes are complete"
 msgstr "Wait until all major processes are complete"
 
@@ -290,7 +298,7 @@ msgstr "Update mirrors"
 msgid "update mirrors?"
 msgstr "update mirrors?"
 
-#: src/process.cpp:73 src/updatedpackagescolumn.cpp:145
+#: src/process.cpp:73 src/updatedpackagescolumn.cpp:149
 msgid "Update all"
 msgstr "Update all"
 
@@ -326,54 +334,54 @@ msgstr "sync POLAUR packages?"
 msgid "The task is already running!"
 msgstr "The task is already running!"
 
-#: src/process.cpp:277
-msgid "%1 wasn't possible: %2"
-msgstr "%1 wasn't possible: %2"
+#: src/process.cpp:283
+msgid "wasn't possible:"
+msgstr "wasn't possible:"
 
-#: src/process.cpp:416
+#: src/process.cpp:421
 msgid "Select preview and respond to questions manually"
 msgstr "Select preview and respond to questions manually"
 
-#: src/process.cpp:467
+#: src/process.cpp:472
 msgid "Uninstallation"
 msgstr "Uninstallation"
 
-#: src/process.cpp:467
+#: src/process.cpp:472
 msgid "remove package?"
 msgstr "remove package?"
 
-#: src/process.cpp:468
+#: src/process.cpp:473
 msgid "Installation"
 msgstr "Installation"
 
-#: src/process.cpp:468 src/process.cpp:469 src/process.cpp:470
-#: src/process.cpp:471
+#: src/process.cpp:473 src/process.cpp:474 src/process.cpp:475
+#: src/process.cpp:476
 msgid "install package?"
 msgstr "install package?"
 
-#: src/process.cpp:469
+#: src/process.cpp:474
 msgid "Installation from Repo"
 msgstr "Installation from Repo"
 
-#: src/process.cpp:470
+#: src/process.cpp:475
 msgid "Installation from AUR"
 msgstr "Installation from AUR"
 
-#: src/process.cpp:471
+#: src/process.cpp:476
 msgid "Installation from POLAUR"
 msgstr "Installation from POLAUR"
 
 #. i18n: file: src/src/mainwindowview.ui:684
 #. i18n: ectx: property (text), widget (QPushButton, update_packages_button)
-#: src/process.cpp:472 src/rc.cpp:33 src/systemtray.cpp:49
+#: src/process.cpp:477 src/rc.cpp:33 src/systemtray.cpp:49
 msgid "Update"
 msgstr "Update"
 
-#: src/process.cpp:472
+#: src/process.cpp:477
 msgid "update package?"
 msgstr "update package?"
 
-#: src/process.cpp:511
+#: src/process.cpp:516
 msgid "Are you sure you want to %1"
 msgstr "Are you sure you want to %1"
 
@@ -664,19 +672,19 @@ msgstr "packages to update"
 msgid "package to update"
 msgstr "package to update"
 
-#: src/updatedpackagescolumn.cpp:144
+#: src/updatedpackagescolumn.cpp:148
 msgid "Single AUR/POLAUR packages"
 msgstr "Single AUR/POLAUR packages"
 
-#: src/updatedpackagescolumn.cpp:144
+#: src/updatedpackagescolumn.cpp:148
 msgid "It's not possible to update single AUR/POLAUR packages"
 msgstr "It's not possible to update single AUR/POLAUR packages"
 
-#: src/updatedpackagescolumn.cpp:145
+#: src/updatedpackagescolumn.cpp:149
 msgid "Uncheck these packages"
 msgstr "Uncheck these packages"
 
-#: src/updatedpackagescolumn.cpp:145
+#: src/updatedpackagescolumn.cpp:149
 msgid "Cancel"
 msgstr "Cancel"
 

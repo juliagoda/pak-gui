@@ -109,9 +109,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-21</y>
+            <y>-99</y>
             <width>260</width>
-            <height>782</height>
+            <height>802</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -205,6 +205,67 @@
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_18">
+             <property name="leftMargin">
+              <number>10</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>10</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <spacer name="horizontalSpacer_20">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="abort_uninstallation_process_btn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Abort</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_19">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
             <widget class="QWidget" name="remove_spinning_widget" native="true">
              <layout class="QVBoxLayout" name="verticalLayout_8">
               <property name="leftMargin">
@@ -278,19 +339,6 @@
             <widget class="QListWidget" name="installed_packages_list"/>
            </item>
            <item>
-            <widget class="QPushButton" name="abort_uninstallation_process_btn">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Abort</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QScrollArea" name="installed_preview_area">
              <property name="widgetResizable">
               <bool>true</bool>
@@ -325,7 +373,7 @@ padding: 3px;</string>
                    <widget class="QPushButton" name="input_for_uninstall_btn">
                     <property name="maximumSize">
                      <size>
-                      <width>50</width>
+                      <width>100</width>
                       <height>16777215</height>
                      </size>
                     </property>
@@ -538,6 +586,67 @@ padding: 3px;</string>
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+             <property name="leftMargin">
+              <number>10</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>10</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <spacer name="horizontalSpacer_15">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="abort_update_process_btn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Abort</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_16">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
             <widget class="QWidget" name="update_spinning_widget" native="true">
              <layout class="QVBoxLayout" name="verticalLayout_13">
               <property name="leftMargin">
@@ -611,19 +720,6 @@ padding: 3px;</string>
             <widget class="QListWidget" name="packages_to_update_list"/>
            </item>
            <item>
-            <widget class="QPushButton" name="abort_update_process_btn">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Abort</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QScrollArea" name="updated_preview_area">
              <property name="widgetResizable">
               <bool>true</bool>
@@ -634,7 +730,7 @@ padding: 3px;</string>
                 <x>0</x>
                 <y>0</y>
                 <width>254</width>
-                <height>170</height>
+                <height>160</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -657,14 +753,14 @@ padding: 3px;</string>
                   <item>
                    <widget class="QPushButton" name="input_for_update_btn">
                     <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                       <horstretch>0</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>50</width>
+                      <width>100</width>
                       <height>16777215</height>
                      </size>
                     </property>
@@ -887,6 +983,67 @@ padding: 3px;</string>
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_17">
+             <property name="leftMargin">
+              <number>10</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>10</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <spacer name="horizontalSpacer_17">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="abort_installation_process_btn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Abort</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_18">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
             <widget class="QWidget" name="installation_spinning_widget" native="true">
              <layout class="QVBoxLayout" name="verticalLayout_15">
               <property name="leftMargin">
@@ -960,19 +1117,6 @@ padding: 3px;</string>
             <widget class="QListWidget" name="available_packages_list"/>
            </item>
            <item>
-            <widget class="QPushButton" name="abort_installation_process_btn">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Abort</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QScrollArea" name="available_preview_area">
              <property name="widgetResizable">
               <bool>true</bool>
@@ -983,7 +1127,7 @@ padding: 3px;</string>
                 <x>0</x>
                 <y>0</y>
                 <width>254</width>
-                <height>170</height>
+                <height>160</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1007,7 +1151,7 @@ padding: 3px;</string>
                    <widget class="QPushButton" name="input_for_install_btn">
                     <property name="maximumSize">
                      <size>
-                      <width>50</width>
+                      <width>100</width>
                       <height>16777215</height>
                      </size>
                     </property>

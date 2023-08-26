@@ -59,7 +59,9 @@ public Q_SLOTS:
     virtual void countCheckedPackages(QListWidgetItem* item);
 
 signals:
-    void checkedPackagesCounterChanged(bool has_checked_buttons);
+   void checkedPackagesCounterChanged(bool has_checked_buttons);
+   void showAbortButton(QProcess* process);
+   void hideAbortButton();
 
 protected:
     void addCheckedPackage(Package* package);

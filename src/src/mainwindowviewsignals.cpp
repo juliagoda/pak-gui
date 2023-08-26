@@ -132,11 +132,54 @@ void MainWindowViewSignals::attachSignalsForProcess()
 
     QObject::connect(main_window_view->process.data(), &Process::showInput, main_window_view, &MainWindowView::showInputWidgets);
     QObject::connect(main_window_view->process.data(), &Process::acceptedMainTask, main_window_view, &MainWindowView::showSingleAnimation, Qt::AutoConnection);
+    QObject::connect(main_window_view->process.data(), &Process::acceptedMainTask, [this](Process::Task new_task)
+    {
+        if (new_task == Process::Task::Update ||
+            new_task == Process::Task::UpdateAll)
+        {
+            main_window_view->current_update_process = main_window_view->process->getCurrentProcess();
+            main_window_view->m_ui.abort_update_process_btn->show();
+        }
+
+        if (new_task == Process::Task::Install)
+        {
+            main_window_view->current_installation_process = main_window_view->process->getCurrentProcess();
+            main_window_view->m_ui.abort_installation_process_btn->show();
+        }
+
+        if (new_task == Process::Task::Uninstall)
+        {
+            main_window_view->current_uninstallation_process = main_window_view->process->getCurrentProcess();
+            main_window_view->m_ui.abort_uninstallation_process_btn->show();
+        }
+    });
+
     QObject::connect(main_window_view->process.data(), &Process::generatedOutput, main_window_view, &MainWindowView::generateOutput, Qt::AutoConnection);
     QObject::connect(main_window_view->process.data(), &Process::acceptedTask, main_window_view, &MainWindowView::generatePreview);
     QObject::connect(main_window_view->process.data(), &Process::acceptedTask, [this](){ main_window_view->spinning_animation->startSmallOnWidget(main_window_view->m_ui.actions_spinning_animation_label);  });
     QObject::connect(main_window_view->process.data(), &Process::finished, this, [this](Process::Task task, int exit_code, QProcess::ExitStatus exit_status) { main_window_view->finishProcess(task, exit_code, exit_status); }, Qt::AutoConnection);
     QObject::connect(main_window_view->process.data(), &Process::finished, [this](){ main_window_view->spinning_animation->stopSmallOnWidget(main_window_view->m_ui.actions_spinning_animation_label);  });
+    QObject::connect(main_window_view->process.data(), &Process::finished, [this](Process::Task new_task, int exit_code, QProcess::ExitStatus exit_status)
+    {
+        if (new_task == Process::Task::Update ||
+            new_task == Process::Task::UpdateAll)
+        {
+            main_window_view->current_update_process = nullptr;
+            main_window_view->m_ui.abort_update_process_btn->hide();
+        }
+
+        if (new_task == Process::Task::Install)
+        {
+            main_window_view->current_installation_process = nullptr;
+            main_window_view->m_ui.abort_installation_process_btn->hide();
+        }
+
+        if (new_task == Process::Task::Uninstall)
+        {
+            main_window_view->current_uninstallation_process = nullptr;
+            main_window_view->m_ui.abort_uninstallation_process_btn->hide();
+        }
+    });
 }
 
 
@@ -148,6 +191,23 @@ void MainWindowViewSignals::attachAvailablePackagesColumn()
 
     if (main_window_view->process->preparedBeforeRun(Process::Task::Install, main_window_view->available_packages_column.data()->getCheckedPackagesStringList()))
       main_window_view->process->run(Process::Task::Install, main_window_view->available_packages_column.data()->getCheckedPackagesStringList()); }, Qt::AutoConnection);
+
+    QObject::connect(main_window_view->available_packages_column.data(), &AvailablePackagesColumn::showAbortButton, [this](QProcess* process)
+    {
+        main_window_view->current_installation_process = process;
+        main_window_view->m_ui.abort_installation_process_btn->show();
+    });
+
+    QObject::connect(main_window_view->available_packages_column.data(), &AvailablePackagesColumn::hideAbortButton, [this]()
+    {
+        main_window_view->current_installation_process = nullptr;
+        main_window_view->m_ui.abort_installation_process_btn->hide();
+    });
+
+    QObject::connect(main_window_view->m_ui.abort_installation_process_btn, &QPushButton::clicked, [this]()
+    {
+        main_window_view->abortProcessFromButton(main_window_view->current_installation_process, main_window_view->m_ui.abort_installation_process_btn);
+    });
 
     QObject::connect(main_window_view->process.get(), &Process::acceptedUpdateAll, main_window_view, &MainWindowView::blockUpdateColumn);
     QObject::connect(main_window_view->m_ui.available_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.available_packages_list->count() == 0) main_window_view->m_ui.install_packages_button->setEnabled(false); }, Qt::AutoConnection);
@@ -175,6 +235,24 @@ void MainWindowViewSignals::attachInstalledPackagesColumn()
     if (main_window_view->process->preparedBeforeRun(Process::Task::Uninstall, main_window_view->installed_packages_column.data()->getCheckedPackagesStringList()))
       main_window_view->process->run(Process::Task::Uninstall, main_window_view->installed_packages_column.data()->getCheckedPackagesStringList()); }, Qt::AutoConnection);
 
+
+    QObject::connect(main_window_view->installed_packages_column.data(), &InstalledPackagesColumn::showAbortButton, [this](QProcess* process)
+        {
+            main_window_view->current_uninstallation_process = process;
+            main_window_view->m_ui.abort_uninstallation_process_btn->show();
+        });
+
+    QObject::connect(main_window_view->installed_packages_column.data(), &InstalledPackagesColumn::hideAbortButton, [this]()
+        {
+            main_window_view->current_uninstallation_process = nullptr;
+            main_window_view->m_ui.abort_uninstallation_process_btn->hide();
+        });
+
+    QObject::connect(main_window_view->m_ui.abort_uninstallation_process_btn, &QPushButton::clicked, [this]()
+        {
+            main_window_view->abortProcessFromButton(main_window_view->current_uninstallation_process, main_window_view->m_ui.abort_uninstallation_process_btn);
+        });
+
     QObject::connect(main_window_view->m_ui.installed_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.installed_packages_list->count() == 0) main_window_view->m_ui.uninstall_packages_button->setEnabled(false); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.installed_packages_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ main_window_view->m_ui.search_installed_packages_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.installed_packages_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.installed_packages_list->count() == 0) main_window_view->m_ui.search_installed_packages_checkbox->setEnabled(false); }, Qt::AutoConnection);
@@ -201,6 +279,23 @@ void MainWindowViewSignals::attachPackagesToUpdateColumn()
     main_window_view->m_ui.text_browser_tab_update->clear();
     if (main_window_view->process->preparedBeforeRun(task, packages_list))
       main_window_view->process->run(task, packages_list); });
+
+    QObject::connect(main_window_view->updated_packages_column.data(), &UpdatedPackagesColumn::showAbortButton, [this](QProcess* process)
+        {
+            main_window_view->current_update_process = process;
+            main_window_view->m_ui.abort_update_process_btn->show();
+        });
+
+    QObject::connect(main_window_view->updated_packages_column.data(), &UpdatedPackagesColumn::hideAbortButton, [this]()
+        {
+            main_window_view->current_update_process = nullptr;
+            main_window_view->m_ui.abort_update_process_btn->hide();
+        });
+
+    QObject::connect(main_window_view->m_ui.abort_update_process_btn, &QPushButton::clicked, [this]()
+        {
+            main_window_view->abortProcessFromButton(main_window_view->current_update_process, main_window_view->m_ui.abort_update_process_btn);
+        });
 
     QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.packages_to_update_list->count() == 0) main_window_view->m_ui.update_packages_button->setEnabled(false); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ main_window_view->m_ui.search_packages_to_update_checkbox->setEnabled(true); }, Qt::AutoConnection);

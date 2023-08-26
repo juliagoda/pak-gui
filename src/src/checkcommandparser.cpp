@@ -52,8 +52,8 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
 
 QString CheckCommandParser::generatePakCheckResults()
 {
-    emit processStarted();
     QProcess pacman_check;
+    emit processStarted(&pacman_check);
     pacman_check.setProcessChannelMode(QProcess::MergedChannels);
     pacman_check.start("/bin/bash", QStringList() << "-c" << "pak -C");
     pacman_check.waitForStarted(-1);

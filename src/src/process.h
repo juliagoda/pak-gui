@@ -63,6 +63,7 @@ public:
     void stop();
     static bool isAlreadyRunning(Process::Task new_task);
     static void resetRunningTask(Process::Task new_task);
+    QProcess *getCurrentProcess() const;
 
 protected:
     virtual void startProcess(Task new_task);

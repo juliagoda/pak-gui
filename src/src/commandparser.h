@@ -33,7 +33,7 @@ public:
     virtual QStringList retrieveInfo() = 0;
 
 signals:
-    void processStarted();
+    void processStarted(QProcess* process);
     void processEnded();
 
 protected Q_SLOTS:

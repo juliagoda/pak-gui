@@ -195,6 +195,12 @@ void Process::resetRunningTask(Task new_task)
 }
 
 
+QProcess* Process::getCurrentProcess() const
+{
+    return current_process.get();
+}
+
+
 void Process::updateCleanCommand(bool is_auracle_installed)
 {
     QString basic_command = Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sc";
@@ -274,11 +280,10 @@ void Process::connectSignals(Process::Task new_task)
             MessageBox message_box(QMessageBox::Warning, QMessageBox::Ok);
             message_box.setParent(parent);
             message_box.setTitle(messages_map.value(new_task).first);
-            message_box.setText(i18n("%1 wasn't possible: %2").arg(messages_map.value(new_task).first).arg(current_process.data()->error()));
+            QString form = "%1 " + i18n("wasn't possible:") + " %2";
+            message_box.setText(form.arg(messages_map.value(new_task).first).arg(QVariant::fromValue(process_error).toString()));
             message_box.run();
-
             Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString(), QVariant::fromValue(process_error).toString()));
-            emit ended();
         });
 
     QObject::connect(current_process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),

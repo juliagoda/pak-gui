@@ -56,7 +56,12 @@ uint UpdatedPackagesColumn::getCurrentPackagesCount() const
 QHash<QString, Package::Source> UpdatedPackagesColumn::getPackagesList()
 {
     QSharedPointer<CheckCommandParser> command_parser(new CheckCommandParser);
-    return command_parser.data()->retrieveInfoMap();
+    QObject::connect(command_parser.get(), &CheckCommandParser::processStarted, [this](QProcess* process){ qDebug() << "show button"; emit showAbortButton(process); });
+    QObject::connect(command_parser.get(), &CheckCommandParser::processEnded, [this](){ emit hideAbortButton(); });
+    const auto& info = command_parser->retrieveInfoMap();
+    QObject::disconnect(command_parser.get(), &CheckCommandParser::processStarted, nullptr, nullptr);
+    QObject::disconnect(command_parser.get(), &CheckCommandParser::processEnded, nullptr, nullptr);
+    return info;
 }
 
 
