@@ -73,7 +73,7 @@ private:
     MockPackageSearch package_search;
     MockPackageSearchInput package_search_input;
     MockSearchResultsList search_results_list;
-    QSharedPointer<InstallCommandParser> install_command_parser = QSharedPointer<InstallCommandParser>(nullptr);
-    QSharedPointer<Process> process = QSharedPointer<Process>(nullptr);
+    QSharedPointer<InstallCommandParser> install_command_parser{nullptr};
+    QSharedPointer<Process> process{nullptr};
     uint packages_to_update_count = 0;
 };

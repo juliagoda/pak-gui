@@ -36,6 +36,6 @@ private slots:
     void cleanup();
 
 private:
-    QString package_name = "";
+    QString package_name{};
     MockSiPackage si_package;
 };

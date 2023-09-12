@@ -39,6 +39,6 @@ private slots:
 
 private:
     MockProcess process;
-    QSharedPointer<ActionsAccessChecker> actions_checker = QSharedPointer<ActionsAccessChecker>(nullptr);
+    QSharedPointer<ActionsAccessChecker> actions_checker{nullptr};
 };
 

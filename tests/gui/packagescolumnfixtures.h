@@ -198,7 +198,7 @@ public:
 
     void startProcess(Task new_task) override
     {
-        QString line = "Cache directory: /var/cache/pacman/pkg/\n";
+        QString line{"Cache directory: /var/cache/pacman/pkg/\n"};
         processReadLine(line, new_task);
     }
 
@@ -267,7 +267,7 @@ class MockQiPackage : public QiPackage
 {
 public:
     explicit MockQiPackage(QString& package_content) :
-        QiPackage(package_content)
+        QiPackage{package_content}
     {}
 
     friend class TestQiPackage;
@@ -278,7 +278,7 @@ class MockSiPackage : public SiPackage
 {
 public:
     explicit MockSiPackage(QString& package_content) :
-        SiPackage(package_content)
+        SiPackage{package_content}
     {}
 
     friend class TestSiPackage;

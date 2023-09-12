@@ -58,8 +58,8 @@ bool MockDownloadCommandParser::validateFinishedOutput(int exit_code)
 
 
 TestDownloadCommandParser::TestDownloadCommandParser(QObject* parent) :
-    QObject(parent),
-    download_command_parser(QString(""), new QWidget)
+    QObject{parent},
+    download_command_parser{QString{}, new QWidget}
 {
     QTestEventLoop::instance().enterLoop(1);
 }

@@ -71,5 +71,5 @@ private:
     MockPackageDownloader package_downloader;
     MockPackageInput package_input;
     MockPathsChoiceInput paths_choice_input;
-    QSharedPointer<DownloadCommandParser> download_command_parser = QSharedPointer<DownloadCommandParser>(nullptr);
+    QSharedPointer<DownloadCommandParser> download_command_parser{nullptr};
 };

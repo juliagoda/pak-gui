@@ -27,14 +27,14 @@ MockPackageDownloader::MockPackageDownloader() :
 
 
 MockPackageInput::MockPackageInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
-    PackageInput(new_download_command_parser)
+    PackageInput{new_download_command_parser}
 {
   // ...
 }
 
 
 MockPathsChoiceInput::MockPathsChoiceInput(QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
-    PathsChoiceInput(new_download_command_parser)
+    PathsChoiceInput{new_download_command_parser}
 {
   // ...
 }
@@ -43,8 +43,8 @@ MockPathsChoiceInput::MockPathsChoiceInput(QSharedPointer<DownloadCommandParser>
 TestPackageDownloader::TestPackageDownloader(QObject* parent) :
     QObject(parent),
     package_downloader(),
-    package_input(download_command_parser),
-    paths_choice_input(download_command_parser)
+    package_input{download_command_parser},
+    paths_choice_input{download_command_parser}
 {
     QTestEventLoop::instance().enterLoop(1);
 }
