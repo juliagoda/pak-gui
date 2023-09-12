@@ -22,10 +22,7 @@
 #include <QSharedPointer>
 
 
-InstallCommandParser::InstallCommandParser() :
-    package_name(""),
-    current_task(),
-    sourceToTaskMap()
+InstallCommandParser::InstallCommandParser()
 {
     init();
 }

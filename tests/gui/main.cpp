@@ -93,14 +93,14 @@ int main(int argc, char* argv[])
     ASSERT_TEST(new TestLogger());
 
     ASSERT_TEST(new TestOutputFilter());
-    //ASSERT_TEST(new TestPackageDownloader()); //C
+    ASSERT_TEST(new TestPackageDownloader());
     ASSERT_TEST(new TestPackageInputWindow());
 
-    //ASSERT_TEST(new TestPackageSearch()); //C
+    ASSERT_TEST(new TestPackageSearch());
     ASSERT_TEST(new TestPathConverter());
     ASSERT_TEST(new TestPreviewDesign());
 
-    //ASSERT_TEST(new TestProcess()); //C
+    ASSERT_TEST(new TestProcess());
     ASSERT_TEST(new TestProgressView());
     ASSERT_TEST(new TestQiCommandParser());
 

@@ -32,8 +32,8 @@ SpinningAnimation::SpinningAnimation() :
 
 
 void SpinningAnimation::startOnMainWidgets(const QPointer<QLabel>& first_label,
-    const QPointer<QLabel>& second_label,
-    const QPointer<QLabel>& third_label)
+                                           const QPointer<QLabel>& second_label,
+                                           const QPointer<QLabel>& third_label)
 {
     if (!isValid(animation))
         return;
@@ -50,8 +50,8 @@ void SpinningAnimation::startOnMainWidgets(const QPointer<QLabel>& first_label,
 
 
 void SpinningAnimation::stopOnMainWidgets(const QPointer<QLabel>& first_label,
-    const QPointer<QLabel>& second_label,
-    const QPointer<QLabel>& third_label)
+                                          const QPointer<QLabel>& second_label,
+                                          const QPointer<QLabel>& third_label)
 {
     if (!isValid(animation))
         return;

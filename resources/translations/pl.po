@@ -205,7 +205,7 @@ msgstr "ZAINSTALOWANE"
 #. i18n: ectx: property (text), widget (QPushButton, input_for_install_btn)
 #: src/mainwindowview.cpp:479 src/rc.cpp:12 src/rc.cpp:30 src/rc.cpp:51
 msgid "Input"
-msgstr "Wprowadzenie"
+msgstr "Dodaj"
 
 #: src/mainwindowview.cpp:617
 msgid "Quit"
@@ -304,7 +304,7 @@ msgstr "Odinstalowanie"
 
 #: src/process.cpp:472
 msgid "remove package?"
-msgstr "usunąć paczkę?"
+msgstr "usunąć paczki?"
 
 #: src/process.cpp:473
 msgid "Installation"
@@ -335,7 +335,7 @@ msgstr "Aktualizuj"
 
 #: src/process.cpp:477
 msgid "update package?"
-msgstr "zaktualizować paczkę?"
+msgstr "zaktualizować paczki?"
 
 #: src/process.cpp:516
 msgid "Are you sure you want to %1"

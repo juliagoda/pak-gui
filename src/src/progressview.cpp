@@ -26,7 +26,7 @@
 
 ProgressView::ProgressView(QDialog* parent)
     : QDialog(parent),
-    process(nullptr)
+      process(nullptr)
 {
     m_ui.setupUi(this);
     m_ui.progress_view_tabwidget->clear();

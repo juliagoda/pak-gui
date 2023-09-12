@@ -26,7 +26,7 @@
 
 
 MainWindowViewSignals::MainWindowViewSignals(MainWindowView* main_window_view) :
-    main_window_view(main_window_view)
+    main_window_view{main_window_view}
 {
   // ...
 }

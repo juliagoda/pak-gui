@@ -43,6 +43,7 @@ public:
     ~MainWindow() override;
 
     virtual void run();
+    void detachSettingsSignal();
 
 public Q_SLOTS:
     virtual void startSystemTray();
@@ -70,7 +71,7 @@ protected:
     QPointer<MainWindowView> main_window_view;
     QSharedPointer<ActionsAccessChecker> actions_access_checker;
     QSharedPointer<Process> process;
-    QScopedPointer<Settings> settings_window;
+    QPointer<Settings> settings_window;
     QTimer timer_on_updates;
     QTimer timer_on_logs;
     QPointer<QAction> update_action;
@@ -82,7 +83,7 @@ protected:
     QPointer<QAction> update_mirrors_action;
     QPointer<QAction> clean_action;
     QPointer<QAction> sync_polaur_action;
-    QScopedPointer<SystemTray> system_tray_icon = QScopedPointer<SystemTray>(nullptr);
+    QScopedPointer<SystemTray> system_tray_icon{nullptr};
 
 private:
     void startTimerOnOperation(const QDateTime& time,
@@ -94,6 +95,6 @@ private:
                    const QString& icon,
                    const QKeySequence& key_sequence);
 
-    bool initEnded = false;
+    bool initEnded{false};
 
 };

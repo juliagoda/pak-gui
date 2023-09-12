@@ -105,10 +105,7 @@ void UpdatedPackagesColumn::toggleAllPackages(bool is_all_checked)
     for (int i = 0; i < list_widget->count(); ++i)
     {
         QListWidgetItem* item = list_widget->item(i);
-        if (is_all_checked)
-            item->setCheckState(Qt::Checked);
-        else
-            item->setCheckState(Qt::Unchecked);
+        item->setCheckState(is_all_checked ? Qt::Checked : Qt::Unchecked);
     }
 }
 
@@ -121,10 +118,12 @@ template<> void UpdatedPackagesColumn::runAfterChoice<0>()
 
 template<> void UpdatedPackagesColumn::runAfterChoice<1>()
 {
-    std::for_each(checked_packages_list.begin(), checked_packages_list.end(), [](Package* package)
+    std::for_each(checked_packages_list.begin(), checked_packages_list.end(), [this](Package* package)
     {
         if (package->getSource() == Package::Source::AUR || package->getSource() == Package::Source::POLAUR)
+        {
             package->setCheckState(Qt::Unchecked);
+        }
 
         return package;
     });
@@ -153,7 +152,7 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
         runAfterChoice<0>();
     if (result == 1)
         runAfterChoice<1>();
-    if (result != 2)
+    if (result != 2 && !checked_packages_list.empty())
     {
         bool isAllChecked = static_cast<int>(getCheckedPackagesList().size()) == list_widget->count();
         emit preparedList(getCheckedPackagesStringList(), isAllChecked ? Process::Task::UpdateAll : Process::Task::Update, getAurPackagesCount());
@@ -163,8 +162,7 @@ void UpdatedPackagesColumn::prepareBeforeProcessRun()
 
 void UpdatedPackagesColumn::updatePackagesCount(uint new_current_packages_count)
 {
-    if (current_packages_count != new_current_packages_count)
-        emit currentPackagesCountChanged(new_current_packages_count);
+    emit currentPackagesCountChanged(new_current_packages_count);
 
     current_packages_count = new_current_packages_count;
 }

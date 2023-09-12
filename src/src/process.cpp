@@ -59,7 +59,7 @@ Process::Process(const QSharedPointer<ActionsAccessChecker>& new_actions_access_
     messages_map(),
     commands_map(),
     process_map(),
-    current_process(QSharedPointer<QProcess>(nullptr)),
+    current_process{nullptr},
     parent(new_parent)
 {
     std::call_once(yes_no_commands_update, updateYesNoCommands);

@@ -30,12 +30,12 @@ PackagesColumn::PackagesColumn(QListWidget* new_list_widget,
                                QCheckBox* new_reverse_sort_checkbox,
                                QWidget* new_parent) :
     QObject(),
-    checked_packages(0),
-    aur_checked_packages(0),
-    list_widget(new_list_widget),
-    search_lineedit(new_search_lineedit),
-    packages_sorter(new Sorter(list_widget, new_reverse_sort_checkbox), &QObject::deleteLater),
-    parent(new_parent),
+    checked_packages{0},
+    aur_checked_packages{0},
+    list_widget{new_list_widget},
+    search_lineedit{new_search_lineedit},
+    packages_sorter{new Sorter(list_widget, new_reverse_sort_checkbox), &QObject::deleteLater},
+    parent{new_parent},
     checked_packages_list()
 {
     if (!list_widget)
@@ -137,11 +137,15 @@ void PackagesColumn::countCheckedPackages(QListWidgetItem* item)
 
 void PackagesColumn::addCheckedPackage(Package* package)
 {
-    const bool is_not_repo_package = package->getSource() == Package::Source::AUR ||
+    const bool is_from_AUR = package->getSource() == Package::Source::AUR;
+    const bool is_not_repo_package = is_from_AUR ||
                                      package->getSource() == Package::Source::POLAUR;
+
+    if (is_from_AUR)
+        aur_checked_packages++;
+
     if (is_not_repo_package)
     {
-        aur_checked_packages++;
         checked_packages_list.push_front(package);
         Logger::logger()->logDebug(QStringLiteral("Added at the beginning of list package: %1").arg(package->getName()));
         return;

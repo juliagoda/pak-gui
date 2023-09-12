@@ -20,7 +20,7 @@
 
 
 PackageDownloader::PackageDownloader() :
-    next_window(nullptr)
+    next_window{nullptr}
 {
    // ...
 }
@@ -42,8 +42,8 @@ void PackageDownloader::handle()
 
 PackageInput::PackageInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
     PackageDownloader(),
-    package_input_window(nullptr),
-    download_command_parser(new_download_command_parser)
+    package_input_window{nullptr},
+    download_command_parser{new_download_command_parser}
 {
    // ...
 }
@@ -80,8 +80,8 @@ void PackageInput::closeWindow()
 
 PathsChoiceInput::PathsChoiceInput(const QSharedPointer<DownloadCommandParser>& new_download_command_parser) :
     PackageDownloader(),
-    download_command_parser(new_download_command_parser),
-    choice_window(nullptr)
+    download_command_parser{new_download_command_parser},
+    choice_window{nullptr}
 {
    connect(download_command_parser.get(), &DownloadCommandParser::ended, [this]{ emit ended() ; });
 }

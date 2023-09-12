@@ -19,6 +19,7 @@
 #pragma once
 
 #include <KStatusNotifierItem>
+#include <QPointer>
 
 
 class MainWindow;
@@ -33,11 +34,10 @@ public:
 
 public Q_SLOTS:
     void update(uint packages_count);
-
-protected:
     void changeStatusToDefault();
 
 private:
     void setup(QWidget* parent);
+    QPointer<MainWindow> main_window;
 };
 

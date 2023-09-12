@@ -49,7 +49,7 @@ protected:
     void processReadLine(const QString& line, QString& current_source_line);
 
 private:
-    QScopedPointer<QProcess> pak_search = QScopedPointer<QProcess>(nullptr);
+    QScopedPointer<QProcess> pak_search{nullptr};
     QString package_name;
     QStringList packages_lines;
 

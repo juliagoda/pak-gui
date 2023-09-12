@@ -56,9 +56,6 @@ private:
     void fillUntouchedList();
 
     template <typename T>
-    bool sortPackagesAsReversed(const QString& text, T emptyPackage);
-
-    template <typename T>
     void sortPackages(const QString& text, T emptyPackage);
 
     QListWidget* list_widget;

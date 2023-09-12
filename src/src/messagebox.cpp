@@ -22,7 +22,8 @@
 
 
 MessageBox::MessageBox(QMessageBox::Icon new_icon, QMessageBox::StandardButtons new_buttons) :
-    icon(new_icon), buttons(new_buttons)
+    icon{new_icon},
+    buttons{new_buttons}
 {
     // ...
 }

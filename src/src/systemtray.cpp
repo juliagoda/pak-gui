@@ -24,7 +24,8 @@
 
 
 SystemTray::SystemTray(MainWindow* parent)
-    : KStatusNotifierItem{parent}
+    : KStatusNotifierItem{parent},
+      main_window{parent}
 {
     setup(parent);
 }
@@ -43,7 +44,7 @@ void SystemTray::update(uint packages_count)
 {
     changeStatusToDefault();
 
-    if (packages_count > 0)
+    if (main_window->isMinimized() && packages_count > 0)
     {
         setStatus(KStatusNotifierItem::NeedsAttention);
         setToolTipTitle(i18n("Update"));

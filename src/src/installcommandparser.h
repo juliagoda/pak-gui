@@ -47,9 +47,9 @@ signals:
 private:
     void init();
 
-    QString package_name;
+    QString package_name{};
     Process::Task current_task;
-    QMap<QString, Process::Task> sourceToTaskMap;
-    QSharedPointer<Process> pak_install{QSharedPointer<Process>(nullptr)};
+    QMap<QString, Process::Task> sourceToTaskMap{};
+    QSharedPointer<Process> pak_install{nullptr};
 };
 

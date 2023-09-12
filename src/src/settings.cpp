@@ -32,11 +32,18 @@
 QSharedPointer<SettingsRecords> Settings::settings_records(nullptr);
 
 Settings::Settings(MainWindow* main_window) :
-    KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self())
+    KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self()),
+    main_window(main_window)
 {
     init(main_window);
     connectSignals(main_window);
     loadPackagesInfoSettings();
+}
+
+Settings::~Settings()
+{
+    if (main_window)
+        main_window->detachSettingsSignal();
 }
 
 

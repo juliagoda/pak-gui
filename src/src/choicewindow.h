@@ -57,11 +57,10 @@ protected:
     Ui::ChoiceWindow* retrieveUi();
     void clearComboBox();
 
-
 private:
     Ui::ChoiceWindow m_ui;
-    QString title;
-    QSharedPointer<SpinningAnimation> spinning_animation = QSharedPointer<SpinningAnimation>(new SpinningAnimation);
-    QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
+    QString title{};
+    QSharedPointer<SpinningAnimation> spinning_animation{new SpinningAnimation};
+    QScopedPointer<OutputFilter> output_filter{new OutputFilter};
 };
 

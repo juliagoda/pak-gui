@@ -64,15 +64,15 @@ private:
     using DirectoryNo = int;
     using DirectoryPath = QString;
 
-    QScopedPointer<QProcess> pak_download = QScopedPointer<QProcess>(nullptr);
-    QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
-    QString package_name;
-    QString command = QString("pak -G");
-    QString result_output;
-    QStringList error_lines;
-    QWidget* parent = nullptr;
-    QMap<DirectoryNo, DirectoryPath> directories_map;
-    int directory_no_choice = -1;
-    bool isTerminated = false;
+    QScopedPointer<QProcess> pak_download{nullptr};
+    QScopedPointer<OutputFilter> output_filter{new OutputFilter};
+    QString package_name{};
+    QString command{"pak -G"};
+    QString result_output{};
+    QStringList error_lines{};
+    QWidget* parent{nullptr};
+    QMap<DirectoryNo, DirectoryPath> directories_map{};
+    int directory_no_choice{-1};
+    bool isTerminated{false};
 };
 

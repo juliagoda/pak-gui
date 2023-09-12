@@ -22,6 +22,7 @@
 #include "mainwindowview.h"
 #include "settingsrecords.h"
 #include "src/settings.h"
+#include "src/systemtray.h"
 #include "timeconverter.h"
 #include "logger.h"
 
@@ -35,16 +36,16 @@
 #include <KNotification>
 
 #ifndef PARALLEL
-  #error "Parallel algorithms are needed to work with this app"
+#error "Parallel algorithms are needed to work with this app"
 #endif
 
 
 MainWindow::MainWindow()
-    : KXmlGuiWindow(),
-      actions_access_checker(ActionsAccessChecker::actionsAccessChecker(this)),
-      settings_window(nullptr)
+  : KXmlGuiWindow(),
+    actions_access_checker{ActionsAccessChecker::actionsAccessChecker(this)},
+    settings_window{nullptr}
 {
-    // ...
+   // ...
 }
 
 
@@ -63,9 +64,9 @@ MainWindow::~MainWindow()
     delete clean_action;
     delete sync_polaur_action;
 
-   actions_access_checker.reset(nullptr);
-   Settings::clearRecords();
-   Logger::logger()->closeOnQuit();
+    actions_access_checker.reset(nullptr);
+    Settings::clearRecords();
+    Logger::logger()->closeOnQuit();
 }
 
 
@@ -140,20 +141,27 @@ void MainWindow::setTimersOnChecks()
 void MainWindow::startSystemTray()
 {
     if (!main_window_view.isNull() && !system_tray_icon.isNull())
+    {
+        disconnect(main_window_view, &MainWindowView::initStarted, system_tray_icon.get(), &SystemTray::changeStatusToDefault);
         disconnect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
+    }
 
     system_tray_icon.reset(nullptr);
 
     if (Settings::records()->useSystemTray())
     {
         system_tray_icon.reset(new SystemTray(this));
+        system_tray_icon->addAction(i18n("Refresh"), refresh_action);
+        connect(main_window_view, &MainWindowView::initStarted, system_tray_icon.get(), &SystemTray::changeStatusToDefault);
         connect(main_window_view, &MainWindowView::packagesToUpdateCountChanged, system_tray_icon.get(), &SystemTray::update);
     }
 }
 
 
-void MainWindow::startTimerOnOperation(const QDateTime& time, QTimer& timer,
-                                       int time_limit_in_milliseconds, const QString& operation)
+void MainWindow::startTimerOnOperation(const QDateTime& time,
+                                       QTimer& timer,
+                                       int time_limit_in_milliseconds,
+                                       const QString& operation)
 {
     if (!time.isValid() || time_limit_in_milliseconds == 0)
         return;
@@ -170,7 +178,7 @@ void MainWindow::startTimerOnOperation(const QDateTime& time, QTimer& timer,
 
     timer.start(rest_time);
     Logger::logger()->logDebug(QStringLiteral("Time passed for %1: %2")
-                               .arg(operation, TimeConverter::timeToString(time_passed_in_milliseconds)));
+                                   .arg(operation, TimeConverter::timeToString(time_passed_in_milliseconds)));
 }
 
 
@@ -190,15 +198,15 @@ void MainWindow::setAction(QPointer<QAction>& action,
 void MainWindow::connectSignalForUpdateCheck()
 {
     if (Settings::records()->updateCheckTimeDays() > 0 || Settings::records()->updateCheckTimeHours() > 0 ||
-            Settings::records()->updateCheckTimeMinutes())
+        Settings::records()->updateCheckTimeMinutes())
     {
         QObject::connect(&timer_on_updates, &QTimer::timeout, main_window_view, &MainWindowView::checkUpdates);
         startTimerOnOperation(Settings::records()->startDateTimeForUpdatesCheck(),
-                              timer_on_updates,
-                              TimeConverter::toMilliseconds(Settings::records()->updateCheckTimeDays(),
-                                                            Settings::records()->updateCheckTimeHours(),
-                                                            Settings::records()->updateCheckTimeMinutes()),
-                              QString("update"));
+            timer_on_updates,
+            TimeConverter::toMilliseconds(Settings::records()->updateCheckTimeDays(),
+                Settings::records()->updateCheckTimeHours(),
+                Settings::records()->updateCheckTimeMinutes()),
+            QString("update"));
     }
 }
 
@@ -209,9 +217,9 @@ void MainWindow::connectSignalForHistoryStore()
     {
         QObject::connect(&timer_on_logs, &QTimer::timeout, Logger::logger(), &Logger::clearLogsFile);
         startTimerOnOperation(Settings::records()->startDateTimeForHistoryStore(),
-                              timer_on_logs,
-                              TimeConverter::daysToMilliseconds(Settings::records()->historyStoreTimeDays()),
-                              QString("logs remove"));
+            timer_on_logs,
+            TimeConverter::daysToMilliseconds(Settings::records()->historyStoreTimeDays()),
+            QString("logs remove"));
     }
 }
 
@@ -271,6 +279,13 @@ void MainWindow::initSignals()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    if (Settings::records()->useSystemTray())
+    {
+        event->ignore();
+        this->hide();
+        return;
+    }
+
     if (!main_window_view->isRunningMainThreads())
     {
         event->accept();
@@ -295,7 +310,14 @@ void MainWindow::enableActions()
 
 void MainWindow::settingsConfigure()
 {
-    settings_window.reset(new Settings(this));
-    connect(settings_window.get(), &Settings::settingsChanged, main_window_view, &MainWindowView::updateWidgets);
+    settings_window = new Settings(this);
+    connect(settings_window, &Settings::settingsChanged, main_window_view, &MainWindowView::updateWidgets);
     settings_window->show();
+    settings_window->raise();
+}
+
+
+void MainWindow::detachSettingsSignal()
+{
+    disconnect(settings_window, &Settings::settingsChanged, main_window_view, nullptr);
 }

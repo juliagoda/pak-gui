@@ -36,7 +36,7 @@ class Settings : public KConfigDialog
 
 public:
     explicit Settings(MainWindow* main_window);
-    ~Settings() override = default;
+    ~Settings() override;
 
     static void saveInitDateTimesWhenEmpty();
     static const QSharedPointer<SettingsRecords>& records();
@@ -56,6 +56,7 @@ protected:
     Ui::PackagesInfoSettings packages_info_settings;
     Ui::LogsSettings logs_settings;
     static QSharedPointer<SettingsRecords> settings_records;
+    MainWindow* main_window = nullptr;
 
 private:
     void init(MainWindow* main_window);

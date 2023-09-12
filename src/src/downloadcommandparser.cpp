@@ -34,8 +34,8 @@
 
 DownloadCommandParser::DownloadCommandParser(const QString& new_package_name,
                                              QWidget* new_parent) :
-    package_name(new_package_name),
-    parent(new_parent)
+    package_name{new_package_name},
+    parent{new_parent}
 {
     connectSignals();
 }

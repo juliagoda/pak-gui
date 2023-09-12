@@ -45,8 +45,8 @@ void PackageSearch::handle()
 
 PackageSearchInput::PackageSearchInput(const QSharedPointer<InstallCommandParser>& new_install_command_parser) :
     PackageSearch(),
-    install_command_parser(new_install_command_parser),
-    package_input_window(nullptr)
+    install_command_parser{new_install_command_parser},
+    package_input_window{nullptr}
 {
     // ...
 }
@@ -85,12 +85,12 @@ SearchResultsList::SearchResultsList(const QSharedPointer<InstallCommandParser>&
                                      const QSharedPointer<Process>& new_process,
                                      uint packages_to_update_count) :
     PackageSearch(),
-    install_command_parser(new_install_command_parser),
-    output_filter(QScopedPointer<OutputFilter>(new OutputFilter)),
-    process(new_process),
-    search_all_command_parser(QScopedPointer<SearchAllCommandParser>(nullptr)),
-    choice_window(nullptr),
-    packages_to_update(packages_to_update_count)
+    install_command_parser{new_install_command_parser},
+    output_filter{new OutputFilter},
+    process{new_process},
+    search_all_command_parser{nullptr},
+    choice_window{nullptr},
+    packages_to_update{packages_to_update_count}
 {
     connect(install_command_parser.get(), &InstallCommandParser::ended, [&]() { emit ended(); });
 }

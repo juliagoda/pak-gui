@@ -71,33 +71,8 @@ void Sorter::sortPackagesByText(const QString& text, T emptyPackage)
         fillUntouchedList<T>();
 
     clear();
-    if (sortPackagesAsReversed<T>(text, emptyPackage))
-        return;
-
     sortPackages<T>(text, emptyPackage);
     showInfo();
-}
-
-
-template<typename T>
-bool Sorter::sortPackagesAsReversed(const QString& text, T emptyPackage)
-{
-    Q_UNUSED(emptyPackage) // we have errors without T as argument
-    if (reverse_sort_checkbox->checkState() == Qt::Checked)
-    {
-        std::for_each(std::execution::par, untouched_list_widget.rbegin(), untouched_list_widget.rend(), [&, this](QListWidgetItem* item)
-            {
-                if (!item->text().startsWith(text))
-                    return;
-
-                list_widget->addItem(item);
-            });
-
-        showInfo();
-        return true;
-    }
-
-    return false;
 }
 
 
@@ -191,10 +166,6 @@ bool Sorter::isOriginalListEmpty() const
 template void Sorter::sortPackagesByText(const QString& text, CheckPackage);
 template void Sorter::sortPackagesByText(const QString& text, SiPackage);
 template void Sorter::sortPackagesByText(const QString& text, QiPackage);
-
-template bool Sorter::sortPackagesAsReversed(const QString& text, CheckPackage);
-template bool Sorter::sortPackagesAsReversed(const QString& text, SiPackage);
-template bool Sorter::sortPackagesAsReversed(const QString& text, QiPackage);
 
 template void Sorter::sortPackages(const QString& text, CheckPackage);
 template void Sorter::sortPackages(const QString& text, SiPackage);

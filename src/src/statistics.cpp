@@ -45,6 +45,11 @@ void Statistics::init()
     QPointer<QtCharts::QChart> chart = new QtCharts::QChart();
     chart->addSeries(pie_series);
     chart->setTitle(i18n("Statistics - current month"));
+    QFont font;
+    font.setBold(true);
+    font.setPixelSize(20);
+    chart->setTitleFont(font);
+    chart->setTitleBrush(QBrush(Qt::Dense7Pattern));
     chart->legend()->hide();
 
     QPointer<QtCharts::QChartView> chartView = new QtCharts::QChartView(chart);
