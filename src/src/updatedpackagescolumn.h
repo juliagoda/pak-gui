@@ -40,6 +40,7 @@ public:
     void clearForSort();
     void fillForSort();
     void clearPackages();
+    void wakeUpOtherColumns();
 
 public Q_SLOTS:
     void toggleAllPackages(bool is_all_checked);

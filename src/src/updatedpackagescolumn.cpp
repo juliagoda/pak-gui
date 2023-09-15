@@ -74,7 +74,7 @@ void UpdatedPackagesColumn::fill()
     Q_ASSERT(list_widget->count() == 0);
     const auto& pak_packages = getPackagesList();
     updatePackagesCount(pak_packages.count());
-    condition.wakeAll();
+    wakeUpOtherColumns();
     QHash<QString, Package::Source>::const_iterator it = pak_packages.cbegin();
     int i = 0;
 
@@ -178,6 +178,12 @@ void UpdatedPackagesColumn::clearPackages()
 
     list_widget->clear();
     list_widget->update();
+}
+
+
+void UpdatedPackagesColumn::wakeUpOtherColumns()
+{
+   condition.wakeAll();
 }
 
 

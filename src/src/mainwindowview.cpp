@@ -293,6 +293,9 @@ void MainWindowView::abortProcessFromButton(QProcess* process, QPushButton* butt
 
         if (process->isOpen())
             process->terminate();
+
+        if (!updated_packages_column.isNull())
+            updated_packages_column->wakeUpOtherColumns();
     }
 }
 
