@@ -118,15 +118,14 @@ template<> void UpdatedPackagesColumn::runAfterChoice<0>()
 
 template<> void UpdatedPackagesColumn::runAfterChoice<1>()
 {
-    std::for_each(checked_packages_list.begin(), checked_packages_list.end(), [this](Package* package)
+    std::size_t limit = checked_packages_list.size();
+    for(std::size_t i = 0; i < limit; i++)
     {
-        if (package->getSource() == Package::Source::AUR || package->getSource() == Package::Source::POLAUR)
+        if (checked_packages_list[0]->getSource() == Package::Source::AUR || checked_packages_list[0]->getSource() == Package::Source::POLAUR)
         {
-            package->setCheckState(Qt::Unchecked);
+            checked_packages_list[0]->setCheckState(Qt::Unchecked);
         }
-
-        return package;
-    });
+    }
 }
 
 
