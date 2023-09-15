@@ -130,39 +130,43 @@ msgstr "Directory"
 msgid "Do you want to open directory?"
 msgstr "Do you want to open directory?"
 
-#: src/mainwindow.cpp:226
+#: src/mainwindow.cpp:154
+msgid "Refresh"
+msgstr "Refresh"
+
+#: src/mainwindow.cpp:234
 msgid "&Update"
 msgstr "&Update"
 
-#: src/mainwindow.cpp:229
+#: src/mainwindow.cpp:237
 msgid "&Refresh"
 msgstr "&Refresh"
 
-#: src/mainwindow.cpp:244
+#: src/mainwindow.cpp:252
 msgid "&Download"
 msgstr "&Download"
 
-#: src/mainwindow.cpp:247
+#: src/mainwindow.cpp:255
 msgid "&Search"
 msgstr "&Search"
 
-#: src/mainwindow.cpp:250
-msgid "&Update all packages"
-msgstr "&Update all packages"
+#: src/mainwindow.cpp:258
+msgid "&Update system packages"
+msgstr "&Update system packages"
 
-#: src/mainwindow.cpp:253
+#: src/mainwindow.cpp:261
 msgid "&Update mirrors"
 msgstr "&Update mirrors"
 
-#: src/mainwindow.cpp:256
+#: src/mainwindow.cpp:264
 msgid "&Clean"
 msgstr "&Clean"
 
-#: src/mainwindow.cpp:259
+#: src/mainwindow.cpp:267
 msgid "&Sync POLAUR"
 msgstr "&Sync POLAUR"
 
-#: src/mainwindow.cpp:262
+#: src/mainwindow.cpp:270
 msgid "&Statistics"
 msgstr "&Statistics"
 
@@ -199,15 +203,15 @@ msgstr "All processes have been completed."
 
 #. i18n: file: src/src/mainwindowview.ui:473
 #. i18n: ectx: property (text), widget (QLabel, packages_to_update_label)
-#: src/mainwindowview.cpp:260 src/mainwindowview.cpp:407
-#: src/mainwindowview.cpp:675 src/rc.cpp:24
+#: src/mainwindowview.cpp:260 src/mainwindowview.cpp:410
+#: src/mainwindowview.cpp:678 src/rc.cpp:24
 msgid "TO UPDATE"
 msgstr "TO UPDATE"
 
 #. i18n: file: src/src/mainwindowview.ui:803
 #. i18n: ectx: property (text), widget (QLabel, accessible_packages)
-#: src/mainwindowview.cpp:261 src/mainwindowview.cpp:416
-#: src/mainwindowview.cpp:676 src/rc.cpp:45
+#: src/mainwindowview.cpp:261 src/mainwindowview.cpp:419
+#: src/mainwindowview.cpp:679 src/rc.cpp:45
 msgid "AVAILABLE TO INSTALL"
 msgstr "AVAILABLE TO INSTALL"
 
@@ -223,21 +227,21 @@ msgstr "Process abort"
 msgid "Are you sure about quitting this process?"
 msgstr "Are you sure about quitting this process?"
 
-#: src/mainwindowview.cpp:308 src/mainwindowview.cpp:324
+#: src/mainwindowview.cpp:311 src/mainwindowview.cpp:327
 msgid "Something went wrong. Try to refresh"
 msgstr "Something went wrong. Try to refresh"
 
-#: src/mainwindowview.cpp:347
+#: src/mainwindowview.cpp:350
 msgid "Cannot be updated - try to refresh"
 msgstr "Cannot be updated - try to refresh"
 
-#: src/mainwindowview.cpp:353
+#: src/mainwindowview.cpp:356
 msgid "There aren't packages to update"
 msgstr "There aren't packages to update"
 
 #. i18n: file: src/src/mainwindowview.ui:153
 #. i18n: ectx: property (text), widget (QLabel, installed_packages_label)
-#: src/mainwindowview.cpp:425 src/mainwindowview.cpp:677 src/rc.cpp:6
+#: src/mainwindowview.cpp:428 src/mainwindowview.cpp:680 src/rc.cpp:6
 msgid "INSTALLED"
 msgstr "INSTALLED"
 
@@ -247,15 +251,15 @@ msgstr "INSTALLED"
 #. i18n: ectx: property (text), widget (QPushButton, input_for_update_btn)
 #. i18n: file: src/src/mainwindowview.ui:970
 #. i18n: ectx: property (text), widget (QPushButton, input_for_install_btn)
-#: src/mainwindowview.cpp:479 src/rc.cpp:12 src/rc.cpp:30 src/rc.cpp:51
+#: src/mainwindowview.cpp:482 src/rc.cpp:12 src/rc.cpp:30 src/rc.cpp:51
 msgid "Input"
 msgstr "Input"
 
-#: src/mainwindowview.cpp:617
+#: src/mainwindowview.cpp:620
 msgid "Quit"
 msgstr "Quit"
 
-#: src/mainwindowview.cpp:617
+#: src/mainwindowview.cpp:620
 msgid ""
 "Application cannot be closed immediately. Try again after end of running "
 "operations."
@@ -263,11 +267,11 @@ msgstr ""
 "Application cannot be closed immediately. Try again after end of running "
 "operations."
 
-#: src/mainwindowview.cpp:654
+#: src/mainwindowview.cpp:657
 msgid "Process running"
 msgstr "Process running"
 
-#: src/mainwindowview.cpp:654
+#: src/mainwindowview.cpp:657
 msgid "Wait until all major processes are complete"
 msgstr "Wait until all major processes are complete"
 
@@ -298,13 +302,13 @@ msgstr "Update mirrors"
 msgid "update mirrors?"
 msgstr "update mirrors?"
 
-#: src/process.cpp:73 src/updatedpackagescolumn.cpp:149
+#: src/process.cpp:73 src/updatedpackagescolumn.cpp:148
 msgid "Update all"
 msgstr "Update all"
 
 #: src/process.cpp:73
-msgid "update all packages?"
-msgstr "update all packages?"
+msgid "update all system packages packages?"
+msgstr "update all system packages packages?"
 
 #: src/process.cpp:74
 msgid "Print vcs packages"
@@ -334,54 +338,58 @@ msgstr "sync POLAUR packages?"
 msgid "The task is already running!"
 msgstr "The task is already running!"
 
-#: src/process.cpp:283
+#: src/process.cpp:104
+msgid "Respond to questions manually below the preview"
+msgstr ""
+
+#: src/process.cpp:299
 msgid "wasn't possible:"
 msgstr "wasn't possible:"
 
-#: src/process.cpp:421
+#: src/process.cpp:428
 msgid "Select preview and respond to questions manually"
 msgstr "Select preview and respond to questions manually"
 
-#: src/process.cpp:472
+#: src/process.cpp:479
 msgid "Uninstallation"
 msgstr "Uninstallation"
 
-#: src/process.cpp:472
+#: src/process.cpp:479
 msgid "remove package?"
 msgstr "remove package?"
 
-#: src/process.cpp:473
+#: src/process.cpp:480
 msgid "Installation"
 msgstr "Installation"
 
-#: src/process.cpp:473 src/process.cpp:474 src/process.cpp:475
-#: src/process.cpp:476
+#: src/process.cpp:480 src/process.cpp:481 src/process.cpp:482
+#: src/process.cpp:483
 msgid "install package?"
 msgstr "install package?"
 
-#: src/process.cpp:474
+#: src/process.cpp:481
 msgid "Installation from Repo"
 msgstr "Installation from Repo"
 
-#: src/process.cpp:475
+#: src/process.cpp:482
 msgid "Installation from AUR"
 msgstr "Installation from AUR"
 
-#: src/process.cpp:476
+#: src/process.cpp:483
 msgid "Installation from POLAUR"
 msgstr "Installation from POLAUR"
 
 #. i18n: file: src/src/mainwindowview.ui:684
 #. i18n: ectx: property (text), widget (QPushButton, update_packages_button)
-#: src/process.cpp:477 src/rc.cpp:33 src/systemtray.cpp:49
+#: src/process.cpp:484 src/rc.cpp:33 src/systemtray.cpp:50
 msgid "Update"
 msgstr "Update"
 
-#: src/process.cpp:477
+#: src/process.cpp:484
 msgid "update package?"
 msgstr "update package?"
 
-#: src/process.cpp:516
+#: src/process.cpp:523
 msgid "Are you sure you want to %1"
 msgstr "Are you sure you want to %1"
 
@@ -643,8 +651,8 @@ msgstr "Use system tray icon"
 msgid "No results"
 msgstr "No results"
 
-#: src/settings.cpp:113 src/settings.cpp:114 src/settings.cpp:115
-#: src/settings.cpp:116
+#: src/settings.cpp:120 src/settings.cpp:121 src/settings.cpp:122
+#: src/settings.cpp:123
 msgid "@title:tab"
 msgstr "@title:tab"
 
@@ -656,35 +664,35 @@ msgstr "Statistics"
 msgid "Statistics - current month"
 msgstr "Statistics - current month"
 
-#: src/statistics.cpp:96
+#: src/statistics.cpp:101
 msgid "No data for current month"
 msgstr "No data for current month"
 
-#: src/systemtray.cpp:50
+#: src/systemtray.cpp:51
 msgid "1 package to update"
 msgstr "1 package to update"
 
-#: src/systemtray.cpp:50
+#: src/systemtray.cpp:51
 msgid "packages to update"
 msgstr "packages to update"
 
-#: src/systemtray.cpp:50
+#: src/systemtray.cpp:51
 msgid "package to update"
 msgstr "package to update"
 
-#: src/updatedpackagescolumn.cpp:148
+#: src/updatedpackagescolumn.cpp:147
 msgid "Single AUR/POLAUR packages"
 msgstr "Single AUR/POLAUR packages"
 
-#: src/updatedpackagescolumn.cpp:148
+#: src/updatedpackagescolumn.cpp:147
 msgid "It's not possible to update single AUR/POLAUR packages"
 msgstr "It's not possible to update single AUR/POLAUR packages"
 
-#: src/updatedpackagescolumn.cpp:149
+#: src/updatedpackagescolumn.cpp:148
 msgid "Uncheck these packages"
 msgstr "Uncheck these packages"
 
-#: src/updatedpackagescolumn.cpp:149
+#: src/updatedpackagescolumn.cpp:148
 msgid "Cancel"
 msgstr "Cancel"
 

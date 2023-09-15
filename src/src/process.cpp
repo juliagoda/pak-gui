@@ -70,7 +70,7 @@ Process::Process(const QSharedPointer<ActionsAccessChecker>& new_actions_access_
     // TODOJG - lazy evaluation / strategy design instead of map
     messages_map.insert(Task::Clean, {i18n("Clean"), i18n("clean packages after installation?")});
     messages_map.insert(Task::MirrorsUpdate, {i18n("Update mirrors"), i18n("update mirrors?")});
-    messages_map.insert(Task::UpdateAll, {i18n("Update all"), i18n("update all packages?")});
+    messages_map.insert(Task::UpdateAll, {i18n("Update all"), i18n("update all system packages packages?")});
     messages_map.insert(Task::PrintVCSPackages, {i18n("Print vcs packages"), i18n("print all vcs packages?")});
     messages_map.insert(Task::UpdateInstalledPackages, {i18n("Installed packages update"), i18n("update installed packages?")});
     messages_map.insert(Task::SyncPOLAUR, {i18n("Sync POLAUR"), i18n("sync POLAUR packages?")});
@@ -91,10 +91,18 @@ bool Process::preparedBeforeRun(Task new_task, QStringList new_checked_packages)
     }
 
     updateMaps(new_checked_packages);
+
     if (!askQuestion(new_task, new_checked_packages))
     {
         prepareMapsForNextTask();
         return false;
+    }
+
+    if (isTaskAlwaysManual(new_task))
+    {
+        QMessageBox::information(parent, messages_map.value(new_task).first,
+        i18n("Respond to questions manually below the preview"),
+        QMessageBox::Ok);
     }
 
     return true;
@@ -201,6 +209,14 @@ QProcess* Process::getCurrentProcess() const
 }
 
 
+bool Process::isTaskAlwaysManual(Task new_task)
+{
+    return new_task == Task::InstallAfterSearchRepo ||
+           new_task == Task::InstallAfterSearchAUR ||
+           new_task == Task::InstallAfterSearchPOLAUR;
+}
+
+
 void Process::updateCleanCommand(bool is_auracle_installed)
 {
     QString basic_command = Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sc";
@@ -287,12 +303,12 @@ void Process::connectSignals(Process::Task new_task)
         });
 
     QObject::connect(current_process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-                     [this, new_task](int exit_code, QProcess::ExitStatus exit_status)
-                     {
-                         emit finished(new_task, exit_code, exit_status);
-                         Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));
-                         emit ended();
-                     });
+        [this, new_task](int exit_code, QProcess::ExitStatus exit_status)
+        {
+            emit finished(new_task, exit_code, exit_status);
+            Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));
+            emit ended();
+        });
 }
 
 
@@ -303,7 +319,7 @@ void Process::connectReadyReadStandardOutput(Task new_task)
 
     QObject::connect(current_process.data(), &QProcess::readyReadStandardOutput, [new_task, this]()
     {
-        if (Settings::records()->operateOnActionsManually() || aur_packages_to_update_count > 0)
+        if (Settings::records()->operateOnActionsManually() || aur_packages_to_update_count > 0|| isTaskAlwaysManual(new_task))
         {
             QString result{current_process->readAllStandardOutput()};
             processReadLine(result, new_task);
@@ -322,15 +338,6 @@ bool Process::isNeededAskAboutUpdate(Task new_task)
 {
     if (Settings::records()->operateOnActionsManually())
         return false;
-
-    if (new_task == Task::InstallAfterSearchRepo)
-        return true;
-
-    if (new_task == Task::InstallAfterSearchAUR)
-        return true;
-
-    if (new_task == Task::InstallAfterSearchPOLAUR)
-        return true;
 
     if (new_task == Task::Install)
         return true;
@@ -465,9 +472,9 @@ void Process::updateMaps(QStringList& checked_packages)
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
     commands_map.insert(Task::Uninstall, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Rs " + checked_packages.join(" "));
     commands_map.insert(Task::Install, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -S " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -S " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -SA " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -SP " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && pak -S " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SA " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SP " + checked_packages.join(" "));
 
     messages_map.insert(Task::Uninstall, {i18n("Uninstallation"), i18np("remove package?", "remove packages?", checked_packages.count())});
     messages_map.insert(Task::Install, {i18n("Installation"), i18np("install package?", "install packages?", checked_packages.count())});

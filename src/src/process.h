@@ -64,6 +64,7 @@ public:
     static bool isAlreadyRunning(Process::Task new_task);
     static void resetRunningTask(Process::Task new_task);
     QProcess *getCurrentProcess() const;
+    bool isTaskAlwaysManual(Process::Task new_task);
 
 protected:
     virtual void startProcess(Task new_task);

@@ -450,7 +450,7 @@ void MainWindowView::generatePreview(Process::Task task)
     text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(task_text));
     vertical_layout2->addWidget(text_browser_tab);
 
-    if (Settings::records()->operateOnActionsManually())
+    if (Settings::records()->operateOnActionsManually() || process->isTaskAlwaysManual(task))
         addInputWidgets(vertical_layout2, scroll_area_widget_contents, task_text);
 
     scroll_area->setWidget(scroll_area_widget_contents);
@@ -458,7 +458,7 @@ void MainWindowView::generatePreview(Process::Task task)
     generated_previews_map.insert(task, operation_preview);
     progress_view.data()->addProgressView(operation_preview);
 
-    if (Settings::records()->operateOnActionsManually())
+    if (Settings::records()->operateOnActionsManually() || process->isTaskAlwaysManual(task))
         progress_view.data()->createSignals(task, process);
 
     emit operationsAmountIncreased();

@@ -255,7 +255,7 @@ void MainWindow::initSignals()
     setAction(search_action, i18n("&Search"), QString("search"), QKeySequence(Qt::CTRL, Qt::Key_S));
     connect(search_action, &QAction::triggered, main_window_view, &MainWindowView::searchPackage);
 
-    setAction(update_all_action, i18n("&Update all packages"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A));
+    setAction(update_all_action, i18n("&Update system packages"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A));
     connect(update_all_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::UpdateAll)) process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
 
     setAction(update_mirrors_action, i18n("&Update mirrors"), QString("updateMirrors"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_M));
