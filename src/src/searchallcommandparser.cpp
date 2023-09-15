@@ -36,7 +36,7 @@ SearchAllCommandParser::SearchAllCommandParser(const QString& new_package_name) 
 QStringList SearchAllCommandParser::retrieveInfo()
 {
     packages_lines.clear();
-    QString current_source_line = QString();
+    QString current_source_line{};
     pak_search.reset(new QProcess);
     pak_search->setProcessChannelMode(QProcess::MergedChannels);
     pak_search->start("/bin/bash", QStringList() << "-c" << "pak -SS " + package_name);

@@ -56,7 +56,7 @@ uint UpdatedPackagesColumn::getCurrentPackagesCount() const
 QHash<QString, Package::Source> UpdatedPackagesColumn::getPackagesList()
 {
     QSharedPointer<CheckCommandParser> command_parser(new CheckCommandParser);
-    QObject::connect(command_parser.get(), &CheckCommandParser::processStarted, [this](QProcess* process){ qDebug() << "show button"; emit showAbortButton(process); });
+    QObject::connect(command_parser.get(), &CheckCommandParser::processStarted, [this](QProcess* process){ emit showAbortButton(process); });
     QObject::connect(command_parser.get(), &CheckCommandParser::processEnded, [this](){ emit hideAbortButton(); });
     const auto& info = command_parser->retrieveInfoMap();
     QObject::disconnect(command_parser.get(), &CheckCommandParser::processStarted, nullptr, nullptr);
@@ -121,7 +121,8 @@ template<> void UpdatedPackagesColumn::runAfterChoice<1>()
     std::size_t limit = checked_packages_list.size();
     for(std::size_t i = 0; i < limit; i++)
     {
-        if (checked_packages_list[0]->getSource() == Package::Source::AUR || checked_packages_list[0]->getSource() == Package::Source::POLAUR)
+        if (checked_packages_list[0]->getSource() == Package::Source::AUR ||
+            checked_packages_list[0]->getSource() == Package::Source::POLAUR)
         {
             checked_packages_list[0]->setCheckState(Qt::Unchecked);
         }

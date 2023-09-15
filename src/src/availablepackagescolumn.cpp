@@ -70,8 +70,14 @@ void AvailablePackagesColumn::clearPackages()
 void AvailablePackagesColumn::fill()
 {
     mutex.lock();
+
+#ifdef RUN_TESTS
     QDeadlineTimer deadline(getWaitTime());
     condition.wait(&mutex, deadline);
+#else
+    condition.wait(&mutex);
+#endif
+
     packages_sorter->resetOriginalList();
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
     clearPackages();

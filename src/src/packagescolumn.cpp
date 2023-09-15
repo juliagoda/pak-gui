@@ -168,9 +168,5 @@ void PackagesColumn::removeUncheckedPackage(Package* package)
 
 uint PackagesColumn::getWaitTime()
 {
-#ifdef RUN_TESTS
     return 500; // milliseconds
-#endif
-
-    return 6000; // 6 seconds
 }
