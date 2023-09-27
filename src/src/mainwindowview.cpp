@@ -294,7 +294,10 @@ void MainWindowView::abortProcessFromButton(QProcess* process, QPushButton* butt
 void MainWindowView::connectSignalsForAvailablePackages()
 {
     if (m_ui.available_packages_list->count() > 0)
+    {
         m_ui.available_packages_list->show();
+        m_ui.search_available_packages_checkbox->setEnabled(true);
+    }
 
     if (m_ui.available_packages_list->count() == 0)
     {
@@ -310,7 +313,10 @@ void MainWindowView::connectSignalsForAvailablePackages()
 void MainWindowView::connectSignalsForInstalledPackages()
 {
     if (m_ui.installed_packages_list->count() > 0)
+    {
         m_ui.installed_packages_list->show();
+        m_ui.search_installed_packages_checkbox->setEnabled(true);
+    }
 
     if (m_ui.installed_packages_list->count() == 0)
     {
@@ -333,6 +339,7 @@ void MainWindowView::connectSignalsForUpdatedPackages()
         m_ui.update_packages_button->setEnabled(false);
         m_ui.sort_packages_to_update->setEnabled(true);
         m_ui.search_packages_to_update_lineedit->setEnabled(true);
+
     }
 
     if (m_ui.packages_to_update_list->count() == 0 && (actions_access_checker.isNull() || !actions_access_checker->isOnline()))
@@ -583,7 +590,6 @@ void MainWindowView::checkUpdates()
 {
     Logger::logger()->logInfo(QStringLiteral("Start check updates - %1").arg(QDateTime::currentDateTime().toString()));
 
-    updated_packages_column.data()->clear();
     blockUpdateColumn();
     main_window_view_signals->attachCheckUpdates();
 }
@@ -654,10 +660,6 @@ void MainWindowView::refresh()
     disconnectSortSignals();
     hideWidgets();
     emit initStarted();
-
-    available_packages_column.data()->clear();
-    installed_packages_column.data()->clear();
-    updated_packages_column.data()->clear();
 
     startAnimations();
     run();

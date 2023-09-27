@@ -51,13 +51,15 @@ void MainWindowViewSignals::attachInputAnswerLines()
 
 void MainWindowViewSignals::attachFillColumns()
 {
-    QtConcurrent::run([this]() {
+    QtConcurrent::run([&]() {
         main_window_view->available_packages_column->fill();
-        emit main_window_view->availablePackagesFillEnded(); });
+        emit main_window_view->availablePackagesFillEnded();
+    });
 
-    QtConcurrent::run([this]() {
+    QtConcurrent::run([&]() {
         main_window_view->installed_packages_column->fill();
-        emit main_window_view->installedPackagesFillEnded(); });
+        emit main_window_view->installedPackagesFillEnded();
+    });
 }
 
 
@@ -360,7 +362,7 @@ void MainWindowViewSignals::initColumns()
 
 void MainWindowViewSignals::attachCheckUpdates()
 {
-    QtConcurrent::run([this]()
+    QtConcurrent::run([&]()
     {
         main_window_view->updated_packages_column->fill();
         emit main_window_view->packagesToUpdateFillEnded();

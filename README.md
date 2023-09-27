@@ -2,8 +2,6 @@
 
 pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.com/nycko123/pak) enhanced with GUI.
 
-![Browse](https://raw.githubusercontent.com/CachyOS/pak-gui/main/resources/icons/app/64-apps-pak-gui.png)
-
 [![pak-gui](https://github.com/CachyOS/pak-gui/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/CachyOS/pak-gui/actions/workflows/ci.yml)
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/CachyOS/pak-gui/main)
 
@@ -54,15 +52,22 @@ For example such line can be added - <b>TERM=konsole</b> (or other terminal app 
 ```
 mkdir build
 cd build
-cmake ..
-make
+cmake -DRUN_TESTS=OFF ..
+make -j 2
 ```
 
 ### Running tests
 
 ```
 cmake -DRUN_TESTS=ON ..
-make
+make -j 2
 make test
 gcovr -r .
 ```
+
+## Attention
+
+1) Do not change the main language from the settings in the application to a different language from the system. Such compatibility is needed, for example, when manual responses are set, but not only.
+2) pak -C (the command that fills the middle column can run slowly, especially when POLAUR repositories are synchronized)
+3) Do not use the application in test mode if you are not a programmer.
+4) The password window application named ksshaskpass has a bug that does not allow you to save the specified password for future use. A workaround or other solution will be applied.

@@ -175,9 +175,6 @@ void UpdatedPackagesColumn::clearPackages()
 
     while (list_widget->item(0))
         delete list_widget->takeItem(0);
-
-    list_widget->clear();
-    list_widget->update();
 }
 
 
