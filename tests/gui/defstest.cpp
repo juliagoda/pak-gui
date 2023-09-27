@@ -30,51 +30,51 @@ TestDefs::TestDefs(QObject* parent) :
 
 void TestDefs::packageQiNameLineIsEqualToZero()
 {
-   QCOMPARE(Constants::packageQiNameLine(), 0);
+   QCOMPARE(constants.packageQiNameLine(), 0);
 }
 
 
 void TestDefs::packageQiVersionLineIsEqualToOne()
 {
-   QCOMPARE(Constants::packageQiVersionLine(), 1);
+   QCOMPARE(constants.packageQiVersionLine(), 1);
 }
 
 
 void TestDefs::packageSiRepoNameIsEqualToZero()
 {
-   QCOMPARE(Constants::packageSiRepoName(), 0);
+   QCOMPARE(constants.packageSiRepoName(), 0);
 }
 
 
 void TestDefs::packageSiNameLineIsEqualToOne()
 {
-   QCOMPARE(Constants::packageSiNameLine(), 1);
+   QCOMPARE(constants.packageSiNameLine(), 1);
 }
 
 
 void TestDefs::packageSiVersionLineIsEqualToTwo()
 {
-   QCOMPARE(Constants::packageSiVersionLine(), 2);
+   QCOMPARE(constants.packageSiVersionLine(), 2);
 }
 
 
 void TestDefs::execFilesHaveCorrectNames()
 {
-    QCOMPARE(Constants::pacmanExecFile(), QString("pacman"));
-    QCOMPARE(Constants::pacmanContribExecFile(), QString("checkupdates"));
-    QCOMPARE(Constants::kdesuExecFile(), QString("kdesu"));
-    QCOMPARE(Constants::ksshAskPassExecFile(), QString("ksshaskpass"));
-    QCOMPARE(Constants::pakExecFile(), QString("pak"));
-    QCOMPARE(Constants::pkgctlExecFile(), QString("pkgctl"));
-    QCOMPARE(Constants::gitExecFile(), QString("git"));
-    QCOMPARE(Constants::reflectorExecFile(), QString("reflector"));
-    QCOMPARE(Constants::auracleGit(), QString("auracle"));
+    QCOMPARE(constants.pacmanExecFile(), QString("pacman"));
+    QCOMPARE(constants.pacmanContribExecFile(), QString("checkupdates"));
+    QCOMPARE(constants.kdesuExecFile(), QString("kdesu"));
+    QCOMPARE(constants.ksshAskPassExecFile(), QString("ksshaskpass"));
+    QCOMPARE(constants.pakExecFile(), QString("pak"));
+    QCOMPARE(constants.pkgctlExecFile(), QString("pkgctl"));
+    QCOMPARE(constants.gitExecFile(), QString("git"));
+    QCOMPARE(constants.reflectorExecFile(), QString("reflector"));
+    QCOMPARE(constants.auracleGit(), QString("auracle"));
 }
 
 
 void TestDefs::ksshAskPassCommandIsCorrect()
 {
-    QCOMPARE(Constants::askPassCommand(), QString("export SUDO_ASKPASS=/usr/bin/ksshaskpass && sudo --askpass true"));
+    QCOMPARE(constants.askPassCommand(), QString("export SUDO_ASKPASS=/usr/bin/ksshaskpass && sudo --askpass true"));
 }
 
 
@@ -82,12 +82,12 @@ void TestDefs::taskToWriteOperationMapHasCorrectValues()
 {
     Constants constants;
     constants.init();
-    QCOMPARE(Constants::taskToWriteOperation(Process::Task::MirrorsUpdate), Logger::WriteOperations::MirrorsUpdate);
-    QCOMPARE(Constants::taskToWriteOperation(Process::Task::UpdateAll), Logger::WriteOperations::UpdateAll);
-    QCOMPARE(Constants::taskToWriteOperation(Process::Task::PrintVCSPackages), Logger::WriteOperations::PrintVCSPackages);
-    QCOMPARE(Constants::taskToWriteOperation(Process::Task::UpdateInstalledPackages), Logger::WriteOperations::UpdateInstalled);
-    QCOMPARE(Constants::taskToWriteOperation(Process::Task::Uninstall), Logger::WriteOperations::Remove);
-    QCOMPARE(Constants::taskToWriteOperation(Process::Task::Install), Logger::WriteOperations::Install);
-    QCOMPARE(Constants::taskToWriteOperation(Process::Task::Update), Logger::WriteOperations::Update);
-    QCOMPARE(Constants::taskToWriteOperation(Process::Task::Clean), Logger::WriteOperations::Clean);
+    QCOMPARE(constants.taskToWriteOperation(Process::Task::MirrorsUpdate), Logger::WriteOperations::MirrorsUpdate);
+    QCOMPARE(constants.taskToWriteOperation(Process::Task::UpdateAll), Logger::WriteOperations::UpdateAll);
+    QCOMPARE(constants.taskToWriteOperation(Process::Task::PrintVCSPackages), Logger::WriteOperations::PrintVCSPackages);
+    QCOMPARE(constants.taskToWriteOperation(Process::Task::UpdateInstalledPackages), Logger::WriteOperations::UpdateInstalled);
+    QCOMPARE(constants.taskToWriteOperation(Process::Task::Uninstall), Logger::WriteOperations::Remove);
+    QCOMPARE(constants.taskToWriteOperation(Process::Task::Install), Logger::WriteOperations::Install);
+    QCOMPARE(constants.taskToWriteOperation(Process::Task::Update), Logger::WriteOperations::Update);
+    QCOMPARE(constants.taskToWriteOperation(Process::Task::Clean), Logger::WriteOperations::Clean);
 }

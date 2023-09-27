@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include "defs.h"
 #include <QtTest/QtTest>
 #include <QWidget>
 
@@ -28,6 +29,9 @@ class TestDefs : public QObject
 
 public:
     TestDefs(QObject* parent = nullptr);
+
+private:
+    Constants constants;
 
 private slots:
     void packageQiNameLineIsEqualToZero();
