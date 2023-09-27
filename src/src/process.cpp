@@ -34,6 +34,7 @@
 #include <QProcess>
 #include <utility>
 #include <QSharedPointer>
+#include <QDebug>
 
 
 QMap<Process::Task, bool> running_tasks_map{
@@ -464,7 +465,9 @@ bool Process::isRunningUpdateTask()
 void Process::updateYesNoCommands()
 {
     Constants constants;
-    auto yesNoCommand = constants.langNamesToYesNo(QLocale::system().language());
+    char* locale_char = setlocale(LC_NAME, ""); // real language of system
+    QLocale locale(locale_char);
+    auto yesNoCommand = constants.langNamesToYesNo(locale.language());
     yes_command = yesNoCommand.first;
     no_command = yesNoCommand.second;
 }

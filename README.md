@@ -65,9 +65,20 @@ make test
 gcovr -r .
 ```
 
-## Attention
+### Attention
 
-1) Do not change the main language from the settings in the application to a different language from the system. Such compatibility is needed, for example, when manual responses are set, but not only.
-2) pak -C (the command that fills the middle column can run slowly, especially when POLAUR repositories are synchronized)
-3) Do not use the application in test mode if you are not a programmer.
-4) The password window application named ksshaskpass has a bug that does not allow you to save the specified password for future use. A workaround or other solution will be applied.
+1) pak -C (the command that fills the middle column can run slowly, especially when POLAUR repositories are synchronized)
+2) Do not use the application in test mode if you are not a programmer.
+3) The password window application named ksshaskpass has a bug that does not allow you to save the specified password for future use. A workaround or other solution will be applied.
+
+### TODO
+
+- [ ] Documentation for users
+- [ ] Documentation for developers
+- [ ] Icons for app
+- [ ] Translations to other languages than English or Polish
+- [ ] Finding workaround for ksshaskpass' bug
+- [ ] Stack of actions (undo operation)
+- [ ] Mirrorlists application in GUI
+- [ ] Keys application in GUI (signing)
+- [ ] Port to KF6/Qt6 after official and stable release of KF6
