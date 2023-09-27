@@ -22,10 +22,10 @@
 
 
 SpinningAnimation::SpinningAnimation() :
-    animation(new QMovie(":/waiting.gif"), &QObject::deleteLater),
-    animation2(new QMovie(":/waiting.gif"), &QObject::deleteLater),
-    animation3(new QMovie(":/waiting.gif"), &QObject::deleteLater),
-    small_animation(new QMovie(":/waiting-small.gif"), &QObject::deleteLater)
+    animation{new QMovie(":/waiting.gif")},
+    animation2{new QMovie(":/waiting.gif")},
+    animation3{new QMovie(":/waiting.gif")},
+    small_animation{new QMovie(":/waiting-small.gif")}
 {
    // ...
 }
@@ -166,7 +166,7 @@ void SpinningAnimation::stopSmallOnWidget(const QPointer<QLabel>& label)
 }
 
 
-bool SpinningAnimation::isValid(const QSharedPointer<QMovie>& animation)
+bool SpinningAnimation::isValid(const QScopedPointer<QMovie>& animation)
 {
     if (animation.isNull())
     {
@@ -179,7 +179,7 @@ bool SpinningAnimation::isValid(const QSharedPointer<QMovie>& animation)
 
 
 void SpinningAnimation::restartMovie(const QPointer<QLabel>& label,
-                                     const QSharedPointer<QMovie>& animation)
+                                     const QScopedPointer<QMovie>& animation)
 {
     if (!label->movie())
     {

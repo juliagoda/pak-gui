@@ -34,7 +34,7 @@ PackagesColumn::PackagesColumn(QListWidget* new_list_widget,
     aur_checked_packages{0},
     list_widget{new_list_widget},
     search_lineedit{new_search_lineedit},
-    packages_sorter{new Sorter(list_widget, new_reverse_sort_checkbox), &QObject::deleteLater},
+    packages_sorter{new Sorter(list_widget, new_reverse_sort_checkbox)},
     parent{new_parent},
     checked_packages_list()
 {
@@ -163,6 +163,18 @@ void PackagesColumn::removeUncheckedPackage(Package* package)
 
     Logger::logger()->logDebug(QStringLiteral("Removed package from list: %1").arg(package->getName()));
     std::erase(checked_packages_list, package);
+}
+
+
+bool PackagesColumn::isColumnNotChanged(const QString& log_column_text, const QStringList& packages_list)
+{
+    if (packages_list.count() == list_widget->count())
+    {
+        Logger::logger()->logInfo(QStringLiteral("%1 packages column has not been changed - %2 packages.").arg(log_column_text).arg(list_widget->count()));
+        return true;
+    }
+
+    return false;
 }
 
 

@@ -45,13 +45,13 @@ public Q_SLOTS:
     void stopSmallOnWidget(const QPointer<QLabel>& label);
 
 private:
-    bool isValid(const QSharedPointer<QMovie>& animation);
+    bool isValid(const QScopedPointer<QMovie>& animation);
     void restartMovie(const QPointer<QLabel>& first_label,
-                      const QSharedPointer<QMovie>& animation);
+                      const QScopedPointer<QMovie>& animation);
 
-    QSharedPointer<QMovie> animation;
-    QSharedPointer<QMovie> animation2;
-    QSharedPointer<QMovie> animation3;
-    QSharedPointer<QMovie> small_animation;
+    QScopedPointer<QMovie> animation;
+    QScopedPointer<QMovie> animation2;
+    QScopedPointer<QMovie> animation3;
+    QScopedPointer<QMovie> small_animation;
 };
 

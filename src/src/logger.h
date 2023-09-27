@@ -86,9 +86,9 @@ private:
     void writeToStream();
 
     QFile logs_file{QFile(PathConverter::fullConfigPath())};
-    QScopedPointer<OutputFilter> output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
-    QString stream_text;
-    QTextStream output_stream;
+    QScopedPointer<OutputFilter> output_filter{new OutputFilter};
+    QString stream_text{};
+    QTextStream output_stream{};
     static Logger* instance;
     static QMutex write_mutex;
 };

@@ -62,7 +62,7 @@ signals:
 
 protected:
     void prepareMainWindowView(MainWindowView* new_main_window_view);
-    void prepareProcess(const QSharedPointer<Process>& new_process);
+    void prepareProcess(const QWeakPointer<Process>& new_process);
     void initSignals();
     void closeEvent(QCloseEvent* event) override;
     virtual void connectSignalForUpdateCheck();

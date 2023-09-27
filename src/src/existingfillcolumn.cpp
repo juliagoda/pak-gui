@@ -16,35 +16,37 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#pragma once
+#include "existingfillcolumn.h"
 
-#include "packagescolumn.h"
-
-#include <QStringList>
-#include <QPointer>
-#include <QListWidget>
+#include "qipackage.h"
+#include "sipackage.h"
 
 
-class AvailablePackagesColumn : public PackagesColumn
+template class ExistingFillColumn<QiPackage>;
+template class ExistingFillColumn<SiPackage>;
+
+
+template<class T>
+ExistingFillColumn<T>::ExistingFillColumn(const QStringList& new_pak_packages, QListWidget* new_list_widget) :
+    pak_packages(new_pak_packages),
+    list_widget(new_list_widget)
 {
-    Q_OBJECT
+  // ...
+}
 
-public:
-    AvailablePackagesColumn(QListWidget* new_list_widget,
-                            QLineEdit* new_search_lineedit,
-                            QCheckBox* new_reverse_sort_checkbox,
-                            QWidget* new_parent);
-    ~AvailablePackagesColumn() override = default;
 
-    void fill() override;
-    void clearForSort();
-    void fillForSort();
-    void clearPackages();
+template<class T>
+void ExistingFillColumn<T>::fill()
+{
+    for(int i = 0; i < list_widget->count(); i++)
+    {
+        T* package = dynamic_cast<T*>(list_widget->item(i));
+        if (i+1 <= pak_packages.size() && !package->isEqualTo(pak_packages.at(i)))
+        {
+            package->prepareInformations(pak_packages.at(i));
+        }
 
-protected:
-    virtual QStringList getPackagesList();
-
-private:
-    QMutex mutex;
-};
-
+        if (i+1 > pak_packages.size())
+            delete list_widget->takeItem(i);
+    }
+}

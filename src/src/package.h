@@ -90,7 +90,7 @@ public:
     bool operator<(const QListWidgetItem &other) const override;
 
 protected:
-    virtual void updateData(const QString& package_content, int name_line, int version_line);
+    void updateData(const QString& package_content, int name_line, int version_line);
 
     void setToolTipOnPackage(const QString& text);
 

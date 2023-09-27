@@ -40,34 +40,34 @@ public:
     using Yes = QString;
     using No = QString;
 
-    static constexpr int packageQiNameLine() { return 0; }
-    static constexpr int packageQiVersionLine() { return 1; }
-    static constexpr int packageSiRepoName() { return 0; }
-    static constexpr int packageSiNameLine() { return 1; }
-    static constexpr int packageSiVersionLine() { return 2; }
-    static constexpr int messageboxContentMaxSize() { return 150; }
+    constexpr int packageQiNameLine() { return 0; }
+    constexpr int packageQiVersionLine() { return 1; }
+    constexpr int packageSiRepoName() { return 0; }
+    constexpr int packageSiNameLine() { return 1; }
+    constexpr int packageSiVersionLine() { return 2; }
+    constexpr int messageboxContentMaxSize() { return 150; }
 
-    static const QString pacmanExecFile();
-    static const QString pacmanContribExecFile();
-    static const QString kdesuExecFile();
-    static const QString ksshAskPassExecFile();
-    static const QString pakExecFile();
-    static const QString pkgctlExecFile();
-    static const QString gitExecFile();
-    static const QString reflectorExecFile();
-    static const QString auracleGit();
-    static const QString askPassCommand();
+    const QString pacmanExecFile();
+    const QString pacmanContribExecFile();
+    const QString kdesuExecFile();
+    const QString ksshAskPassExecFile();
+    const QString pakExecFile();
+    const QString pkgctlExecFile();
+    const QString gitExecFile();
+    const QString reflectorExecFile();
+    const QString auracleGit();
+    const QString askPassCommand();
 
-    static Logger::WriteOperations taskToWriteOperation(Process::Task task);
-    static QPair<Constants::Yes, Constants::No> langNamesToYesNo(QLocale::Language language);
+    Logger::WriteOperations taskToWriteOperation(Process::Task task);
+    QPair<Constants::Yes, Constants::No> langNamesToYesNo(QLocale::Language language);
 
-    static QHash<int, Package::TooltipLine> typePackageToTooltipLines(Package::Type package_type);
+    QHash<int, Package::TooltipLine> typePackageToTooltipLines(Package::Type package_type);
 
 
 private:
-    static QHash<int, Package::TooltipLine> numberToTooltipLineSiPackage();
-    static QHash<int, Package::TooltipLine> numberToTooltipLineQiPackage();
-    static QHash<int, Package::TooltipLine> numberToTooltipLineCheckPackage();
+    QHash<int, Package::TooltipLine> numberToTooltipLineSiPackage();
+    QHash<int, Package::TooltipLine> numberToTooltipLineQiPackage();
+    QHash<int, Package::TooltipLine> numberToTooltipLineCheckPackage();
 
     static QMap<Process::Task, Logger::WriteOperations> task_to_write_operation_map;
     static std::unordered_map<QLocale::Language, QPair<Yes, No>> lang_names_to_yes_no_map;

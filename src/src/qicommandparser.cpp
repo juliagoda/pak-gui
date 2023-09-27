@@ -29,6 +29,9 @@ QStringList QiCommandParser::retrieveInfo()
     QString output = generateResult();
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckInstalled);
 
+    if (output.isEmpty())
+        return QStringList();
+
     auto list = output.split(QRegularExpression("\n\n"));
     output.clear();
     if (list.last().trimmed().isEmpty())

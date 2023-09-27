@@ -26,7 +26,8 @@ SiPackage::SiPackage(const QString& package_content) :
     repo()
 {
     setType(Package::Type::Si);
-    updateData(package_content, Constants::packageSiNameLine(), Constants::packageSiVersionLine());
+    Constants constants;
+    updateDataSi(package_content, constants.packageSiNameLine(), constants.packageSiVersionLine());
     setText(getName().trimmed() + "-" + getVersion().trimmed() + " [" + getRepo().trimmed() + "]");
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
@@ -103,9 +104,9 @@ QListWidgetItem* SiPackage::clone() const
 }
 
 
-void SiPackage::updateData(const QString& package_content, int name_line, int version_line)
+void SiPackage::updateDataSi(const QString& package_content, int name_line, int version_line)
 {
-    Package::updateData(package_content, name_line, version_line);
+    updateData(package_content, name_line, version_line);
     const QStringList& lines = package_content.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
 
     if (lines.count() == 0)
@@ -119,29 +120,32 @@ void SiPackage::updateData(const QString& package_content, int name_line, int ve
 
 void SiPackage::setRepoParameter(const QStringList& lines)
 {
-    if (!validate(lines, Constants::packageSiRepoName() + 1, QString("updateData()")))
+    Constants constants;
+    if (!validate(lines, constants.packageSiRepoName() + 1, QString("updateData()")))
         return;
 
-    int repo_separator_index = lines.at(Constants::packageSiRepoName()).indexOf(": ") + 1;
-    setRepo(lines.at(Constants::packageSiRepoName()).mid(repo_separator_index));
+    int repo_separator_index = lines.at(constants.packageSiRepoName()).indexOf(": ") + 1;
+    setRepo(lines.at(constants.packageSiRepoName()).mid(repo_separator_index));
 }
 
 
 void SiPackage::setNameParameter(const QStringList& lines)
 {
-    if (!validate(lines, Constants::packageSiNameLine() + 1, QString("updateData()")))
+    Constants constants;
+    if (!validate(lines, constants.packageSiNameLine() + 1, QString("updateData()")))
         return;
 
-    int name_separator_index = lines.at(Constants::packageSiNameLine()).indexOf(": ") + 1;
-    setName(lines.at(Constants::packageSiNameLine()).mid(name_separator_index));
+    int name_separator_index = lines.at(constants.packageSiNameLine()).indexOf(": ") + 1;
+    setName(lines.at(constants.packageSiNameLine()).mid(name_separator_index));
 }
 
 
 void SiPackage::setVersionParameter(const QStringList& lines)
 {
-    if (!validate(lines, Constants::packageSiVersionLine() + 1, QString("updateData()")))
+    Constants constants;
+    if (!validate(lines, constants.packageSiVersionLine() + 1, QString("updateData()")))
         return;
 
-    int version_separator_index = lines.at(Constants::packageSiVersionLine()).indexOf(": ") + 1;
-    setVersion(lines.at(Constants::packageSiVersionLine()).mid(version_separator_index));
+    int version_separator_index = lines.at(constants.packageSiVersionLine()).indexOf(": ") + 1;
+    setVersion(lines.at(constants.packageSiVersionLine()).mid(version_separator_index));
 }

@@ -28,7 +28,13 @@
 MainWindowViewSignals::MainWindowViewSignals(MainWindowView* main_window_view) :
     main_window_view{main_window_view}
 {
-  // ...
+                                                                                                                       // ...
+}
+
+MainWindowViewSignals::~MainWindowViewSignals()
+{
+    if (!packages_timer.isNull())
+        packages_timer->stop();
 }
 
 
@@ -60,7 +66,7 @@ void MainWindowViewSignals::startPackagesCheckTimer()
     if (main_window_view->actions_access_checker.isNull())
         return;
 
-    packages_timer.reset(new QTimer(this));
+    packages_timer.reset(new QTimer);
     connect(packages_timer.get(), &QTimer::timeout, main_window_view->actions_access_checker.get(), &ActionsAccessChecker::checkRequiredPackages);
     packages_timer->start(8000);
     Logger::logger()->logDebug(QStringLiteral("Required packages checker started with interval %2").arg(8000));
@@ -72,11 +78,11 @@ void MainWindowViewSignals::startInternetCheckTimer()
     if (main_window_view->internet_connection_timer.isNull() || main_window_view->actions_access_checker.isNull())
         return;
 
-    disconnect(main_window_view->internet_connection_timer, &QTimer::timeout, main_window_view->actions_access_checker.get(), &ActionsAccessChecker::checkInternetConnection);
+    disconnect(main_window_view->internet_connection_timer.get(), &QTimer::timeout, main_window_view->actions_access_checker.get(), &ActionsAccessChecker::checkInternetConnection);
     if (Settings::records()->internetReconnectionTimeMinutes() == 0)
         return;
 
-    connect(main_window_view->internet_connection_timer, &QTimer::timeout, main_window_view->actions_access_checker.get(), &ActionsAccessChecker::checkInternetConnection);
+    connect(main_window_view->internet_connection_timer.get(), &QTimer::timeout, main_window_view->actions_access_checker.get(), &ActionsAccessChecker::checkInternetConnection);
     int milliseconds = TimeConverter::minutesToMilliseconds(Settings::records()->internetReconnectionTimeMinutes());
     main_window_view->internet_connection_timer->start(milliseconds);
     Logger::logger()->logDebug(QStringLiteral("Internet connection checker started with interval %2").arg(milliseconds));
@@ -124,7 +130,7 @@ void MainWindowViewSignals::attachSignalsForSidePreviews()
 void MainWindowViewSignals::attachSignalsForProcess()
 {
     QObject::connect(main_window_view->m_ui.input_for_uninstall_btn, &QPushButton::clicked, main_window_view->process.data(), [this](bool)
-                     { main_window_view->process->inputAnswer(main_window_view->m_ui.input_for_uninstall_lineedit->text(), Process::Task::Uninstall); });
+        { main_window_view->process->inputAnswer(main_window_view->m_ui.input_for_uninstall_lineedit->text(), Process::Task::Uninstall); });
     QObject::connect(main_window_view->m_ui.input_for_install_btn, &QPushButton::clicked, main_window_view->process.data(), [this](bool)
                      { main_window_view->process->inputAnswer(main_window_view->m_ui.input_for_install_lineedit->text(), Process::Task::Install); });
     QObject::connect(main_window_view->m_ui.input_for_update_btn, &QPushButton::clicked, main_window_view->process.data(), [this](bool)
@@ -165,19 +171,22 @@ void MainWindowViewSignals::attachSignalsForProcess()
             new_task == Process::Task::UpdateAll)
         {
             main_window_view->current_update_process = nullptr;
-            main_window_view->m_ui.abort_update_process_btn->hide();
+            if (main_window_view->m_ui.abort_update_process_btn)
+              main_window_view->m_ui.abort_update_process_btn->hide();
         }
 
         if (new_task == Process::Task::Install)
         {
             main_window_view->current_installation_process = nullptr;
-            main_window_view->m_ui.abort_installation_process_btn->hide();
+            if (main_window_view->m_ui.abort_update_process_btn)
+              main_window_view->m_ui.abort_installation_process_btn->hide();
         }
 
         if (new_task == Process::Task::Uninstall)
         {
             main_window_view->current_uninstallation_process = nullptr;
-            main_window_view->m_ui.abort_uninstallation_process_btn->hide();
+            if (main_window_view->m_ui.abort_update_process_btn)
+              main_window_view->m_ui.abort_uninstallation_process_btn->hide();
         }
     });
 }
@@ -195,13 +204,15 @@ void MainWindowViewSignals::attachAvailablePackagesColumn()
     QObject::connect(main_window_view->available_packages_column.data(), &AvailablePackagesColumn::showAbortButton, [this](QProcess* process)
     {
         main_window_view->current_installation_process = process;
-        main_window_view->m_ui.abort_installation_process_btn->show();
+        if (main_window_view->m_ui.abort_installation_process_btn)
+          main_window_view->m_ui.abort_installation_process_btn->show();
     });
 
     QObject::connect(main_window_view->available_packages_column.data(), &AvailablePackagesColumn::hideAbortButton, [this]()
     {
         main_window_view->current_installation_process = nullptr;
-        main_window_view->m_ui.abort_installation_process_btn->hide();
+        if (main_window_view->m_ui.abort_installation_process_btn)
+          main_window_view->m_ui.abort_installation_process_btn->hide();
     });
 
     QObject::connect(main_window_view->m_ui.abort_installation_process_btn, &QPushButton::clicked, [this]()
@@ -239,12 +250,14 @@ void MainWindowViewSignals::attachInstalledPackagesColumn()
     QObject::connect(main_window_view->installed_packages_column.data(), &InstalledPackagesColumn::showAbortButton, [this](QProcess* process)
         {
             main_window_view->current_uninstallation_process = process;
-            main_window_view->m_ui.abort_uninstallation_process_btn->show();
+          //if (main_window_view->m_ui.abort_uninstallation_process_btn)
+            //main_window_view->m_ui.abort_uninstallation_process_btn->show();
         });
 
     QObject::connect(main_window_view->installed_packages_column.data(), &InstalledPackagesColumn::hideAbortButton, [this]()
         {
             main_window_view->current_uninstallation_process = nullptr;
+          if (main_window_view->m_ui.abort_uninstallation_process_btn)
             main_window_view->m_ui.abort_uninstallation_process_btn->hide();
         });
 

@@ -55,10 +55,11 @@ int MessageBox::run()
     message_box.setIcon(icon);
     message_box.setStandardButtons(buttons);
 
-    if (text.count() > Constants::messageboxContentMaxSize())
+    Constants constants;
+    if (text.count() > constants.messageboxContentMaxSize())
     {
         message_box.setDetailedText(text);
-        message_box.setText(text.left(Constants::messageboxContentMaxSize()).append(" ... "));
+        message_box.setText(text.left(constants.messageboxContentMaxSize()).append(" ... "));
     }
 
     return message_box.exec();

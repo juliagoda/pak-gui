@@ -113,17 +113,17 @@ void MainWindow::disableOnlineActions()
 void MainWindow::prepareMainWindowView(MainWindowView* main_window_view)
 {
     this->main_window_view = main_window_view;
-    main_window_view->setProcess(process);
-    main_window_view->setActionsAccessChecker(actions_access_checker);
+    main_window_view->setProcess(process.toWeakRef());
+    main_window_view->setActionsAccessChecker(actions_access_checker.toWeakRef());
     main_window_view->init();
     main_window_view->preparePreviews();
     main_window_view->run();
 }
 
 
-void MainWindow::prepareProcess(const QSharedPointer<Process>& new_process)
+void MainWindow::prepareProcess(const QWeakPointer<Process>& new_process)
 {
-    process = new_process;
+    process = new_process.toStrongRef();
 }
 
 

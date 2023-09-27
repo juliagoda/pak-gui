@@ -28,7 +28,7 @@ CheckPackage::CheckPackage(const QString& new_package_content, Package::Source n
         return;
 
     setType(Package::Type::Check);
-    updateData(new_package_content, 0, 0);
+    updateDataCheck(new_package_content);
     setText(getName() + "-" + getVersion());
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);
@@ -97,13 +97,10 @@ QListWidgetItem* CheckPackage::clone() const
 }
 
 
-void CheckPackage::updateData(const QString& package_content, int name_line, int version_line)
+void CheckPackage::updateDataCheck(const QString& package_content)
 {
-    Q_UNUSED(name_line)
-    Q_UNUSED(version_line)
-
-    static QRegularExpression whitespace_expression(" ");
-    static QRegularExpression numbers_expression("[0-9]");
+    QRegularExpression whitespace_expression(" ");
+    QRegularExpression numbers_expression("[0-9]");
     int first_whitespace_index = package_content.indexOf(whitespace_expression);
     int first_number_index = package_content.indexOf(numbers_expression);
 

@@ -82,7 +82,7 @@ void InstallCommandParser::stop()
     if (!pak_install.isNull())
     {
         Logger::logger()->logInfo(QStringLiteral("Stop of package installation"));
-        pak_install->stop();
+        pak_install.lock()->stop();
         emit ended();
     }
 }

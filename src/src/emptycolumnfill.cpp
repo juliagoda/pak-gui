@@ -16,35 +16,38 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#pragma once
+#include "emptycolumnfill.h"
+#include "qipackage.h"
+#include "sipackage.h"
 
-#include "packagescolumn.h"
-
-#include <QStringList>
-#include <QPointer>
-#include <QListWidget>
+#include <algorithm>
 
 
-class AvailablePackagesColumn : public PackagesColumn
+template class EmptyColumnFill<QiPackage>;
+template class EmptyColumnFill<SiPackage>;
+
+
+template<class T>
+EmptyColumnFill<T>::EmptyColumnFill(const QStringList& new_pak_packages, QListWidget* new_list_widget) :
+    pak_packages(new_pak_packages),
+    list_widget(new_list_widget)
 {
-    Q_OBJECT
+   // ...
+}
 
-public:
-    AvailablePackagesColumn(QListWidget* new_list_widget,
-                            QLineEdit* new_search_lineedit,
-                            QCheckBox* new_reverse_sort_checkbox,
-                            QWidget* new_parent);
-    ~AvailablePackagesColumn() override = default;
 
-    void fill() override;
-    void clearForSort();
-    void fillForSort();
-    void clearPackages();
+template<class T>
+void EmptyColumnFill<T>::fill()
+{
+    int i = 0;
 
-protected:
-    virtual QStringList getPackagesList();
-
-private:
-    QMutex mutex;
-};
-
+    std::for_each(pak_packages.cbegin(), pak_packages.cend(), [this, &i](const QString& package)
+    {
+        T* package_item = new T(package, list_widget);
+        package_item->setNo(i+1);
+        Q_ASSERT(package_item != nullptr);
+        Q_ASSERT(list_widget != nullptr);
+        list_widget->addItem(package_item);
+        i++;
+    });
+}

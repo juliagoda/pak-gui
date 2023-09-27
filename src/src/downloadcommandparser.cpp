@@ -76,7 +76,7 @@ void DownloadCommandParser::processReadLine(QString& line, int& directories_line
     Logger::logger()->writeLineToFile(filtered_line);
     result_output += filtered_line;
 
-    static QRegularExpression errors_regex{"^([a-z]+:\\s+)(.*)"};
+    QRegularExpression errors_regex{"^([a-z]+:\\s+)(.*)"};
     QRegularExpressionMatch match = errors_regex.match(filtered_line);
     if (match.hasMatch())
         error_lines.append(match.captured(2));
@@ -158,7 +158,7 @@ void DownloadCommandParser::fillDirectoriesMap(const QString& result)
 {
     auto result_local = result;
     result_local = output_filter->filteredOutput(result_local);
-    static QRegularExpression new_line_expression("\n");
+    QRegularExpression new_line_expression("\n");
     QStringList splitted_list{result_local.split(new_line_expression)};
     auto splitted_lines = output_filter->filteredLines(splitted_list, output_filter->startsFromNumber);
 
@@ -171,7 +171,7 @@ void DownloadCommandParser::fillDirectoriesMap(const QString& result)
 
 void DownloadCommandParser::addLineToDirectoriesMap(const QString& line)
 {
-    static QRegularExpression directory_line_regex("(\\d+)(\\D+:\\s+)(/.*)");
+    QRegularExpression directory_line_regex("(\\d+)(\\D+:\\s+)(/.*)");
 
     if (!directory_line_regex.isValid())
     {

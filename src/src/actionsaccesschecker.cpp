@@ -84,10 +84,11 @@ bool ActionsAccessChecker::isOnline() const
 void ActionsAccessChecker::checkRequiredPackages()
 {
     findRequiredPackages();
-    is_pkgctl_installed = findPackage(Constants::pkgctlExecFile());
-    is_auracle_installed = existsPackageByPromptVersion(Constants::auracleGit());
-    is_reflector_installed = findPackage(Constants::reflectorExecFile());
-    is_git_installed = findPackage(Constants::gitExecFile());
+    Constants constants;
+    is_pkgctl_installed = findPackage(constants.pkgctlExecFile());
+    is_auracle_installed = existsPackageByPromptVersion(constants.auracleGit());
+    is_reflector_installed = findPackage(constants.reflectorExecFile());
+    is_git_installed = findPackage(constants.gitExecFile());
     emitSignals();
 }
 
@@ -112,9 +113,10 @@ ActionsAccessChecker* ActionsAccessChecker::actionsAccessChecker(QWidget* new_pa
     if (instance == nullptr)
     {
         instance = new ActionsAccessChecker{new_parent};
-        QStringList required_packages_list{QStringList() << Constants::pakExecFile() << Constants::pacmanExecFile() <<
-                                                            Constants::pacmanContribExecFile() << Constants::kdesuExecFile() <<
-                                                            Constants::ksshAskPassExecFile()};
+        Constants constants;
+        QStringList required_packages_list{QStringList() << constants.pakExecFile() << constants.pacmanExecFile() <<
+                                                            constants.pacmanContribExecFile() << constants.kdesuExecFile() <<
+                                                            constants.ksshAskPassExecFile()};
         fillRequiredPackagesList(required_packages_list);
     }
 
@@ -173,8 +175,7 @@ void ActionsAccessChecker::emitSignals()
 
 bool ActionsAccessChecker::existsPackageByPromptVersion(const QString& package_name)
 {
-    QScopedPointer<QProcess> pak_download;
-    pak_download.reset(new QProcess);
+    QScopedPointer<QProcess> pak_download{new QProcess};
     pak_download->setProcessChannelMode(QProcess::MergedChannels);
 
     if (pak_download.isNull())

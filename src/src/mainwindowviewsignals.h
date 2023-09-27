@@ -26,8 +26,10 @@
 class MainWindowViewSignals : public QObject
 {
     Q_OBJECT
+
 public:
     explicit MainWindowViewSignals(MainWindowView* main_window_view);
+   ~MainWindowViewSignals() override;
 
     void attachInputAnswerLines();
     void attachFillColumns();
@@ -48,6 +50,6 @@ private:
     void attachPackagesToUpdateColumn();
 
     MainWindowView* main_window_view;
-    QScopedPointer<QTimer> packages_timer = QScopedPointer<QTimer>(nullptr);
+    QScopedPointer<QTimer> packages_timer{nullptr};
 };
 

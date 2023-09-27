@@ -66,13 +66,14 @@ signals:
 protected:
     void addCheckedPackage(Package* package);
     void removeUncheckedPackage(Package* package);
+    bool isColumnNotChanged(const QString& log_column_text, const QStringList& packages_list);
     uint getWaitTime();
 
     int checked_packages;
     uint aur_checked_packages;
     QListWidget* list_widget;
     QLineEdit* search_lineedit;
-    QSharedPointer<Sorter> packages_sorter;
+    QScopedPointer<Sorter> packages_sorter;
     QWidget* parent;
     std::deque<Package*> checked_packages_list;
     static QWaitCondition condition;

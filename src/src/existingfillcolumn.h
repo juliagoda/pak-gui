@@ -18,33 +18,22 @@
 
 #pragma once
 
-#include "packagescolumn.h"
+#include "listwidgetfillstrategy.h"
 
 #include <QStringList>
-#include <QPointer>
 #include <QListWidget>
+#include <QPointer>
 
 
-class AvailablePackagesColumn : public PackagesColumn
+template<class T>
+class ExistingFillColumn : public ListWigdetFillStrategy
 {
-    Q_OBJECT
-
-public:
-    AvailablePackagesColumn(QListWidget* new_list_widget,
-                            QLineEdit* new_search_lineedit,
-                            QCheckBox* new_reverse_sort_checkbox,
-                            QWidget* new_parent);
-    ~AvailablePackagesColumn() override = default;
-
+ public:
+    ExistingFillColumn(const QStringList& new_pak_packages, QListWidget* new_list_widget);
     void fill() override;
-    void clearForSort();
-    void fillForSort();
-    void clearPackages();
 
-protected:
-    virtual QStringList getPackagesList();
-
-private:
-    QMutex mutex;
+ private:
+    const QStringList pak_packages;
+    QPointer<QListWidget> list_widget;
 };
 

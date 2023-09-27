@@ -35,7 +35,7 @@ public:
     ~ProgressView() override;
 
     void addProgressView(QWidget* progress_view);
-    void createSignals(Process::Task task, const QSharedPointer<Process>& process);
+    void createSignals(Process::Task task, const QWeakPointer<Process>& process);
     void removeProgressView(QWidget* progress_view);
     int tabsCount();
 
@@ -44,6 +44,6 @@ private:
 
     QMap<QString, QPair<QLineEdit*, QPushButton*>> manual_input_widgets;
     QMap<QString, Process::Task> tasks_map;
-    QSharedPointer<Process> process;
+    QSharedPointer<Process> process{nullptr};
 };
 

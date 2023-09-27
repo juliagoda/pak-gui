@@ -34,5 +34,5 @@ public:
     QListWidgetItem *clone() const override;
 
 private:
-    virtual void updateData(const QString& package_content, int name_line, int version_line) override;
+    void updateDataCheck(const QString& package_content);
 };

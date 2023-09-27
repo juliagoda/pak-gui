@@ -37,7 +37,7 @@ public:
     const QString& getRepo() const { return repo; };
 
 private:
-    void updateData(const QString& package_content, int name_line, int version_line) override;
+    void updateDataSi(const QString& package_content, int name_line, int version_line);
     void setRepo(const QString& new_repo) { repo = new_repo; };
     void setRepoParameter(const QStringList& lines);
     void setNameParameter(const QStringList& lines);

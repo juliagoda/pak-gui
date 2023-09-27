@@ -51,14 +51,7 @@
 
 MainWindowView::MainWindowView(QWidget *parent)
     : QWidget(parent),
-      spinning_animation(new SpinningAnimation),
-      generated_previews_map(QMap<Process::Task, QPointer<QWidget>>()),
-      progress_view(QSharedPointer<ProgressView>(new ProgressView)),
-      main_window_view_signals(new MainWindowViewSignals(this)),
-      process(nullptr),
-      actions_access_checker(nullptr),
-      internet_connection_timer(new QTimer(this)),
-      current_state(State::Running)
+      main_window_view_signals{new MainWindowViewSignals(this)}
 {
     m_ui.setupUi(this);
 
@@ -81,30 +74,27 @@ MainWindowView::~MainWindowView()
     updated_packages_column->clearPackages();
 
     if (!internet_connection_timer.isNull())
-    {
         internet_connection_timer->stop();
-        delete internet_connection_timer;
-    }
 }
 
 
-void MainWindowView::setProcess(const QSharedPointer<Process>& new_process)
+void MainWindowView::setProcess(const QWeakPointer<Process>& new_process)
 {
-    process = new_process;
+    process = new_process.toStrongRef();
 }
 
 
-void MainWindowView::setActionsAccessChecker(const QSharedPointer<ActionsAccessChecker>& new_actions_access_checker)
+void MainWindowView::setActionsAccessChecker(const QWeakPointer<ActionsAccessChecker>& new_actions_access_checker)
 {
-    actions_access_checker = new_actions_access_checker;
+    actions_access_checker = new_actions_access_checker.toStrongRef();
 }
 
 
 void MainWindowView::init()
 {
-    available_packages_column.reset(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit, m_ui.sort_available_packages, this), &QObject::deleteLater);
-    installed_packages_column.reset(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit, m_ui.sort_installed_packages, this), &QObject::deleteLater);
-    updated_packages_column.reset(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit, m_ui.sort_packages_to_update, this), &QObject::deleteLater);
+    available_packages_column.reset(new AvailablePackagesColumn(m_ui.available_packages_list, m_ui.search_available_packages_lineedit, m_ui.sort_available_packages, this));
+    installed_packages_column.reset(new InstalledPackagesColumn(m_ui.installed_packages_list, m_ui.search_installed_packages_lineedit, m_ui.sort_installed_packages, this));
+    updated_packages_column.reset(new UpdatedPackagesColumn(m_ui.packages_to_update_list, m_ui.search_packages_to_update_lineedit, m_ui.sort_packages_to_update, this));
 
     main_window_view_signals->initColumns();
     main_window_view_signals->initSignals();
@@ -192,9 +182,10 @@ void MainWindowView::preparePreviews()
 
 void MainWindowView::updatePreviewsDesign()
 {
-    PreviewDesign::update(m_ui.text_browser_tab_uninstall);
-    PreviewDesign::update(m_ui.text_browser_tab_install);
-    PreviewDesign::update(m_ui.text_browser_tab_update);
+    PreviewDesign design;
+    design.update(m_ui.text_browser_tab_uninstall);
+    design.update(m_ui.text_browser_tab_install);
+    design.update(m_ui.text_browser_tab_update);
 }
 
 // TODOJG - to strategy design pattern
@@ -446,7 +437,8 @@ void MainWindowView::generatePreview(Process::Task task)
     scroll_area_widget_contents->setGeometry(QRect(0, 0, 358, 200));
     QVBoxLayout* vertical_layout2 = new QVBoxLayout(scroll_area_widget_contents);
     QTextBrowser* text_browser_tab = new QTextBrowser(scroll_area_widget_contents);
-    PreviewDesign::update(text_browser_tab);
+    PreviewDesign design;
+    design.update(text_browser_tab);
     text_browser_tab->setObjectName(QString("text_browser_tab_%1").arg(task_text));
     vertical_layout2->addWidget(text_browser_tab);
 
@@ -459,7 +451,7 @@ void MainWindowView::generatePreview(Process::Task task)
     progress_view.data()->addProgressView(operation_preview);
 
     if (Settings::records()->operateOnActionsManually() || process->isTaskAlwaysManual(task))
-        progress_view.data()->createSignals(task, process);
+        progress_view.data()->createSignals(task, process.toWeakRef());
 
     emit operationsAmountIncreased();
 }

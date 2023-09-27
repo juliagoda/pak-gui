@@ -112,12 +112,13 @@ bool Process::preparedBeforeRun(Task new_task, QStringList new_checked_packages)
 void Process::setDefaultCommands()
 {
     // TODOJG - lazy evaluation / strategy design instead of map
-    commands_map[Task::SyncPOLAUR] = QStringList() << "-c" << Constants::askPassCommand() + " && pak -SyP";
-    commands_map[Task::Clean] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sc";
-    commands_map[Task::MirrorsUpdate] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -m";
-    commands_map[Task::UpdateAll] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\n" + yes_command + "\" | pak -Su";
-    commands_map[Task::PrintVCSPackages] = QStringList() << "-c" << Constants::askPassCommand() + " && pak --vcs";
-    commands_map[Task::UpdateInstalledPackages] = QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sy";
+    Constants constants;
+    commands_map[Task::SyncPOLAUR] = QStringList() << "-c" << constants.askPassCommand() + " && pak -SyP";
+    commands_map[Task::Clean] = QStringList() << "-c" << constants.askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sc";
+    commands_map[Task::MirrorsUpdate] = QStringList() << "-c" << constants.askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -m";
+    commands_map[Task::UpdateAll] = QStringList() << "-c" << constants.askPassCommand() + " && echo -e \"" + yes_command + "\n" + yes_command + "\" | pak -Su";
+    commands_map[Task::PrintVCSPackages] = QStringList() << "-c" << constants.askPassCommand() + " && pak --vcs";
+    commands_map[Task::UpdateInstalledPackages] = QStringList() << "-c" << constants.askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sy";
 }
 
 
@@ -219,7 +220,8 @@ bool Process::isTaskAlwaysManual(Task new_task)
 
 void Process::updateCleanCommand(bool is_auracle_installed)
 {
-    QString basic_command = Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sc";
+    Constants constants;
+    QString basic_command = constants.askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Sc";
     commands_map.remove(Task::Clean);
 
     if (is_auracle_installed)
@@ -249,7 +251,7 @@ void Process::startProcess(Process::Task new_task)
 
     current_process.reset(new QProcess);
 
-    isUpdateTask(new_task) ? process_map[Task::Update] = current_process : process_map[new_task] = current_process;
+    isUpdateTask(new_task) ? process_map[Task::Update] = current_process.toWeakRef() : process_map[new_task] = current_process.toWeakRef();
     emitTask(new_task);
     current_process->setProcessChannelMode(QProcess::MergedChannels);
     bool contains_pacman = commands_map.value(new_task).join(" ").contains("pacman");
@@ -259,13 +261,14 @@ void Process::startProcess(Process::Task new_task)
     current_process.data()->start(contains_pacman ? "/usr/bin/kdesu" : "/bin/bash", commands_map.value(new_task));
     current_process.data()->waitForStarted();
 
-    Logger::logger()->writeSectionToFile(Constants::taskToWriteOperation(new_task));
+    Constants constants;
+    Logger::logger()->writeSectionToFile(constants.taskToWriteOperation(new_task));
 }
 
 
 void Process::processReadLine(const QString& line, Process::Task new_task)
 {
-    auto output_filter = QScopedPointer<OutputFilter>(new OutputFilter);
+    QScopedPointer<OutputFilter> output_filter{new OutputFilter};
     QString filtered_line = output_filter->filteredOutput(line);
     emit generatedOutput(new_task, filtered_line);
 
@@ -460,7 +463,8 @@ bool Process::isRunningUpdateTask()
 
 void Process::updateYesNoCommands()
 {
-    auto yesNoCommand = Constants::langNamesToYesNo(QLocale::system().language());
+    Constants constants;
+    auto yesNoCommand = constants.langNamesToYesNo(QLocale::system().language());
     yes_command = yesNoCommand.first;
     no_command = yesNoCommand.second;
 }
@@ -469,12 +473,13 @@ void Process::updateYesNoCommands()
 void Process::updateMaps(QStringList& checked_packages)
 {
     // TODOJG - lazy evaluation / strategy design instead of map
+    Constants constants;
     commands_map.insert(Task::Update, QStringList() << "-t" << "-n" << "-c" << "/bin/bash -c \"pacman -Sy --noconfirm " + checked_packages.join(" ") + "\"");
-    commands_map.insert(Task::Uninstall, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Rs " + checked_packages.join(" "));
-    commands_map.insert(Task::Install, QStringList() << "-c" << Constants::askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -S " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << Constants::askPassCommand() + " && pak -S " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SA " + checked_packages.join(" "));
-    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << Constants::askPassCommand() + " && pak -SP " + checked_packages.join(" "));
+    commands_map.insert(Task::Uninstall, QStringList() << "-c" << constants.askPassCommand() + " && echo -e \"" + yes_command + "\" | pak -Rs " + checked_packages.join(" "));
+    commands_map.insert(Task::Install, QStringList() << "-c" << constants.askPassCommand() + " && echo -e \"" + no_command + "\n" + yes_command + "\" | pak -S " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchRepo, QStringList() << "-c" << constants.askPassCommand() + " && pak -S " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchAUR, QStringList() << "-c" << constants.askPassCommand() + " && pak -SA " + checked_packages.join(" "));
+    commands_map.insert(Task::InstallAfterSearchPOLAUR, QStringList() << "-c" << constants.askPassCommand() + " && pak -SP " + checked_packages.join(" "));
 
     messages_map.insert(Task::Uninstall, {i18n("Uninstallation"), i18np("remove package?", "remove packages?", checked_packages.count())});
     messages_map.insert(Task::Install, {i18n("Installation"), i18np("install package?", "install packages?", checked_packages.count())});

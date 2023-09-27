@@ -25,8 +25,7 @@
 
 
 ProgressView::ProgressView(QDialog* parent)
-    : QDialog(parent),
-      process(nullptr)
+    : QDialog(parent)
 {
     m_ui.setupUi(this);
     m_ui.progress_view_tabwidget->clear();
@@ -49,9 +48,9 @@ void ProgressView::addProgressView(QWidget* progress_view)
 }
 
 
-void ProgressView::createSignals(Process::Task task, const QSharedPointer<Process>& new_process)
+void ProgressView::createSignals(Process::Task task, const QWeakPointer<Process>& new_process)
 {
-    process = new_process;
+    process = new_process.toStrongRef();
     auto task_text = QVariant::fromValue(task).toString().toLower();
     manual_input_widgets.insert(m_ui.progress_view_tabwidget->currentWidget()->objectName(),
                                 {m_ui.progress_view_tabwidget->currentWidget()->findChild<QLineEdit*>(QString("input_for_%1_lineedit").arg(task_text)),

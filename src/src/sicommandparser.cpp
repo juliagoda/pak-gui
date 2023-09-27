@@ -30,6 +30,9 @@ QStringList SiCommandParser::retrieveInfo()
 
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckAvailable);
 
+    if (output.isEmpty())
+        return QStringList();
+
     QStringList list = output.split(QRegularExpression("\n\n"));
     output.clear();
     if (list.last().trimmed().isEmpty())

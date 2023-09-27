@@ -39,7 +39,7 @@ public:
     ~Settings() override;
 
     static void saveInitDateTimesWhenEmpty();
-    static const QSharedPointer<SettingsRecords>& records();
+    static const QScopedPointer<SettingsRecords>& records();
     static void saveInitDateTime(const QString& operation_name);
     static void clearRecords();
 
@@ -55,7 +55,7 @@ protected:
     Ui::PreviewsAppearanceSettings previews_appearance_settings;
     Ui::PackagesInfoSettings packages_info_settings;
     Ui::LogsSettings logs_settings;
-    static QSharedPointer<SettingsRecords> settings_records;
+    static QScopedPointer<SettingsRecords> settings_records;
     MainWindow* main_window = nullptr;
 
 private:

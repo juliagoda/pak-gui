@@ -24,9 +24,8 @@
 #include <KLocalizedString>
 
 
-QSettings SettingsRecords::settings(QSettings::NativeFormat, QSettings::UserScope, QString("CachyOS"), QString("pak-gui"));
-
-SettingsRecords::SettingsRecords()
+SettingsRecords::SettingsRecords() :
+  settings(QSettings::NativeFormat, QSettings::UserScope, QString("CachyOS"), QString("pak-gui"))
 {
     if (!text_to_tooltip_line_map.isEmpty())
         return;

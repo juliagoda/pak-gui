@@ -59,8 +59,8 @@ public:
     explicit MainWindowView(QWidget* parent = nullptr);
     ~MainWindowView() override;
 
-    void setProcess(const QSharedPointer<Process>& new_process);
-    void setActionsAccessChecker(const QSharedPointer<ActionsAccessChecker>& new_actions_access_checker);
+    void setProcess(const QWeakPointer<Process>& new_process);
+    void setActionsAccessChecker(const QWeakPointer<ActionsAccessChecker>& new_actions_access_checker);
     void init();
     virtual void run();
     void preparePreviews();
@@ -101,13 +101,13 @@ signals:
 
 protected:
     Ui::MainWindowView m_ui;
-    QSharedPointer<AvailablePackagesColumn> available_packages_column;
-    QSharedPointer<InstalledPackagesColumn> installed_packages_column;
-    QSharedPointer<UpdatedPackagesColumn> updated_packages_column;
-    QSharedPointer<SpinningAnimation> spinning_animation;
-    QMap<Process::Task, QPointer<QWidget>> generated_previews_map;
-    QSharedPointer<ProgressView> progress_view;
-    QSharedPointer<MainWindowViewSignals> main_window_view_signals;
+    QScopedPointer<AvailablePackagesColumn> available_packages_column{nullptr};
+    QScopedPointer<InstalledPackagesColumn> installed_packages_column{nullptr};
+    QScopedPointer<UpdatedPackagesColumn> updated_packages_column{nullptr};
+    QScopedPointer<SpinningAnimation> spinning_animation{new SpinningAnimation};
+    QMap<Process::Task, QPointer<QWidget>> generated_previews_map{};
+    QScopedPointer<ProgressView> progress_view{new ProgressView};
+    QScopedPointer<MainWindowViewSignals> main_window_view_signals;
 
     virtual void showFinishInformation();
     virtual void updatePreviewsDesign();
@@ -116,10 +116,6 @@ private:
     void addInputWidgets(QVBoxLayout*& vbox_layout,
                          QWidget*& scroll_area_widget_contents,
                          const QString& text);
-    void stopRunningThread(QSharedPointer<QThread>& thread);
-    void setTimerOnActionsAccessChecker();
-    void startCheckTimer(QPointer<QTimer> timer, int miliseconds, const QString& timer_type);
-    void connectSignals();
     void hideWidgets();
     void hideWidgetsExceptInstalled();
     void checkSpinningVisibility();
@@ -127,10 +123,10 @@ private:
     void disconnectSortSignals();
     void reconnectSortSignals();
 
-    QSharedPointer<Process> process;
-    QSharedPointer<ActionsAccessChecker> actions_access_checker;
-    QPointer<QTimer> internet_connection_timer;
-    State current_state;
+    QSharedPointer<Process> process{nullptr};
+    QSharedPointer<ActionsAccessChecker> actions_access_checker{nullptr};
+    QScopedPointer<QTimer> internet_connection_timer{new QTimer};
+    State current_state{State::Running};
     QProcess* current_installation_process = nullptr;
     QProcess* current_update_process = nullptr;
     QProcess* current_uninstallation_process = nullptr;

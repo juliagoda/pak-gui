@@ -43,7 +43,7 @@ InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget,
 
 QStringList InstalledPackagesColumn::getPackagesList()
 {
-    QScopedPointer<QiCommandParser> command_parser(new QiCommandParser);
+    QScopedPointer<QiCommandParser> command_parser{new QiCommandParser};
     QObject::connect(command_parser.get(), &QiCommandParser::processStarted, [this](QProcess* process){ emit showAbortButton(process); });
     QObject::connect(command_parser.get(), &QiCommandParser::processEnded, [this](){ emit hideAbortButton(); });
     const auto& info = command_parser->retrieveInfo();
@@ -77,11 +77,18 @@ void InstalledPackagesColumn::fill()
     condition.wait(&mutex);
 #endif
 
+    const QStringList& pak_packages = getPackagesList();
+    const QString text_log_column{"Installed"};
+    if (isColumnNotChanged(text_log_column, pak_packages))
+    {
+        mutex.unlock();
+        return;
+    }
+
     packages_sorter->resetOriginalList();
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
     clearPackages();
     Q_ASSERT(list_widget->count() == 0);
-    const QStringList& pak_packages = getPackagesList();
     int i = 0;
 
     std::for_each(pak_packages.begin(), pak_packages.end(), [this, &i](const QString& package)

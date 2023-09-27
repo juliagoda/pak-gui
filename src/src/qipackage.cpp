@@ -27,7 +27,8 @@ QiPackage::QiPackage(const QString& package_content) :
     Package(package_content, Package::Source::Unknown)
 {
     setType(Package::Type::Qi);
-    updateData(package_content, Constants::packageQiNameLine(), Constants::packageQiVersionLine());
+    Constants constants;
+    updateData(package_content, constants.packageQiNameLine(), constants.packageQiVersionLine());
     setText(getName().trimmed() + "-" + getVersion().trimmed());
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     setCheckState(Qt::Unchecked);

@@ -27,7 +27,7 @@ std::unordered_map<QLocale::Language, QPair<QString, QString>> Constants::lang_n
 
 Constants::Constants()
 {
-  // ...
+    // ...
 }
 
 
@@ -176,7 +176,7 @@ QHash<int, Package::TooltipLine> Constants::typePackageToTooltipLines(Package::T
 
 QHash<int, Package::TooltipLine> Constants::numberToTooltipLineSiPackage()
 {
-    static QHash<int, Package::TooltipLine> numberToTooltipLine;
+    QHash<int, Package::TooltipLine> numberToTooltipLine;
     numberToTooltipLine.insert(2, Package::TooltipLine::Name);
     numberToTooltipLine.insert(3, Package::TooltipLine::Version);
     numberToTooltipLine.insert(4, Package::TooltipLine::Description);
@@ -200,7 +200,7 @@ QHash<int, Package::TooltipLine> Constants::numberToTooltipLineSiPackage()
 
 QHash<int, Package::TooltipLine> Constants::numberToTooltipLineQiPackage()
 {
-    static QHash<int, Package::TooltipLine> numberToTooltipLine;
+    QHash<int, Package::TooltipLine> numberToTooltipLine;
     numberToTooltipLine.insert(1, Package::TooltipLine::Name);
     numberToTooltipLine.insert(2, Package::TooltipLine::Version);
     numberToTooltipLine.insert(3, Package::TooltipLine::Description);
@@ -228,7 +228,7 @@ QHash<int, Package::TooltipLine> Constants::numberToTooltipLineQiPackage()
 
 QHash<int, Package::TooltipLine> Constants::numberToTooltipLineCheckPackage()
 {
-    static QHash<int, Package::TooltipLine> numberToTooltipLine;
+    QHash<int, Package::TooltipLine> numberToTooltipLine;
     numberToTooltipLine.insert(1, Package::TooltipLine::Name);
     numberToTooltipLine.insert(2, Package::TooltipLine::Version);
     numberToTooltipLine.insert(3, Package::TooltipLine::Description);

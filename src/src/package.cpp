@@ -172,8 +172,9 @@ void Package::setToolTipOnPackage(const QString& text)
 
     QScopedPointer<Algorithms> algorithms(new Algorithms);
     QString splitting_text{" : "};
+    Constants constants;
     const auto& results = algorithms->createSplittedList<Package::TooltipLine>(text, splitting_text,
-        selected_info_list, Constants::typePackageToTooltipLines(getType()));
+        selected_info_list, constants.typePackageToTooltipLines(getType()));
 
     setToolTip(results.join(QString("\n")));
 }

@@ -28,14 +28,15 @@
 class PreviewDesign
 {
 public:
+    PreviewDesign() = default;
     virtual ~PreviewDesign() = default;
 
-    static void update(QPointer<QTextBrowser> preview);
+    void update(QPointer<QTextBrowser> preview);
 
 private:
-    static QString generateCss();
-    static void appendBackgroundColor(QStringList& css_lines);
-    static void appendFontColor(QStringList& css_lines);
-    static void appendFontSize(QStringList& css_lines);
-    static void appendFontFamily(QStringList& css_lines);
+    QString generateCss();
+    void appendBackgroundColor(QStringList& css_lines);
+    void appendFontColor(QStringList& css_lines);
+    void appendFontSize(QStringList& css_lines);
+    void appendFontFamily(QStringList& css_lines);
 };

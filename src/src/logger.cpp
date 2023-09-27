@@ -251,7 +251,7 @@ void Logger::logIntoFile(const QString& section, const QString& text)
     if (!logs_file.exists())
         reopenFile();
 
-    write_mutex.tryLock();
+    write_mutex.lock();
     resizeFileSizeNotWithinRange();
     output_stream << streamTextResult();
     clearStreamText();

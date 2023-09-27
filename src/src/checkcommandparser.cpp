@@ -39,8 +39,11 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
     QString output{generatePakCheckResults()};
 
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
-
     QHash<QString, Package::Source> system_packages;
+
+    if (output.isEmpty())
+        return system_packages;
+
     QStringList output_list{output.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts)};
     output.clear();
     QStringListIterator it{output_list};

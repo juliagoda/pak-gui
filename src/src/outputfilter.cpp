@@ -41,7 +41,7 @@ QStringList OutputFilter::filteredOutputFromInstalledPackages(const QStringList&
 {
     QStringList output_list;
     QStringList::const_iterator list_it;
-    static QRegularExpression tag{"\\[.*\\]"};
+    QRegularExpression tag{"\\[.*\\]"};
     std::accumulate(text_output.begin(), text_output.end(), &output_list, [&](QStringList* list, const QString& elem)
     {
         QString output = elem;
@@ -64,14 +64,14 @@ QString OutputFilter::getSourceFromDoubleColon(const QString& new_output_line)
 
 QString OutputFilter::getSourceFromSearchLine(const QString& output_line)
 {
-    static QRegularExpression regex(".*\\[(.*)\\].*");
+    QRegularExpression regex(".*\\[(.*)\\].*");
     return regex.match(output_line).captured(1);
 }
 
 
 QString OutputFilter::getPackageFromSearchLine(const QString& output_line)
 {
-    static QRegularExpression regex("^(\\S*)\\s*\\S*");
+    QRegularExpression regex("^(\\S*)\\s*\\S*");
     return regex.match(output_line).captured(1);
 }
 

@@ -29,7 +29,7 @@
 #include <iterator>
 
 
-QSharedPointer<SettingsRecords> Settings::settings_records(nullptr);
+QScopedPointer<SettingsRecords> Settings::settings_records(nullptr);
 
 Settings::Settings(MainWindow* main_window) :
     KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self()),
@@ -47,7 +47,7 @@ Settings::~Settings()
 }
 
 
-const QSharedPointer<SettingsRecords>& Settings::records()
+const QScopedPointer<SettingsRecords>& Settings::records()
 {
     if (settings_records.isNull())
         settings_records.reset(new SettingsRecords);
@@ -172,7 +172,7 @@ void Settings::enableButtons()
 void Settings::updateAvailableInfoList()
 {
     QStringList available_info_list = QStringList();
-    auto items = packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard);
+    const auto& items = packages_info_settings.packages_info_selector->availableListWidget()->findItems("*", Qt::MatchWildcard);
     std::accumulate(items.begin(), items.end(), &available_info_list, [&](QStringList* list, QListWidgetItem* item)
     {
         if (!list->contains(item->text()))
@@ -188,7 +188,7 @@ void Settings::updateAvailableInfoList()
 void Settings::updateSelectedInfoList()
 {
     QStringList selected_info_list = QStringList();
-    auto items = packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard);
+    const auto& items = packages_info_settings.packages_info_selector->selectedListWidget()->findItems("*", Qt::MatchWildcard);
     std::accumulate(items.begin(), items.end(), &selected_info_list, [&](QStringList* list, QListWidgetItem* item)
     {
         if (!list->contains(item->text()))

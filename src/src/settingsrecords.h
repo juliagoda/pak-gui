@@ -78,6 +78,6 @@ private:
     QHash<QString, Package::TooltipLine> text_to_tooltip_line_map;
     QList<Package::TooltipLine> available_info_list;
     QList<Package::TooltipLine> selected_info_list;
-    static QSettings settings;
+    QSettings settings;
 };
 
