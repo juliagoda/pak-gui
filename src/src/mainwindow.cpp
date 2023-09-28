@@ -242,6 +242,7 @@ void MainWindow::initSignals()
     connect(main_window_view, &MainWindowView::initStarted, this, [this](){ initEnded = false; });
     connect(main_window_view, &MainWindowView::initEnded, this, [this](){ initEnded = true; });
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
+    connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::setForcedUpdateFlag);
     connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
     connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed) {
         update_mirrors_action->setEnabled(initEnded && is_installed); });

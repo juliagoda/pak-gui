@@ -82,3 +82,8 @@ gcovr -r .
 - [ ] Mirrorlists application in GUI
 - [ ] Keys application in GUI (signing)
 - [ ] Port to KF6/Qt6 after official and stable release of KF6
+- [ ] Warnings reduction
+- [ ] Updates column run when requested (optimization)
+- [ ] Building fix when tbb is installed
+- [ ] Align the contents of tooltip
+- [ ] Milestone creation with tasks for next version

@@ -66,6 +66,18 @@ void InstalledPackagesColumn::clearPackages()
 }
 
 
+void InstalledPackagesColumn::setForcedUpdateFlag()
+{
+    isForcedUpdate = true;
+}
+
+
+void InstalledPackagesColumn::clearForcedUpdateFlag()
+{
+    isForcedUpdate = false;
+}
+
+
 void InstalledPackagesColumn::fill()
 {
     mutex.lock();
@@ -79,7 +91,7 @@ void InstalledPackagesColumn::fill()
 
     const QStringList& pak_packages = getPackagesList();
     const QString text_log_column{"Installed"};
-    if (isColumnNotChanged(text_log_column, pak_packages))
+    if (!isForcedUpdate && isColumnNotChanged(text_log_column, pak_packages))
     {
         mutex.unlock();
         return;
@@ -101,6 +113,7 @@ void InstalledPackagesColumn::fill()
         i++;
     });
 
+    clearForcedUpdateFlag();
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 installed packages").arg(list_widget->count()));
     list_widget->update();
     mutex.unlock();

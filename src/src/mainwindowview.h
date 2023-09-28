@@ -67,6 +67,7 @@ public:
 
 public Q_SLOTS:
     void refresh();
+    void setForcedUpdateFlag();
     void showInputWidgets(Process::Task task);
     void generatePreview(Process::Task task);
     void showSingleAnimation(Process::Task task);

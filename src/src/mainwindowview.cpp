@@ -667,6 +667,14 @@ void MainWindowView::refresh()
 }
 
 
+void MainWindowView::setForcedUpdateFlag()
+{
+    // for tooltips update
+    available_packages_column->setForcedUpdateFlag();
+    installed_packages_column->setForcedUpdateFlag();
+}
+
+
 void MainWindowView::startAnimations()
 {
     m_ui.packages_to_update_label->setText(i18n("TO UPDATE"));

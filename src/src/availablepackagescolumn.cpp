@@ -67,6 +67,18 @@ void AvailablePackagesColumn::clearPackages()
 }
 
 
+void AvailablePackagesColumn::setForcedUpdateFlag()
+{
+    isForcedUpdate = true;
+}
+
+
+void AvailablePackagesColumn::clearForcedUpdateFlag()
+{
+    isForcedUpdate = false;
+}
+
+
 void AvailablePackagesColumn::fill()
 {
     mutex.lock();
@@ -80,7 +92,7 @@ void AvailablePackagesColumn::fill()
 
     const QStringList& pak_packages = getPackagesList();
     const QString text_log_column{"Available"};
-    if (isColumnNotChanged(text_log_column, pak_packages))
+    if (!isForcedUpdate && isColumnNotChanged(text_log_column, pak_packages))
     {
         mutex.unlock();
         return;
@@ -103,8 +115,10 @@ void AvailablePackagesColumn::fill()
         i++;
     });
 
+    clearForcedUpdateFlag();
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 available packages").arg(list_widget->count()));
     list_widget->update();
+
     mutex.unlock();
 }
 

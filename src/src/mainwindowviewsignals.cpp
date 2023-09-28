@@ -253,7 +253,7 @@ void MainWindowViewSignals::attachInstalledPackagesColumn()
         {
             main_window_view->current_uninstallation_process = process;
           //if (main_window_view->m_ui.abort_uninstallation_process_btn)
-            //main_window_view->m_ui.abort_uninstallation_process_btn->show();
+          //  main_window_view->m_ui.abort_uninstallation_process_btn->show();
         });
 
     QObject::connect(main_window_view->installed_packages_column.data(), &InstalledPackagesColumn::hideAbortButton, [this]()
