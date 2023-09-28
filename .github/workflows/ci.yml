@@ -19,7 +19,7 @@ jobs:
 
       - name: install deps
         run: |
-          pacman -Syu --noconfirm cmake pkg-config ninja extra-cmake-modules qt5-base qt5-tools kcoreaddons kwidgetsaddons kdoctools kconfigwidgets kcrash kdbusaddons kxmlgui ki18n qt5-charts knotifications gtest xorg-server-xvfb gcovr xdotool git
+          pacman -Syu --noconfirm cmake pkg-config ninja extra-cmake-modules qt5-base qt5-tools kcoreaddons kwidgetsaddons kdoctools kconfigwidgets kcrash kdbusaddons kxmlgui ki18n qt5-charts knotifications gtest xorg-server-xvfb gcovr xdotool pacman-contrib kdesu git
         shell: bash
 
       - name: Configure CMake
