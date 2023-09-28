@@ -35,10 +35,6 @@
 #include <KStandardAction>
 #include <KNotification>
 
-#ifndef PARALLEL
-#error "Parallel algorithms are needed to work with this app"
-#endif
-
 
 MainWindow::MainWindow()
   : KXmlGuiWindow(),

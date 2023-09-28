@@ -27,7 +27,6 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 
-#include <execution>
 #include <algorithm>
 #include <iterator>
 
@@ -50,11 +49,11 @@ Sorter::~Sorter()
 
 void Sorter::sortReverse()
 {
-    auto widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
+    const auto& widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
 
     clear();
 
-    std::for_each(std::execution::par, widgets_list.rbegin(), widgets_list.rend(), [this](QListWidgetItem* item)
+    std::for_each(widgets_list.rbegin(), widgets_list.rend(), [this](QListWidgetItem* item)
     {
         list_widget->addItem(item);
     });
@@ -80,7 +79,7 @@ template<typename T>
 void Sorter::sortPackages(const QString& text, T emptyPackage)
 {
     Q_UNUSED(emptyPackage) // we have errors without T as argument
-    std::for_each(std::execution::par, untouched_list_widget.begin(), untouched_list_widget.end(), [&, this](QListWidgetItem* item)
+    std::for_each(untouched_list_widget.begin(), untouched_list_widget.end(), [&, this](QListWidgetItem* item)
         {
             if (!item->text().startsWith(text))
                 return;
@@ -109,7 +108,7 @@ void Sorter::showInfo()
     if (!Settings::records()->showDebug())
         return;
 
-    auto all_items = list_widget->findItems("*", Qt::MatchWildcard);
+    const auto& all_items = list_widget->findItems("*", Qt::MatchWildcard);
     Logger::logger()->logDebug(QStringLiteral("Count of sorted packages: %1").arg(all_items.count()));
 }
 
@@ -127,7 +126,7 @@ void Sorter::showInfoSortReverse(const QString& first_package_name,
 template <typename T>
 void Sorter::fillUntouchedList()
 {
-    auto widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
+    const auto& widgets_list = list_widget->findItems("*", Qt::MatchWildcard);
     untouched_list_widget.reserve(widgets_list.count());
     std::transform(widgets_list.begin(), widgets_list.end(), std::back_inserter(untouched_list_widget),
                    [=](QListWidgetItem* item) mutable { return item; });
