@@ -44,12 +44,7 @@ InstalledPackagesColumn::InstalledPackagesColumn(QListWidget* new_list_widget,
 QStringList InstalledPackagesColumn::getPackagesList()
 {
     QScopedPointer<QiCommandParser> command_parser{new QiCommandParser};
-    QObject::connect(command_parser.get(), &QiCommandParser::processStarted, [this](QProcess* process){ emit showAbortButton(process); });
-    QObject::connect(command_parser.get(), &QiCommandParser::processEnded, [this](){ emit hideAbortButton(); });
-    const auto& info = command_parser->retrieveInfo();
-    QObject::disconnect(command_parser.get(), &QiCommandParser::processStarted, nullptr, nullptr);
-    QObject::disconnect(command_parser.get(), &QiCommandParser::processEnded, nullptr, nullptr);
-    return info;
+    return command_parser->retrieveInfo();
 }
 
 

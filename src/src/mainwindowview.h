@@ -128,7 +128,4 @@ private:
     QSharedPointer<ActionsAccessChecker> actions_access_checker{nullptr};
     QScopedPointer<QTimer> internet_connection_timer{new QTimer};
     State current_state{State::Running};
-    QProcess* current_installation_process = nullptr;
-    QProcess* current_update_process = nullptr;
-    QProcess* current_uninstallation_process = nullptr;
 };

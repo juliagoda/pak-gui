@@ -45,12 +45,7 @@ AvailablePackagesColumn::AvailablePackagesColumn(QListWidget* new_list_widget,
 QStringList AvailablePackagesColumn::getPackagesList()
 {
     QScopedPointer<SiCommandParser> command_parser(new SiCommandParser);
-    QObject::connect(command_parser.get(), &SiCommandParser::processStarted, [this](QProcess* process){ emit showAbortButton(process); });
-    QObject::connect(command_parser.get(), &SiCommandParser::processEnded, [this](){ emit hideAbortButton(); });
-    const auto& info = command_parser->retrieveInfo();
-    QObject::disconnect(command_parser.get(), &SiCommandParser::processStarted, nullptr, nullptr);
-    QObject::disconnect(command_parser.get(), &SiCommandParser::processEnded, nullptr, nullptr);
-    return info;
+    return command_parser->retrieveInfo();
 }
 
 

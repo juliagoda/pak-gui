@@ -60,8 +60,6 @@ public Q_SLOTS:
 
 signals:
    void checkedPackagesCounterChanged(bool has_checked_buttons);
-   void showAbortButton(QProcess* process);
-   void hideAbortButton();
 
 protected:
     void addCheckedPackage(Package* package);

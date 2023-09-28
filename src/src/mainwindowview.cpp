@@ -159,9 +159,6 @@ void MainWindowView::hideWidgetsExceptInstalled()
     m_ui.search_available_packages_lineedit->hide();
     m_ui.available_packages_list->hide();
     m_ui.packages_to_update_list->hide();
-    m_ui.abort_installation_process_btn->hide();
-    m_ui.abort_uninstallation_process_btn->hide();
-    m_ui.abort_update_process_btn->hide();
 }
 
 
