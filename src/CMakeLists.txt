@@ -112,6 +112,6 @@ ki18n_wrap_ui(pak-gui
     src/packagesinfosettings.ui
     src/logssettings.ui)
 
-install(FILES src/org.cachyos.pak-gui.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
+install(FILES src/org.juliagoda.pak-gui.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
 install(FILES src/pak-gui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/pak-gui)
 install(TARGETS pak-gui ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

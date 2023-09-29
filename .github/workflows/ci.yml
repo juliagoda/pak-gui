@@ -1,4 +1,4 @@
-name: Build
+name: pak-gui
 
 on:
   push:
@@ -6,35 +6,28 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  BUILD_TYPE: Debug
-
 jobs:
-  build-arch-qt5:
-    name: Build ArchLinux Qt5
+  build-ubuntu-qt5:
+    env:
+      DISPLAY: ':0'
     runs-on: ubuntu-latest
-    container: archlinux:base-devel
     steps:
-      - uses: actions/checkout@v3
-
-      - name: install deps
+      - name: initialize
+        uses: actions/checkout@v2
+      - name: update
         run: |
-          pacman -Syu --noconfirm cmake pkg-config ninja extra-cmake-modules qt5-base qt5-tools kcoreaddons kwidgetsaddons kdoctools kconfigwidgets kcrash kdbusaddons kxmlgui ki18n qt5-charts knotifications gtest xorg-server-xvfb gcovr xdotool pacman-contrib kdesu git
-        shell: bash
-
-      - name: Configure CMake
-        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DRUN_TESTS=ON
-
-      - name: Build
+          sudo apt-mark hold grub-efi-amd64-signed
+          sudo apt-get update --fix-missing
+          sudo apt-get upgrade
+      - name: dependencies
+        run: sudo apt install -f -y extra-cmake-modules gettext qtbase5-dev qtbase5-dev-tools libqt5test5 gcovr libgtest-dev libkf5coreaddons-dev libkf5widgetsaddons-dev libkf5doctools-dev libkf5configwidgets-dev libkf5crash-dev libkf5dbusaddons-dev libkf5xmlgui-dev libkf5i18n-dev libqt5charts5-dev libkf5notifications-dev libgmock-dev xvfb x11-utils libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 xdotool
+      - name: build and test
         run: |
-          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-        shell: bash
-
-      - name: Run Tests
-        run: |
+          mkdir build
+          cd build
           export QT_DEBUG_PLUGINS=1
-          xvfb-run -s "-screen 0 1920x1080x24 -nolisten local" ${{github.workspace}}/build/bin/pak-qtests
-          cd ${{github.workspace}}/build
+          cmake -DRUN_TESTS=ON ..
+          make -j 3
+          nohup Xvfb :0 > /dev/null 2>&1 &
+          bin/pak-qtests
           gcovr -r .. -j 2 -f ../src/src/.*cpp
-        shell: bash

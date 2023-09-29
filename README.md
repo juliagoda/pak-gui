@@ -2,8 +2,8 @@
 
 pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.com/nycko123/pak) enhanced with GUI.
 
-[![pak-gui](https://github.com/CachyOS/pak-gui/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/CachyOS/pak-gui/actions/workflows/ci.yml)
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/CachyOS/pak-gui/main)
+[![pak-gui](https://github.com/juliagoda/pak-gui/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/juliagoda/pak-gui/actions/workflows/ci.yml)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/juliagoda/pak-gui/main)
 
 
 <br/>

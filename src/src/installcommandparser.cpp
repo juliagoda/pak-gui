@@ -1,6 +1,6 @@
 // Copyright (C) 2023 Jagoda "juliagoda" Górska
 //
-// This file is part of CachyOS package manager based on "pak" application.
+// This file is part of package manager based on "pak" application.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

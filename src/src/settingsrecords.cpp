@@ -1,6 +1,6 @@
 // Copyright (C) 2023 Jagoda "juliagoda" Górska
 //
-// This file is part of CachyOS package manager based on "pak" application.
+// This file is part of  package manager based on "pak" application.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 
 
 SettingsRecords::SettingsRecords() :
-  settings(QSettings::NativeFormat, QSettings::UserScope, QString("CachyOS"), QString("pak-gui"))
+  settings(QSettings::NativeFormat, QSettings::UserScope, QString("juliagoda"), QString("pak-gui"))
 {
     if (!text_to_tooltip_line_map.isEmpty())
         return;
