@@ -1,0 +1,33 @@
+name: pak-gui
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-ubuntu-qt5:
+    env:
+      DISPLAY: ':0'
+    runs-on: ubuntu-latest
+    steps:
+      - name: initialize
+        uses: actions/checkout@v2
+      - name: update
+        run: |
+          sudo apt-mark hold grub-efi-amd64-signed
+          sudo apt-get update --fix-missing
+          sudo apt-get upgrade
+      - name: dependencies
+        run: sudo apt install -f -y extra-cmake-modules gettext qtbase5-dev qtbase5-dev-tools libqt5test5 gcovr libgtest-dev libkf5coreaddons-dev libkf5widgetsaddons-dev libkf5doctools-dev libkf5configwidgets-dev libkf5crash-dev libkf5dbusaddons-dev libkf5xmlgui-dev libkf5i18n-dev libqt5charts5-dev libkf5notifications-dev libgmock-dev xvfb x11-utils libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 xdotool
+      - name: build and test
+        run: |
+          mkdir build
+          cd build
+          export QT_DEBUG_PLUGINS=1
+          cmake -DRUN_TESTS=ON ..
+          make -j 3
+          nohup Xvfb :0 > /dev/null 2>&1 &
+          bin/pak-qtests
+          gcovr -r .. -j 2 -f ../src/src/.*cpp
