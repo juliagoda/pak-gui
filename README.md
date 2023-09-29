@@ -89,3 +89,4 @@ gcovr -r .
 - [ ] Milestone creation with tasks for next version
 - [ ] More unit tests creation
 - [ ] Calendar creation for statistics
+- [ ] Fix for code coverage generation in pipeline
