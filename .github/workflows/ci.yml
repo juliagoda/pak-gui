@@ -35,5 +35,6 @@ jobs:
         run: |
           export QT_DEBUG_PLUGINS=1
           xvfb-run -s "-screen 0 1920x1080x24 -nolisten local" ${{github.workspace}}/build/bin/pak-qtests
-          gcovr -r . -j 2 -f src/src/.*cpp
+          cd ${{github.workspace}}/build
+          gcovr -r .. -j 2 -f ../src/src/.*cpp
         shell: bash
