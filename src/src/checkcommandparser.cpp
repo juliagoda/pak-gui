@@ -39,12 +39,12 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
     QString output{generatePakCheckResults()};
 
     Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
-    QHash<QString, Package::Source> system_packages;
+    decltype(retrieveInfoMap()) system_packages;
 
     if (output.isEmpty())
         return system_packages;
 
-    QStringList output_list{output.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts)};
+    const QStringList& output_list{output.split(QRegExp("[\r\n]"), Qt::SkipEmptyParts)};
     output.clear();
     QStringListIterator it{output_list};
     processLines(system_packages, it);
@@ -80,7 +80,7 @@ void CheckCommandParser::processLines(QHash<QString, Package::Source>& system_pa
     while (iterator.hasNext())
     {
         QString line{iterator.next()};
-        QString filtered_line{output_filter->filteredOutput(line).simplified()};
+        const QString& filtered_line{output_filter->filteredOutput(line).simplified()};
         uint tempLineCount = double_colon_line_count;
         increaseDoubleColonCounter(filtered_line, double_colon_line_count);
         appendPackageLine(system_packages, filtered_line, double_colon_line_count);

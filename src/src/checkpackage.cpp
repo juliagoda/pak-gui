@@ -104,9 +104,9 @@ void CheckPackage::updateDataCheck(const QString& package_content)
     int first_whitespace_index = package_content.indexOf(whitespace_expression);
     int first_number_index = package_content.indexOf(numbers_expression);
 
-    QString name_part = package_content.left(first_whitespace_index);
+    const QString& name_part = package_content.left(first_whitespace_index);
     setName(name_part);
 
-    QString version_part = package_content.mid(first_number_index);
+    const QString& version_part = package_content.mid(first_number_index);
     setVersion(version_part);
 }

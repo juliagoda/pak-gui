@@ -206,10 +206,18 @@ void MainWindowViewSignals::attachPackagesToUpdateColumn()
     QObject::connect(main_window_view->updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { main_window_view->m_ui.update_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.update_packages_button, &QPushButton::clicked, this, [this]() { main_window_view->updated_packages_column.data()->prepareBeforeProcessRun(); }, Qt::AutoConnection);
 
-    QObject::connect(main_window_view->updated_packages_column.data(), &UpdatedPackagesColumn::preparedList, [this](QStringList packages_list, Process::Task task, uint aur_checked_packages){ main_window_view->process->setPackagesToUpdate(packages_list.count()); main_window_view->process->setAurPackagesToUpdate(aur_checked_packages);
-    main_window_view->m_ui.text_browser_tab_update->clear();
-    if (main_window_view->process->preparedBeforeRun(task, packages_list))
-      main_window_view->process->run(task, packages_list); });
+    QObject::connect(main_window_view->updated_packages_column.data(), &UpdatedPackagesColumn::preparedList, [&](QStringList packages_list, Process::Task task, uint aur_checked_packages)
+    {
+        main_window_view->process->setPackagesToUpdate(packages_list.count());
+        main_window_view->process->setAurPackagesToUpdate(aur_checked_packages);
+
+        main_window_view->m_ui.text_browser_tab_update->clear();
+        if (main_window_view->process->preparedBeforeRun(task, packages_list))
+        {
+            main_window_view->installed_packages_column->setForcedUpdateFlag();
+            main_window_view->process->run(task, packages_list);
+        }
+    });
 
     QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.packages_to_update_list->count() == 0) main_window_view->m_ui.update_packages_button->setEnabled(false); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ main_window_view->m_ui.search_packages_to_update_checkbox->setEnabled(true); }, Qt::AutoConnection);

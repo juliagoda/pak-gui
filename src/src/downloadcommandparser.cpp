@@ -72,7 +72,7 @@ void DownloadCommandParser::connectSignals()
 
 void DownloadCommandParser::processReadLine(QString& line, int& directories_line_count)
 {
-    auto filtered_line = output_filter->filteredOutput(line);
+    const auto& filtered_line = output_filter->filteredOutput(line);
     Logger::logger()->writeLineToFile(filtered_line);
     result_output += filtered_line;
 
@@ -159,7 +159,7 @@ void DownloadCommandParser::fillDirectoriesMap(const QString& result)
     auto result_local = result;
     result_local = output_filter->filteredOutput(result_local);
     QRegularExpression new_line_expression("\n");
-    QStringList splitted_list{result_local.split(new_line_expression)};
+    const QStringList& splitted_list{result_local.split(new_line_expression)};
     auto splitted_lines = output_filter->filteredLines(splitted_list, output_filter->startsFromNumber);
 
     for (const auto& line : splitted_lines)
@@ -179,10 +179,10 @@ void DownloadCommandParser::addLineToDirectoriesMap(const QString& line)
         return;
     }
 
-    auto match = directory_line_regex.match(line);
+    const auto& match = directory_line_regex.match(line);
     if (match.hasMatch() && directory_line_regex.captureCount() == 3)
     {
-        QString full_path_with_package = match.captured(3) + "/" + package_name;
+        const QString& full_path_with_package = match.captured(3) + "/" + package_name;
         directories_map.insert(match.captured(1).toInt(), full_path_with_package);
     }
 }

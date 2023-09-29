@@ -87,3 +87,5 @@ gcovr -r .
 - [ ] Building fix when tbb is installed
 - [ ] Align the contents of tooltip
 - [ ] Milestone creation with tasks for next version
+- [ ] More unit tests creation
+- [ ] Calendar creation for statistics

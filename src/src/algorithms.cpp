@@ -53,7 +53,7 @@ void Algorithms::createListOfLines(QStringList& selected_infos,
                                    const QList<T>& list,
                                    const QHash<int, T>& map)
 {
-    auto lines_list = text.split('\n');
+    const auto& lines_list = text.split('\n');
     int i = 0;
     int last_index = -1;
     int index_of_separator = 0;

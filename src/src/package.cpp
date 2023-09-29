@@ -97,7 +97,7 @@ const QString &Package::getVersion() const
 }
 
 
-Package::Source Package::getSource() const
+auto Package::getSource() const -> Source
 {
     return source;
 }
@@ -109,7 +109,7 @@ void Package::setNo(const int new_no)
 }
 
 
-Package::Type Package::getType() const
+auto Package::getType() const -> Type
 {
     return package_type;
 }

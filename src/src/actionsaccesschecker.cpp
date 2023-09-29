@@ -196,7 +196,7 @@ bool ActionsAccessChecker::existsPackageByPromptVersion(const QString& package_n
 
 bool ActionsAccessChecker::checkNetworkInterfaces() const
 {
-    auto all_interfaces = QNetworkInterface::allInterfaces();
+    const auto& all_interfaces = QNetworkInterface::allInterfaces();
     return std::any_of(all_interfaces.cbegin(), all_interfaces.cend(), [](const QNetworkInterface& iNetInterface)
     {
         return (iNetInterface.type() != QNetworkInterface::Loopback &&
