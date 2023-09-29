@@ -84,9 +84,7 @@ gcovr -r .
 - [ ] Port to KF6/Qt6 after official and stable release of KF6
 - [ ] Warnings reduction
 - [ ] Updates column run when requested (optimization)
-- [ ] Building fix when tbb is installed
 - [ ] Align the contents of tooltip
 - [ ] Milestone creation with tasks for next version
 - [ ] More unit tests creation
 - [ ] Calendar creation for statistics
-- [ ] Fix for code coverage generation in pipeline
