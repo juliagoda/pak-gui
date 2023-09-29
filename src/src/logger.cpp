@@ -28,6 +28,7 @@
 
 Logger* Logger::instance{nullptr};
 QMutex Logger::write_mutex;
+QMutex Logger::instance_mutex;
 
 
 Logger::Logger()
@@ -52,11 +53,13 @@ const QString& Logger::streamTextResult() const
 Logger::~Logger()
 {
     closeFile();
+    instance_mutex.unlock();
 }
 
 
 Logger* Logger::logger()
 {
+    instance_mutex.try_lock();
     if (instance == nullptr)
         instance = new Logger();
 
@@ -70,8 +73,7 @@ void Logger::writeToFile(const QString& text, WriteOperations section)
     appendNewLine();
     stream_text += output_filter->filteredOutput(text);
     appendNewLine();
-    appendSeparator();
-    appendNewLine();
+    appendEndLine();
     appendNewLine();
 
 #ifdef RUN_TESTS
@@ -233,6 +235,12 @@ void Logger::appendNewLine()
 }
 
 
+void Logger::appendEndLine()
+{
+   stream_text += QString("\n\n\n---------------[END]---------------");
+}
+
+
 void Logger::logIntoFile(const QString& section, const QString& text)
 {
     QString local_time{QDateTime::currentDateTime().toLocalTime().toString()};
@@ -254,6 +262,7 @@ void Logger::logIntoFile(const QString& section, const QString& text)
     write_mutex.lock();
     resizeFileSizeNotWithinRange();
     output_stream << streamTextResult();
+    output_stream.flush();
     clearStreamText();
     output_stream.resetStatus();
     output_stream.reset();
@@ -323,6 +332,7 @@ void Logger::resizeFileSizeNotWithinRange()
         QByteArray last_bytes{logs_file.read(preferred_bytes)};
         logs_file.resize(0);
         output_stream << last_bytes;
+        output_stream.flush();
         output_stream.resetStatus();
         output_stream.reset();
     }
@@ -353,6 +363,7 @@ void Logger::writeToStream()
 {
     write_mutex.lock();
     output_stream << streamTextResult();
+    output_stream.flush();
     clearStreamText();
     output_stream.resetStatus();
     output_stream.reset();

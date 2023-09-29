@@ -38,7 +38,6 @@ QHash<QString, Package::Source> CheckCommandParser::retrieveInfoMap()
 {
     QString output{generatePakCheckResults()};
 
-    Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckUpdates);
     decltype(retrieveInfoMap()) system_packages;
 
     if (output.isEmpty())

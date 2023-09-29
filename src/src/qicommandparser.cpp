@@ -27,7 +27,6 @@
 QStringList QiCommandParser::retrieveInfo()
 {
     QString output = generateResult();
-    Logger::logger()->writeToFile(output, Logger::WriteOperations::CheckInstalled);
 
     if (output.isEmpty())
         return QStringList();

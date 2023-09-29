@@ -40,9 +40,6 @@ public:
         Clean,
         Download,
         UpdateAll,
-        CheckUpdates,
-        CheckAvailable,
-        CheckInstalled,
         ShowStatistics,
         MirrorsUpdate,
         UpdateInstalled,
@@ -80,6 +77,7 @@ private:
     void appendSection(WriteOperations section);
     void appendSeparator();
     void appendNewLine();
+    void appendEndLine();
     bool isWritePossible();
     void resizeFileSizeNotWithinRange();
     bool validate();
@@ -91,5 +89,6 @@ private:
     QTextStream output_stream{};
     static Logger* instance;
     static QMutex write_mutex;
+    static QMutex instance_mutex;
 };
 

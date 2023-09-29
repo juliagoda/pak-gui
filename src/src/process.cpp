@@ -303,12 +303,14 @@ void Process::connectSignals(Process::Task new_task)
             QString form = "%1 " + i18n("wasn't possible:") + " %2";
             message_box.setText(form.arg(messages_map.value(new_task).first).arg(QVariant::fromValue(process_error).toString()));
             message_box.run();
+            Logger::logger()->writeLineToFile(QString("\n\n\n---------------[END]---------------"));
             Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString(), QVariant::fromValue(process_error).toString()));
         });
 
     QObject::connect(current_process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
         [this, new_task](int exit_code, QProcess::ExitStatus exit_status)
         {
+            Logger::logger()->writeLineToFile(QString("\n\n\n---------------[END]---------------"));
             emit finished(new_task, exit_code, exit_status);
             Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));
             emit ended();
@@ -370,7 +372,7 @@ bool Process::getAnswer(Task new_task, const QStringList& new_checked_packages)
 
 void Process::updateCurrentCommandForUpdate(Task new_task)
 {
-    auto command = commands_map.value(new_task);
+    const auto& command = commands_map.value(new_task);
 
     if (command.count() < 2)
     {
