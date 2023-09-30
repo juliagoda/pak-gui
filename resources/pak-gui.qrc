@@ -5,6 +5,7 @@
         <file>icons/general-settings.png</file>
         <file>icons/logs-settings.png</file>
         <file>icons/package-info-settings.png</file>
+        <file>icons/previews-settings.png</file>
         <file>waiting.gif</file>
         <file>waiting-small.gif</file>
     </qresource>

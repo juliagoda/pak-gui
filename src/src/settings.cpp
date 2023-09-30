@@ -118,7 +118,7 @@ void Settings::init(MainWindow* main_window)
     QPointer<QWidget> logs_page = new QWidget;
     logs_settings.setupUi(logs_page);
     addPage(general_page, i18nc("@title:tab", "General"), QStringLiteral(":/icons/general-settings.png"));
-    addPage(previews_appearance_page, i18nc("@title:tab", "Previews appearance"), QStringLiteral(":/icons/general-settings.png"));
+    addPage(previews_appearance_page, i18nc("@title:tab", "Previews appearance"), QStringLiteral(":/icons/previews-settings.png"));
     addPage(packages_info_page, i18nc("@title:tab", "Packages informations"), QStringLiteral(":/icons/package-info-settings.png"));
     addPage(logs_page, i18nc("@title:tab", "Logs"), QStringLiteral(":/icons/logs-settings.png"));
     connect(this, &Settings::settingsChanged, main_window, &MainWindow::startSystemTray);
