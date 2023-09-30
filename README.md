@@ -58,11 +58,14 @@ make -j 2
 
 ### Running tests
 
+
+It's important to run tests before running code coverage:
+
 ```
 cmake -DRUN_TESTS=ON ..
 make -j 2
-make test
-gcovr -r .
+bin/pak-qtests
+gcovr -r . -j 2 -f ../src/src/.*cpp
 ```
 
 ### Attention

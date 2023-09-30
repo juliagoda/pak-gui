@@ -24,7 +24,6 @@
 #include "qipackage.h"
 #include "sipackage.h"
 
-
 #include <QAction>
 #include <QString>
 #include <QWidget>

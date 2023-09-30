@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
-project(pak-gui VERSION 1.0.0 LANGUAGES CXX)
+set(VERSION_MAJOR "1")
+set(VERSION_MINOR "0")
+set(VERSION_PATCH "0")
 
-set(VERSION_MAJOR 1)
-set(VERSION_MINOR 0)
-set(VERSION_PATCH 0)
+set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
-set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+project(pak-gui VERSION ${VERSION} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -18,15 +18,28 @@ set(KF_MIN_VERSION "5.68.0")
 find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/packages")
 
+include(ECMInstallIcons)
+include(ECMSetupVersion)
+include(ECMOptionalAddSubdirectory)
+include(GenerateExportHeader)
+include(ECMAddAppIcon)
+include(KDECompilerSettings NO_POLICY_SCOPE)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDECompilerSettings NO_POLICY_SCOPE)
-
-include(ECMInstallIcons)
+include(ECMAddTests)
+include(ECMAddAppIcon)
+include(CMakePackageConfigHelpers)
+include(ECMSetupQtPluginMacroNames)
 include(ECMQtDeclareLoggingCategory)
 include(FeatureSummary)
 
-option(RUN_TESTS "Allow tests for classes" OFF)
+option(RUN_TESTS "Allow tests for classes" ON)
+
+if(RUN_TESTS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fprofile-arcs -ftest-coverage")
+endif()
+
 find_package(pak REQUIRED)
 find_package(pacman-contrib REQUIRED)
 find_package(kdesu REQUIRED)
@@ -72,5 +85,4 @@ feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAG
 if(RUN_TESTS)
     enable_testing()
     add_subdirectory(tests)
-    remove_definitions(-DRUN_TESTS)
 endif(RUN_TESTS)

@@ -25,7 +25,7 @@
 #include <QProcess>
 #include <QStringList>
 #include <QMessageBox>
-#include <QtConcurrent>
+#include <QtConcurrent/QtConcurrent>
 #include <QWaitCondition>
 
 #include <deque>

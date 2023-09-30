@@ -1,40 +1,5 @@
-cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
-project(pak-gui-tests)
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(QT_MIN_VERSION "5.12.8")
-set(KF_MIN_VERSION "5.68.0")
-
-find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -g -O0")
-
-include(KDEInstallDirs)
-include(KDECMakeSettings)
-include(KDECompilerSettings NO_POLICY_SCOPE)
-
-# Tell CMake to run moc when necessary:
-set(CMAKE_AUTOMOC ON)
-
-# As moc files are generated in the binary dir, tell CMake
-# to always look for includes there:
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 
 find_package(Qt5Test REQUIRED)
-
-find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
-    ConfigWidgets
-    CoreAddons
-    Crash
-    DBusAddons
-    DocTools
-    I18n
-    XmlGui
-    Notifications
-)
 
 qt5_add_resources(RESOURCES ${CMAKE_SOURCE_DIR}/resources/pak-gui.qrc)
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets Charts Concurrent Network)
@@ -67,7 +32,6 @@ target_link_libraries(pak-gui-src
     Qt5::Network
 )
 
-target_compile_options(pak-gui-src PRIVATE -fexceptions -DPARALLEL)
 target_include_directories(pak-gui-src PUBLIC ${CMAKE_SOURCE_DIR}/src/src)
 
 add_executable(pak-qtests
@@ -152,15 +116,8 @@ add_executable(pak-qtests
 )
 
 target_link_libraries(pak-qtests
-    KF5::CoreAddons
     Qt5::Test
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
     pak-gui-src
 )
 
-target_compile_options(pak-qtests PRIVATE -fexceptions -DPARALLEL)
-
 add_test(NAME pak-qtests COMMAND $<TARGET_FILE:pak-qtests>)
-
