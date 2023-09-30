@@ -59,7 +59,7 @@ find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS
     XmlGui
     Notifications)
 
-install(PROGRAMS org.cachyos.pak-gui.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(PROGRAMS com.github.juliagoda.pak-gui.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 

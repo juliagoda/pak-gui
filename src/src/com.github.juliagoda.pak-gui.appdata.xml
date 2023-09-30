@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component type="desktop">
+  <id>com.github.juliagoda.pak-gui.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>pak-gui</name>
+  <summary>Package manager based on pacman wrapper named pak.</summary>
+   <description>
+   <p>
+     Package manager with GUI written in Qt5/KF5 with possibility of manual inputs, missing core packages detection, advanced tooltip for packages any many more.
+   </p>
+ </description>
+  <url type="homepage">https://github.com/juliagoda/pak-gui</url>
+  <launchable type="desktop-id">com.github.juliagoda.pak-gui.desktop</launchable>
+  <releases>
+    <release version="1.0.0" date="2023-09-30"/>
+  </releases>
+  <provides>
+    <binary>pak-gui</binary>
+  </provides>
+   <updatecontact>juliagoda.pl_AT_protonmail.com</updatecontact>
+ <kudos>
+   <kudo>ModernToolkit</kudo>
+ </kudos>
+  <screenshots>
+  <screenshot>
+   <image>https://raw.githubusercontent.com/juliagoda/pak-gui/main/resources/images/tooltip-configuration.png</image>
+   <caption>Tooltip configuration</caption>
+  </screenshot>
+  <screenshot>
+   <image>https://raw.githubusercontent.com/juliagoda/pak-gui/main/resources/images/statistics.png</image>
+   <caption>Statistics</caption>
+  </screenshot>
+  <screenshot>
+   <image>https://raw.githubusercontent.com/juliagoda/pak-gui/main/resources/images/sort.png</image>
+   <caption>Packages sort</caption>
+  </screenshot>
+  <screenshot>
+   <image>https://raw.githubusercontent.com/juliagoda/pak-gui/main/resources/images/side-operation.png</image>
+   <caption>Side operation</caption>
+  </screenshot>
+  <screenshot>
+   <image>https://raw.githubusercontent.com/juliagoda/pak-gui/main/resources/images/settings.png</image>
+   <caption>Settings</caption>
+  </screenshot>
+  <screenshot>
+   <image>https://raw.githubusercontent.com/juliagoda/pak-gui/main/resources/images/refresh.png</image>
+   <caption>Refresh animations</caption>
+  </screenshot>
+  <screenshot>
+   <image>https://raw.githubusercontent.com/juliagoda/pak-gui/main/resources/images/columns.png</image>
+   <caption>Main columns with packages</caption>
+  </screenshot>
+ </screenshots>
+ <url type="homepage">https://github.com/juliagoda/pak-gui</url>
+ <updatecontact>juliagoda.pl_AT_protonmail.com</updatecontact>
+ <keywords>
+   <keyword>package-manager</keyword>
+   <keyword>archlinux</keyword>
+   <keyword>pak</keyword>
+   <keyword>packages</keyword>
+ </keywords>
+</component>
