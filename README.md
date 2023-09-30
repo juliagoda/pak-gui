@@ -1,4 +1,4 @@
-# pak-gui
+# ![Browse](https://raw.githubusercontent.com/juliagoda/pak-gui/main/resources/icons/app/64-apps-pak-gui.png) pak-gui
 
 pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.com/nycko123/pak) enhanced with GUI.
 
