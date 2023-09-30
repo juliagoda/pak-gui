@@ -70,21 +70,3 @@ gcovr -r .
 1) pak -C (the command that fills the middle column can run slowly, especially when POLAUR repositories are synchronized)
 2) Do not use the application in test mode if you are not a programmer.
 3) The password window application named ksshaskpass has a bug that does not allow you to save the specified password for future use. A workaround or other solution will be applied.
-
-### TODO
-
-- [ ] Documentation for users
-- [ ] Documentation for developers
-- [ ] Icons for app
-- [ ] Translations to other languages than English or Polish
-- [ ] Finding workaround for ksshaskpass' bug
-- [ ] Stack of actions (undo operation)
-- [ ] Mirrorlists application in GUI
-- [ ] Keys application in GUI (signing)
-- [ ] Port to KF6/Qt6 after official and stable release of KF6
-- [ ] Warnings reduction
-- [ ] Updates column run when requested (optimization)
-- [ ] Align the contents of tooltip
-- [ ] Milestone creation with tasks for next version
-- [ ] More unit tests creation
-- [ ] Calendar creation for statistics
