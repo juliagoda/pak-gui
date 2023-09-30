@@ -1,6 +1,6 @@
 [Desktop Entry]
 Categories=Qt;System;
-Comment[pl]=Menedżer pakietów oparty na wrapperze pacmanas o nazwie pak
+Comment[pl]=Menedżer pakietów oparty na wrapperze pacmana o nazwie pak
 Comment=Package manager based on pacman wrapper named pak
 Comment[en]=Package manager based on pacman wrapper named pak
 Exec=pak-gui

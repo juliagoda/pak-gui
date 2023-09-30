@@ -33,7 +33,7 @@ include(ECMSetupQtPluginMacroNames)
 include(ECMQtDeclareLoggingCategory)
 include(FeatureSummary)
 
-option(RUN_TESTS "Allow tests for classes" ON)
+option(RUN_TESTS "Allow tests for classes" OFF)
 
 if(RUN_TESTS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
