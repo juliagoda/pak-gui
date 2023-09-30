@@ -8,8 +8,6 @@ on:
 
 jobs:
   build-ubuntu-qt5:
-    env:
-      DISPLAY: ':0'
     runs-on: ubuntu-latest
     steps:
       - name: initialize
@@ -27,8 +25,7 @@ jobs:
           cd build
           export QT_DEBUG_PLUGINS=1
           cmake -DRUN_TESTS=ON ..
-          make -j 3
-          nohup Xvfb :0 > /dev/null 2>&1 &
-          bin/pak-qtests
+          make -j 2
+          xvfb-run -s "-screen 0 1920x1080x24 -nolisten local" bin/pak-qtests
           gcovr -r .. -j 2 -f ../src/src/.*cpp
 
