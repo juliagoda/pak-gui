@@ -15,20 +15,20 @@ pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.
 - cmake
 - extra-cmake-modules
 - pacman-contrib
-- kdesu
+- kdesu5
 - ksshaskpass
 - bash
 - pak 1:5.5.3.r11.g3e65d8e-1 (`git clone -b 3e65d8e8a15a12e2f0fe1a7ed2d09dd944d65ff1 https://gitlab.com/nycko123/pak.git`)
 - qt5-base
 - qt5-charts
-- kwidgetsaddons
-- kcoreaddons
-- kcrash
-- kdbusaddons
-- kdoctools
-- ki18n
-- kxmlgui
-- knotifications
+- kwidgetsaddons5
+- kcoreaddons5
+- kcrash5
+- kdbusaddons5
+- kdoctools5
+- ki18n5
+- kxmlgui5
+- knotifications5
 
 
 ### Optional dependencies
