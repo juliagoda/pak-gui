@@ -8,6 +8,6 @@ set(pak-gui_ICONS
   icons/app/sc-apps-pak-gui.svgz
 )
 
-ecm_install_icons(ICONS ${pak-gui_ICONS} DESTINATION ${KDE_INSTALL_ICONDIR} THEME hicolor)
+ecm_install_icons(ICONS ${pak-gui_ICONS} DESTINATION ${KDE_INSTALL_ICONDIR})
 
 add_subdirectory(translations)

@@ -1,7 +1,12 @@
 <RCC>
     <qresource prefix="/">
+        <file>icons/app/pak-gui.png</file>
+        <file>icons/app/sc-apps-pak-gui.svgz</file>
+        <file>icons/app/16-apps-pak-gui.png</file>
         <file>icons/app/24-apps-pak-gui.png</file>
         <file>icons/app/32-apps-pak-gui.png</file>
+        <file>icons/app/64-apps-pak-gui.png</file>
+        <file>icons/app/128-apps-pak-gui.png</file>
         <file>icons/general-settings.png</file>
         <file>icons/logs-settings.png</file>
         <file>icons/package-info-settings.png</file>

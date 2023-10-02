@@ -1,6 +1,6 @@
 qt5_add_resources(RESOURCES ${CMAKE_SOURCE_DIR}/resources/pak-gui.qrc)
 
-add_executable(pak-gui ${RESOURCES})
+add_executable(pak-gui main.cpp ${RESOURCES})
 
 target_sources(pak-gui PRIVATE
     main.cpp
@@ -87,6 +87,7 @@ target_sources(pak-gui PRIVATE
     src/settingsrecords.h)
 
 kconfig_add_kcfg_files(pak-gui src/pakGuiSettings.kcfgc)
+install(FILES src/pakGuiSettings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
 
 target_link_libraries(pak-gui
     KF5::CoreAddons
