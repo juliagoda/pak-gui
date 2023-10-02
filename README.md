@@ -50,13 +50,23 @@ For example such line can be added - <b>TERM=konsole</b> (or other terminal app 
 ### Installation
 
 ```
+git clone https://github.com/juliagoda/pak-gui.git
+cd pak-gui
 mkdir build
 cd build
 cmake -DRUN_TESTS=OFF ..
 make -j 2
 ```
 
-### Running tests
+### Installation from PKGBUILD  
+
+```
+git clone https://github.com/archlinux-lucjan/archlinux-packages.git  
+cd archlinux-packages/pak-gui-git
+makepkg -srci
+```
+
+### Running tests  
 
 
 It's important to run tests before running code coverage:
