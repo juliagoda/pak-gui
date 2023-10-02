@@ -8,9 +8,23 @@ pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.
 
 <br/>
 
+1. [Installing from source](#installing-from-source)
+   1. [Required dependencies with Qt5](#required-dependencies-with-qt5)
+   2. [Optional dependencies](#optional-dependencies)
+   3. [Configuration](#configuration)
+   4. [Installation](#installation)
+3. [Installation from PKGBUILD](#installation-from-pkgbuild)
+4. [Running tests with sources](#running-tests-with-sources)  
+5. [Package remove](#package-remove)
+   1. [Sources](#sources)
+   2. [PKGBUILD](#pkgbuild)
+7. [Attention](#attention)  
+
+<br/>
+
 ## Installing from source
 
-### Required dependencies - Qt5
+### Required dependencies with Qt5
 
 - cmake
 - extra-cmake-modules
@@ -39,7 +53,6 @@ pak-gui is a pacman wrapper, AUR and POLAUR helper of [Damian N](https://gitlab.
 - reflector (mirrorlists)
 - gcovr (tests)
 
-<br/>
 
 ### Configuration
 
@@ -56,9 +69,12 @@ mkdir build
 cd build
 cmake -DRUN_TESTS=OFF ..
 make -j 2
+sudo make install
 ```
 
-### Installation from PKGBUILD  
+<br/>
+
+## Installation from PKGBUILD  
 
 ```
 git clone https://github.com/archlinux-lucjan/archlinux-packages.git  
@@ -66,7 +82,9 @@ cd archlinux-packages/pak-gui-git
 makepkg -srci
 ```
 
-### Running tests  
+<br/>
+
+## Running tests with sources
 
 
 It's important to run tests before running code coverage:
@@ -78,7 +96,25 @@ bin/pak-qtests
 gcovr -r . -j 2 -f ../src/src/.*cpp
 ```
 
-### Attention
+<br/>
+
+## Package remove
+
+### Sources  
+
+```
+sudo make uninstall
+```
+
+### PKGBUILD   
+
+```
+sudo pacman -Rs pak-gui-git
+```
+
+<br/>
+
+## Attention
 
 1) pak -C (the command that fills the middle column can run slowly, especially when POLAUR repositories are synchronized)
 2) Do not use the application in test mode if you are not a programmer.
