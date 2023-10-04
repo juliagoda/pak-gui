@@ -57,7 +57,6 @@ SettingsRecords::SettingsRecords() :
 
 QColor SettingsRecords::backgroundPreviewColor()
 {
-
 #ifdef RUN_TESTS
     return QColor(Qt::black);
 #endif
@@ -68,7 +67,6 @@ QColor SettingsRecords::backgroundPreviewColor()
 
 QColor SettingsRecords::previewFontColor()
 {
-
 #ifdef RUN_TESTS
     return QColor(Qt::white);
 #endif
@@ -79,7 +77,6 @@ QColor SettingsRecords::previewFontColor()
 
 QString SettingsRecords::previewFontFamily()
 {
-
 #ifdef RUN_TESTS
     return QString("DejaVu Sans");
 #endif
@@ -90,7 +87,6 @@ QString SettingsRecords::previewFontFamily()
 
 QDateTime SettingsRecords::startDateTimeForUpdatesCheck()
 {
-
 #ifdef RUN_TESTS
     return QDateTime::currentDateTime();
 #endif
@@ -101,7 +97,6 @@ QDateTime SettingsRecords::startDateTimeForUpdatesCheck()
 
 QDateTime SettingsRecords::startDateTimeForHistoryStore()
 {
-
 #ifdef RUN_TESTS
     return QDateTime::currentDateTime();
 #endif
@@ -137,7 +132,6 @@ const QList<Package::TooltipLine>& SettingsRecords::packagesInfoSelected()
 
 QStringList SettingsRecords::packagesInfoAvailableStringList()
 {
-
 #ifdef RUN_TESTS
     return QString("Architecture,URL,Licenses,Groups,Provides,Optional Deps,RequiredBy,Optional For,Conflicts With,"
                    "Replaces,Download Size,Installed Size,Packager,Build Date,Install Date,Install Reason,Install Script,Validated By").split(',');
@@ -152,7 +146,6 @@ QStringList SettingsRecords::packagesInfoAvailableStringList()
 
 QStringList SettingsRecords::packagesInfoSelectedStringList()
 {
-
 #ifdef RUN_TESTS
     return QString("Name,Version,Description,Depends On").split(',');
 #endif
@@ -166,7 +159,6 @@ QStringList SettingsRecords::packagesInfoSelectedStringList()
 
 QString SettingsRecords::logsFileName()
 {
-
 #ifdef RUN_TESTS
     return QString("logs.txt");
 #endif
@@ -177,7 +169,6 @@ QString SettingsRecords::logsFileName()
 
 QString SettingsRecords::logsFilePath()
 {
-
 #ifdef RUN_TESTS
     return QString("~/.config/pak-gui");
 #endif
@@ -186,9 +177,18 @@ QString SettingsRecords::logsFilePath()
 }
 
 
+QString SettingsRecords::appStyleName()
+{
+#ifdef RUN_TESTS
+    return QString("Oxygen");
+#endif
+
+    return settings.value("app_style_name").value<QString>();
+}
+
+
 int SettingsRecords::previewFontSize()
 {
-
 #ifdef RUN_TESTS
     return 15;
 #endif
@@ -199,7 +199,6 @@ int SettingsRecords::previewFontSize()
 
 int SettingsRecords::historyFileSizeLimitMb()
 {
-
 #ifdef RUN_TESTS
     return 5;
 #endif
@@ -210,7 +209,6 @@ int SettingsRecords::historyFileSizeLimitMb()
 
 int SettingsRecords::historyStoreTimeDays()
 {
-
 #ifdef RUN_TESTS
     return 0;
 #endif
@@ -221,7 +219,6 @@ int SettingsRecords::historyStoreTimeDays()
 
 int SettingsRecords::updateCheckTimeDays()
 {
-
 #ifdef RUN_TESTS
     return 0;
 #endif
@@ -232,7 +229,6 @@ int SettingsRecords::updateCheckTimeDays()
 
 int SettingsRecords::updateCheckTimeHours()
 {
-
 #ifdef RUN_TESTS
     return 6;
 #endif
@@ -243,7 +239,6 @@ int SettingsRecords::updateCheckTimeHours()
 
 int SettingsRecords::updateCheckTimeMinutes()
 {
-
 #ifdef RUN_TESTS
     return 0;
 #endif
@@ -254,7 +249,6 @@ int SettingsRecords::updateCheckTimeMinutes()
 
 int SettingsRecords::internetReconnectionTimeMinutes()
 {
-
 #ifdef RUN_TESTS
     return 1;
 #endif
@@ -265,7 +259,6 @@ int SettingsRecords::internetReconnectionTimeMinutes()
 
 bool SettingsRecords::hideInfoLogs()
 {
-
 #ifdef RUN_TESTS
     return false;
 #endif
@@ -276,7 +269,6 @@ bool SettingsRecords::hideInfoLogs()
 
 bool SettingsRecords::operateOnActionsManually()
 {
-
 #ifdef RUN_TESTS
     return false;
 #endif
@@ -287,7 +279,6 @@ bool SettingsRecords::operateOnActionsManually()
 
 bool SettingsRecords::overwriteFullHistoryFile()
 {
-
 #ifdef RUN_TESTS
     return false;
 #endif
@@ -298,7 +289,6 @@ bool SettingsRecords::overwriteFullHistoryFile()
 
 bool SettingsRecords::saveLogsIntoFile()
 {
-
 #ifdef RUN_TESTS
     return true;
 #endif
@@ -309,7 +299,6 @@ bool SettingsRecords::saveLogsIntoFile()
 
 bool SettingsRecords::showDebug()
 {
-
 #ifdef RUN_TESTS
     return false;
 #endif
@@ -320,7 +309,6 @@ bool SettingsRecords::showDebug()
 
 bool SettingsRecords::useSystemTray()
 {
-
 #ifdef RUN_TESTS
     return true;
 #endif
@@ -331,7 +319,6 @@ bool SettingsRecords::useSystemTray()
 
 void SettingsRecords::setAvailablePackageInfo(const QStringList& info)
 {
-
 #ifdef RUN_TESTS
     return;
 #endif
@@ -346,7 +333,6 @@ void SettingsRecords::setAvailablePackageInfo(const QStringList& info)
 
 void SettingsRecords::setSelectedPackageInfo(const QStringList& info)
 {
-
 #ifdef RUN_TESTS
     return;
 #endif
@@ -364,7 +350,6 @@ void SettingsRecords::setSelectedPackageInfo(const QStringList& info)
 
 void SettingsRecords::setStartDateTimeForUpdatesCheck()
 {
-
 #ifdef RUN_TESTS
     return;
 #endif
@@ -376,7 +361,6 @@ void SettingsRecords::setStartDateTimeForUpdatesCheck()
 
 void SettingsRecords::setStartDateTimeForHistoryStore()
 {
-
 #ifdef RUN_TESTS
     return;
 #endif
@@ -386,9 +370,18 @@ void SettingsRecords::setStartDateTimeForHistoryStore()
 }
 
 
+void SettingsRecords::setAppStyleName(const QString& app_style_name)
+{
+#ifdef RUN_TESTS
+    return;
+#endif
+
+    settings.setValue("app_style_name", app_style_name);
+}
+
+
 void SettingsRecords::resetStartDateTimeForUpdatesCheck()
 {
-
 #ifdef RUN_TESTS
     return;
 #endif
@@ -399,7 +392,6 @@ void SettingsRecords::resetStartDateTimeForUpdatesCheck()
 
 void SettingsRecords::resetStartDateTimeForHistoryStore()
 {
-
 #ifdef RUN_TESTS
     return;
 #endif

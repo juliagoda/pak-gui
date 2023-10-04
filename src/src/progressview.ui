@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Side actions</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../resources/pak-gui.qrc">
+    <normaloff>:/icons/progress.png</normaloff>:/icons/progress.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -94,7 +98,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources/pak-gui.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

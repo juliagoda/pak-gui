@@ -20,10 +20,13 @@
 
 #include <KConfigDialog>
 
+#include <mutex>
+
 #include "ui_generalsettings.h"
 #include "ui_packagesinfosettings.h"
 #include "ui_previewsappearancesettings.h"
 #include "ui_logssettings.h"
+#include "ui_appstylesettings.h"
 
 #include "settingsrecords.h"
 
@@ -46,6 +49,7 @@ public:
 protected Q_SLOTS:
     void updateWidgetsDefault() override;
     void updateSettings() override;
+    void saveAppStyle();
 
 protected:
     virtual void loadPackagesInfoSettings();
@@ -55,6 +59,7 @@ protected:
     Ui::PreviewsAppearanceSettings previews_appearance_settings;
     Ui::PackagesInfoSettings packages_info_settings;
     Ui::LogsSettings logs_settings;
+    Ui::AppStyleSettings styles_settings;
     static QScopedPointer<SettingsRecords> settings_records;
     MainWindow* main_window = nullptr;
 
@@ -64,4 +69,6 @@ private:
     void enableButtons();
     void updateAvailableInfoList();
     void updateSelectedInfoList();
+
+    std::once_flag restart_app_for_style;
 };

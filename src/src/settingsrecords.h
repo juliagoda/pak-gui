@@ -49,6 +49,7 @@ public:
     QStringList packagesInfoSelectedStringList();
     QString logsFileName();
     QString logsFilePath();
+    QString appStyleName();
 
     int previewFontSize();
     int historyFileSizeLimitMb();
@@ -68,6 +69,7 @@ public:
     void setSelectedPackageInfo(const QStringList& info);
     void setStartDateTimeForUpdatesCheck();
     void setStartDateTimeForHistoryStore();
+    void setAppStyleName(const QString& app_style_name);
     void resetStartDateTimeForUpdatesCheck();
     void resetStartDateTimeForHistoryStore();
 

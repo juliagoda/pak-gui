@@ -111,7 +111,8 @@ ki18n_wrap_ui(pak-gui
     src/choicewindow.ui
     src/previewsappearancesettings.ui
     src/packagesinfosettings.ui
-    src/logssettings.ui)
+    src/logssettings.ui
+    src/appstylesettings.ui)
 
 install(FILES src/com.github.juliagoda.pak-gui.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
 install(FILES src/pak-gui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/pak-gui)

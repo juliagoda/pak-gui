@@ -46,6 +46,7 @@
 #include <QPieSeries>
 #include <QTimer>
 #include <QDateTime>
+#include <QStyleFactory>
 #include <QtConcurrent/QtConcurrent>
 
 
@@ -184,6 +185,7 @@ void MainWindowView::updatePreviewsDesign()
     design.update(m_ui.text_browser_tab_install);
     design.update(m_ui.text_browser_tab_update);
 }
+
 
 // TODOJG - to strategy design pattern
 void MainWindowView::clearMainPreviews(Process::Task task)
@@ -476,6 +478,7 @@ void MainWindowView::addInputWidgets(QVBoxLayout*& vbox_layout,
 
     auto input_btn = new QPushButton(input_widget);
     input_btn->setText(i18n("Input"));
+    input_btn->setIcon(QIcon(":/icons/input.png"));
     input_btn->setObjectName(QString::fromUtf8("input_for_%1_btn").arg(text));
     input_btn->setMaximumSize(QSize(50, 16777215));
 

@@ -19,6 +19,7 @@
 #include "mainwindow.h"
 
 #include "actionsaccesschecker.h"
+#include "kstandardaction.h"
 #include "mainwindowview.h"
 #include "settingsrecords.h"
 #include "src/settings.h"
@@ -28,12 +29,15 @@
 
 #include <QAction>
 #include <QStatusBar>
+#include <QMenu>
+#include <QMenuBar>
 
 #include <KActionCollection>
 #include <KConfigDialog>
 #include <KLocalizedString>
 #include <KStandardAction>
 #include <KNotification>
+#include <KHelpMenu>
 
 
 MainWindow::MainWindow()
@@ -103,6 +107,11 @@ void MainWindow::disableOnlineActions()
     print_statistics_action->setDisabled(false);
     search_action->setDisabled(true);
     sync_polaur_action->setDisabled(true);
+}
+
+void MainWindow::whatIsThis()
+{
+    KXmlGuiWindow::whatsThis();
 }
 
 
@@ -179,15 +188,13 @@ void MainWindow::startTimerOnOperation(const QDateTime& time,
 
 
 void MainWindow::setAction(QPointer<QAction>& action,
-                           const QString& text,
-                           const QString& icon,
-                           const QKeySequence& key_sequence)
+                           const MenuAction& menu_action_info)
 {
     action = new QAction(this);
-    action->setText(text);
-    action->setIcon(QIcon::fromTheme(icon));
-    this->actionCollection()->setDefaultShortcut(action, key_sequence);
-    this->actionCollection()->addAction(icon, action);
+    action->setText(menu_action_info.text);
+    action->setIcon(QIcon(":/icons/menu/" + menu_action_info.icon + ".png"));
+    this->actionCollection()->setDefaultShortcut(action, menu_action_info.key_sequence);
+    this->actionCollection()->addAction(menu_action_info.config_name, action);
 }
 
 
@@ -227,10 +234,10 @@ void MainWindow::initSignals()
     setTimersOnChecks();
 
     KActionCollection* actionCollection = this->actionCollection();
-    setAction(update_action, i18n("&Update"), QString("update"), QKeySequence(Qt::CTRL, Qt::Key_U));
+    setAction(update_action, MenuAction{i18n("&Update"), QString("update"), QString("update"), QKeySequence(Qt::CTRL, Qt::Key_U)});
     connect(update_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::UpdateInstalledPackages)) process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
 
-    setAction(refresh_action, i18n("&Refresh"), QString("refresh"), QKeySequence(Qt::CTRL, Qt::Key_R));
+    setAction(refresh_action, MenuAction{i18n("&Refresh"), QString("refresh"), QString("refresh"), QKeySequence(Qt::CTRL, Qt::Key_R)});
     connect(refresh_action, &QAction::triggered, main_window_view, &MainWindowView::refresh);
 
     connect(main_window_view, &MainWindowView::initStarted, this, &MainWindow::disableActions);
@@ -246,31 +253,37 @@ void MainWindow::initSignals()
     connect(actions_access_checker.get(), &ActionsAccessChecker::gitAccessChanged, [this](bool is_installed) {
         sync_polaur_action->setEnabled(initEnded && is_installed); });
 
-    setAction(download_action, i18n("&Download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D));
+    setAction(download_action, MenuAction{i18n("&Download"), QString("download"), QString("download"), QKeySequence(Qt::CTRL, Qt::Key_D)});
     connect(download_action, &QAction::triggered, main_window_view, &MainWindowView::downloadPackage);
 
-    setAction(search_action, i18n("&Search"), QString("search"), QKeySequence(Qt::CTRL, Qt::Key_S));
+    setAction(search_action, MenuAction{i18n("&Search"), QString("search"), QString("search"), QKeySequence(Qt::CTRL, Qt::Key_S)});
     connect(search_action, &QAction::triggered, main_window_view, &MainWindowView::searchPackage);
 
-    setAction(update_all_action, i18n("&Update system packages"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A));
+    setAction(update_all_action, MenuAction{i18n("&Update system packages"), QString("update"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A)});
     connect(update_all_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::UpdateAll)) process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
 
-    setAction(update_mirrors_action, i18n("&Update mirrors"), QString("updateMirrors"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_M));
+    setAction(update_mirrors_action, MenuAction{i18n("&Update mirrors"), QString("update-mirrors"), QString("updateMirrors"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_M)});
     connect(update_mirrors_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::MirrorsUpdate)) process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);
 
-    setAction(clean_action, i18n("&Clean"), QString("clean"), QKeySequence(Qt::CTRL, Qt::Key_C));
+    setAction(clean_action, MenuAction{i18n("&Clean"), QString("clean"), QString("clean"), QKeySequence(Qt::CTRL, Qt::Key_C)});
     connect(clean_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::Clean)) process->run(Process::Task::Clean); }, Qt::AutoConnection);
 
-    setAction(sync_polaur_action, i18n("&Sync POLAUR"), QString("syncPOLAUR"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_P));
+    setAction(sync_polaur_action, MenuAction{i18n("&Sync POLAUR"), QString("synchronization"), QString("syncPOLAUR"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_P)});
     connect(sync_polaur_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::SyncPOLAUR)) process->run(Process::Task::SyncPOLAUR); }, Qt::AutoConnection);
 
-    setAction(print_statistics_action, i18n("&Statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_T));
+    setAction(print_statistics_action, MenuAction{i18n("&Statistics"), QString("statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_T)});
     connect(print_statistics_action, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
 
     disableActions();
 
-    KStandardAction::quit(main_window_view, SLOT(checkRunningThreadsBeforeQuit()), actionCollection);
-    KStandardAction::preferences(this, SLOT(settingsConfigure()), actionCollection);
+    auto quit_action = KStandardAction::quit(main_window_view, SLOT(checkRunningThreadsBeforeQuit()), actionCollection);
+    quit_action->setIcon(QIcon(":/icons/menu/exit.png"));
+    auto settings_action = KStandardAction::preferences(this, SLOT(settingsConfigure()), actionCollection);
+    settings_action->setIcon(QIcon(":/icons/menu/settings.png"));
+    auto configure_toolbars = KStandardAction::configureToolbars(this, &KXmlGuiWindow::configureToolbars, actionCollection);
+    configure_toolbars->setIcon(QIcon(":/icons/menu/configure-toolbar.png"));
+    auto whatsThis = KStandardAction::whatsThis(this, &KXmlGuiWindow::whatsThis, actionCollection);
+    whatsThis->setIcon(QIcon(":/icons/menu/what-is-this.png"));
 }
 
 

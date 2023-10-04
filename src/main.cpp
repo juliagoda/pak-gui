@@ -34,12 +34,18 @@
 #include <QLoggingCategory>
 #include <QResource>
 #include <QDir>
+#include <QStyleFactory>
 
 
 int main(int argc, char **argv)
 {
     QApplication application(argc, argv);
+    QString first_style = QStyleFactory::keys().first();
 
+    if (!Settings::records()->appStyleName().isEmpty())
+        first_style = Settings::records()->appStyleName();
+
+    QApplication::setStyle(QStyleFactory::create(first_style));
     KLocalizedString::setApplicationDomain("pak-gui");
     KCrash::initialize();
 

@@ -7,10 +7,41 @@
         <file>icons/app/32-apps-pak-gui.png</file>
         <file>icons/app/64-apps-pak-gui.png</file>
         <file>icons/app/128-apps-pak-gui.png</file>
+        <file>icons/menu/clean.png</file>
+        <file>icons/menu/download.png</file>
+        <file>icons/menu/exit.png</file>
+        <file>icons/menu/hide.png</file>
+        <file>icons/menu/refresh.png</file>
+        <file>icons/menu/search.png</file>
+        <file>icons/menu/statistics.png</file>
+        <file>icons/menu/synchronization.png</file>
+        <file>icons/menu/update-mirrors.png</file>
+        <file>icons/menu/update.png</file>
+        <file>icons/menu/settings.png</file>
+        <file>icons/menu/configure-toolbar.png</file>
+        <file>icons/menu/configure-languages.png</file>
+        <file>icons/menu/what-is-this.png</file>
+        <file>icons/menu/help.png</file>
+        <file>icons/menu/print.png</file>
+        <file>icons/menu/actions.png</file>
+        <file>icons/menu/handbook.png</file>
+        <file>icons/menu/application.png</file>
+        <file>icons/menu/configure-shortcuts.png</file>
+        <file>icons/menu/find-action.png</file>
+        <file>icons/menu/report-bug.png</file>
         <file>icons/general-settings.png</file>
         <file>icons/logs-settings.png</file>
         <file>icons/package-info-settings.png</file>
         <file>icons/previews-settings.png</file>
+        <file>icons/styles-settings.png</file>
+        <file>icons/available-packages.png</file>
+        <file>icons/updated-packages.png</file>
+        <file>icons/installed-packages.png</file>
+        <file>icons/start-action.png</file>
+        <file>icons/input.png</file>
+        <file>icons/progress.png</file>
+        <file>icons/checked-all.png</file>
+        <file>icons/reversed-sort.png</file>
         <file>waiting.gif</file>
         <file>waiting-small.gif</file>
     </qresource>

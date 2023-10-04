@@ -92,4 +92,10 @@
 	    <default>false</default>
     </entry>
   </group>
+  <group name="Styles">
+    <entry name="app_style_name" type="String">
+	    <label></label>
+	    <default></default>
+    </entry>
+  </group>
 </kcfg>

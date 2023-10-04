@@ -32,6 +32,15 @@
 #include "settings.h"
 
 
+struct MenuAction
+{
+    QString text;
+    QString icon;
+    QString config_name;
+    QKeySequence key_sequence;
+};
+
+
 class MainWindowView;
 
 class MainWindow : public KXmlGuiWindow
@@ -54,6 +63,7 @@ private Q_SLOTS:
     void enableActions();
     void disableActions();
     void disableOnlineActions();
+    void whatIsThis();
 
 signals:
     void closeApp();
@@ -91,9 +101,7 @@ private:
                                int time_limit_in_milliseconds,
                                const QString& operation);
     void setAction(QPointer<QAction>& action,
-                   const QString& text,
-                   const QString& icon,
-                   const QKeySequence& key_sequence);
+                   const MenuAction& menu_action_info);
 
     bool initEnded{false};
 

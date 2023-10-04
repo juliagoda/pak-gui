@@ -23,6 +23,8 @@
 #include "pakGuiSettings.h"
 #include "settingsrecords.h"
 
+#include <QMessageBox>
+#include <QStyleFactory>
 #include <QListWidget>
 #include <QPointer>
 #include <algorithm>
@@ -74,14 +76,24 @@ void Settings::clearRecords()
 
 void Settings::saveInitDateTimesWhenEmpty()
 {    
-    records()->setStartDateTimeForUpdatesCheck();
-    records()->setStartDateTimeForHistoryStore();
+   records()->setStartDateTimeForUpdatesCheck();
+   records()->setStartDateTimeForHistoryStore();
+}
+
+
+void Settings::saveAppStyle()
+{
+   const QString& current_style_text = styles_settings.app_style_name_combobox->currentText();
+   if (!current_style_text.isEmpty())
+   {
+       records()->setAppStyleName(current_style_text);
+       std::call_once(restart_app_for_style, [&](){ QMessageBox::information(this, i18n("App style change"), i18n("After style change you need to restart application to see the result.")); });
+   }
 }
 
 
 void Settings::updateWidgetsDefault()
 {
-
 #ifdef RUN_TESTS
     return;
 #endif
@@ -104,6 +116,7 @@ void Settings::updateSettings()
     Logger::logger()->logInfo(QStringLiteral("settings have been saved"));
     updateAvailableInfoList();
     updateSelectedInfoList();
+    saveAppStyle();
 }
 
 
@@ -117,12 +130,23 @@ void Settings::init(MainWindow* main_window)
     packages_info_settings.setupUi(packages_info_page);
     QPointer<QWidget> logs_page = new QWidget;
     logs_settings.setupUi(logs_page);
+    QPointer<QWidget> styles_page = new QWidget;
+    styles_settings.setupUi(styles_page);
     addPage(general_page, i18nc("@title:tab", "General"), QStringLiteral(":/icons/general-settings.png"));
     addPage(previews_appearance_page, i18nc("@title:tab", "Previews appearance"), QStringLiteral(":/icons/previews-settings.png"));
     addPage(packages_info_page, i18nc("@title:tab", "Packages informations"), QStringLiteral(":/icons/package-info-settings.png"));
     addPage(logs_page, i18nc("@title:tab", "Logs"), QStringLiteral(":/icons/logs-settings.png"));
+    addPage(styles_page, i18nc("@title:tab", "Styles"), QStringLiteral(":/icons/styles-settings.png"));
     connect(this, &Settings::settingsChanged, main_window, &MainWindow::startSystemTray);
     connect(this, &Settings::settingsChanged, main_window, &MainWindow::setTimersOnChecks);
+
+    QString first_style = QStyleFactory::keys().first();
+    styles_settings.app_style_name_combobox->addItems(QStyleFactory::keys());
+    styles_settings.app_style_name_combobox->setCurrentText(records()->appStyleName());
+
+    if (records()->appStyleName().isEmpty())
+     styles_settings.app_style_name_combobox->setCurrentText(QStyleFactory::keys().first());
+
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -151,7 +175,7 @@ void Settings::connectSignals(MainWindow* main_window)
     connect(packages_info_settings.packages_info_selector, &KActionSelector::removed, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
     connect(packages_info_settings.packages_info_selector, &KActionSelector::movedUp, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
     connect(packages_info_settings.packages_info_selector, &KActionSelector::movedDown, [this](QListWidgetItem* item) { Q_UNUSED(item) enableButtons(); });
-
+    connect(styles_settings.app_style_name_combobox, QOverload<int>::of(&QComboBox::currentIndexChanged), [&](int index){ Q_UNUSED(index) enableButtons(); });
 }
 
 
