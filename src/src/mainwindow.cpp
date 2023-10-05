@@ -20,6 +20,7 @@
 
 #include "actionsaccesschecker.h"
 #include "kstandardaction.h"
+#include "kxmlguiwindow.h"
 #include "mainwindowview.h"
 #include "settingsrecords.h"
 #include "src/settings.h"
@@ -31,6 +32,7 @@
 #include <QStatusBar>
 #include <QMenu>
 #include <QMenuBar>
+#include <QDomDocument>
 
 #include <KActionCollection>
 #include <KConfigDialog>
@@ -38,14 +40,18 @@
 #include <KStandardAction>
 #include <KNotification>
 #include <KHelpMenu>
+#include <KXMLGUIFactory>
 
 
 MainWindow::MainWindow()
   : KXmlGuiWindow(),
     actions_access_checker{ActionsAccessChecker::actionsAccessChecker(this)},
-    settings_window{nullptr}
+    settings_window{nullptr},
+    help_menu{new KHelpMenu(this, i18n("Other"), false)}
 {
-   // ...
+   setWindowState(windowState() ^ Qt::WindowMaximized);
+   setHelpMenuEnabled(false);
+   setStandardToolBarMenuEnabled(false);
 }
 
 
@@ -54,6 +60,7 @@ MainWindow::~MainWindow()
     timer_on_logs.stop();
     timer_on_updates.stop();
 
+    delete close_action;
     delete update_action;
     delete refresh_action;
     delete download_action;
@@ -63,6 +70,11 @@ MainWindow::~MainWindow()
     delete update_mirrors_action;
     delete clean_action;
     delete sync_polaur_action;
+    delete switch_language;
+    delete configure_shortcuts;
+    delete configure_toolbar;
+    delete configure_pak;
+    delete help_menu;
 
     actions_access_checker.reset(nullptr);
     Settings::clearRecords();
@@ -77,8 +89,8 @@ void MainWindow::run()
     setCentralWidget(main_window_view);
     startSystemTray();
     initSignals();
-    setupGUI(Default, "pak-gui.rc");
-    setXMLFile("pak-gui.rc");
+    setupGUI(Save | Create, "pak-gui.rc");
+    setXMLFile("pak-gui.rc", true);
 }
 
 
@@ -109,9 +121,18 @@ void MainWindow::disableOnlineActions()
     sync_polaur_action->setDisabled(true);
 }
 
-void MainWindow::whatIsThis()
+
+void MainWindow::showAboutApp()
 {
-    KXmlGuiWindow::whatsThis();
+    Q_ASSERT(help_menu);
+    help_menu->aboutApplication();
+}
+
+
+void MainWindow::reportBug()
+{
+    Q_ASSERT(help_menu);
+    help_menu->reportBug();
 }
 
 
@@ -234,6 +255,9 @@ void MainWindow::initSignals()
     setTimersOnChecks();
 
     KActionCollection* actionCollection = this->actionCollection();
+    setAction(close_action, MenuAction{i18n("&Close"), QString("exit"), QString("close"), QKeySequence(Qt::CTRL, Qt::Key_Q)});
+    connect(close_action, &QAction::triggered, main_window_view, &MainWindowView::checkRunningThreadsBeforeQuit);
+
     setAction(update_action, MenuAction{i18n("&Update"), QString("update"), QString("update"), QKeySequence(Qt::CTRL, Qt::Key_U)});
     connect(update_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::UpdateInstalledPackages)) process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
 
@@ -274,16 +298,28 @@ void MainWindow::initSignals()
     setAction(print_statistics_action, MenuAction{i18n("&Statistics"), QString("statistics"), QString("statistics"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_T)});
     connect(print_statistics_action, &QAction::triggered, main_window_view, &MainWindowView::showStatisticsWindow);
 
-    disableActions();
+    setAction(switch_language, MenuAction{i18n("&Configure languages"), QString("configure-languages"), QString("configureLanguage"), QKeySequence(Qt::CTRL, Qt::Key_C, Qt::Key_L)});
+    connect(switch_language, &QAction::triggered, help_menu, &KHelpMenu::switchApplicationLanguage);
 
-    auto quit_action = KStandardAction::quit(main_window_view, SLOT(checkRunningThreadsBeforeQuit()), actionCollection);
-    quit_action->setIcon(QIcon(":/icons/menu/exit.png"));
-    auto settings_action = KStandardAction::preferences(this, SLOT(settingsConfigure()), actionCollection);
-    settings_action->setIcon(QIcon(":/icons/menu/settings.png"));
-    auto configure_toolbars = KStandardAction::configureToolbars(this, &KXmlGuiWindow::configureToolbars, actionCollection);
-    configure_toolbars->setIcon(QIcon(":/icons/menu/configure-toolbar.png"));
-    auto whatsThis = KStandardAction::whatsThis(this, &KXmlGuiWindow::whatsThis, actionCollection);
-    whatsThis->setIcon(QIcon(":/icons/menu/what-is-this.png"));
+    setAction(configure_shortcuts, MenuAction{i18n("&Configure shortcuts"), QString("configure-shortcuts"), QString("configureKeyboardShortcuts"), QKeySequence(Qt::CTRL, Qt::Key_S, Qt::Key_H)});
+    connect(configure_shortcuts, &QAction::triggered, guiFactory(), &KXMLGUIFactory::showConfigureShortcutsDialog);
+
+    setAction(configure_toolbar, MenuAction{i18n("&Configure toolbar"), QString("configure-toolbar"), QString("configureToolbars"), QKeySequence(Qt::CTRL, Qt::Key_C, Qt::Key_T)});
+    connect(configure_toolbar, &QAction::triggered, this, &KXmlGuiWindow::configureToolbars);
+
+    setAction(configure_pak, MenuAction{i18n("&Configure pak-gui"), QString("settings"), QString("configurePakGui"), QKeySequence(Qt::CTRL, Qt::Key_P, Qt::Key_G)});
+    connect(configure_pak, &QAction::triggered, this, &MainWindow::settingsConfigure);
+
+    auto handbook = KStandardAction::helpContents(this, &KXmlGuiWindow::appHelpActivated, actionCollection);
+    handbook->setIcon(QIcon(":/icons/menu/handbook.png"));
+
+    auto report_bug = KStandardAction::reportBug(this, &MainWindow::reportBug, actionCollection);
+    report_bug->setIcon(QIcon(":/icons/menu/report-bug.png"));
+
+    auto about_app = KStandardAction::aboutApp(this, &MainWindow::showAboutApp, actionCollection);
+    about_app->setIcon(QIcon(":/icons/menu/pak-gui.png"));
+
+    disableActions();
 }
 
 

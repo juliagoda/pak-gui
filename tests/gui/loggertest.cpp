@@ -56,8 +56,7 @@ void TestLogger::writeToFileMethodHasCorrectTextFormat()
     QString expected_result{QDateTime::currentDateTime().toLocalTime().toString() +
                 QString("\n\n\n---------------[").append(section_text.toUpper()).append(QString("]---------------")) +
                 QString("\n\ntext") +
-                QString("\n\n////////////////////////////////////////////////////////////") +
-                QString("\n\n\n\n")};
+                QString("\n\n\n\n\n---------------[END]---------------\n\n")};
 
     QCOMPARE(logger.streamTextResult(), expected_result);
 }

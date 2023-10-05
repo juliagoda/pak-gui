@@ -219,6 +219,16 @@ public:
 
     }
 
+    void setHideAfterCloseFlag()
+    {
+        hide_after_close = true;
+    }
+
+    void resetCloseFlag()
+    {
+        hide_after_close = false;
+    }
+
     void run() override
     {
         initSignals();
@@ -241,10 +251,30 @@ public:
         print_statistics_action.data()->trigger();
     }
 
+    void closeEvent(QCloseEvent *event) override
+    {
+        if (hide_after_close)
+        {
+            event->ignore();
+            this->hide();
+            return;
+        }
+
+        if (!main_window_view->isRunningMainThreads())
+        {
+            event->accept();
+            return;
+        }
+
+        event->ignore();
+    }
+
     friend class TestMainWindow;
     friend class MainWindowViewGuiTest;
     friend class TestSettingsWindow;
     friend class SettingsTest;
+
+    bool hide_after_close{false};
 };
 
 

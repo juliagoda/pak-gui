@@ -6,6 +6,10 @@
      xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0
                          http://www.kde.org/standards/kxmlgui/1.0/kxmlgui.xsd">
 <MenuBar>
+    <Menu name="Program">
+      <text>P&amp;rogram</text>
+      <Action name="close"/>
+    </Menu>
     <Menu name="Actions">
       <text>A&amp;ctions</text>
       <Action name="updateAllPackages"/>
@@ -20,6 +24,13 @@
     <Menu name="Print">
       <text>P&amp;rint</text>
       <Action name="statistics"/>
+    </Menu>
+    <Menu name="Settings">
+      <text>S&amp;ettings</text>
+      <Action name="configureLanguage"/>
+      <Action name="configureKeyboardShortcuts"/>
+      <Action name="configureToolbars"/>
+      <Action name="configurePakGui"/>
     </Menu>
 </MenuBar>
 

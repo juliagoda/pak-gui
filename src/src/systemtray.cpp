@@ -44,7 +44,7 @@ void SystemTray::update(uint packages_count)
 {
     changeStatusToDefault();
 
-    if (main_window->isMinimized() && packages_count > 0)
+    if ((main_window->isMinimized() || main_window->isHidden()) && packages_count > 0)
     {
         setStatus(KStatusNotifierItem::NeedsAttention);
         setToolTipTitle(i18n("Update"));

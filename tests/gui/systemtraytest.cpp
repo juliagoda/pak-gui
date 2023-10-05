@@ -28,7 +28,7 @@ MockSystemTray::MockSystemTray(MainWindow* parent) :
 
 TestSystemTray::TestSystemTray(QObject* parent) :
     QObject{parent},
-    system_tray{new MockMainWindow}
+    system_tray{&main_window}
 {
     QTestEventLoop::instance().enterLoop(1);
 }
@@ -40,18 +40,22 @@ void TestSystemTray::isSystemTrayStatusPassiveByDefault()
 }
 
 
-void TestSystemTray::isSystemTrayStatusNeedsAttentionWhenPackagesCountIsGreaterThanZero()
+void TestSystemTray::isSystemTrayStatusNeedsAttentionWhenPackagesCountIsGreaterThanZeroAndWindowIsMinimized()
 {
     constexpr int packages_count = 5;
+    main_window.setHideAfterCloseFlag();
+    main_window.close();
     system_tray.update(packages_count);
 
     QCOMPARE(system_tray.status(), KStatusNotifierItem::NeedsAttention);
 }
 
 
-void TestSystemTray::isSystemTrayStatusPassiveAfterWhenPackagesCountIsEqualToZeroAgain()
+void TestSystemTray::isSystemTrayStatusPassiveAfterWhenPackagesCountIsEqualToZeroAgainAndWindowIsMinimized()
 {
     int packages_count = 5;
+    main_window.setHideAfterCloseFlag();
+    main_window.close();
     system_tray.update(packages_count);
 
     packages_count = 0;
@@ -63,5 +67,6 @@ void TestSystemTray::isSystemTrayStatusPassiveAfterWhenPackagesCountIsEqualToZer
 
 void TestSystemTray::cleanup()
 {
+    main_window.resetCloseFlag();
     system_tray.changeStatusToDefault();
 }

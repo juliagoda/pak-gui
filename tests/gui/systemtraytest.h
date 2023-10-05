@@ -46,10 +46,11 @@ public:
 
 private slots:
     void isSystemTrayStatusPassiveByDefault();
-    void isSystemTrayStatusNeedsAttentionWhenPackagesCountIsGreaterThanZero();
-    void isSystemTrayStatusPassiveAfterWhenPackagesCountIsEqualToZeroAgain();
+    void isSystemTrayStatusNeedsAttentionWhenPackagesCountIsGreaterThanZeroAndWindowIsMinimized();
+    void isSystemTrayStatusPassiveAfterWhenPackagesCountIsEqualToZeroAgainAndWindowIsMinimized();
     void cleanup();
 
 private:
+    MockMainWindow main_window;
     MockSystemTray system_tray;
 };

@@ -19,6 +19,8 @@
 #pragma once
 
 #include <KXmlGuiWindow>
+#include <KHelpMenu>
+
 #include <QSharedPointer>
 #include <QScopedPointer>
 #include <QPointer>
@@ -63,7 +65,8 @@ private Q_SLOTS:
     void enableActions();
     void disableActions();
     void disableOnlineActions();
-    void whatIsThis();
+    void showAboutApp();
+    void reportBug();
 
 signals:
     void closeApp();
@@ -84,6 +87,7 @@ protected:
     QPointer<Settings> settings_window;
     QTimer timer_on_updates;
     QTimer timer_on_logs;
+    QPointer<QAction> close_action;
     QPointer<QAction> update_action;
     QPointer<QAction> refresh_action;
     QPointer<QAction> download_action;
@@ -93,6 +97,11 @@ protected:
     QPointer<QAction> update_mirrors_action;
     QPointer<QAction> clean_action;
     QPointer<QAction> sync_polaur_action;
+    QPointer<QAction> switch_language;
+    QPointer<QAction> configure_shortcuts;
+    QPointer<QAction> configure_toolbar;
+    QPointer<QAction> configure_pak;
+    QPointer<KHelpMenu> help_menu;
     QScopedPointer<SystemTray> system_tray_icon{nullptr};
 
 private:
