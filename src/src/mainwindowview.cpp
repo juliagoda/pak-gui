@@ -178,6 +178,12 @@ void MainWindowView::preparePreviews()
 }
 
 
+const QScopedPointer<UpdatedPackagesColumn>& MainWindowView::getUpdatedPackagesColumn() const
+{
+    return updated_packages_column;
+}
+
+
 void MainWindowView::updatePreviewsDesign()
 {
     PreviewDesign design;

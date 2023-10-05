@@ -64,6 +64,7 @@ public:
     void init();
     virtual void run();
     void preparePreviews();
+    const QScopedPointer<UpdatedPackagesColumn>& getUpdatedPackagesColumn() const;
 
 public Q_SLOTS:
     void refresh();

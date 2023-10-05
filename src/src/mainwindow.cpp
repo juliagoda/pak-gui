@@ -259,7 +259,7 @@ void MainWindow::initSignals()
     connect(close_action, &QAction::triggered, main_window_view, &MainWindowView::checkRunningThreadsBeforeQuit);
 
     setAction(update_action, MenuAction{i18n("&Update"), QString("update"), QString("update"), QKeySequence(Qt::CTRL, Qt::Key_U)});
-    connect(update_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::UpdateInstalledPackages)) process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
+    connect(update_action, &QAction::triggered, this, [this]() { process->setAurPackagesToUpdate(main_window_view->getUpdatedPackagesColumn()->getNotRepoPackagesCount()); if (process->preparedBeforeRun(Process::Task::UpdateInstalledPackages)) process->run(Process::Task::UpdateInstalledPackages); }, Qt::AutoConnection);
 
     setAction(refresh_action, MenuAction{i18n("&Refresh"), QString("refresh"), QString("refresh"), QKeySequence(Qt::CTRL, Qt::Key_R)});
     connect(refresh_action, &QAction::triggered, main_window_view, &MainWindowView::refresh);
@@ -284,7 +284,7 @@ void MainWindow::initSignals()
     connect(search_action, &QAction::triggered, main_window_view, &MainWindowView::searchPackage);
 
     setAction(update_all_action, MenuAction{i18n("&Update system packages"), QString("update"), QString("updateAllPackages"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_A)});
-    connect(update_all_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::UpdateAll)) process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
+    connect(update_all_action, &QAction::triggered, this, [this]() { process->setAurPackagesToUpdate(main_window_view->getUpdatedPackagesColumn()->getNotRepoPackagesCount()); if (process->preparedBeforeRun(Process::Task::UpdateAll)) process->run(Process::Task::UpdateAll); }, Qt::AutoConnection);
 
     setAction(update_mirrors_action, MenuAction{i18n("&Update mirrors"), QString("update-mirrors"), QString("updateMirrors"), QKeySequence(Qt::CTRL, Qt::Key_U, Qt::Key_M)});
     connect(update_mirrors_action, &QAction::triggered, this, [this]() { if (process->preparedBeforeRun(Process::Task::MirrorsUpdate)) process->run(Process::Task::MirrorsUpdate); }, Qt::AutoConnection);

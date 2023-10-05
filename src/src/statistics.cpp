@@ -85,7 +85,7 @@ void Statistics::updateSlice(QtCharts::QPieSlice* pie_slice)
 void Statistics::createSeries(const QPointer<QtCharts::QPieSeries>& pie_series)
 {
    QMap<QString, uint>::iterator it;
-   for (it = statistics_map.begin(); it != statistics_map.end(); it++)
+   for (it = statistics_map.begin(); it != statistics_map.end(); ++it)
    {
        QString pie_label = it.key() + " (" + QString::number(it.value()) + ")";
        Logger::logger()->logDebug(QStringLiteral("Statistics pie serie - added label \"%1\" and value \"%2\"").arg(pie_label).arg(it.value()));

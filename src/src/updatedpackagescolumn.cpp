@@ -21,6 +21,7 @@
 #include "logger.h"
 #include "checkpackage.h"
 #include "checkcommandparser.h"
+#include "src/package.h"
 
 #include <QPointer>
 #include <QMessageBox>
@@ -63,6 +64,7 @@ QHash<QString, Package::Source> UpdatedPackagesColumn::getPackagesList()
 void UpdatedPackagesColumn::fill()
 {
     mutex.lock();
+    not_repo_packages_count = 0;
     packages_sorter->resetOriginalList();
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
     clearPackages();
@@ -73,11 +75,11 @@ void UpdatedPackagesColumn::fill()
     QHash<QString, Package::Source>::const_iterator it = pak_packages.cbegin();
     int i = 0;
 
-    for (;it != pak_packages.cend(); it++)
+    for (;it != pak_packages.cend(); ++it)
     {
         if ((it.key()).count("=>") > 1)
         {
-            i++;
+            ++i;
             continue;
         }
 
@@ -85,10 +87,17 @@ void UpdatedPackagesColumn::fill()
         package_item->setNo(i + 1);
         Q_ASSERT(package_item != nullptr);
         Q_ASSERT(list_widget != nullptr);
+        if (package_item->getSource() == Package::Source::AUR ||
+            package_item->getSource() == Package::Source::POLAUR)
+        {
+            ++not_repo_packages_count;
+        }
+
         list_widget->addItem(package_item);
-        i++;
+        ++i;
     }
 
+    Logger::logger()->logInfo(QStringLiteral("There are %1 packages from AUR/POLAUR sources in \"to update\" column").arg(not_repo_packages_count));
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 packages to update").arg(list_widget->count()));
     list_widget->update();
     mutex.unlock();
@@ -114,7 +123,7 @@ template<> void UpdatedPackagesColumn::runAfterChoice<0>()
 template<> void UpdatedPackagesColumn::runAfterChoice<1>()
 {
     std::size_t limit = checked_packages_list.size();
-    for(std::size_t i = 0; i < limit; i++)
+    for(std::size_t i = 0; i < limit; ++i)
     {
         if (checked_packages_list[0]->getSource() == Package::Source::AUR ||
             checked_packages_list[0]->getSource() == Package::Source::POLAUR)
@@ -175,7 +184,13 @@ void UpdatedPackagesColumn::clearPackages()
 
 void UpdatedPackagesColumn::wakeUpOtherColumns()
 {
-   condition.wakeAll();
+    condition.wakeAll();
+}
+
+
+uint UpdatedPackagesColumn::getNotRepoPackagesCount() const
+{
+    return not_repo_packages_count;
 }
 
 

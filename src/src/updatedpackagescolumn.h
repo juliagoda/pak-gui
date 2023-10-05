@@ -41,6 +41,7 @@ public:
     void fillForSort();
     void clearPackages();
     void wakeUpOtherColumns();
+    uint getNotRepoPackagesCount() const;
 
 public Q_SLOTS:
     void toggleAllPackages(bool is_all_checked);
@@ -60,6 +61,7 @@ private:
 
     template<int> void runAfterChoice();
 
+    uint not_repo_packages_count;
     uint current_packages_count;
     QMutex mutex;
     QWidget* parent;

@@ -292,6 +292,8 @@ void Process::connectSignals(Process::Task new_task)
         current_process->closeWriteChannel();
         current_process->close();
         current_process->kill();
+        aur_packages_to_update_count = 0;
+        packages_to_update = 0;
     });
 
     QObject::connect(current_process.data(), QOverload<QProcess::ProcessError>::of(&QProcess::errorOccurred),
@@ -305,6 +307,8 @@ void Process::connectSignals(Process::Task new_task)
             message_box.run();
             Logger::logger()->writeLineToFile(QString("\n\n\n---------------[END]---------------"));
             Logger::logger()->logWarning(QStringLiteral("Error occured during task \"%1\" execution: %2").arg(QVariant::fromValue(new_task).toString(), QVariant::fromValue(process_error).toString()));
+            aur_packages_to_update_count = 0;
+            packages_to_update = 0;
         });
 
     QObject::connect(current_process.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
@@ -314,6 +318,8 @@ void Process::connectSignals(Process::Task new_task)
             emit finished(new_task, exit_code, exit_status);
             Logger::logger()->logDebug(QStringLiteral("Task \"%1\" finished successfully").arg(QVariant::fromValue(new_task).toString()));
             emit ended();
+            aur_packages_to_update_count = 0;
+            packages_to_update = 0;
         });
 }
 
@@ -425,8 +431,7 @@ void Process::removeAutoAcceptationFromCommand(Process::Task new_task)
 
 void Process::changeUpdateAllCommand(Task new_task)
 {
-    const bool is_command_change_not_needed = new_task != Task::UpdateAll || packages_to_update == 0 ||
-                                              aur_packages_to_update_count == 0;
+    const bool is_command_change_not_needed = aur_packages_to_update_count == 0;
     if (is_command_change_not_needed)
         return;
 

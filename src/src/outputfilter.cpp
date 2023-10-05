@@ -30,7 +30,7 @@ QString OutputFilter::filteredOutput(const QString& new_text_output)
 {
     auto text_output{new_text_output};
     QList<QRegExp>::const_iterator filters_it;
-    for (filters_it = filtersList.cbegin(); filters_it != filtersList.cend(); filters_it++)
+    for (filters_it = filtersList.cbegin(); filters_it != filtersList.cend(); ++filters_it)
         text_output.remove(*filters_it);
 
     return text_output;
