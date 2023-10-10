@@ -58,41 +58,45 @@ msgstr ""
 "X-Poedit-SearchPath-41: src/updatedpackagescolumn.cpp\n"
 "X-Poedit-SearchPath-42: main.cpp\n"
 
-#: main.cpp:49
+#: main.cpp:55
 msgid ""
 "Pacman wrapper, AUR and POLAUR helper with Gui (based on \"pak\" application)"
 msgstr ""
+"Pacman wrapper, AUR a POLAUR helper s Gui (založený na aplikaci \"pak\")"
 
-#: main.cpp:51
+#: main.cpp:57
 msgid "Copyright 2023, Jagoda \"juliagoda\" Górska"
-msgstr ""
+msgstr "Copyright 2023, Jagoda \"juliagoda\" Górska"
 
-#: main.cpp:56
+#: main.cpp:62
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
-#: src/actionsaccesschecker.cpp:141
+#: src/actionsaccesschecker.cpp:143
 msgid "Missing package"
-msgstr ""
+msgstr "Chybějící balíček"
 
-#: src/actionsaccesschecker.cpp:142
+#: src/actionsaccesschecker.cpp:144
 msgid ""
 "Required package is missing:\n"
 "\n"
 "%2"
 msgstr ""
+"Chybí požadovaný balíček:\n"
+"\n"
+"%2"
 
 #: src/downloadcommandparser.cpp:209
 msgid "Package Name"
-msgstr ""
+msgstr "Název balíčku"
 
 #: src/downloadcommandparser.cpp:210
 msgid "Package name cannot be empty"
-msgstr ""
+msgstr "Název balíčku nemůže být prázdný"
 
 #: src/downloadcommandparser.cpp:231
 msgid "Package download failure"
-msgstr ""
+msgstr "Selhání stahování balíčku"
 
 #: src/downloadcommandparser.cpp:231
 msgid ""
@@ -101,136 +105,177 @@ msgid ""
 "Error lines:\n"
 "%1"
 msgstr ""
+"Balíček se nepodařilo stáhnout:\n"
+"\n"
+"Chybové řádky:\n"
+"%1"
 
 #: src/downloadcommandparser.cpp:236
 msgid "Package download"
-msgstr ""
+msgstr "Balíček ke stažení"
 
 #: src/downloadcommandparser.cpp:236 src/downloadcommandparser.cpp:237
 msgid "and installed"
-msgstr ""
+msgstr "a nainstalovány"
 
 #: src/downloadcommandparser.cpp:236
 msgid "Package %1 has been downloaded %2"
-msgstr ""
+msgstr "Balíček %1 byl stahován %2"
 
 #: src/downloadcommandparser.cpp:253
 msgid "Directory"
-msgstr ""
+msgstr "Adresář"
 
 #: src/downloadcommandparser.cpp:254
 msgid "Do you want to open directory?"
-msgstr ""
+msgstr "Chcete otevřít adresář?"
 
-#: src/mainwindow.cpp:154
+#: src/mainwindow.cpp:50
+msgid "Other"
+msgstr "Jiné"
+
+#: src/mainwindow.cpp:180
 msgid "Refresh"
-msgstr ""
-
-#: src/mainwindow.cpp:234
-msgid "&Update"
-msgstr ""
-
-#: src/mainwindow.cpp:237
-msgid "&Refresh"
-msgstr ""
-
-#: src/mainwindow.cpp:252
-msgid "&Download"
-msgstr ""
-
-#: src/mainwindow.cpp:255
-msgid "&Search"
-msgstr ""
+msgstr "Refresh"
 
 #: src/mainwindow.cpp:258
-msgid "&Update system packages"
-msgstr ""
+msgid "&Close"
+msgstr "&Zavřít"
 
 #: src/mainwindow.cpp:261
-msgid "&Update mirrors"
-msgstr ""
+msgid "&Update"
+msgstr "&Update"
 
 #: src/mainwindow.cpp:264
+msgid "&Refresh"
+msgstr "&Refresh"
+
+#: src/mainwindow.cpp:280
+msgid "&Download"
+msgstr "&Stáhnout"
+
+#: src/mainwindow.cpp:283
+msgid "&Search"
+msgstr "&Hledat"
+
+#: src/mainwindow.cpp:286
+msgid "&Update system packages"
+msgstr "&Aktualizovace systémové balíčky"
+
+#: src/mainwindow.cpp:289
+msgid "&Update mirrors"
+msgstr "&Aktualizovace mirrors"
+
+#: src/mainwindow.cpp:292
 msgid "&Clean"
-msgstr ""
+msgstr "&Vyčistěte"
 
-#: src/mainwindow.cpp:267
+#: src/mainwindow.cpp:295
 msgid "&Sync POLAUR"
-msgstr ""
+msgstr "&Synchronizace POLAUR"
 
-#: src/mainwindow.cpp:270
+#: src/mainwindow.cpp:298
 msgid "&Statistics"
-msgstr ""
+msgstr "&Statistika"
+
+#: src/mainwindow.cpp:301
+msgid "&Configure languages"
+msgstr "&Konfigurace jazyků"
+
+#: src/mainwindow.cpp:304
+msgid "&Configure shortcuts"
+msgstr "&Konfigurace zkratek"
+
+#: src/mainwindow.cpp:307
+msgid "&Configure toolbar"
+msgstr "&Konfigurace panelu nástrojů"
+
+#: src/mainwindow.cpp:310
+msgid "&Configure pak-gui"
+msgstr "&Konfigurace pak-gui"
 
 #. i18n: file: src/src/mainwindowview.ui:1111
 #. i18n: ectx: property (toolTip), widget (QLabel, aur_led_label)
-#: src/mainwindowview.cpp:71 src/rc.cpp:69
+#. i18n: file: src/src/mainwindowview.ui:1250
+#. i18n: ectx: property (toolTip), widget (QLabel, aur_led_label)
+#: src/mainwindowview.cpp:65 src/rc.cpp:69 src/rc.cpp:255
 msgid "Internet connection state and auracle-git package presence"
-msgstr ""
+msgstr "Stav připojení k internetu a přítomnost balíčku auracle-git"
 
 #. i18n: file: src/src/mainwindowview.ui:1124
 #. i18n: ectx: property (toolTip), widget (QLabel, polaur_led_label)
-#: src/mainwindowview.cpp:72 src/rc.cpp:75
+#. i18n: file: src/src/mainwindowview.ui:1263
+#. i18n: ectx: property (toolTip), widget (QLabel, polaur_led_label)
+#: src/mainwindowview.cpp:66 src/rc.cpp:75 src/rc.cpp:261
 msgid "Internet connection state and git package presence"
-msgstr ""
+msgstr "Stav připojení k internetu a přítomnost balíčku git"
 
 #. i18n: file: src/src/mainwindowview.ui:1098
 #. i18n: ectx: property (toolTip), widget (QLabel, repo_led_label)
-#: src/mainwindowview.cpp:73 src/rc.cpp:63
+#. i18n: file: src/src/mainwindowview.ui:1237
+#. i18n: ectx: property (toolTip), widget (QLabel, repo_led_label)
+#: src/mainwindowview.cpp:67 src/rc.cpp:63 src/rc.cpp:249
 msgid "Internet connection state"
-msgstr ""
+msgstr "Stav připojení k internetu"
 
-#: src/mainwindowview.cpp:180
+#: src/mainwindowview.cpp:168
 msgid "All processes ended"
-msgstr ""
+msgstr "Všechny procesy skončily"
 
-#: src/mainwindowview.cpp:180
+#: src/mainwindowview.cpp:168
 msgid "All processes have been completed."
-msgstr ""
+msgstr "Všechny procesy byly ukončeny."
 
 #. i18n: file: src/src/mainwindowview.ui:473
 #. i18n: ectx: property (text), widget (QLabel, packages_to_update_label)
-#: src/mainwindowview.cpp:260 src/mainwindowview.cpp:410
-#: src/mainwindowview.cpp:678 src/rc.cpp:24
+#. i18n: file: src/src/mainwindowview.ui:543
+#. i18n: ectx: property (text), widget (QLabel, packages_to_update_label)
+#: src/mainwindowview.cpp:256 src/mainwindowview.cpp:413
+#: src/mainwindowview.cpp:686 src/rc.cpp:24 src/rc.cpp:210
 msgid "TO UPDATE"
-msgstr ""
+msgstr "K AKTUALIZACI"
 
 #. i18n: file: src/src/mainwindowview.ui:803
 #. i18n: ectx: property (text), widget (QLabel, accessible_packages)
-#: src/mainwindowview.cpp:261 src/mainwindowview.cpp:419
-#: src/mainwindowview.cpp:679 src/rc.cpp:45
+#. i18n: file: src/src/mainwindowview.ui:922
+#. i18n: ectx: property (text), widget (QLabel, accessible_packages)
+#: src/mainwindowview.cpp:257 src/mainwindowview.cpp:422
+#: src/mainwindowview.cpp:687 src/rc.cpp:45 src/rc.cpp:231
 msgid "AVAILABLE TO INSTALL"
-msgstr ""
+msgstr "K DISPOZICI PRO INSTALACI"
 
-#: src/mainwindowview.cpp:269 src/mainwindowview.cpp:271
+#: src/mainwindowview.cpp:265 src/mainwindowview.cpp:267
 msgid "No internet connection"
-msgstr ""
+msgstr "Žádné připojení k internetu"
 
-#: src/mainwindowview.cpp:284
+#: src/mainwindowview.cpp:280
 msgid "Process abort"
-msgstr ""
+msgstr "Přerušení procesu"
 
-#: src/mainwindowview.cpp:284
+#: src/mainwindowview.cpp:280
 msgid "Are you sure about quitting this process?"
-msgstr ""
+msgstr "Určitě chcete tento proces ukončit?"
 
-#: src/mainwindowview.cpp:311 src/mainwindowview.cpp:327
+#: src/mainwindowview.cpp:310 src/mainwindowview.cpp:329
 msgid "Something went wrong. Try to refresh"
-msgstr ""
+msgstr "Něco se pokazilo. Zkuste refresh"
 
-#: src/mainwindowview.cpp:350
+#: src/mainwindowview.cpp:353
 msgid "Cannot be updated - try to refresh"
-msgstr ""
+msgstr "Nelze aktualizovat - zkuste refresh"
 
-#: src/mainwindowview.cpp:356
+#: src/mainwindowview.cpp:359
 msgid "There aren't packages to update"
-msgstr ""
+msgstr "Nejsou k dispozici balíčky k aktualizaci"
 
 #. i18n: file: src/src/mainwindowview.ui:153
 #. i18n: ectx: property (text), widget (QLabel, installed_packages_label)
-#: src/mainwindowview.cpp:428 src/mainwindowview.cpp:680 src/rc.cpp:6
+#. i18n: file: src/src/mainwindowview.ui:184
+#. i18n: ectx: property (text), widget (QLabel, installed_packages_label)
+#: src/mainwindowview.cpp:431 src/mainwindowview.cpp:688 src/rc.cpp:6
+#: src/rc.cpp:192
 msgid "INSTALLED"
-msgstr ""
+msgstr "INSTALOVANÉ"
 
 #. i18n: file: src/src/mainwindowview.ui:320
 #. i18n: ectx: property (text), widget (QPushButton, input_for_uninstall_btn)
@@ -238,151 +283,163 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, input_for_update_btn)
 #. i18n: file: src/src/mainwindowview.ui:970
 #. i18n: ectx: property (text), widget (QPushButton, input_for_install_btn)
-#: src/mainwindowview.cpp:482 src/rc.cpp:12 src/rc.cpp:30 src/rc.cpp:51
+#. i18n: file: src/src/mainwindowview.ui:355
+#. i18n: ectx: property (text), widget (QPushButton, input_for_uninstall_btn)
+#. i18n: file: src/src/mainwindowview.ui:720
+#. i18n: ectx: property (text), widget (QPushButton, input_for_update_btn)
+#. i18n: file: src/src/mainwindowview.ui:1093
+#. i18n: ectx: property (text), widget (QPushButton, input_for_install_btn)
+#: src/mainwindowview.cpp:486 src/rc.cpp:12 src/rc.cpp:30 src/rc.cpp:51
+#: src/rc.cpp:198 src/rc.cpp:216 src/rc.cpp:237
 msgid "Input"
-msgstr ""
+msgstr "Vstup"
 
-#: src/mainwindowview.cpp:620
+#: src/mainwindowview.cpp:624
 msgid "Quit"
-msgstr ""
+msgstr "Opustit"
 
-#: src/mainwindowview.cpp:620
+#: src/mainwindowview.cpp:624
 msgid ""
 "Application cannot be closed immediately. Try again after end of running "
 "operations."
 msgstr ""
+"Žádost nelze uzavřít okamžitě. Zkuste to znovu po ukončení běžících operací."
 
-#: src/mainwindowview.cpp:657
+#: src/mainwindowview.cpp:661
 msgid "Process running"
-msgstr ""
+msgstr "Spuštěný proces"
 
-#: src/mainwindowview.cpp:657
+#: src/mainwindowview.cpp:661
 msgid "Wait until all major processes are complete"
-msgstr ""
+msgstr "Počkejte, dokud nebudou dokončeny všechny hlavní procesy"
 
 #. i18n: file: src/src/choicewindow.ui:40
 #. i18n: ectx: property (text), widget (QLabel, choice_label)
-#: src/packagedownloader.cpp:92 src/rc.cpp:183
+#: src/packagedownloader.cpp:92 src/rc.cpp:183 src/rc.cpp:375
 msgid "Choose path for package save"
-msgstr ""
+msgstr "Výběr cesty pro uložení balíčku"
 
 #: src/packageinputwindow.cpp:31
 msgid "Package input"
-msgstr ""
+msgstr "Vstup balíčku"
 
 #. TODOJG - lazy evaluation / strategy design instead of map
-#: src/process.cpp:71
+#: src/process.cpp:72
 msgid "Clean"
-msgstr ""
+msgstr "Vyčistěte"
 
-#: src/process.cpp:71
+#: src/process.cpp:72
 msgid "clean packages after installation?"
-msgstr ""
-
-#: src/process.cpp:72
-msgid "Update mirrors"
-msgstr ""
-
-#: src/process.cpp:72
-msgid "update mirrors?"
-msgstr ""
-
-#: src/process.cpp:73 src/updatedpackagescolumn.cpp:148
-msgid "Update all"
-msgstr ""
+msgstr "po instalaci vyčistit balíčky?"
 
 #: src/process.cpp:73
+msgid "Update mirrors"
+msgstr "Aktualizace mirrors"
+
+#: src/process.cpp:73
+msgid "update mirrors?"
+msgstr "aktualizovat mirrors?"
+
+#: src/process.cpp:74 src/updatedpackagescolumn.cpp:152
+msgid "Update all"
+msgstr "Aktualizace všech"
+
+#: src/process.cpp:74
 msgid "update all system packages packages?"
-msgstr ""
+msgstr "aktualizovat všechny balíčky systému?"
 
-#: src/process.cpp:74
+#: src/process.cpp:75
 msgid "Print vcs packages"
-msgstr ""
+msgstr "Seznam balíčků vcs"
 
-#: src/process.cpp:74
+#: src/process.cpp:75
 msgid "print all vcs packages?"
-msgstr ""
+msgstr "vypsat všechny balíčky vcs?"
 
-#: src/process.cpp:75
+#: src/process.cpp:76
 msgid "Installed packages update"
-msgstr ""
+msgstr "Aktualizace nainstalovaných balíčků"
 
-#: src/process.cpp:75
+#: src/process.cpp:76
 msgid "update installed packages?"
-msgstr ""
+msgstr "aktualizovat nainstalované balíčky?"
 
-#: src/process.cpp:76
+#: src/process.cpp:77
 msgid "Sync POLAUR"
-msgstr ""
+msgstr "Synchronizace POLAUR"
 
-#: src/process.cpp:76
+#: src/process.cpp:77
 msgid "sync POLAUR packages?"
-msgstr ""
+msgstr "synchronizovat balíčky POLAUR?"
 
-#: src/process.cpp:87
+#: src/process.cpp:88
 msgid "The task is already running!"
-msgstr ""
+msgstr "Na úkolu se již pracuje!"
 
-#: src/process.cpp:104
+#: src/process.cpp:105
 msgid "Respond to questions manually below the preview"
-msgstr ""
+msgstr "Odpovědi na otázky ručně pod náhledem"
 
-#: src/process.cpp:299
+#: src/process.cpp:305
 msgid "wasn't possible:"
-msgstr ""
+msgstr "nebylo možné:"
 
-#: src/process.cpp:428
+#: src/process.cpp:439
 msgid "Select preview and respond to questions manually"
-msgstr ""
+msgstr "Vyberte náhled a odpovězte na otázky ručně"
 
-#: src/process.cpp:479
+#: src/process.cpp:494
 msgid "Uninstallation"
-msgstr ""
+msgstr "Odinstalace"
 
-#: src/process.cpp:479
+#: src/process.cpp:494
 msgid "remove package?"
-msgstr ""
+msgstr "odstranit balíček?"
 
-#: src/process.cpp:480
+#: src/process.cpp:495
 msgid "Installation"
-msgstr ""
+msgstr "Instalace"
 
-#: src/process.cpp:480 src/process.cpp:481 src/process.cpp:482
-#: src/process.cpp:483
+#: src/process.cpp:495 src/process.cpp:496 src/process.cpp:497
+#: src/process.cpp:498
 msgid "install package?"
-msgstr ""
+msgstr "nainstalovat balíček?"
 
-#: src/process.cpp:481
+#: src/process.cpp:496
 msgid "Installation from Repo"
-msgstr ""
+msgstr "Instalace z Repo"
 
-#: src/process.cpp:482
+#: src/process.cpp:497
 msgid "Installation from AUR"
-msgstr ""
+msgstr "Instalace z AUR"
 
-#: src/process.cpp:483
+#: src/process.cpp:498
 msgid "Installation from POLAUR"
-msgstr ""
+msgstr "Instalace z POLAUR"
 
 #. i18n: file: src/src/mainwindowview.ui:684
 #. i18n: ectx: property (text), widget (QPushButton, update_packages_button)
-#: src/process.cpp:484 src/rc.cpp:33 src/systemtray.cpp:50
+#. i18n: file: src/src/mainwindowview.ui:768
+#. i18n: ectx: property (text), widget (QPushButton, update_packages_button)
+#: src/process.cpp:499 src/rc.cpp:33 src/rc.cpp:219 src/systemtray.cpp:50
 msgid "Update"
-msgstr ""
+msgstr "Update"
 
-#: src/process.cpp:484
+#: src/process.cpp:499
 msgid "update package?"
-msgstr ""
+msgstr "aktualizovat balíček?"
 
-#: src/process.cpp:523
+#: src/process.cpp:538
 msgid "Are you sure you want to %1"
-msgstr ""
+msgstr "Jste si jisti, že chcete %1"
 
 #. i18n: file: src/src/mainwindowview.ui:83
 #. i18n: ectx: property (text), widget (QCheckBox, progress_view_checkbox)
-#: src/rc.cpp:3
+#. i18n: file: src/src/mainwindowview.ui:95
+#. i18n: ectx: property (text), widget (QCheckBox, progress_view_checkbox)
+#: src/rc.cpp:3 src/rc.cpp:189
 msgid "View progress"
-msgstr ""
+msgstr "Zobrazit průběh"
 
 #. i18n: file: src/src/mainwindowview.ui:198
 #. i18n: ectx: property (text), widget (QCheckBox, sort_installed_packages)
@@ -390,15 +447,24 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, sort_packages_to_update)
 #. i18n: file: src/src/mainwindowview.ui:848
 #. i18n: ectx: property (text), widget (QCheckBox, sort_available_packages)
-#: src/rc.cpp:9 src/rc.cpp:27 src/rc.cpp:48
+#. i18n: file: src/src/mainwindowview.ui:229
+#. i18n: ectx: property (text), widget (QCheckBox, sort_installed_packages)
+#. i18n: file: src/src/mainwindowview.ui:588
+#. i18n: ectx: property (text), widget (QCheckBox, sort_packages_to_update)
+#. i18n: file: src/src/mainwindowview.ui:967
+#. i18n: ectx: property (text), widget (QCheckBox, sort_available_packages)
+#: src/rc.cpp:9 src/rc.cpp:27 src/rc.cpp:48 src/rc.cpp:195 src/rc.cpp:213
+#: src/rc.cpp:234
 msgid "Reverse sorting"
-msgstr ""
+msgstr "Zpětné třídění"
 
 #. i18n: file: src/src/mainwindowview.ui:364
 #. i18n: ectx: property (text), widget (QPushButton, uninstall_packages_button)
-#: src/rc.cpp:15
+#. i18n: file: src/src/mainwindowview.ui:403
+#. i18n: ectx: property (text), widget (QPushButton, uninstall_packages_button)
+#: src/rc.cpp:15 src/rc.cpp:201
 msgid "Uninstall"
-msgstr ""
+msgstr "Odinstalace"
 
 #. i18n: file: src/src/mainwindowview.ui:403
 #. i18n: ectx: property (text), widget (QCheckBox, console_view_uninstall)
@@ -406,9 +472,16 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, console_view_update)
 #. i18n: file: src/src/mainwindowview.ui:1053
 #. i18n: ectx: property (text), widget (QCheckBox, console_view_install)
-#: src/rc.cpp:18 src/rc.cpp:36 src/rc.cpp:57
+#. i18n: file: src/src/mainwindowview.ui:446
+#. i18n: ectx: property (text), widget (QCheckBox, console_view_uninstall)
+#. i18n: file: src/src/mainwindowview.ui:811
+#. i18n: ectx: property (text), widget (QCheckBox, console_view_update)
+#. i18n: file: src/src/mainwindowview.ui:1184
+#. i18n: ectx: property (text), widget (QCheckBox, console_view_install)
+#: src/rc.cpp:18 src/rc.cpp:36 src/rc.cpp:57 src/rc.cpp:204 src/rc.cpp:222
+#: src/rc.cpp:243
 msgid "Preview"
-msgstr ""
+msgstr "Náhled"
 
 #. i18n: file: src/src/mainwindowview.ui:413
 #. i18n: ectx: property (text), widget (QCheckBox, search_installed_packages_checkbox)
@@ -416,59 +489,80 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, search_packages_to_update_checkbox)
 #. i18n: file: src/src/mainwindowview.ui:1063
 #. i18n: ectx: property (text), widget (QCheckBox, search_available_packages_checkbox)
-#: src/rc.cpp:21 src/rc.cpp:39 src/rc.cpp:60
+#. i18n: file: src/src/mainwindowview.ui:460
+#. i18n: ectx: property (text), widget (QCheckBox, search_installed_packages_checkbox)
+#. i18n: file: src/src/mainwindowview.ui:825
+#. i18n: ectx: property (text), widget (QCheckBox, search_packages_to_update_checkbox)
+#. i18n: file: src/src/mainwindowview.ui:1198
+#. i18n: ectx: property (text), widget (QCheckBox, search_available_packages_checkbox)
+#: src/rc.cpp:21 src/rc.cpp:39 src/rc.cpp:60 src/rc.cpp:207 src/rc.cpp:225
+#: src/rc.cpp:246
 msgid "Search"
-msgstr ""
+msgstr "Hledat"
 
 #. i18n: file: src/src/mainwindowview.ui:743
 #. i18n: ectx: property (text), widget (QCheckBox, check_all_updates_checkbox)
-#: src/rc.cpp:42
+#. i18n: file: src/src/mainwindowview.ui:839
+#. i18n: ectx: property (text), widget (QCheckBox, check_all_updates_checkbox)
+#: src/rc.cpp:42 src/rc.cpp:228
 msgid "Check all"
-msgstr ""
+msgstr "Označte všech"
 
 #. i18n: file: src/src/mainwindowview.ui:1014
 #. i18n: ectx: property (text), widget (QPushButton, install_packages_button)
-#: src/rc.cpp:54
+#. i18n: file: src/src/mainwindowview.ui:1141
+#. i18n: ectx: property (text), widget (QPushButton, install_packages_button)
+#: src/rc.cpp:54 src/rc.cpp:240
 msgid "Install"
-msgstr ""
+msgstr "Instalace"
 
 #. i18n: file: src/src/mainwindowview.ui:1101
 #. i18n: ectx: property (text), widget (QLabel, repo_led_label)
-#: src/rc.cpp:66
+#. i18n: file: src/src/mainwindowview.ui:1240
+#. i18n: ectx: property (text), widget (QLabel, repo_led_label)
+#: src/rc.cpp:66 src/rc.cpp:252
 msgid "Repositories"
-msgstr ""
+msgstr "Repozitáře"
 
 #. i18n: file: src/src/mainwindowview.ui:1114
 #. i18n: ectx: property (text), widget (QLabel, aur_led_label)
-#: src/rc.cpp:72
+#. i18n: file: src/src/mainwindowview.ui:1253
+#. i18n: ectx: property (text), widget (QLabel, aur_led_label)
+#: src/rc.cpp:72 src/rc.cpp:258
 msgid "AUR"
-msgstr ""
+msgstr "AUR"
 
 #. i18n: file: src/src/mainwindowview.ui:1127
 #. i18n: ectx: property (text), widget (QLabel, polaur_led_label)
-#: src/rc.cpp:78
+#. i18n: file: src/src/mainwindowview.ui:1266
+#. i18n: ectx: property (text), widget (QLabel, polaur_led_label)
+#: src/rc.cpp:78 src/rc.cpp:264
 msgid "POLAUR"
-msgstr ""
+msgstr "POLAUR"
 
 #. i18n: file: src/src/progressview.ui:14
 #. i18n: ectx: property (windowTitle), widget (QDialog, ProgressView)
 #. i18n: file: src/src/choicewindow.ui:14
 #. i18n: ectx: property (windowTitle), widget (QDialog, ChoiceWindow)
-#: src/rc.cpp:81 src/rc.cpp:180
+#: src/rc.cpp:81 src/rc.cpp:180 src/rc.cpp:372
 msgid "Dialog"
-msgstr ""
+msgstr "Dialog"
 
 #. i18n: file: src/src/progressview.ui:24
 #. i18n: ectx: attribute (title), widget (QWidget, tab1)
-#: src/rc.cpp:84
+#. i18n: file: src/src/progressview.ui:28
+#. i18n: ectx: attribute (title), widget (QWidget, tab1)
+#: src/rc.cpp:84 src/rc.cpp:270
 msgid "Tab 1"
-msgstr ""
+msgstr "Tab 1"
 
 #. i18n: file: src/src/progressview.ui:53
 #. i18n: ectx: attribute (title), widget (QWidget, tab2)
-#: src/rc.cpp:87
+#. i18n: file: src/src/progressview.ui:57
+#. i18n: ectx: attribute (title), widget (QWidget, tab2)
+#: src/rc.cpp:87 src/rc.cpp:273
 msgid "Tab 2"
-msgstr ""
+msgstr "Tab 2"
 
 #. i18n: file: src/src/previewsappearancesettings.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, PreviewsAppearanceSettings)
@@ -478,205 +572,264 @@ msgstr ""
 #. i18n: ectx: property (windowTitle), widget (QWidget, PackageInputWindow)
 #. i18n: file: src/src/packagesinfosettings.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, PackagesInfoSettings)
-#: src/rc.cpp:90 src/rc.cpp:105 src/rc.cpp:120 src/rc.cpp:135
+#. i18n: file: src/src/previewsappearancesettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PreviewsAppearanceSettings)
+#. i18n: file: src/src/logssettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LogsSettings)
+#. i18n: file: src/src/packageinput.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PackageInputWindow)
+#. i18n: file: src/src/packagesinfosettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PackagesInfoSettings)
+#. i18n: file: src/src/appstylesettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, AppStyleSettings)
+#: src/rc.cpp:90 src/rc.cpp:105 src/rc.cpp:120 src/rc.cpp:135 src/rc.cpp:276
+#: src/rc.cpp:291 src/rc.cpp:306 src/rc.cpp:327 src/rc.cpp:381
 msgid "Form"
-msgstr ""
+msgstr "Formulář"
 
 #. i18n: file: src/src/previewsappearancesettings.ui:41
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: src/rc.cpp:93
+#: src/rc.cpp:93 src/rc.cpp:279
 msgid "background color "
-msgstr ""
+msgstr "barva pozadí "
 
 #. i18n: file: src/src/previewsappearancesettings.ui:57
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: src/rc.cpp:96
+#: src/rc.cpp:96 src/rc.cpp:282
 msgid "font color"
-msgstr ""
+msgstr "barva písma"
 
 #. i18n: file: src/src/previewsappearancesettings.ui:71
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: src/rc.cpp:99
+#: src/rc.cpp:99 src/rc.cpp:285
 msgid "font family"
-msgstr ""
+msgstr "rodina písma"
 
 #. i18n: file: src/src/previewsappearancesettings.ui:98
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: src/rc.cpp:102
+#: src/rc.cpp:102 src/rc.cpp:288
 msgid "font size "
-msgstr ""
+msgstr "velikost písma "
 
 #. i18n: file: src/src/logssettings.ui:39
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_save_logs_into_file)
-#: src/rc.cpp:108
+#: src/rc.cpp:108 src/rc.cpp:294
 msgid "Save logs into file"
-msgstr ""
+msgstr "Uložení logů do souboru"
 
 #. i18n: file: src/src/logssettings.ui:49
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: src/rc.cpp:111
+#: src/rc.cpp:111 src/rc.cpp:297
 msgid "in path"
-msgstr ""
+msgstr "v cestě"
 
 #. i18n: file: src/src/logssettings.ui:67
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_show_debug)
-#: src/rc.cpp:114
+#: src/rc.cpp:114 src/rc.cpp:300
 msgid "show debug"
-msgstr ""
+msgstr "zobrazit debug"
 
 #. i18n: file: src/src/logssettings.ui:74
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_hide_info_logs)
-#: src/rc.cpp:117
+#: src/rc.cpp:117 src/rc.cpp:303
 msgid "hide information logs"
-msgstr ""
+msgstr "skrýt informační logy"
 
 #. i18n: file: src/src/packageinput.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: src/rc.cpp:123
+#: src/rc.cpp:123 src/rc.cpp:309
 msgid "Enter the package name"
-msgstr ""
+msgstr "Zadejte název balíčku"
 
 #. i18n: file: src/src/pak-gui.rc:10
 #. i18n: ectx: Menu (Actions)
-#: src/rc.cpp:126
+#. i18n: file: src/src/pak-gui.rc:14
+#. i18n: ectx: Menu (Actions)
+#: src/rc.cpp:126 src/rc.cpp:315
 msgid "A&ctions"
-msgstr ""
+msgstr "A&kce"
 
 #. i18n: file: src/src/pak-gui.rc:21
 #. i18n: ectx: Menu (Print)
-#: src/rc.cpp:129
+#. i18n: file: src/src/pak-gui.rc:25
+#. i18n: ectx: Menu (Print)
+#: src/rc.cpp:129 src/rc.cpp:318
 msgid "P&rint"
-msgstr ""
+msgstr "Z&obrazit"
 
 #. i18n: file: src/src/pak-gui.rc:27
 #. i18n: ectx: ToolBar (mainToolBar)
-#: src/rc.cpp:132
+#. i18n: file: src/src/pak-gui.rc:38
+#. i18n: ectx: ToolBar (mainToolBar)
+#: src/rc.cpp:132 src/rc.cpp:324
 msgid "Main Toolbar"
-msgstr ""
+msgstr "Hlavní panel nástrojů"
 
 #. i18n: file: src/src/generalsettings.ui:48
 #. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_days_label)
 #. i18n: file: src/src/generalsettings.ui:75
 #. i18n: ectx: property (text), widget (QLabel, store_operations_history_days_label)
-#: src/rc.cpp:138 src/rc.cpp:147
+#. i18n: file: src/src/generalsettings.ui:48
+#. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_days_label)
+#. i18n: file: src/src/generalsettings.ui:75
+#. i18n: ectx: property (text), widget (QLabel, store_operations_history_days_label)
+#: src/rc.cpp:138 src/rc.cpp:147 src/rc.cpp:330 src/rc.cpp:339
 msgid "day(s)"
-msgstr ""
+msgstr "den(dny)"
 
 #. i18n: file: src/src/generalsettings.ui:55
 #. i18n: ectx: property (text), widget (QLabel, check_packages_for_update_label)
-#: src/rc.cpp:141
+#: src/rc.cpp:141 src/rc.cpp:333
 msgid "Check packages ready to update every "
-msgstr ""
+msgstr "Kontrola balíčků připravených k aktualizaci každý "
 
 #. i18n: file: src/src/generalsettings.ui:65
 #. i18n: ectx: property (text), widget (QLabel, internet_reconnection_label)
-#: src/rc.cpp:144
+#: src/rc.cpp:144 src/rc.cpp:336
 msgid "Try to reconnect to the internet every "
-msgstr ""
+msgstr "Zkuste se k internetu připojit každý "
 
 #. i18n: file: src/src/generalsettings.ui:82
 #. i18n: ectx: property (text), widget (QLabel, internet_reconnection_minutes_label)
 #. i18n: file: src/src/generalsettings.ui:92
 #. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_minutes_label)
-#: src/rc.cpp:150 src/rc.cpp:153
+#. i18n: file: src/src/generalsettings.ui:82
+#. i18n: ectx: property (text), widget (QLabel, internet_reconnection_minutes_label)
+#. i18n: file: src/src/generalsettings.ui:92
+#. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_minutes_label)
+#: src/rc.cpp:150 src/rc.cpp:153 src/rc.cpp:342 src/rc.cpp:345
 msgid "minute(s)"
-msgstr ""
+msgstr "minuta(y)"
 
 #. i18n: file: src/src/generalsettings.ui:99
 #. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_hours_label)
-#: src/rc.cpp:156
+#: src/rc.cpp:156 src/rc.cpp:348
 msgid "hour(s)"
-msgstr ""
+msgstr "hodina(y)"
 
 #. i18n: file: src/src/generalsettings.ui:106
 #. i18n: ectx: property (text), widget (QLabel, store_operations_history_label)
-#: src/rc.cpp:159
+#: src/rc.cpp:159 src/rc.cpp:351
 msgid "Store operations history for "
-msgstr ""
+msgstr "Ukládání historie operací do "
 
 #. i18n: file: src/src/generalsettings.ui:116
 #. i18n: ectx: property (text), widget (QLabel, set_single_operations_history_limit_label)
-#: src/rc.cpp:162
+#: src/rc.cpp:162 src/rc.cpp:354
 msgid "Set limit of single operations history size to  "
-msgstr ""
+msgstr "Nastavení limitu velikosti historie jednotlivých operací na "
 
 #. i18n: file: src/src/generalsettings.ui:129
 #. i18n: ectx: property (text), widget (QLabel, set_single_operations_history_limit_mb_label)
-#: src/rc.cpp:165
+#: src/rc.cpp:165 src/rc.cpp:357
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #. i18n: file: src/src/generalsettings.ui:156
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_manual_operations_checkbox)
-#: src/rc.cpp:168
+#: src/rc.cpp:168 src/rc.cpp:360
 msgid "If checked, any action needs answer from user within preview"
 msgstr ""
+"Pokud je zaškrtnuto, jakákoli akce vyžaduje reakci uživatele v rámci náhledu."
 
 #. i18n: file: src/src/generalsettings.ui:159
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_manual_operations_checkbox)
-#: src/rc.cpp:171
+#: src/rc.cpp:171 src/rc.cpp:363
 msgid "Operate on actions manually"
-msgstr ""
+msgstr "Ruční ovládání akcí"
 
 #. i18n: file: src/src/generalsettings.ui:166
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_overwrite_full_history_file)
-#: src/rc.cpp:174
+#: src/rc.cpp:174 src/rc.cpp:366
 msgid "Overwrite operations history file (when full size)"
-msgstr ""
+msgstr "Přepsání souboru historie operací (při plné velikosti)"
 
 #. i18n: file: src/src/generalsettings.ui:173
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_use_system_tray_icon)
-#: src/rc.cpp:177
+#: src/rc.cpp:177 src/rc.cpp:369
 msgid "Use system tray icon"
-msgstr ""
+msgstr "Použití ikony na systémové liště"
 
 #. i18n: file: src/src/choicewindow.ui:533
 #. i18n: ectx: property (text), widget (QLabel, no_results_label)
-#: src/rc.cpp:186
+#: src/rc.cpp:186 src/rc.cpp:378
 msgid "No results"
-msgstr ""
+msgstr "Žádné výsledky"
 
-#: src/settings.cpp:120 src/settings.cpp:121 src/settings.cpp:122
-#: src/settings.cpp:123
-msgid "@title:tab"
+#. i18n: file: src/src/progressview.ui:14
+#. i18n: ectx: property (windowTitle), widget (QDialog, ProgressView)
+#: src/rc.cpp:267
+msgid "Side actions"
+msgstr "Vedlejší akce"
+
+#. i18n: file: src/src/pak-gui.rc:10
+#. i18n: ectx: Menu (Program)
+#: src/rc.cpp:312
+msgid "P&rogram"
+msgstr "P&rogram"
+
+#. i18n: file: src/src/pak-gui.rc:29
+#. i18n: ectx: Menu (Settings)
+#: src/rc.cpp:321
+msgid "S&ettings"
+msgstr "N&astavení"
+
+#. i18n: file: src/src/appstylesettings.ui:60
+#. i18n: ectx: property (text), widget (QLabel, styles_text)
+#: src/rc.cpp:384
+msgid "Application style"
+msgstr "Styl aplikace"
+
+#: src/settings.cpp:90
+msgid "App style change"
+msgstr "Změna stylu aplikace"
+
+#: src/settings.cpp:90
+msgid "After style change you need to restart application to see the result."
 msgstr ""
+"Po změně stylu je třeba restartovat aplikaci, aby se zobrazil výsledek."
+
+#: src/settings.cpp:135 src/settings.cpp:136 src/settings.cpp:137
+#: src/settings.cpp:138 src/settings.cpp:139
+msgid "@title:tab"
+msgstr "@title:tab"
 
 #: src/statistics.cpp:35
 msgid "Statistics"
-msgstr ""
+msgstr "Statistika"
 
 #: src/statistics.cpp:47
 msgid "Statistics - current month"
-msgstr ""
+msgstr "Statistika - aktuální měsíc"
 
 #: src/statistics.cpp:101
 msgid "No data for current month"
-msgstr ""
+msgstr "Žádné údaje za aktuální měsíc"
 
 #: src/systemtray.cpp:51
 msgid "1 package to update"
-msgstr ""
+msgstr "1 aktualizační balíček"
 
 #: src/systemtray.cpp:51
 msgid "packages to update"
-msgstr ""
+msgstr "balíčky k aktualizaci"
 
 #: src/systemtray.cpp:51
 msgid "package to update"
-msgstr ""
+msgstr "balíček pro aktualizaci"
 
-#: src/updatedpackagescolumn.cpp:147
+#: src/updatedpackagescolumn.cpp:151
 msgid "Single AUR/POLAUR packages"
-msgstr ""
+msgstr "Jednotlivé balíčky AUR/POLAUR"
 
-#: src/updatedpackagescolumn.cpp:147
+#: src/updatedpackagescolumn.cpp:151
 msgid "It's not possible to update single AUR/POLAUR packages"
-msgstr ""
+msgstr "Není možné aktualizovat jednotlivé balíčky AUR/POLAUR"
 
-#: src/updatedpackagescolumn.cpp:148
+#: src/updatedpackagescolumn.cpp:152
 msgid "Uncheck these packages"
-msgstr ""
+msgstr "Zrušte zaškrtnutí těchto balíčků"
 
-#: src/updatedpackagescolumn.cpp:148
+#: src/updatedpackagescolumn.cpp:152
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušit"

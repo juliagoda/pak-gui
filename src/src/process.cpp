@@ -472,9 +472,7 @@ bool Process::isRunningUpdateTask()
 void Process::updateYesNoCommands()
 {
     Constants constants;
-    char* locale_char = setlocale(LC_NAME, ""); // real language of system
-    QLocale locale(locale_char);
-    auto yesNoCommand = constants.langNamesToYesNo(locale.language());
+    auto yesNoCommand = constants.langNamesToYesNo(QLocale::system().language());
     yes_command = yesNoCommand.first;
     no_command = yesNoCommand.second;
 }

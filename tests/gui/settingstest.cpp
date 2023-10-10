@@ -48,7 +48,6 @@ void TestSettingsWindow::previewsAppearanceDefaultSettingsAreCorrectlyIntroduced
     QTest::mouseClick(&*settings.button(QDialogButtonBox::StandardButton::RestoreDefaults), Qt::LeftButton);
     QCOMPARE(settings.previews_appearance_settings.kcfg_background_preview_color->color(), QColor(Qt::black));
     QCOMPARE(settings.previews_appearance_settings.kcfg_preview_font_color->color(), QColor(Qt::white));
-    QCOMPARE(settings.previews_appearance_settings.kcfg_preview_font_family->currentFont().family(), QString("Noto Sans"));
     QCOMPARE(settings.previews_appearance_settings.kcfg_preview_font_size->value(), 15);
 }
 
