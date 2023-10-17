@@ -25,8 +25,8 @@
 #include <QtConcurrent/QtConcurrent>
 
 
-MainWindowViewSignals::MainWindowViewSignals(MainWindowView* main_window_view) :
-    main_window_view{main_window_view}
+MainWindowViewSignals::MainWindowViewSignals(MainWindowView* new_main_window_view) :
+    main_window_view{new_main_window_view}
 {
                                                                                                                        // ...
 }
@@ -93,9 +93,9 @@ void MainWindowViewSignals::startInternetCheckTimer()
 
 void MainWindowViewSignals::attachConnectSignalsAfterFillEnd()
 {
-    QObject::connect(main_window_view, &MainWindowView::availablePackagesFillEnded, main_window_view, &MainWindowView::connectSignalsForAvailablePackages);
-    QObject::connect(main_window_view, &MainWindowView::installedPackagesFillEnded, main_window_view, &MainWindowView::connectSignalsForInstalledPackages);
-    QObject::connect(main_window_view, &MainWindowView::packagesToUpdateFillEnded, main_window_view, &MainWindowView::connectSignalsForUpdatedPackages);
+    QObject::connect(main_window_view, &MainWindowView::availablePackagesFillEnded, main_window_view, &MainWindowView::updateWidgetsForAvailablePackages);
+    QObject::connect(main_window_view, &MainWindowView::installedPackagesFillEnded, main_window_view, &MainWindowView::updateWidgetsForInstalledPackages);
+    QObject::connect(main_window_view, &MainWindowView::packagesToUpdateFillEnded, main_window_view, &MainWindowView::updateWidgetsForUpdatedPackages);
 }
 
 
@@ -140,6 +140,7 @@ void MainWindowViewSignals::attachSignalsForProcess()
 
     QObject::connect(main_window_view->process.data(), &Process::showInput, main_window_view, &MainWindowView::showInputWidgets);
     QObject::connect(main_window_view->process.data(), &Process::acceptedMainTask, main_window_view, &MainWindowView::showSingleAnimation, Qt::AutoConnection);
+    QObject::connect(main_window_view->process.data(), &Process::acceptedMainTask, main_window_view, &MainWindowView::setRunningState, Qt::AutoConnection);
 
     QObject::connect(main_window_view->process.data(), &Process::generatedOutput, main_window_view, &MainWindowView::generateOutput, Qt::AutoConnection);
     QObject::connect(main_window_view->process.data(), &Process::acceptedTask, main_window_view, &MainWindowView::generatePreview);
@@ -202,9 +203,11 @@ void MainWindowViewSignals::attachInstalledPackagesColumn()
 
 void MainWindowViewSignals::attachPackagesToUpdateColumn()
 {
+    QObject::connect(main_window_view, &MainWindowView::updateCheckInitialized, main_window_view->process.get(), &Process::setFirstUpdateInitializationFlag);
     QObject::connect(main_window_view->m_ui.sort_packages_to_update, &QCheckBox::toggled, main_window_view->updated_packages_column.data(), &UpdatedPackagesColumn::sort, Qt::AutoConnection);
     QObject::connect(main_window_view->updated_packages_column.data(), &UpdatedPackagesColumn::checkedPackagesCounterChanged, this, [this](bool has_checked_buttons) { main_window_view->m_ui.update_packages_button->setEnabled(has_checked_buttons); }, Qt::AutoConnection);
-    QObject::connect(main_window_view->m_ui.update_packages_button, &QPushButton::clicked, this, [this]() { main_window_view->updated_packages_column.data()->prepareBeforeProcessRun(); }, Qt::AutoConnection);
+    QObject::connect(main_window_view->m_ui.update_packages_button, &QPushButton::clicked, this, [&]() { main_window_view->updated_packages_column.data()->prepareBeforeProcessRun(); }, Qt::AutoConnection);
+    QObject::connect(main_window_view->m_ui.check_updates_button, &QPushButton::clicked, this, [&](){ main_window_view->checkUpdates(); }, Qt::AutoConnection);
 
     QObject::connect(main_window_view->updated_packages_column.data(), &UpdatedPackagesColumn::preparedList, [&](QStringList packages_list, Process::Task task, uint aur_checked_packages)
     {
@@ -214,7 +217,7 @@ void MainWindowViewSignals::attachPackagesToUpdateColumn()
         main_window_view->m_ui.text_browser_tab_update->clear();
         if (main_window_view->process->preparedBeforeRun(task, packages_list))
         {
-            main_window_view->installed_packages_column->setForcedUpdateFlag();
+            main_window_view->m_ui.update_packages_button->setDisabled(true);
             main_window_view->process->run(task, packages_list);
         }
     });
@@ -222,7 +225,8 @@ void MainWindowViewSignals::attachPackagesToUpdateColumn()
     QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.packages_to_update_list->count() == 0) main_window_view->m_ui.update_packages_button->setEnabled(false); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ main_window_view->m_ui.search_packages_to_update_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.packages_to_update_list->count() == 0) main_window_view->m_ui.search_packages_to_update_checkbox->setEnabled(false); }, Qt::AutoConnection);
-    QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){ main_window_view->m_ui.check_all_updates_checkbox->setEnabled(true); }, Qt::AutoConnection);
+    QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsInserted, this, [this](){
+            main_window_view->m_ui.check_all_updates_checkbox->setEnabled(true); }, Qt::AutoConnection);
     QObject::connect(main_window_view->m_ui.packages_to_update_list->model(), &QAbstractListModel::rowsRemoved, this, [this](){ if (main_window_view->m_ui.packages_to_update_list->count() == 0) main_window_view->m_ui.check_all_updates_checkbox->setEnabled(false); }, Qt::AutoConnection);
 
     QObject::connect(main_window_view->m_ui.search_packages_to_update_checkbox, &QCheckBox::clicked, this, [this](bool checked)

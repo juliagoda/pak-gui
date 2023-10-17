@@ -38,15 +38,12 @@ public:
     void clearForSort();
     void fillForSort();
     void clearPackages();
-    void setForcedUpdateFlag();
-    void clearForcedUpdateFlag();
 
 protected:
     virtual QStringList getPackagesList();
 
 private:
     QMutex mutex;
-    bool isForcedUpdate{false};
 };
 
 

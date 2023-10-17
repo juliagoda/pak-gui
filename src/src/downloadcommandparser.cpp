@@ -51,9 +51,9 @@ void DownloadCommandParser::connectSignals()
         return;
 
     QObject::connect(this, &DownloadCommandParser::ended, this, [this]() { clearAfterExecution(pak_download); });
-    QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), [this]() { emit ended(); });
-    QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
-    QObject::connect(pak_download.get(), QOverload<int>::of(&QProcess::finished), this, &DownloadCommandParser::showDirectory);
+    QObject::connect(pak_download.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [this]() { emit ended(); });
+    QObject::connect(pak_download.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &DownloadCommandParser::validateFinishedOutput);
+    QObject::connect(pak_download.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &DownloadCommandParser::showDirectory);
     QObject::connect(pak_download.get(), &QProcess::errorOccurred, [this]() {
       if (!isTerminated)
         Logger::logger()->logWarning(QStringLiteral("Error during download: %1").arg(pak_download->errorString()));
@@ -219,12 +219,13 @@ QStringList DownloadCommandParser::retrieveInfo()
 }
 
 
-bool DownloadCommandParser::validateFinishedOutput(int exit_code)
+bool DownloadCommandParser::validateFinishedOutput(int exit_code, QProcess::ExitStatus exit_status)
 {
    Q_UNUSED(exit_code)
+   Q_UNUSED(exit_status)
 
-    if (isTerminated)
-       return false;
+   if (isTerminated)
+        return false;
 
    if (!isPackageAlreadyDownloaded())
    {
@@ -239,9 +240,10 @@ bool DownloadCommandParser::validateFinishedOutput(int exit_code)
 }
 
 
-void DownloadCommandParser::showDirectory(int exit_code)
+void DownloadCommandParser::showDirectory(int exit_code, QProcess::ExitStatus exit_status)
 {
    Q_UNUSED(exit_code)
+   Q_UNUSED(exit_status)
 
    if (isTerminated || !isPackageAlreadyDownloaded())
        return;

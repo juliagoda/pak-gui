@@ -32,11 +32,9 @@ public:
     template<int> void startOnWidget(const QPointer<QLabel>& label);
     template<int> void stopOnWidget(const QPointer<QLabel>& label);
     void startOnMainWidgets(const QPointer<QLabel>& first_label,
-                            const QPointer<QLabel>& second_label,
-                            const QPointer<QLabel>& third_label);
+                            const QPointer<QLabel>& second_label);
     void stopOnMainWidgets(const QPointer<QLabel>& first_label,
-                           const QPointer<QLabel>& second_label,
-                           const QPointer<QLabel>& third_label);
+                           const QPointer<QLabel>& second_label);
     bool isAnimationRunning() const;
     bool isSmallAnimationRunning() const;
 
@@ -45,9 +43,9 @@ public Q_SLOTS:
     void stopSmallOnWidget(const QPointer<QLabel>& label);
 
 private:
-    bool isValid(const QScopedPointer<QMovie>& animation);
+    bool isValid(const QScopedPointer<QMovie>& new_animation);
     void restartMovie(const QPointer<QLabel>& first_label,
-                      const QScopedPointer<QMovie>& animation);
+                      const QScopedPointer<QMovie>& new_animation);
 
     QScopedPointer<QMovie> animation;
     QScopedPointer<QMovie> animation2;

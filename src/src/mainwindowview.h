@@ -68,10 +68,10 @@ public:
 
 public Q_SLOTS:
     void refresh();
-    void setForcedUpdateFlag();
     void showInputWidgets(Process::Task task);
     void generatePreview(Process::Task task);
     void showSingleAnimation(Process::Task task);
+    void setRunningState();
     void generateOutput(Process::Task task, const QString& line);
     virtual void showStatisticsWindow();
     virtual void downloadPackage();
@@ -85,11 +85,10 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void startAnimations();
-    void connectSignalsForAvailablePackages();
-    void connectSignalsForInstalledPackages();
-    void connectSignalsForUpdatedPackages();
+    void updateWidgetsForAvailablePackages();
+    void updateWidgetsForInstalledPackages();
+    void updateWidgetsForUpdatedPackages();
     void toggleWidgetsAccess(bool is_online);
-    void abortProcessFromButton(QProcess* process, QPushButton* button);
 
 signals:
     void operationsAmountIncreased();
@@ -100,6 +99,7 @@ signals:
     void packagesToUpdateFillEnded();
     void hideOnlineActions();
     void packagesToUpdateCountChanged(uint packages_count);
+    void updateCheckInitialized();
 
 protected:
     Ui::MainWindowView m_ui;
@@ -113,15 +113,15 @@ protected:
 
     virtual void showFinishInformation();
     virtual void updatePreviewsDesign();
+    void showUpdatedPackagesWidgets();
 
 private:
     void addInputWidgets(QVBoxLayout*& vbox_layout,
                          QWidget*& scroll_area_widget_contents,
                          const QString& text);
-    void hideWidgets();
-    void hideWidgetsExceptInstalled();
+    void blockInstallationColumn();
+    void blockAvailableColumn();
     void checkSpinningVisibility();
-    void clearMainPreviews(Process::Task task);
     void disconnectSortSignals();
     void reconnectSortSignals();
 

@@ -38,7 +38,7 @@ class Settings : public KConfigDialog
     Q_OBJECT
 
 public:
-    explicit Settings(MainWindow* main_window);
+    explicit Settings(MainWindow* new_main_window);
     ~Settings() override;
 
     static void saveInitDateTimesWhenEmpty();
@@ -64,8 +64,8 @@ protected:
     MainWindow* main_window = nullptr;
 
 private:
-    void init(MainWindow* main_window);
-    void connectSignals(MainWindow* main_window);
+    void init(MainWindow* new_main_window);
+    void connectSignals(MainWindow* new_main_window);
     void enableButtons();
     void updateAvailableInfoList();
     void updateSelectedInfoList();

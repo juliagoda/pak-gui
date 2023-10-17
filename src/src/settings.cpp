@@ -33,9 +33,9 @@
 
 QScopedPointer<SettingsRecords> Settings::settings_records(nullptr);
 
-Settings::Settings(MainWindow* main_window) :
-    KConfigDialog(main_window, QStringLiteral("settings"), pakGuiSettings::self()),
-    main_window(main_window)
+Settings::Settings(MainWindow* new_main_window) :
+    KConfigDialog(new_main_window, QStringLiteral("settings"), pakGuiSettings::self()),
+    main_window(new_main_window)
 {
     init(main_window);
     connectSignals(main_window);
@@ -120,7 +120,7 @@ void Settings::updateSettings()
 }
 
 
-void Settings::init(MainWindow* main_window)
+void Settings::init(MainWindow* new_main_window)
 {
     QPointer<QWidget> general_page = new QWidget;
     general_settings.setupUi(general_page);
@@ -137,15 +137,14 @@ void Settings::init(MainWindow* main_window)
     addPage(packages_info_page, i18nc("@title:tab", "Packages informations"), QStringLiteral(":/icons/package-info-settings.png"));
     addPage(logs_page, i18nc("@title:tab", "Logs"), QStringLiteral(":/icons/logs-settings.png"));
     addPage(styles_page, i18nc("@title:tab", "Styles"), QStringLiteral(":/icons/styles-settings.png"));
-    connect(this, &Settings::settingsChanged, main_window, &MainWindow::startSystemTray);
-    connect(this, &Settings::settingsChanged, main_window, &MainWindow::setTimersOnChecks);
+    connect(this, &Settings::settingsChanged, new_main_window, &MainWindow::startSystemTray);
+    connect(this, &Settings::settingsChanged, new_main_window, &MainWindow::setTimersOnChecks);
 
-    QString first_style = QStyleFactory::keys().first();
     styles_settings.app_style_name_combobox->addItems(QStyleFactory::keys());
     styles_settings.app_style_name_combobox->setCurrentText(records()->appStyleName());
 
     if (records()->appStyleName().isEmpty())
-     styles_settings.app_style_name_combobox->setCurrentText(QStyleFactory::keys().first());
+     styles_settings.app_style_name_combobox->setCurrentText(QStyleFactory::keys().constFirst());
 
     setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -164,9 +163,9 @@ void Settings::loadPackagesInfoSettings()
 }
 
 
-void Settings::connectSignals(MainWindow* main_window)
+void Settings::connectSignals(MainWindow* new_main_window)
 {
-    connect(records().get(), &SettingsRecords::selectedPackageInfoListChanged, [main_window]() { emit main_window->updatedPackageInfoList(); });
+    connect(records().get(), &SettingsRecords::selectedPackageInfoListChanged, [new_main_window]() { emit new_main_window->updatedPackageInfoList(); });
 
     if (!packages_info_settings.packages_info_selector)
         return;

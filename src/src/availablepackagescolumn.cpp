@@ -62,36 +62,24 @@ void AvailablePackagesColumn::clearPackages()
 }
 
 
-void AvailablePackagesColumn::setForcedUpdateFlag()
-{
-    isForcedUpdate = true;
-}
-
-
-void AvailablePackagesColumn::clearForcedUpdateFlag()
-{
-    isForcedUpdate = false;
-}
-
-
 void AvailablePackagesColumn::fill()
 {
     mutex.lock();
+    bool was_condition_needed = is_condition_needed;
 
 #ifdef RUN_TESTS
     QDeadlineTimer deadline(getWaitTime());
     condition.wait(&mutex, deadline);
 #else
-    condition.wait(&mutex);
+    if (is_condition_needed)
+        condition.wait(&mutex);
 #endif
 
+    is_condition_needed = true;
     const QStringList& pak_packages = getPackagesList();
-    const QString text_log_column{"Available"};
-    if (!isForcedUpdate && isColumnNotChanged(text_log_column, pak_packages))
-    {
-        mutex.unlock();
-        return;
-    }
+
+    if (!was_condition_needed)
+        wakeUpOtherColumns();
 
     packages_sorter->resetOriginalList();
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
@@ -110,11 +98,11 @@ void AvailablePackagesColumn::fill()
         i++;
     });
 
-    clearForcedUpdateFlag();
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 available packages").arg(list_widget->count()));
     list_widget->update();
 
     mutex.unlock();
+    is_condition_needed = false;
 }
 
 
@@ -122,6 +110,12 @@ void AvailablePackagesColumn::clearForSort()
 {
     QObject::disconnect(search_lineedit, &QLineEdit::textChanged, packages_sorter.data(), nullptr);
     packages_sorter->resetOriginalList();
+}
+
+
+void AvailablePackagesColumn::wakeUpOtherColumns()
+{
+    condition.wakeAll();
 }
 
 

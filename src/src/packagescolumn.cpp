@@ -22,7 +22,7 @@
 
 #include <list>
 
-
+bool PackagesColumn::is_condition_needed = false;
 QWaitCondition PackagesColumn::condition;
 
 PackagesColumn::PackagesColumn(QListWidget* new_list_widget,
@@ -74,20 +74,20 @@ uint PackagesColumn::getAurPackagesCount() const
 
 QStringList PackagesColumn::getCheckedPackagesStringList()
 {
-    QStringList checked_packages;
+    QStringList checked_packages_temp;
     decltype(checked_packages_list)::iterator it;
     for (it = checked_packages_list.begin(); it != checked_packages_list.end(); ++it)
     {
         if (!(*it))
         {
-            std::erase(checked_packages_list, (*it));
+            checked_packages_list.erase(std::remove(checked_packages_list.begin(), checked_packages_list.end(), (*it)), checked_packages_list.end());
             continue;
         }
 
-        checked_packages.append((*it)->getName());
+        checked_packages_temp.append((*it)->getName());
     }
 
-    return checked_packages;
+    return checked_packages_temp;
 }
 
 
@@ -162,19 +162,7 @@ void PackagesColumn::removeUncheckedPackage(Package* package)
         aur_checked_packages--;
 
     Logger::logger()->logDebug(QStringLiteral("Removed package from list: %1").arg(package->getName()));
-    std::erase(checked_packages_list, package);
-}
-
-
-bool PackagesColumn::isColumnNotChanged(const QString& log_column_text, const QStringList& packages_list)
-{
-    if (packages_list.count() == list_widget->count())
-    {
-        Logger::logger()->logInfo(QStringLiteral("%1 packages column has not been changed - %2 packages.").arg(log_column_text).arg(list_widget->count()));
-        return true;
-    }
-
-    return false;
+    checked_packages_list.erase(std::remove(checked_packages_list.begin(), checked_packages_list.end(), package), checked_packages_list.end());
 }
 
 

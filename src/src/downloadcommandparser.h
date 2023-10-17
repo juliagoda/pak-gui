@@ -52,8 +52,8 @@ Q_SIGNALS:
     void ended();
 
 protected Q_SLOTS:
-    virtual bool validateFinishedOutput(int exit_code);
-    virtual void showDirectory(int exit_code);
+    virtual bool validateFinishedOutput(int exit_code, QProcess::ExitStatus exit_status);
+    virtual void showDirectory(int exit_code, QProcess::ExitStatus exit_status);
 
 private:
     bool validate();

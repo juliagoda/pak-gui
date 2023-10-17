@@ -54,6 +54,7 @@ public:
     TestUpdatedPackagesColumn(QObject* parent = nullptr);
 
 private slots:
+    void isOnStartVisiblePressCheckButtonLabelWithProperStyle();
     void updatedColumnLabelHasProperContent();
     void showUpdatedColumnPreview();
     void hideUpdatedColumnPreview();

@@ -41,7 +41,7 @@ public:
     void connectSignals() override;
 
 protected Q_SLOTS:
-    bool validateFinishedOutput(int exit_code) override;
+    bool validateFinishedOutput(int exit_code, QProcess::ExitStatus exit_status) override;
 };
 
 

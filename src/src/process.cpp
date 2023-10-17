@@ -166,6 +166,12 @@ void Process::inputAnswer(const QString& new_answer, Process::Task task)
 }
 
 
+void Process::setFirstUpdateInitializationFlag()
+{
+    was_update_initialized = true;
+}
+
+
 void Process::setPackagesToUpdate(uint packages_to_update_count)
 {
     packages_to_update = packages_to_update_count;
@@ -351,7 +357,7 @@ bool Process::isNeededAskAboutUpdate(Task new_task)
     if (Settings::records()->operateOnActionsManually())
         return false;
 
-    if (new_task == Task::Install)
+    if (new_task == Task::Install && was_update_initialized)
         return true;
 
     return false;

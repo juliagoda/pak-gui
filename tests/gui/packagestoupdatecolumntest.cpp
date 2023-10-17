@@ -61,6 +61,13 @@ TestUpdatedPackagesColumn::TestUpdatedPackagesColumn(QObject* parent) :
 }
 
 
+void TestUpdatedPackagesColumn::isOnStartVisiblePressCheckButtonLabelWithProperStyle()
+{
+    QCOMPARE(main_window_view.m_ui.update_spinning_label->text(), i18n("Press \"Check\" button"));
+    QCOMPARE(main_window_view.m_ui.update_spinning_label->styleSheet(), "color: black; font-size: 15px;");
+}
+
+
 void TestUpdatedPackagesColumn::updatedColumnLabelHasProperContent()
 {
     QCOMPARE(main_window_view.m_ui.packages_to_update_label->text(), i18n("TO UPDATE"));
@@ -78,8 +85,9 @@ void TestUpdatedPackagesColumn::showUpdatedColumnPreview()
 void TestUpdatedPackagesColumn::hideUpdatedColumnPreview()
 {
     QTest::mouseClick(&*main_window_view.m_ui.console_view_update, Qt::LeftButton);
+    qDebug() << "First click on console view update checkbox: " << main_window_view.m_ui.console_view_update->checkState();
     QTest::mouseClick(&*main_window_view.m_ui.console_view_update, Qt::LeftButton);
-    qDebug() << main_window_view.m_ui.console_view_update->checkState();
+    qDebug() << "Second click on console view update checkbox: " << main_window_view.m_ui.console_view_update->checkState();
     QVERIFY(main_window_view.m_ui.updated_preview_area->isHidden());
 }
 
@@ -198,6 +206,7 @@ void TestUpdatedPackagesColumn::packagesOrderIsReversedAfterButtonCheck()
    disconnect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, main_window_view.updated_packages_column.data(), &UpdatedPackagesColumn::sort);
    connect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, column.data(), &MockUpdatedPackagesColumn::sort);
    column->fill();
+   main_window_view.showUpdatedPackagesWidgets();
    auto first_package_before_sort = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).constFirst());
    auto last_package_before_sort = dynamic_cast<CheckPackage*>(main_window_view.m_ui.packages_to_update_list->findItems("*", Qt::MatchWildcard).constLast());
    QTest::mouseClick(&*main_window_view.m_ui.sort_packages_to_update, Qt::LeftButton);
@@ -312,7 +321,7 @@ void TestUpdatedPackagesColumn::notEmptyPackagesListIsVisibleAfterSignalSend()
 void TestUpdatedPackagesColumn::titleIsVisibleWhenPackagesListIsEmptyAfterSignalSend()
 {
     emit main_window_view.packagesToUpdateFillEnded();
-    QCOMPARE(main_window_view.m_ui.packages_to_update_label->text(), i18n("Cannot be updated - try to refresh"));
+    QCOMPARE(main_window_view.m_ui.packages_to_update_label->text(), i18n("Couldn't be updated"));
 }
 
 
@@ -321,6 +330,7 @@ void TestUpdatedPackagesColumn::cleanup()
     disconnect(main_window_view.m_ui.sort_packages_to_update, &QCheckBox::toggled, main_window_view.updated_packages_column.data(), &UpdatedPackagesColumn::sort);
     main_window_view.m_ui.packages_to_update_list->clear();
     disconnect(main_window_view.m_ui.search_packages_to_update_lineedit, &QLineEdit::textChanged, nullptr, nullptr);
+    main_window_view.m_ui.console_view_update->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.search_packages_to_update_lineedit->clear();
     main_window_view.m_ui.console_view_update->setCheckState(Qt::Unchecked);
     main_window_view.m_ui.check_all_updates_checkbox->setCheckState(Qt::Unchecked);
@@ -334,4 +344,10 @@ void TestUpdatedPackagesColumn::cleanup()
         if (main_window_view.m_ui.packages_to_update_list->item(0))
             delete main_window_view.m_ui.packages_to_update_list->takeItem(0);
     }
+
+    main_window_view.m_ui.packages_to_update_list->hide();
+    main_window_view.m_ui.update_spinning_widget->show();
+    main_window_view.m_ui.update_spinning_label->setText(i18n("Press \"Check\" button"));
+    main_window_view.m_ui.update_spinning_label->show();
+    main_window_view.m_ui.update_spinning_label->setStyleSheet("color: black; font-size: 15px;");
 }

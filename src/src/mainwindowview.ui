@@ -121,7 +121,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-75</y>
+            <y>0</y>
             <width>429</width>
             <height>766</height>
            </rect>
@@ -748,6 +748,30 @@ padding: 3px;</string>
              </property>
              <item>
               <spacer name="horizontalSpacer_9">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="check_updates_button">
+               <property name="text">
+                <string>Check</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../../resources/pak-gui.qrc">
+                 <normaloff>:/icons/updated-packages.png</normaloff>:/icons/updated-packages.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_15">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>

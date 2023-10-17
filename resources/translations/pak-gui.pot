@@ -89,11 +89,11 @@ msgstr ""
 msgid "Package name cannot be empty"
 msgstr ""
 
-#: src/downloadcommandparser.cpp:231
+#: src/downloadcommandparser.cpp:232
 msgid "Package download failure"
 msgstr ""
 
-#: src/downloadcommandparser.cpp:231
+#: src/downloadcommandparser.cpp:232
 msgid ""
 "Package couldn't be downloaded:\n"
 "\n"
@@ -101,23 +101,23 @@ msgid ""
 "%1"
 msgstr ""
 
-#: src/downloadcommandparser.cpp:236
+#: src/downloadcommandparser.cpp:237
 msgid "Package download"
 msgstr ""
 
-#: src/downloadcommandparser.cpp:236 src/downloadcommandparser.cpp:237
+#: src/downloadcommandparser.cpp:237 src/downloadcommandparser.cpp:238
 msgid "and installed"
 msgstr ""
 
-#: src/downloadcommandparser.cpp:236
+#: src/downloadcommandparser.cpp:237
 msgid "Package %1 has been downloaded %2"
 msgstr ""
 
-#: src/downloadcommandparser.cpp:253
+#: src/downloadcommandparser.cpp:255
 msgid "Directory"
 msgstr ""
 
-#: src/downloadcommandparser.cpp:254
+#: src/downloadcommandparser.cpp:256
 msgid "Do you want to open directory?"
 msgstr ""
 
@@ -189,7 +189,9 @@ msgstr ""
 #. i18n: ectx: property (toolTip), widget (QLabel, aur_led_label)
 #. i18n: file: src/src/mainwindowview.ui:1250
 #. i18n: ectx: property (toolTip), widget (QLabel, aur_led_label)
-#: src/mainwindowview.cpp:65 src/rc.cpp:69 src/rc.cpp:255
+#. i18n: file: src/src/mainwindowview.ui:1274
+#. i18n: ectx: property (toolTip), widget (QLabel, aur_led_label)
+#: src/mainwindowview.cpp:65 src/rc.cpp:69 src/rc.cpp:255 src/rc.cpp:456
 msgid "Internet connection state and auracle-git package presence"
 msgstr ""
 
@@ -197,7 +199,9 @@ msgstr ""
 #. i18n: ectx: property (toolTip), widget (QLabel, polaur_led_label)
 #. i18n: file: src/src/mainwindowview.ui:1263
 #. i18n: ectx: property (toolTip), widget (QLabel, polaur_led_label)
-#: src/mainwindowview.cpp:66 src/rc.cpp:75 src/rc.cpp:261
+#. i18n: file: src/src/mainwindowview.ui:1287
+#. i18n: ectx: property (toolTip), widget (QLabel, polaur_led_label)
+#: src/mainwindowview.cpp:66 src/rc.cpp:75 src/rc.cpp:261 src/rc.cpp:462
 msgid "Internet connection state and git package presence"
 msgstr ""
 
@@ -205,15 +209,21 @@ msgstr ""
 #. i18n: ectx: property (toolTip), widget (QLabel, repo_led_label)
 #. i18n: file: src/src/mainwindowview.ui:1237
 #. i18n: ectx: property (toolTip), widget (QLabel, repo_led_label)
-#: src/mainwindowview.cpp:67 src/rc.cpp:63 src/rc.cpp:249
+#. i18n: file: src/src/mainwindowview.ui:1261
+#. i18n: ectx: property (toolTip), widget (QLabel, repo_led_label)
+#: src/mainwindowview.cpp:67 src/rc.cpp:63 src/rc.cpp:249 src/rc.cpp:450
 msgid "Internet connection state"
 msgstr ""
 
-#: src/mainwindowview.cpp:168
+#: src/mainwindowview.cpp:68
+msgid "Press \"Check\" button"
+msgstr ""
+
+#: src/mainwindowview.cpp:160
 msgid "All processes ended"
 msgstr ""
 
-#: src/mainwindowview.cpp:168
+#: src/mainwindowview.cpp:160
 msgid "All processes have been completed."
 msgstr ""
 
@@ -221,8 +231,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, packages_to_update_label)
 #. i18n: file: src/src/mainwindowview.ui:543
 #. i18n: ectx: property (text), widget (QLabel, packages_to_update_label)
-#: src/mainwindowview.cpp:256 src/mainwindowview.cpp:413
-#: src/mainwindowview.cpp:686 src/rc.cpp:24 src/rc.cpp:210
+#: src/mainwindowview.cpp:218 src/mainwindowview.cpp:348
+#: src/mainwindowview.cpp:635 src/rc.cpp:24 src/rc.cpp:210 src/rc.cpp:408
 msgid "TO UPDATE"
 msgstr ""
 
@@ -230,32 +240,26 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, accessible_packages)
 #. i18n: file: src/src/mainwindowview.ui:922
 #. i18n: ectx: property (text), widget (QLabel, accessible_packages)
-#: src/mainwindowview.cpp:257 src/mainwindowview.cpp:422
-#: src/mainwindowview.cpp:687 src/rc.cpp:45 src/rc.cpp:231
+#. i18n: file: src/src/mainwindowview.ui:946
+#. i18n: ectx: property (text), widget (QLabel, accessible_packages)
+#: src/mainwindowview.cpp:219 src/mainwindowview.cpp:357
+#: src/mainwindowview.cpp:636 src/rc.cpp:45 src/rc.cpp:231 src/rc.cpp:432
 msgid "AVAILABLE TO INSTALL"
 msgstr ""
 
-#: src/mainwindowview.cpp:265 src/mainwindowview.cpp:267
+#: src/mainwindowview.cpp:227 src/mainwindowview.cpp:229
 msgid "No internet connection"
 msgstr ""
 
-#: src/mainwindowview.cpp:280
-msgid "Process abort"
-msgstr ""
-
-#: src/mainwindowview.cpp:280
-msgid "Are you sure about quitting this process?"
-msgstr ""
-
-#: src/mainwindowview.cpp:310 src/mainwindowview.cpp:329
+#: src/mainwindowview.cpp:250 src/mainwindowview.cpp:269
 msgid "Something went wrong. Try to refresh"
 msgstr ""
 
-#: src/mainwindowview.cpp:353
-msgid "Cannot be updated - try to refresh"
+#: src/mainwindowview.cpp:292
+msgid "Coldn't be updated"
 msgstr ""
 
-#: src/mainwindowview.cpp:359
+#: src/mainwindowview.cpp:298
 msgid "There aren't packages to update"
 msgstr ""
 
@@ -263,8 +267,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, installed_packages_label)
 #. i18n: file: src/src/mainwindowview.ui:184
 #. i18n: ectx: property (text), widget (QLabel, installed_packages_label)
-#: src/mainwindowview.cpp:431 src/mainwindowview.cpp:688 src/rc.cpp:6
-#: src/rc.cpp:192
+#: src/mainwindowview.cpp:366 src/mainwindowview.cpp:637 src/rc.cpp:6
+#: src/rc.cpp:192 src/rc.cpp:390
 msgid "INSTALLED"
 msgstr ""
 
@@ -280,30 +284,37 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, input_for_update_btn)
 #. i18n: file: src/src/mainwindowview.ui:1093
 #. i18n: ectx: property (text), widget (QPushButton, input_for_install_btn)
-#: src/mainwindowview.cpp:486 src/rc.cpp:12 src/rc.cpp:30 src/rc.cpp:51
-#: src/rc.cpp:198 src/rc.cpp:216 src/rc.cpp:237
+#. i18n: file: src/src/mainwindowview.ui:355
+#. i18n: ectx: property (text), widget (QPushButton, input_for_uninstall_btn)
+#. i18n: file: src/src/mainwindowview.ui:720
+#. i18n: ectx: property (text), widget (QPushButton, input_for_update_btn)
+#. i18n: file: src/src/mainwindowview.ui:1117
+#. i18n: ectx: property (text), widget (QPushButton, input_for_install_btn)
+#: src/mainwindowview.cpp:427 src/rc.cpp:12 src/rc.cpp:30 src/rc.cpp:51
+#: src/rc.cpp:198 src/rc.cpp:216 src/rc.cpp:237 src/rc.cpp:396 src/rc.cpp:414
+#: src/rc.cpp:438
 msgid "Input"
 msgstr ""
 
-#: src/mainwindowview.cpp:624
+#: src/mainwindowview.cpp:572
 msgid "Quit"
 msgstr ""
 
-#: src/mainwindowview.cpp:624
+#: src/mainwindowview.cpp:572
 msgid "Application cannot be closed immediately. Try again after end of running operations."
 msgstr ""
 
-#: src/mainwindowview.cpp:661
+#: src/mainwindowview.cpp:609
 msgid "Process running"
 msgstr ""
 
-#: src/mainwindowview.cpp:661
+#: src/mainwindowview.cpp:609
 msgid "Wait until all major processes are complete"
 msgstr ""
 
 #. i18n: file: src/src/choicewindow.ui:40
 #. i18n: ectx: property (text), widget (QLabel, choice_label)
-#: src/packagedownloader.cpp:92 src/rc.cpp:183 src/rc.cpp:375
+#: src/packagedownloader.cpp:92 src/rc.cpp:183 src/rc.cpp:375 src/rc.cpp:576
 msgid "Choose path for package save"
 msgstr ""
 
@@ -328,7 +339,7 @@ msgstr ""
 msgid "update mirrors?"
 msgstr ""
 
-#: src/process.cpp:74 src/updatedpackagescolumn.cpp:152
+#: src/process.cpp:74 src/updatedpackagescolumn.cpp:168
 msgid "Update all"
 msgstr ""
 
@@ -376,32 +387,32 @@ msgstr ""
 msgid "Select preview and respond to questions manually"
 msgstr ""
 
-#: src/process.cpp:494
+#: src/process.cpp:492
 msgid "Uninstallation"
 msgstr ""
 
-#: src/process.cpp:494
+#: src/process.cpp:492
 msgid "remove package?"
 msgstr ""
 
-#: src/process.cpp:495
+#: src/process.cpp:493
 msgid "Installation"
 msgstr ""
 
-#: src/process.cpp:495 src/process.cpp:496 src/process.cpp:497
-#: src/process.cpp:498
+#: src/process.cpp:493 src/process.cpp:494 src/process.cpp:495
+#: src/process.cpp:496
 msgid "install package?"
 msgstr ""
 
-#: src/process.cpp:496
+#: src/process.cpp:494
 msgid "Installation from Repo"
 msgstr ""
 
-#: src/process.cpp:497
+#: src/process.cpp:495
 msgid "Installation from AUR"
 msgstr ""
 
-#: src/process.cpp:498
+#: src/process.cpp:496
 msgid "Installation from POLAUR"
 msgstr ""
 
@@ -409,15 +420,18 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, update_packages_button)
 #. i18n: file: src/src/mainwindowview.ui:768
 #. i18n: ectx: property (text), widget (QPushButton, update_packages_button)
-#: src/process.cpp:499 src/rc.cpp:33 src/rc.cpp:219 src/systemtray.cpp:50
+#. i18n: file: src/src/mainwindowview.ui:792
+#. i18n: ectx: property (text), widget (QPushButton, update_packages_button)
+#: src/process.cpp:497 src/rc.cpp:33 src/rc.cpp:219 src/rc.cpp:420
+#: src/systemtray.cpp:50
 msgid "Update"
 msgstr ""
 
-#: src/process.cpp:499
+#: src/process.cpp:497
 msgid "update package?"
 msgstr ""
 
-#: src/process.cpp:538
+#: src/process.cpp:536
 msgid "Are you sure you want to %1"
 msgstr ""
 
@@ -425,7 +439,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, progress_view_checkbox)
 #. i18n: file: src/src/mainwindowview.ui:95
 #. i18n: ectx: property (text), widget (QCheckBox, progress_view_checkbox)
-#: src/rc.cpp:3 src/rc.cpp:189
+#: src/rc.cpp:3 src/rc.cpp:189 src/rc.cpp:387
 msgid "View progress"
 msgstr ""
 
@@ -441,8 +455,14 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, sort_packages_to_update)
 #. i18n: file: src/src/mainwindowview.ui:967
 #. i18n: ectx: property (text), widget (QCheckBox, sort_available_packages)
+#. i18n: file: src/src/mainwindowview.ui:229
+#. i18n: ectx: property (text), widget (QCheckBox, sort_installed_packages)
+#. i18n: file: src/src/mainwindowview.ui:588
+#. i18n: ectx: property (text), widget (QCheckBox, sort_packages_to_update)
+#. i18n: file: src/src/mainwindowview.ui:991
+#. i18n: ectx: property (text), widget (QCheckBox, sort_available_packages)
 #: src/rc.cpp:9 src/rc.cpp:27 src/rc.cpp:48 src/rc.cpp:195 src/rc.cpp:213
-#: src/rc.cpp:234
+#: src/rc.cpp:234 src/rc.cpp:393 src/rc.cpp:411 src/rc.cpp:435
 msgid "Reverse sorting"
 msgstr ""
 
@@ -450,7 +470,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, uninstall_packages_button)
 #. i18n: file: src/src/mainwindowview.ui:403
 #. i18n: ectx: property (text), widget (QPushButton, uninstall_packages_button)
-#: src/rc.cpp:15 src/rc.cpp:201
+#: src/rc.cpp:15 src/rc.cpp:201 src/rc.cpp:399
 msgid "Uninstall"
 msgstr ""
 
@@ -466,8 +486,14 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, console_view_update)
 #. i18n: file: src/src/mainwindowview.ui:1184
 #. i18n: ectx: property (text), widget (QCheckBox, console_view_install)
+#. i18n: file: src/src/mainwindowview.ui:446
+#. i18n: ectx: property (text), widget (QCheckBox, console_view_uninstall)
+#. i18n: file: src/src/mainwindowview.ui:835
+#. i18n: ectx: property (text), widget (QCheckBox, console_view_update)
+#. i18n: file: src/src/mainwindowview.ui:1208
+#. i18n: ectx: property (text), widget (QCheckBox, console_view_install)
 #: src/rc.cpp:18 src/rc.cpp:36 src/rc.cpp:57 src/rc.cpp:204 src/rc.cpp:222
-#: src/rc.cpp:243
+#: src/rc.cpp:243 src/rc.cpp:402 src/rc.cpp:423 src/rc.cpp:444
 msgid "Preview"
 msgstr ""
 
@@ -483,8 +509,14 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, search_packages_to_update_checkbox)
 #. i18n: file: src/src/mainwindowview.ui:1198
 #. i18n: ectx: property (text), widget (QCheckBox, search_available_packages_checkbox)
+#. i18n: file: src/src/mainwindowview.ui:460
+#. i18n: ectx: property (text), widget (QCheckBox, search_installed_packages_checkbox)
+#. i18n: file: src/src/mainwindowview.ui:849
+#. i18n: ectx: property (text), widget (QCheckBox, search_packages_to_update_checkbox)
+#. i18n: file: src/src/mainwindowview.ui:1222
+#. i18n: ectx: property (text), widget (QCheckBox, search_available_packages_checkbox)
 #: src/rc.cpp:21 src/rc.cpp:39 src/rc.cpp:60 src/rc.cpp:207 src/rc.cpp:225
-#: src/rc.cpp:246
+#: src/rc.cpp:246 src/rc.cpp:405 src/rc.cpp:426 src/rc.cpp:447
 msgid "Search"
 msgstr ""
 
@@ -492,7 +524,9 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, check_all_updates_checkbox)
 #. i18n: file: src/src/mainwindowview.ui:839
 #. i18n: ectx: property (text), widget (QCheckBox, check_all_updates_checkbox)
-#: src/rc.cpp:42 src/rc.cpp:228
+#. i18n: file: src/src/mainwindowview.ui:863
+#. i18n: ectx: property (text), widget (QCheckBox, check_all_updates_checkbox)
+#: src/rc.cpp:42 src/rc.cpp:228 src/rc.cpp:429
 msgid "Check all"
 msgstr ""
 
@@ -500,7 +534,9 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, install_packages_button)
 #. i18n: file: src/src/mainwindowview.ui:1141
 #. i18n: ectx: property (text), widget (QPushButton, install_packages_button)
-#: src/rc.cpp:54 src/rc.cpp:240
+#. i18n: file: src/src/mainwindowview.ui:1165
+#. i18n: ectx: property (text), widget (QPushButton, install_packages_button)
+#: src/rc.cpp:54 src/rc.cpp:240 src/rc.cpp:441
 msgid "Install"
 msgstr ""
 
@@ -508,7 +544,9 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, repo_led_label)
 #. i18n: file: src/src/mainwindowview.ui:1240
 #. i18n: ectx: property (text), widget (QLabel, repo_led_label)
-#: src/rc.cpp:66 src/rc.cpp:252
+#. i18n: file: src/src/mainwindowview.ui:1264
+#. i18n: ectx: property (text), widget (QLabel, repo_led_label)
+#: src/rc.cpp:66 src/rc.cpp:252 src/rc.cpp:453
 msgid "Repositories"
 msgstr ""
 
@@ -516,7 +554,9 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, aur_led_label)
 #. i18n: file: src/src/mainwindowview.ui:1253
 #. i18n: ectx: property (text), widget (QLabel, aur_led_label)
-#: src/rc.cpp:72 src/rc.cpp:258
+#. i18n: file: src/src/mainwindowview.ui:1277
+#. i18n: ectx: property (text), widget (QLabel, aur_led_label)
+#: src/rc.cpp:72 src/rc.cpp:258 src/rc.cpp:459
 msgid "AUR"
 msgstr ""
 
@@ -524,7 +564,9 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, polaur_led_label)
 #. i18n: file: src/src/mainwindowview.ui:1266
 #. i18n: ectx: property (text), widget (QLabel, polaur_led_label)
-#: src/rc.cpp:78 src/rc.cpp:264
+#. i18n: file: src/src/mainwindowview.ui:1290
+#. i18n: ectx: property (text), widget (QLabel, polaur_led_label)
+#: src/rc.cpp:78 src/rc.cpp:264 src/rc.cpp:465
 msgid "POLAUR"
 msgstr ""
 
@@ -532,7 +574,7 @@ msgstr ""
 #. i18n: ectx: property (windowTitle), widget (QDialog, ProgressView)
 #. i18n: file: src/src/choicewindow.ui:14
 #. i18n: ectx: property (windowTitle), widget (QDialog, ChoiceWindow)
-#: src/rc.cpp:81 src/rc.cpp:180 src/rc.cpp:372
+#: src/rc.cpp:81 src/rc.cpp:180 src/rc.cpp:372 src/rc.cpp:573
 msgid "Dialog"
 msgstr ""
 
@@ -540,7 +582,7 @@ msgstr ""
 #. i18n: ectx: attribute (title), widget (QWidget, tab1)
 #. i18n: file: src/src/progressview.ui:28
 #. i18n: ectx: attribute (title), widget (QWidget, tab1)
-#: src/rc.cpp:84 src/rc.cpp:270
+#: src/rc.cpp:84 src/rc.cpp:270 src/rc.cpp:471
 msgid "Tab 1"
 msgstr ""
 
@@ -548,7 +590,7 @@ msgstr ""
 #. i18n: ectx: attribute (title), widget (QWidget, tab2)
 #. i18n: file: src/src/progressview.ui:57
 #. i18n: ectx: attribute (title), widget (QWidget, tab2)
-#: src/rc.cpp:87 src/rc.cpp:273
+#: src/rc.cpp:87 src/rc.cpp:273 src/rc.cpp:474
 msgid "Tab 2"
 msgstr ""
 
@@ -570,62 +612,73 @@ msgstr ""
 #. i18n: ectx: property (windowTitle), widget (QWidget, PackagesInfoSettings)
 #. i18n: file: src/src/appstylesettings.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, AppStyleSettings)
+#. i18n: file: src/src/previewsappearancesettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PreviewsAppearanceSettings)
+#. i18n: file: src/src/logssettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LogsSettings)
+#. i18n: file: src/src/packageinput.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PackageInputWindow)
+#. i18n: file: src/src/packagesinfosettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PackagesInfoSettings)
+#. i18n: file: src/src/appstylesettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, AppStyleSettings)
 #: src/rc.cpp:90 src/rc.cpp:105 src/rc.cpp:120 src/rc.cpp:135 src/rc.cpp:276
-#: src/rc.cpp:291 src/rc.cpp:306 src/rc.cpp:327 src/rc.cpp:381
+#: src/rc.cpp:291 src/rc.cpp:306 src/rc.cpp:327 src/rc.cpp:381 src/rc.cpp:477
+#: src/rc.cpp:492 src/rc.cpp:507 src/rc.cpp:528 src/rc.cpp:582
 msgid "Form"
 msgstr ""
 
 #. i18n: file: src/src/previewsappearancesettings.ui:41
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: src/rc.cpp:93 src/rc.cpp:279
+#: src/rc.cpp:93 src/rc.cpp:279 src/rc.cpp:480
 msgid "background color "
 msgstr ""
 
 #. i18n: file: src/src/previewsappearancesettings.ui:57
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: src/rc.cpp:96 src/rc.cpp:282
+#: src/rc.cpp:96 src/rc.cpp:282 src/rc.cpp:483
 msgid "font color"
 msgstr ""
 
 #. i18n: file: src/src/previewsappearancesettings.ui:71
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: src/rc.cpp:99 src/rc.cpp:285
+#: src/rc.cpp:99 src/rc.cpp:285 src/rc.cpp:486
 msgid "font family"
 msgstr ""
 
 #. i18n: file: src/src/previewsappearancesettings.ui:98
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: src/rc.cpp:102 src/rc.cpp:288
+#: src/rc.cpp:102 src/rc.cpp:288 src/rc.cpp:489
 msgid "font size "
 msgstr ""
 
 #. i18n: file: src/src/logssettings.ui:39
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_save_logs_into_file)
-#: src/rc.cpp:108 src/rc.cpp:294
+#: src/rc.cpp:108 src/rc.cpp:294 src/rc.cpp:495
 msgid "Save logs into file"
 msgstr ""
 
 #. i18n: file: src/src/logssettings.ui:49
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: src/rc.cpp:111 src/rc.cpp:297
+#: src/rc.cpp:111 src/rc.cpp:297 src/rc.cpp:498
 msgid "in path"
 msgstr ""
 
 #. i18n: file: src/src/logssettings.ui:67
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_show_debug)
-#: src/rc.cpp:114 src/rc.cpp:300
+#: src/rc.cpp:114 src/rc.cpp:300 src/rc.cpp:501
 msgid "show debug"
 msgstr ""
 
 #. i18n: file: src/src/logssettings.ui:74
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_hide_info_logs)
-#: src/rc.cpp:117 src/rc.cpp:303
+#: src/rc.cpp:117 src/rc.cpp:303 src/rc.cpp:504
 msgid "hide information logs"
 msgstr ""
 
 #. i18n: file: src/src/packageinput.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: src/rc.cpp:123 src/rc.cpp:309
+#: src/rc.cpp:123 src/rc.cpp:309 src/rc.cpp:510
 msgid "Enter the package name"
 msgstr ""
 
@@ -633,7 +686,7 @@ msgstr ""
 #. i18n: ectx: Menu (Actions)
 #. i18n: file: src/src/pak-gui.rc:14
 #. i18n: ectx: Menu (Actions)
-#: src/rc.cpp:126 src/rc.cpp:315
+#: src/rc.cpp:126 src/rc.cpp:315 src/rc.cpp:516
 msgid "A&ctions"
 msgstr ""
 
@@ -641,7 +694,7 @@ msgstr ""
 #. i18n: ectx: Menu (Print)
 #. i18n: file: src/src/pak-gui.rc:25
 #. i18n: ectx: Menu (Print)
-#: src/rc.cpp:129 src/rc.cpp:318
+#: src/rc.cpp:129 src/rc.cpp:318 src/rc.cpp:519
 msgid "P&rint"
 msgstr ""
 
@@ -649,7 +702,7 @@ msgstr ""
 #. i18n: ectx: ToolBar (mainToolBar)
 #. i18n: file: src/src/pak-gui.rc:38
 #. i18n: ectx: ToolBar (mainToolBar)
-#: src/rc.cpp:132 src/rc.cpp:324
+#: src/rc.cpp:132 src/rc.cpp:324 src/rc.cpp:525
 msgid "Main Toolbar"
 msgstr ""
 
@@ -661,19 +714,24 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_days_label)
 #. i18n: file: src/src/generalsettings.ui:75
 #. i18n: ectx: property (text), widget (QLabel, store_operations_history_days_label)
-#: src/rc.cpp:138 src/rc.cpp:147 src/rc.cpp:330 src/rc.cpp:339
+#. i18n: file: src/src/generalsettings.ui:48
+#. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_days_label)
+#. i18n: file: src/src/generalsettings.ui:75
+#. i18n: ectx: property (text), widget (QLabel, store_operations_history_days_label)
+#: src/rc.cpp:138 src/rc.cpp:147 src/rc.cpp:330 src/rc.cpp:339 src/rc.cpp:531
+#: src/rc.cpp:540
 msgid "day(s)"
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:55
 #. i18n: ectx: property (text), widget (QLabel, check_packages_for_update_label)
-#: src/rc.cpp:141 src/rc.cpp:333
+#: src/rc.cpp:141 src/rc.cpp:333 src/rc.cpp:534
 msgid "Check packages ready to update every "
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:65
 #. i18n: ectx: property (text), widget (QLabel, internet_reconnection_label)
-#: src/rc.cpp:144 src/rc.cpp:336
+#: src/rc.cpp:144 src/rc.cpp:336 src/rc.cpp:537
 msgid "Try to reconnect to the internet every "
 msgstr ""
 
@@ -685,86 +743,97 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, internet_reconnection_minutes_label)
 #. i18n: file: src/src/generalsettings.ui:92
 #. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_minutes_label)
-#: src/rc.cpp:150 src/rc.cpp:153 src/rc.cpp:342 src/rc.cpp:345
+#. i18n: file: src/src/generalsettings.ui:82
+#. i18n: ectx: property (text), widget (QLabel, internet_reconnection_minutes_label)
+#. i18n: file: src/src/generalsettings.ui:92
+#. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_minutes_label)
+#: src/rc.cpp:150 src/rc.cpp:153 src/rc.cpp:342 src/rc.cpp:345 src/rc.cpp:543
+#: src/rc.cpp:546
 msgid "minute(s)"
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:99
 #. i18n: ectx: property (text), widget (QLabel, check_packages_for_updates_hours_label)
-#: src/rc.cpp:156 src/rc.cpp:348
+#: src/rc.cpp:156 src/rc.cpp:348 src/rc.cpp:549
 msgid "hour(s)"
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:106
 #. i18n: ectx: property (text), widget (QLabel, store_operations_history_label)
-#: src/rc.cpp:159 src/rc.cpp:351
+#: src/rc.cpp:159 src/rc.cpp:351 src/rc.cpp:552
 msgid "Store operations history for "
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:116
 #. i18n: ectx: property (text), widget (QLabel, set_single_operations_history_limit_label)
-#: src/rc.cpp:162 src/rc.cpp:354
+#: src/rc.cpp:162 src/rc.cpp:354 src/rc.cpp:555
 msgid "Set limit of single operations history size to  "
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:129
 #. i18n: ectx: property (text), widget (QLabel, set_single_operations_history_limit_mb_label)
-#: src/rc.cpp:165 src/rc.cpp:357
+#: src/rc.cpp:165 src/rc.cpp:357 src/rc.cpp:558
 msgid "MB"
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:156
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_manual_operations_checkbox)
-#: src/rc.cpp:168 src/rc.cpp:360
+#: src/rc.cpp:168 src/rc.cpp:360 src/rc.cpp:561
 msgid "If checked, any action needs answer from user within preview"
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:159
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_manual_operations_checkbox)
-#: src/rc.cpp:171 src/rc.cpp:363
+#: src/rc.cpp:171 src/rc.cpp:363 src/rc.cpp:564
 msgid "Operate on actions manually"
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:166
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_overwrite_full_history_file)
-#: src/rc.cpp:174 src/rc.cpp:366
+#: src/rc.cpp:174 src/rc.cpp:366 src/rc.cpp:567
 msgid "Overwrite operations history file (when full size)"
 msgstr ""
 
 #. i18n: file: src/src/generalsettings.ui:173
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_use_system_tray_icon)
-#: src/rc.cpp:177 src/rc.cpp:369
+#: src/rc.cpp:177 src/rc.cpp:369 src/rc.cpp:570
 msgid "Use system tray icon"
 msgstr ""
 
 #. i18n: file: src/src/choicewindow.ui:533
 #. i18n: ectx: property (text), widget (QLabel, no_results_label)
-#: src/rc.cpp:186 src/rc.cpp:378
+#: src/rc.cpp:186 src/rc.cpp:378 src/rc.cpp:579
 msgid "No results"
 msgstr ""
 
 #. i18n: file: src/src/progressview.ui:14
 #. i18n: ectx: property (windowTitle), widget (QDialog, ProgressView)
-#: src/rc.cpp:267
+#: src/rc.cpp:267 src/rc.cpp:468
 msgid "Side actions"
 msgstr ""
 
 #. i18n: file: src/src/pak-gui.rc:10
 #. i18n: ectx: Menu (Program)
-#: src/rc.cpp:312
+#: src/rc.cpp:312 src/rc.cpp:513
 msgid "P&rogram"
 msgstr ""
 
 #. i18n: file: src/src/pak-gui.rc:29
 #. i18n: ectx: Menu (Settings)
-#: src/rc.cpp:321
+#: src/rc.cpp:321 src/rc.cpp:522
 msgid "S&ettings"
 msgstr ""
 
 #. i18n: file: src/src/appstylesettings.ui:60
 #. i18n: ectx: property (text), widget (QLabel, styles_text)
-#: src/rc.cpp:384
+#: src/rc.cpp:384 src/rc.cpp:585
 msgid "Application style"
+msgstr ""
+
+#. i18n: file: src/src/mainwindowview.ui:765
+#. i18n: ectx: property (text), widget (QPushButton, check_updates_button)
+#: src/rc.cpp:417
+msgid "Check"
 msgstr ""
 
 #: src/settings.cpp:90
@@ -804,18 +873,18 @@ msgstr ""
 msgid "package to update"
 msgstr ""
 
-#: src/updatedpackagescolumn.cpp:151
+#: src/updatedpackagescolumn.cpp:167
 msgid "Single AUR/POLAUR packages"
 msgstr ""
 
-#: src/updatedpackagescolumn.cpp:151
+#: src/updatedpackagescolumn.cpp:167
 msgid "It's not possible to update single AUR/POLAUR packages"
 msgstr ""
 
-#: src/updatedpackagescolumn.cpp:152
+#: src/updatedpackagescolumn.cpp:168
 msgid "Uncheck these packages"
 msgstr ""
 
-#: src/updatedpackagescolumn.cpp:152
+#: src/updatedpackagescolumn.cpp:168
 msgid "Cancel"
 msgstr ""

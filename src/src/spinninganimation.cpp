@@ -32,8 +32,7 @@ SpinningAnimation::SpinningAnimation() :
 
 
 void SpinningAnimation::startOnMainWidgets(const QPointer<QLabel>& first_label,
-                                           const QPointer<QLabel>& second_label,
-                                           const QPointer<QLabel>& third_label)
+                                           const QPointer<QLabel>& second_label)
 {
     if (!isValid(animation))
         return;
@@ -42,26 +41,21 @@ void SpinningAnimation::startOnMainWidgets(const QPointer<QLabel>& first_label,
     first_label->show();
     restartMovie(second_label, animation2);
     second_label->show();
-    restartMovie(third_label, animation3);
-    third_label->show();
 
     Logger::logger()->logDebug(QStringLiteral("Main animation started!"));
 }
 
 
 void SpinningAnimation::stopOnMainWidgets(const QPointer<QLabel>& first_label,
-                                          const QPointer<QLabel>& second_label,
-                                          const QPointer<QLabel>& third_label)
+                                          const QPointer<QLabel>& second_label)
 {
     if (!isValid(animation))
         return;
 
     first_label->hide();
     second_label->hide();
-    third_label->hide();
     animation->stop();
     animation2->stop();
-    animation3->stop();
     Logger::logger()->logDebug(QStringLiteral("Main animations stopped!"));
 }
 
@@ -166,9 +160,9 @@ void SpinningAnimation::stopSmallOnWidget(const QPointer<QLabel>& label)
 }
 
 
-bool SpinningAnimation::isValid(const QScopedPointer<QMovie>& animation)
+bool SpinningAnimation::isValid(const QScopedPointer<QMovie>& new_animation)
 {
-    if (animation.isNull())
+    if (new_animation.isNull())
     {
         Logger::logger()->logDebug("Cannot toggle animation - animation instance doesn't exist");
         return false;
@@ -179,11 +173,11 @@ bool SpinningAnimation::isValid(const QScopedPointer<QMovie>& animation)
 
 
 void SpinningAnimation::restartMovie(const QPointer<QLabel>& label,
-                                     const QScopedPointer<QMovie>& animation)
+                                     const QScopedPointer<QMovie>& new_animation)
 {
     if (!label->movie())
     {
-        label->setMovie(animation.get());
+        label->setMovie(new_animation.get());
         label->movie()->start();
         return;
     }

@@ -136,9 +136,9 @@ void MainWindow::reportBug()
 }
 
 
-void MainWindow::prepareMainWindowView(MainWindowView* main_window_view)
+void MainWindow::prepareMainWindowView(MainWindowView* new_main_window_view)
 {
-    this->main_window_view = main_window_view;
+    main_window_view = new_main_window_view;
     main_window_view->setProcess(process.toWeakRef());
     main_window_view->setActionsAccessChecker(actions_access_checker.toWeakRef());
     main_window_view->init();
@@ -269,7 +269,6 @@ void MainWindow::initSignals()
     connect(main_window_view, &MainWindowView::initStarted, this, [this](){ initEnded = false; });
     connect(main_window_view, &MainWindowView::initEnded, this, [this](){ initEnded = true; });
     connect(main_window_view, &MainWindowView::hideOnlineActions, this, &MainWindow::disableOnlineActions);
-    connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::setForcedUpdateFlag);
     connect(this, &MainWindow::updatedPackageInfoList, main_window_view, &MainWindowView::refresh);
     connect(actions_access_checker.get(), &ActionsAccessChecker::reflectorAccessChanged, [this](bool is_installed) {
         update_mirrors_action->setEnabled(initEnded && is_installed); });

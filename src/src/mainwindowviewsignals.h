@@ -28,7 +28,7 @@ class MainWindowViewSignals : public QObject
     Q_OBJECT
 
 public:
-    explicit MainWindowViewSignals(MainWindowView* main_window_view);
+    explicit MainWindowViewSignals(MainWindowView* new_main_window_view);
    ~MainWindowViewSignals() override;
 
     void attachInputAnswerLines();

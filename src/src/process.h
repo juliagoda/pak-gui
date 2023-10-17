@@ -76,6 +76,7 @@ private Q_SLOTS:
 
 public Q_SLOTS:
     void inputAnswer(const QString& new_answer, Process::Task task);
+    void setFirstUpdateInitializationFlag();
 
 signals:
     void finished(Process::Task task, int exit_code, QProcess::ExitStatus exit_status);
@@ -112,6 +113,7 @@ private:
     QSharedPointer<QProcess> current_process;
     uint packages_to_update = 0;
     uint aur_packages_to_update_count = 0;
+    bool was_update_initialized = false;
     QWidget* parent;
     std::once_flag yes_no_commands_update;
 };

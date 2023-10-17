@@ -17,7 +17,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "checkcommandparser.h"
-#include "logger.h"
 
 #include <QProcess>
 #include <QString>

@@ -64,7 +64,6 @@ signals:
 protected:
     void addCheckedPackage(Package* package);
     void removeUncheckedPackage(Package* package);
-    bool isColumnNotChanged(const QString& log_column_text, const QStringList& packages_list);
     uint getWaitTime();
 
     int checked_packages;
@@ -75,5 +74,6 @@ protected:
     QWidget* parent;
     std::deque<Package*> checked_packages_list;
     static QWaitCondition condition;
+    static bool is_condition_needed;
 };
 

@@ -50,9 +50,10 @@ void MockDownloadCommandParser::connectSignals()
 }
 
 
-bool MockDownloadCommandParser::validateFinishedOutput(int exit_code)
+bool MockDownloadCommandParser::validateFinishedOutput(int exit_code, QProcess::ExitStatus exit_status)
 {
     Q_UNUSED(exit_code)
+    Q_UNUSED(exit_status)
     return isPackageAlreadyDownloaded();
 }
 

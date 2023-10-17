@@ -63,7 +63,21 @@ QHash<QString, Package::Source> UpdatedPackagesColumn::getPackagesList()
 
 void UpdatedPackagesColumn::fill()
 {
+    bool was_condition_needed = is_condition_needed;
+    is_condition_needed = true;
     mutex.lock();
+
+#ifdef RUN_TESTS
+    if (was_condition_needed)
+    {
+        QDeadlineTimer deadline(getWaitTime());
+        condition.wait(&mutex, deadline);
+    }
+#else
+    if (was_condition_needed)
+        condition.wait(&mutex);
+#endif
+
     not_repo_packages_count = 0;
     packages_sorter->resetOriginalList();
     Q_ASSERT(packages_sorter->isOriginalListEmpty());
@@ -71,7 +85,8 @@ void UpdatedPackagesColumn::fill()
     Q_ASSERT(list_widget->count() == 0);
     const auto& pak_packages = getPackagesList();
     updatePackagesCount(pak_packages.count());
-    wakeUpOtherColumns();
+    if (!was_condition_needed)
+        wakeUpOtherColumns();
     QHash<QString, Package::Source>::const_iterator it = pak_packages.cbegin();
     int i = 0;
 
@@ -101,6 +116,7 @@ void UpdatedPackagesColumn::fill()
     Logger::logger()->logInfo(QStringLiteral("Filled column with %1 packages to update").arg(list_widget->count()));
     list_widget->update();
     mutex.unlock();
+    is_condition_needed = false;
 }
 
 
