@@ -20,12 +20,22 @@
 
 #include "package.h"
 
-// TODOJG - reduce parameters list
+
+template class Algorithms<Package::TooltipLine>;
+
+
 template<typename T>
-QStringList Algorithms::createSplittedList(const QString& text,
-                                           const QString& separator,
-                                           const QList<T>& list,
-                                           const QHash<int, T>& map)
+Algorithms<T>::Algorithms(const QString& new_separator,
+                          const QList<T>& new_list,
+                          const QHash<int, T>& new_map) :
+                          separator{new_separator}, list{new_list}, map{new_map}
+{
+    // ...
+}
+
+
+template<typename T>
+QStringList Algorithms<T>::createSplittedList(const QString& text)
 {
     QStringList selected_infos{};
     int selected_info_size = list.count();
@@ -41,17 +51,14 @@ QStringList Algorithms::createSplittedList(const QString& text,
     if (text.isEmpty() || selected_infos.isEmpty())
         return QStringList();
 
-    createListOfLines<T>(selected_infos, text, separator, list, map);
+    createListOfLines(selected_infos, text);
     return selected_infos;
 }
 
-// TODOJG - reduce parameters list
+
 template<typename T>
-void Algorithms::createListOfLines(QStringList& selected_infos,
-                                   const QString& text,
-                                   const QString& separator,
-                                   const QList<T>& list,
-                                   const QHash<int, T>& map)
+void Algorithms<T>::createListOfLines(QStringList& selected_infos,
+                                      const QString& text)
 {
     const auto& lines_list = text.split('\n');
     int i = 0;
@@ -60,7 +67,7 @@ void Algorithms::createListOfLines(QStringList& selected_infos,
 
     std::for_each(lines_list.begin(), lines_list.end(), [&](const QString& line)
     {
-        if (foundIndexOdSeparator<T>(line, separator, index_of_separator, list, map, i, selected_infos, last_index))
+        if (foundIndexOdSeparator(line, index_of_separator, i, selected_infos, last_index))
             return line;
 
         if (last_index < 0)
@@ -72,35 +79,31 @@ void Algorithms::createListOfLines(QStringList& selected_infos,
     });
 }
 
-// TODOJG - reduce parameters list
+
 template<typename T>
-bool Algorithms::foundIndexOdSeparator(const QString& line,
-                                       const QString& separator,
-                                       int& index_of_separator,
-                                       const QList<T>& list,
-                                       const QHash<int, T>& map,
-                                       int& i,
-                                       QStringList& selected_infos,
-                                       int& last_index)
+bool Algorithms<T>::foundIndexOdSeparator(const QString& line,
+                                          int& index_of_separator,
+                                          int& i,
+                                          QStringList& selected_infos,
+                                          int& last_index)
 {
     if (line.contains(separator))
     {
         i++;
         index_of_separator = line.indexOf(separator) + separator.count();
         auto tooltip_part = map.value(i);
-        last_index = getFirstIndexAfterSeparator<T>(list, tooltip_part, selected_infos, line);
+        last_index = getFirstIndexAfterSeparator(tooltip_part, selected_infos, line);
         return true;
     }
 
     return false;
 }
 
-// TODOJG - reduce parameters list
+
 template<typename T>
-int Algorithms::getFirstIndexAfterSeparator(const QList<T>& list,
-                                            T tooltip_part,
-                                            QStringList& selected_infos,
-                                            const QString& line)
+int Algorithms<T>::getFirstIndexAfterSeparator(T tooltip_part,
+                                               QStringList& selected_infos,
+                                               const QString& line)
 {
     if (list.contains(tooltip_part))
     {
@@ -110,35 +113,3 @@ int Algorithms::getFirstIndexAfterSeparator(const QList<T>& list,
 
     return -1;
 }
-
-
-// forward declarations
-// TODOJG - maybe better class template
-
-template QStringList Algorithms::createSplittedList(const QString& text,
-                                                    const QString& separator,
-                                                    const QList<Package::TooltipLine>& list,
-                                                    const QHash<int, Package::TooltipLine>& map);
-
-template void Algorithms::createListOfLines(QStringList& selected_infos,
-                                            const QString& text,
-                                            const QString& separator,
-                                            const QList<Package::TooltipLine>& list,
-                                            const QHash<int, Package::TooltipLine>& map);
-
-template bool Algorithms::foundIndexOdSeparator(const QString& line_it,
-                                                const QString& separator,
-                                                int& index_of_separator,
-                                                const QList<Package::TooltipLine>& list,
-                                                const QHash<int, Package::TooltipLine>& map,
-                                                int& i,
-                                                QStringList& selected_infos,
-                                                int& last_index);
-
-template int Algorithms::getFirstIndexAfterSeparator(const QList<Package::TooltipLine>& list,
-                                                     Package::TooltipLine tooltip_part,
-                                                     QStringList& selected_infos,
-                                                     const QString& line);
-
-
-

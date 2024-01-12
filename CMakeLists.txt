@@ -8,6 +8,10 @@ set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 project(pak-gui VERSION ${VERSION} LANGUAGES CXX)
 
+if(POLICY CMP0153)
+  cmake_policy(SET CMP0153 NEW)
+endif()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
@@ -44,7 +48,7 @@ endif()
 
 find_package(pak REQUIRED)
 find_package(pacman-contrib REQUIRED)
-find_package(kdesu REQUIRED)
+find_package(kdesu5 REQUIRED)
 find_package(ksshaskpass REQUIRED)
 find_package(bash REQUIRED)
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Gui Widgets Charts Concurrent Network)

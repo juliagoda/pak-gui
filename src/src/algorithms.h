@@ -22,38 +22,33 @@
 #include <QStringList>
 #include <QMap>
 
+template<typename T>
 class Algorithms
 {
 public:
-    template<typename T>
-    QStringList createSplittedList(const QString& text,
-                                   const QString& separator,
-                                   const QList<T>& list,
-                                   const QHash<int, T>& map);
+    explicit Algorithms(const QString& separator,
+                        const QList<T>& list,
+                        const QHash<int, T>& map);
+
+    QStringList createSplittedList(const QString& text);
 
 private:
-    template<typename T>
     void createListOfLines(QStringList& selected_infos,
-                           const QString& text,
-                           const QString& separator,
-                           const QList<T>& list,
-                           const QHash<int, T>& map);
+                           const QString& text);
 
 
-    template<typename T>
     bool foundIndexOdSeparator(const QString& line,
-                               const QString& separator,
                                int& index_of_separator,
-                               const QList<T>& list,
-                               const QHash<int, T>& map,
                                int& i,
                                QStringList& selected_infos,
                                int& last_index);
 
-    template<typename T>
-    int getFirstIndexAfterSeparator(const QList<T>& list,
-                                    T tooltip_part,
+    int getFirstIndexAfterSeparator(T tooltip_part,
                                     QStringList& selected_infos,
                                     const QString& line);
+
+    const QString separator;
+    const QList<T> list;
+    const QHash<int, T> map;
 };
 

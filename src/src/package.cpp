@@ -169,12 +169,12 @@ void Package::setVersionParameter(int parameter_line,
 void Package::setToolTipOnPackage(const QString& text)
 {
     auto selected_info_list = Settings::records()->packagesInfoSelected();
-
-    QScopedPointer<Algorithms> algorithms(new Algorithms);
     QString splitting_text{" : "};
     Constants constants;
-    const auto& results = algorithms->createSplittedList<Package::TooltipLine>(text, splitting_text,
-        selected_info_list, constants.typePackageToTooltipLines(getType()));
+
+    QScopedPointer<Algorithms<Package::TooltipLine>> algorithms(new Algorithms{splitting_text,
+        selected_info_list, constants.typePackageToTooltipLines(getType())});
+    const auto& results = algorithms->createSplittedList(text);
 
     setToolTip(results.join(QString("\n")));
 }
